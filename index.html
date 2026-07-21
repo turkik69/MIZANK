@@ -335,6 +335,11 @@ body { display: flex; flex-direction: column; }
           <option value="milk">حليب كامل (240مل) - 149 سعرة</option>
           <option value="vegetables">خضروات (100غ) - 35 سعرة</option>
           <option value="fruits">فواكه (150غ) - 52 سعرة</option>
+          <option value="yogurt">زبادي (170غ) - 100 سعرة</option>
+          <option value="oats">شوفان (40غ) - 150 سعرة</option>
+          <option value="cheese">جبن (30غ) - 120 سعرة</option>
+          <option value="dates">تمر (3 حبات) - 170 سعرة</option>
+          <option value="nuts">مكسرات (حفنة 30غ) - 180 سعرة</option>
         </select>
       </div>
       <div class="form-group">
@@ -343,6 +348,13 @@ body { display: flex; flex-direction: column; }
       </div>
       <button class="btn btn-primary" onclick="addMeal()">✅ أضف الوجبة</button>
     </div>
+
+    <div style="background: linear-gradient(135deg, var(--surface) 0%, var(--surface-light) 100%); border: 1px solid var(--border); border-radius: 15px; padding: 20px; margin-bottom: 20px; box-shadow: 0 8px 32px var(--shadow);">
+      <h3 style="color: var(--accent); margin-bottom: 5px;">🍽️ وجبات مقترحة جاهزة</h3>
+      <p style="font-size:11px; color:var(--text-secondary); margin-bottom:10px;">اضغط "أضف" لإضافة الوجبة كاملة بضغطة واحدة</p>
+      <div id="meal-suggestions"></div>
+    </div>
+
     <h3 style="color: var(--accent); margin-bottom: 15px;">وجباتك اليوم</h3>
     <div id="meals-list"></div>
   </div>
@@ -503,8 +515,97 @@ const foodDB = {
   bread: { cal: 79, protein: 3, carbs: 14, fat: 1.1, name: 'خبز' },
   milk: { cal: 149, protein: 7.7, carbs: 11.5, fat: 7.7, name: 'حليب' },
   vegetables: { cal: 35, protein: 2.2, carbs: 8, fat: 0.2, name: 'خضروات' },
-  fruits: { cal: 52, protein: 0.3, carbs: 14, fat: 0.2, name: 'فواكه' }
+  fruits: { cal: 52, protein: 0.3, carbs: 14, fat: 0.2, name: 'فواكه' },
+  yogurt: { cal: 100, protein: 10, carbs: 6, fat: 2, name: 'زبادي' },
+  oats: { cal: 150, protein: 5, carbs: 27, fat: 3, name: 'شوفان' },
+  cheese: { cal: 120, protein: 7, carbs: 1, fat: 10, name: 'جبن' },
+  dates: { cal: 170, protein: 1.5, carbs: 45, fat: 0.2, name: 'تمر' },
+  nuts: { cal: 180, protein: 6, carbs: 6, fat: 16, name: 'مكسرات' }
 };
+
+// وجبات مقترحة جاهزة لكل نوع وجبة (تُبنى من عناصر foodDB أعلاه)
+const mealSuggestions = {
+  breakfast: [
+    { name: 'إفطار بروتين', icon: '🍳', items: { egg: 2, bread: 1, milk: 1 } },
+    { name: 'إفطار الشوفان', icon: '🥣', items: { oats: 1, milk: 1, fruits: 1 } },
+    { name: 'إفطار خفيف', icon: '🥛', items: { yogurt: 1, dates: 1, nuts: 1 } }
+  ],
+  lunch: [
+    { name: 'دجاج وأرز', icon: '🍗', items: { chicken: 1.5, rice: 1, vegetables: 1 } },
+    { name: 'سمك صحي', icon: '🐟', items: { fish: 1.5, rice: 1, vegetables: 1 } },
+    { name: 'وجبة نباتية', icon: '🥗', items: { vegetables: 2, cheese: 1, bread: 1 } }
+  ],
+  dinner: [
+    { name: 'عشاء خفيف', icon: '🍽️', items: { fish: 1, vegetables: 1.5 } },
+    { name: 'سلطة دجاج', icon: '🥙', items: { chicken: 1, vegetables: 2 } },
+    { name: 'عشاء بسيط', icon: '🧀', items: { cheese: 1, bread: 1, vegetables: 1 } }
+  ],
+  snack: [
+    { name: 'فواكه ولبن', icon: '🍎', items: { fruits: 1, milk: 1 } },
+    { name: 'زبادي بالتمر', icon: '🥄', items: { yogurt: 1, dates: 1 } },
+    { name: 'حفنة مكسرات', icon: '🥜', items: { nuts: 1 } }
+  ]
+};
+const mealTypeLabels = { breakfast: '🌅 الإفطار', lunch: '☀️ الغداء', dinner: '🌙 العشاء', snack: '🍎 وجبة خفيفة' };
+
+function calcSuggestionTotals(items) {
+  let cal = 0, protein = 0, carbs = 0, fat = 0;
+  const parts = [];
+  Object.keys(items).forEach(key => {
+    const qty = items[key];
+    const f = foodDB[key];
+    if (!f) return;
+    cal += f.cal * qty;
+    protein += f.protein * qty;
+    carbs += f.carbs * qty;
+    fat += f.fat * qty;
+    parts.push(qty === 1 ? f.name : `${f.name}×${qty}`);
+  });
+  return { cal: Math.round(cal), protein, carbs, fat, details: parts.join('، ') };
+}
+
+function renderMealSuggestions() {
+  const container = document.getElementById('meal-suggestions');
+  if (!container) return;
+  let html = '';
+  Object.keys(mealSuggestions).forEach(mealType => {
+    html += `<h4 style="color:var(--text-secondary); font-size:13px; margin:15px 0 8px;">${mealTypeLabels[mealType]}</h4>`;
+    mealSuggestions[mealType].forEach((s, idx) => {
+      const t = calcSuggestionTotals(s.items);
+      html += `
+        <div class="food-item">
+          <div class="food-info">
+            <div class="food-name">${s.icon} ${escapeHtml(s.name)}</div>
+            <div class="food-macros">${escapeHtml(t.details)}</div>
+            <div class="food-macros">🔥 ${t.cal} سعرة</div>
+          </div>
+          <button class="icon-btn" style="background:var(--accent); color:white; border:none;" onclick="addSuggestedMeal('${mealType}', ${idx})">➕ أضف</button>
+        </div>
+      `;
+    });
+  });
+  container.innerHTML = html;
+}
+
+function addSuggestedMeal(mealType, idx) {
+  const suggestion = mealSuggestions[mealType] && mealSuggestions[mealType][idx];
+  if (!suggestion) return;
+  const t = calcSuggestionTotals(suggestion.items);
+  appState.meals.push({
+    name: suggestion.name,
+    food: null,
+    qty: 1,
+    cal: t.cal,
+    protein: t.protein,
+    carbs: t.carbs,
+    fat: t.fat,
+    comboDetails: t.details,
+    time: new Date().toLocaleTimeString('ar')
+  });
+  saveCurrentUserData();
+  updateDashboard();
+  updateMealsList();
+}
 
 // ============ إعدادات النماذج الافتراضية (قابلة للتعديل من الإعدادات) ============
 const DEFAULT_GEMINI_MODEL = 'gemini-3.5-flash';
@@ -660,7 +761,7 @@ function switchScreen(screenName, navElement) {
   if (navElement) navElement.classList.add('active');
 
   if (screenName === 'dashboard') updateDashboard();
-  if (screenName === 'meals') updateMealsList();
+  if (screenName === 'meals') { updateMealsList(); renderMealSuggestions(); }
   if (screenName === 'weight') updateWeightList();
   if (screenName === 'water') updateWaterScreen();
   if (screenName === 'chat') renderChatHistory();
@@ -752,7 +853,8 @@ function updateMealsList() {
     : appState.meals.map((m, i) => `
       <div class="food-item">
         <div class="food-info">
-          <div class="food-name">${m.name}</div>
+          <div class="food-name">${escapeHtml(m.name)}</div>
+          ${m.comboDetails ? `<div class="food-macros">${escapeHtml(m.comboDetails)}</div>` : ''}
           <div class="food-macros">🔥 ${m.cal} سعرة | 🥛 ${m.protein.toFixed(1)}غ | 🌾 ${m.carbs.toFixed(1)}غ | 🫒 ${m.fat.toFixed(1)}غ</div>
         </div>
         <button class="delete-btn" onclick="deleteMeal(${i})">حذف</button>

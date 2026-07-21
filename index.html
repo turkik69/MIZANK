@@ -5,9 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f3460">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0">
-<title>مستشار صحتك الذكي - النسخة الأخيرة</title>
+<title>مستشار صحتك الذكي</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,7 +20,6 @@
 :root {
   --primary-dark: #0f3460;
   --primary: #16213e;
-  --secondary: #0f3460;
   --accent: #e94560;
   --accent-light: #ff6b9d;
   --success: #06d6a0;
@@ -38,149 +35,86 @@
   --shadow: rgba(0, 0, 0, 0.5);
 }
 
-body {
+html, body {
+  width: 100%;
+  height: 100%;
   font-family: 'Tajawal', system-ui, sans-serif;
   background: linear-gradient(135deg, var(--bg-darker) 0%, var(--bg-dark) 100%);
   color: var(--text-primary);
-  min-height: 100vh;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
-.sidebar {
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 280px;
-  height: 100vh;
-  background: linear-gradient(180deg, var(--primary-dark) 0%, var(--primary) 100%);
-  border-right: 2px solid var(--border);
-  padding: 30px 20px;
-  overflow-y: auto;
-  z-index: 1000;
-  box-shadow: 5px 0 30px var(--shadow);
-}
-
-.sidebar-header {
+body {
   display: flex;
-  align-items: center;
-  gap: 15px;
-  margin-bottom: 40px;
-  padding-bottom: 20px;
-  border-bottom: 2px solid var(--border);
-}
-
-.sidebar-logo {
-  width: 50px;
-  height: 50px;
-  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 28px;
-  font-weight: 700;
-}
-
-.sidebar-title {
-  font-size: 18px;
-  font-weight: 700;
-  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.nav-menu {
-  list-style: none;
-}
-
-.nav-item {
-  margin-bottom: 15px;
-}
-
-.nav-link {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  padding: 14px 16px;
-  color: var(--text-secondary);
-  text-decoration: none;
-  border-radius: 10px;
-  transition: all 0.3s ease;
-  cursor: pointer;
-  border-left: 3px solid transparent;
-}
-
-.nav-link:hover {
-  background: var(--surface);
-  color: var(--text-primary);
-  border-left-color: var(--accent);
-  transform: translateX(-5px);
-}
-
-.nav-link.active {
-  background: var(--surface);
-  color: var(--accent);
-  border-left-color: var(--accent);
-  font-weight: 700;
-}
-
-.nav-icon {
-  font-size: 22px;
-  width: 30px;
-  text-align: center;
+  flex-direction: column;
 }
 
 .main-container {
-  margin-right: 280px;
-  padding: 30px;
-  min-height: 100vh;
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 80px;
 }
 
-.header-bar {
-  background: linear-gradient(135deg, var(--surface) 0%, var(--surface-light) 100%);
-  padding: 20px 30px;
-  border-radius: 15px;
-  margin-bottom: 30px;
-  border: 1px solid var(--border);
+/* Bottom Navigation */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
+  background: linear-gradient(180deg, var(--primary-dark) 0%, var(--primary) 100%);
+  border-top: 2px solid var(--border);
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0 8px 32px var(--shadow);
+  justify-content: space-around;
+  align-items: flex-start;
+  padding: 10px 0;
+  box-shadow: 0 -5px 30px var(--shadow);
+  z-index: 1000;
 }
 
-.header-title {
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 12px;
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: all 0.3s ease;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.nav-item:hover {
+  color: var(--text-primary);
+  background: var(--surface);
+}
+
+.nav-item.active {
+  color: var(--accent);
+  background: var(--surface);
+}
+
+.nav-icon {
   font-size: 24px;
-  font-weight: 700;
 }
 
-.header-user {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-.user-avatar {
-  width: 45px;
-  height: 45px;
-  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
+.nav-label {
+  font-size: 11px;
+  font-weight: 600;
 }
 
 .screen {
   display: none;
+  padding: 20px;
+  animation: slideIn 0.3s ease;
 }
 
 .screen.active {
   display: block;
-  animation: fadeIn 0.3s ease;
 }
 
-@keyframes fadeIn {
+@keyframes slideIn {
   from {
     opacity: 0;
     transform: translateY(10px);
@@ -191,7 +125,29 @@ body {
   }
 }
 
-.login-container {
+/* Header */
+.screen-header {
+  background: linear-gradient(135deg, var(--surface) 0%, var(--surface-light) 100%);
+  padding: 20px;
+  border-radius: 15px;
+  margin-bottom: 20px;
+  border: 1px solid var(--border);
+  box-shadow: 0 8px 32px var(--shadow);
+}
+
+.screen-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.screen-subtitle {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+/* Login/Setup */
+.auth-container {
   max-width: 500px;
   margin: 0 auto;
   padding: 60px 20px;
@@ -201,7 +157,7 @@ body {
   min-height: 100vh;
 }
 
-.login-box {
+.auth-box {
   background: linear-gradient(135deg, var(--surface) 0%, var(--surface-light) 100%);
   padding: 40px;
   border-radius: 20px;
@@ -210,25 +166,20 @@ body {
   width: 100%;
 }
 
-.login-header {
+.auth-header {
   text-align: center;
   margin-bottom: 40px;
 }
 
-.login-logo {
+.auth-logo {
   font-size: 48px;
   margin-bottom: 15px;
 }
 
-.login-title {
+.auth-title {
   font-size: 24px;
   font-weight: 700;
   margin-bottom: 10px;
-}
-
-.login-subtitle {
-  color: var(--text-secondary);
-  font-size: 14px;
 }
 
 .form-group {
@@ -243,7 +194,7 @@ body {
   color: var(--text-secondary);
 }
 
-.form-input {
+.form-input, .form-select {
   width: 100%;
   padding: 14px 16px;
   background: var(--bg-dark);
@@ -255,32 +206,14 @@ body {
   transition: all 0.3s ease;
 }
 
-.form-input:focus {
-  outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(233, 69, 96, 0.1);
-}
-
-.form-select {
-  width: 100%;
-  padding: 14px 16px;
-  background: var(--bg-dark);
-  border: 2px solid var(--border);
-  border-radius: 10px;
-  color: var(--text-primary);
-  font-size: 14px;
-  font-family: 'Tajawal', system-ui;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.form-select:focus {
+.form-input:focus, .form-select:focus {
   outline: none;
   border-color: var(--accent);
   box-shadow: 0 0 0 3px rgba(233, 69, 96, 0.1);
 }
 
 .btn {
+  width: 100%;
   padding: 14px 24px;
   border: none;
   border-radius: 10px;
@@ -289,12 +222,12 @@ body {
   cursor: pointer;
   transition: all 0.3s ease;
   font-family: 'Tajawal', system-ui;
+  margin-bottom: 10px;
 }
 
 .btn-primary {
   background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
   color: white;
-  width: 100%;
 }
 
 .btn-primary:hover {
@@ -308,55 +241,32 @@ body {
   border: 2px solid var(--accent);
 }
 
-.form-container {
-  background: linear-gradient(135deg, var(--surface) 0%, var(--surface-light) 100%);
-  border: 1px solid var(--border);
-  border-radius: 15px;
-  padding: 30px;
-  box-shadow: 0 8px 32px var(--shadow);
-  margin-bottom: 30px;
+.auth-link {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 14px;
+  color: var(--text-secondary);
 }
 
-.form-section {
-  margin-bottom: 35px;
-}
-
-.form-section:last-child {
-  margin-bottom: 0;
-}
-
-.section-title {
-  font-size: 18px;
-  font-weight: 700;
-  margin-bottom: 20px;
-  padding-bottom: 15px;
-  border-bottom: 2px solid var(--border);
+.auth-link a {
   color: var(--accent);
+  cursor: pointer;
+  text-decoration: underline;
 }
 
-.form-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-  margin-bottom: 20px;
-}
-
-.form-row.full {
-  grid-template-columns: 1fr;
-}
-
+/* Dashboard Cards */
 .dashboard-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
-  margin-bottom: 30px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  margin-bottom: 20px;
 }
 
 .card {
   background: linear-gradient(135deg, var(--surface) 0%, var(--surface-light) 100%);
   border: 1px solid var(--border);
   border-radius: 15px;
-  padding: 25px;
+  padding: 20px;
   box-shadow: 0 8px 32px var(--shadow);
   transition: all 0.3s ease;
 }
@@ -367,34 +277,24 @@ body {
   box-shadow: 0 12px 40px rgba(233, 69, 96, 0.2);
 }
 
-.card-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 15px;
-}
-
 .card-icon {
   font-size: 28px;
-}
-
-.card-title {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-secondary);
-  text-transform: uppercase;
-}
-
-.card-value {
-  font-size: 32px;
-  font-weight: 700;
-  color: var(--accent);
   margin-bottom: 10px;
 }
 
 .card-label {
   font-size: 12px;
   color: var(--text-secondary);
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.card-value {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 10px;
 }
 
 .progress-bar {
@@ -403,7 +303,6 @@ body {
   background: var(--bg-dark);
   border-radius: 10px;
   overflow: hidden;
-  margin-top: 10px;
 }
 
 .progress-fill {
@@ -412,11 +311,11 @@ body {
   transition: width 0.3s ease;
 }
 
+/* Macro Grid */
 .macro-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 15px;
-  margin-top: 20px;
 }
 
 .macro-item {
@@ -428,10 +327,11 @@ body {
 }
 
 .macro-name {
-  font-size: 12px;
+  font-size: 11px;
   color: var(--text-secondary);
   margin-bottom: 8px;
   text-transform: uppercase;
+  font-weight: 600;
 }
 
 .macro-value {
@@ -446,24 +346,15 @@ body {
   color: var(--text-secondary);
 }
 
-.chart-container {
-  position: relative;
-  height: 300px;
-  margin: 30px 0;
-  padding: 20px;
-  background: var(--bg-dark);
-  border-radius: 10px;
-  border: 1px solid var(--border);
-}
-
+/* Message Box */
 .message-box {
   background: var(--surface-light);
   border-right: 4px solid var(--accent);
-  padding: 16px;
+  padding: 15px;
   border-radius: 10px;
   margin-bottom: 15px;
   color: var(--text-secondary);
-  font-size: 14px;
+  font-size: 13px;
   line-height: 1.6;
 }
 
@@ -477,46 +368,65 @@ body {
   background: rgba(252, 163, 17, 0.1);
 }
 
-.meal-item {
-  background: var(--bg-dark);
-  padding: 15px;
-  border-radius: 10px;
-  border: 1px solid var(--border);
-  margin-bottom: 15px;
+.message-box.error {
+  border-right-color: var(--danger);
+  background: rgba(230, 57, 70, 0.1);
 }
 
-.meal-item-header {
+/* Food Item */
+.food-item {
+  background: var(--bg-dark);
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  margin-bottom: 10px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
 }
 
-.meal-item-title {
-  font-weight: 700;
-  color: var(--text-primary);
+.food-info {
+  flex: 1;
 }
 
-.meal-item-macros {
-  display: flex;
-  gap: 15px;
+.food-name {
+  font-weight: 600;
+  margin-bottom: 3px;
+}
+
+.food-macros {
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.delete-btn {
+  background: var(--danger);
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
   font-size: 12px;
+  font-family: 'Tajawal';
 }
 
-@media (max-width: 768px) {
-  .sidebar {
-    width: 70px;
-  }
-  .main-container {
-    margin-right: 70px;
-  }
-  .form-row {
+/* Chart Container */
+.chart-container {
+  position: relative;
+  height: 300px;
+  margin: 20px 0;
+  padding: 15px;
+  background: var(--bg-dark);
+  border-radius: 10px;
+  border: 1px solid var(--border);
+}
+
+@media (max-width: 600px) {
+  .dashboard-grid {
     grid-template-columns: 1fr;
   }
+  
   .macro-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-  .dashboard-grid {
     grid-template-columns: 1fr;
   }
 }
@@ -524,380 +434,837 @@ body {
 </head>
 <body>
 
-<div class="sidebar">
-  <div class="sidebar-header">
-    <div class="sidebar-logo">💚</div>
-    <div class="sidebar-title">صحتك</div>
-  </div>
-  <ul class="nav-menu">
-    <li class="nav-item">
-      <div class="nav-link active" onclick="switchScreen('dashboard')">
-        <span class="nav-icon">📊</span>
-        <span>لوحة التحكم</span>
-      </div>
-    </li>
-    <li class="nav-item">
-      <div class="nav-link" onclick="switchScreen('meals')">
-        <span class="nav-icon">🍽️</span>
-        <span>الوجبات</span>
-      </div>
-    </li>
-    <li class="nav-item">
-      <div class="nav-link" onclick="switchScreen('water')">
-        <span class="nav-icon">💧</span>
-        <span>الماء</span>
-      </div>
-    </li>
-    <li class="nav-item">
-      <div class="nav-link" onclick="switchScreen('weight')">
-        <span class="nav-icon">⚖️</span>
-        <span>الوزن</span>
-      </div>
-    </li>
-    <li class="nav-item">
-      <div class="nav-link" onclick="switchScreen('chat')">
-        <span class="nav-icon">🤖</span>
-        <span>المساعد</span>
-      </div>
-    </li>
-    <li class="nav-item">
-      <div class="nav-link" onclick="switchScreen('recommendations')">
-        <span class="nav-icon">💡</span>
-        <span>التوصيات</span>
-      </div>
-    </li>
-    <li class="nav-item">
-      <div class="nav-link" onclick="switchScreen('reports')">
-        <span class="nav-icon">📈</span>
-        <span>التقارير</span>
-      </div>
-    </li>
-    <li class="nav-item">
-      <div class="nav-link" onclick="switchScreen('settings')">
-        <span class="nav-icon">⚙️</span>
-        <span>الإعدادات</span>
-      </div>
-    </li>
-  </ul>
-</div>
-
 <div class="main-container">
   
+  <!-- Login Screen -->
   <div id="login-screen" class="screen active">
-    <div class="login-container">
-      <div class="login-box">
-        <div class="login-header">
-          <div class="login-logo">💚</div>
-          <h1 class="login-title">مستشارك الصحي الذكي</h1>
-          <p class="login-subtitle">النسخة المتقدمة v2.0 مع الذكاء الاصطناعي الكامل</p>
+    <div class="auth-container">
+      <div class="auth-box">
+        <div class="auth-header">
+          <div class="auth-logo">💚</div>
+          <h1 class="auth-title">مستشارك الصحي الذكي</h1>
+          <p style="color: var(--text-secondary); font-size: 13px;">رحلتك نحو حياة أكثر صحة</p>
         </div>
 
         <div id="login-form">
           <div class="form-group">
             <label class="form-label">البريد الإلكتروني</label>
-            <input type="email" id="email" class="form-input" placeholder="أدخل بريدك الإلكتروني">
+            <input type="email" id="login-email" class="form-input" placeholder="أدخل بريدك">
           </div>
           <div class="form-group">
             <label class="form-label">كلمة المرور</label>
-            <input type="password" id="password" class="form-input" placeholder="أدخل كلمة المرور">
+            <input type="password" id="login-password" class="form-input" placeholder="أدخل كلمة المرور">
           </div>
-          <button class="btn btn-primary" onclick="login()">دخول</button>
-          <div style="text-align: center; margin-top: 20px; color: var(--text-secondary); font-size: 14px;">
-            ليس لديك حساب؟ <span style="color: var(--accent); cursor: pointer;" onclick="toggleAuthForm()">إنشاء حساب</span>
+          <button class="btn btn-primary" onclick="handleLogin()">دخول</button>
+          <div class="auth-link">
+            ليس لديك حساب؟ <a onclick="showRegister()">إنشاء حساب</a>
           </div>
         </div>
 
         <div id="register-form" style="display: none;">
           <div class="form-group">
             <label class="form-label">الاسم الكامل</label>
-            <input type="text" id="fullname" class="form-input" placeholder="أدخل اسمك الكامل">
+            <input type="text" id="register-name" class="form-input" placeholder="أدخل اسمك">
           </div>
           <div class="form-group">
             <label class="form-label">البريد الإلكتروني</label>
-            <input type="email" id="reg-email" class="form-input" placeholder="أدخل بريدك الإلكتروني">
+            <input type="email" id="register-email" class="form-input" placeholder="أدخل بريدك">
           </div>
           <div class="form-group">
             <label class="form-label">كلمة المرور</label>
-            <input type="password" id="reg-password" class="form-input" placeholder="أدخل كلمة المرور">
+            <input type="password" id="register-password" class="form-input" placeholder="أدخل كلمة المرور">
           </div>
-          <button class="btn btn-primary" onclick="register()">إنشاء حساب</button>
-          <div style="text-align: center; margin-top: 20px; color: var(--text-secondary); font-size: 14px;">
-            لديك حساب؟ <span style="color: var(--accent); cursor: pointer;" onclick="toggleAuthForm()">تسجيل الدخول</span>
+          <button class="btn btn-primary" onclick="handleRegister()">إنشاء حساب</button>
+          <div class="auth-link">
+            لديك حساب؟ <a onclick="showLogin()">تسجيل الدخول</a>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <div id="dashboard-screen" class="screen">
-    <div class="header-bar">
-      <h1 class="header-title">لوحة التحكم</h1>
-      <div class="header-user">
-        <span id="user-greeting">مرحباً</span>
-        <div class="user-avatar" id="user-avatar">أ</div>
+  <!-- Setup Screen -->
+  <div id="setup-screen" class="screen">
+    <div class="auth-container">
+      <div class="auth-box">
+        <div class="auth-header">
+          <h1 class="auth-title">إدخال بيانات صحتك</h1>
+          <p style="color: var(--text-secondary); font-size: 13px;">سنستخدم هذه البيانات لحساب احتياجاتك</p>
+        </div>
+
+        <div style="max-height: 500px; overflow-y: auto;">
+          <!-- Basic Info -->
+          <h3 style="color: var(--accent); margin: 20px 0 15px; font-size: 16px;">البيانات الأساسية</h3>
+          
+          <div class="form-group">
+            <label class="form-label">الاسم</label>
+            <input type="text" id="setup-name" class="form-input">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">العمر (سنة)</label>
+            <input type="number" id="setup-age" class="form-input" min="15" max="100">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">الجنس</label>
+            <select id="setup-gender" class="form-select">
+              <option value="">اختر الجنس</option>
+              <option value="male">ذكر</option>
+              <option value="female">أنثى</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">الطول (سم)</label>
+            <input type="number" id="setup-height" class="form-input" min="100" max="250" placeholder="مثال: 175">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">الوزن الحالي (كغ)</label>
+            <input type="number" id="setup-current-weight" class="form-input" min="30" step="0.1" placeholder="مثال: 85">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">الوزن المستهدف (كغ)</label>
+            <input type="number" id="setup-target-weight" class="form-input" min="30" step="0.1" placeholder="مثال: 75">
+          </div>
+
+          <!-- Lifestyle -->
+          <h3 style="color: var(--accent); margin: 20px 0 15px; font-size: 16px;">نمط الحياة</h3>
+          
+          <div class="form-group">
+            <label class="form-label">مستوى النشاط اليومي</label>
+            <select id="setup-activity" class="form-select">
+              <option value="">اختر</option>
+              <option value="1.2">قليل جداً (خامل)</option>
+              <option value="1.375">قليل (1-3 أيام رياضة)</option>
+              <option value="1.55">متوسط (3-5 أيام)</option>
+              <option value="1.725">مرتفع (6-7 أيام)</option>
+              <option value="1.9">مرتفع جداً (يومي)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">طبيعة العمل</label>
+            <select id="setup-work" class="form-select">
+              <option value="">اختر</option>
+              <option value="office">مكتبي</option>
+              <option value="field">ميداني</option>
+              <option value="mixed">مختلط</option>
+              <option value="athletic">رياضي</option>
+            </select>
+          </div>
+
+          <!-- Goals -->
+          <h3 style="color: var(--accent); margin: 20px 0 15px; font-size: 16px;">الهدف الرئيسي</h3>
+          
+          <div class="form-group">
+            <label class="form-label">اختر هدفك</label>
+            <select id="setup-goal" class="form-select">
+              <option value="">اختر</option>
+              <option value="lose">خسارة الوزن</option>
+              <option value="gain">زيادة الوزن</option>
+              <option value="maintain">الحفاظ على الوزن</option>
+              <option value="muscle">بناء العضلات</option>
+              <option value="fatloss">تقليل الدهون</option>
+              <option value="fitness">تحسين اللياقة</option>
+            </select>
+          </div>
+
+          <!-- Health Info -->
+          <h3 style="color: var(--accent); margin: 20px 0 15px; font-size: 16px;">معلومات صحية (اختياري)</h3>
+          
+          <div class="form-group">
+            <label class="form-label">الأمراض المزمنة</label>
+            <input type="text" id="setup-chronic" class="form-input" placeholder="السكري، ارتفاع الضغط...">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">الحساسية الغذائية</label>
+            <input type="text" id="setup-allergies" class="form-input" placeholder="الفول السوداني، الألبان...">
+          </div>
+
+          <button class="btn btn-primary" onclick="completeSetup()" style="margin-top: 30px;">✅ إكمال الإعداد</button>
+        </div>
       </div>
+    </div>
+  </div>
+
+  <!-- Dashboard Screen -->
+  <div id="dashboard-screen" class="screen">
+    <div class="screen-header">
+      <div class="screen-title">لوحة التحكم</div>
+      <div class="screen-subtitle" id="user-welcome">مرحباً بك</div>
     </div>
 
     <div class="dashboard-grid">
       <div class="card">
-        <div class="card-header">
-          <span class="card-icon">🔥</span>
-          <span class="card-title">السعرات</span>
-        </div>
-        <div class="card-value" id="daily-calories">1450</div>
-        <div class="card-label" id="calorie-info">من 2500 سعرة</div>
-        <div class="progress-bar">
-          <div class="progress-fill" id="calorie-progress" style="width: 58%"></div>
-        </div>
+        <div class="card-icon">🔥</div>
+        <div class="card-label">السعرات اليومية</div>
+        <div class="card-value" id="dashboard-calories">0</div>
+        <div style="font-size: 12px; color: var(--text-secondary); margin-top: 5px;">استهلاك: <span id="dashboard-consumed">0</span></div>
       </div>
 
       <div class="card">
-        <div class="card-header">
-          <span class="card-icon">⚖️</span>
-          <span class="card-title">الوزن</span>
-        </div>
-        <div class="card-value" id="current-weight">85</div>
-        <div class="card-label" id="weight-info">الهدف: 75 كغ</div>
+        <div class="card-icon">⚖️</div>
+        <div class="card-label">الوزن الحالي</div>
+        <div class="card-value" id="dashboard-weight">0</div>
+        <div style="font-size: 12px; color: var(--text-secondary); margin-top: 5px;">الهدف: <span id="dashboard-target">0</span> كغ</div>
       </div>
 
       <div class="card">
-        <div class="card-header">
-          <span class="card-icon">💧</span>
-          <span class="card-title">الماء</span>
-        </div>
-        <div class="card-value" id="water-intake">6</div>
-        <div class="card-label" id="water-info">من 8 أكواب</div>
-        <div class="progress-bar">
-          <div class="progress-fill" id="water-progress" style="width: 75%; background: linear-gradient(90deg, #00d4ff 0%, #0080ff 100%);"></div>
-        </div>
+        <div class="card-icon">💧</div>
+        <div class="card-label">شرب الماء</div>
+        <div class="card-value" id="dashboard-water">0</div>
+        <div style="font-size: 12px; color: var(--text-secondary); margin-top: 5px;">من <span id="dashboard-water-target">8</span> أكواب</div>
       </div>
 
       <div class="card">
-        <div class="card-header">
-          <span class="card-icon">📈</span>
-          <span class="card-title">التقدم</span>
-        </div>
-        <div class="card-value" id="progress-percent">75%</div>
-        <div class="card-label" id="progress-info">إلى الهدف</div>
-        <div class="progress-bar">
-          <div class="progress-fill" id="progress-bar" style="width: 75%"></div>
+        <div class="card-icon">📈</div>
+        <div class="card-label">التقدم نحو الهدف</div>
+        <div class="card-value" id="dashboard-progress">0%</div>
+        <div style="font-size: 12px; color: var(--text-secondary); margin-top: 5px;">
+          <div class="progress-bar" style="margin-top: 5px;">
+            <div class="progress-fill" id="dashboard-progress-bar" style="width: 0%"></div>
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="form-container">
-      <h3 class="section-title">العناصر الغذائية</h3>
+    <div style="background: linear-gradient(135deg, var(--surface) 0%, var(--surface-light) 100%); border: 1px solid var(--border); border-radius: 15px; padding: 20px; margin-bottom: 20px; box-shadow: 0 8px 32px var(--shadow);">
+      <h3 style="color: var(--accent); margin-bottom: 15px; font-size: 16px;">العناصر الغذائية</h3>
       <div class="macro-grid">
         <div class="macro-item">
           <div class="macro-name">البروتين</div>
-          <div class="macro-value" id="protein-value">125</div>
-          <div class="macro-unit" id="protein-unit">/ 150 غ</div>
+          <div class="macro-value" id="dashboard-protein">0</div>
+          <div class="macro-unit" id="dashboard-protein-target">/ 0 غ</div>
         </div>
         <div class="macro-item">
           <div class="macro-name">الكربوهيدرات</div>
-          <div class="macro-value" id="carbs-value">185</div>
-          <div class="macro-unit" id="carbs-unit">/ 250 غ</div>
+          <div class="macro-value" id="dashboard-carbs">0</div>
+          <div class="macro-unit" id="dashboard-carbs-target">/ 0 غ</div>
         </div>
         <div class="macro-item">
           <div class="macro-name">الدهون</div>
-          <div class="macro-value" id="fats-value">55</div>
-          <div class="macro-unit" id="fats-unit">/ 75 غ</div>
+          <div class="macro-value" id="dashboard-fats">0</div>
+          <div class="macro-unit" id="dashboard-fats-target">/ 0 غ</div>
         </div>
       </div>
     </div>
 
-    <div class="form-container">
-      <h3 class="section-title">نصائح اليوم</h3>
-      <div class="message-box success">✅ استمر في الالتزام الرائع!</div>
-      <div class="message-box">💡 تبقى لك سعرات كافية للعشاء</div>
-      <div class="message-box warning">💧 تذكر شرب الماء بانتظام</div>
+    <div id="dashboard-tips"></div>
+  </div>
+
+  <!-- Meals Screen -->
+  <div id="meals-screen" class="screen">
+    <div class="screen-header">
+      <div class="screen-title">الوجبات</div>
+      <div class="screen-subtitle">سجل وجباتك اليومية</div>
+    </div>
+
+    <div style="background: linear-gradient(135deg, var(--surface) 0%, var(--surface-light) 100%); border: 1px solid var(--border); border-radius: 15px; padding: 20px; margin-bottom: 20px; box-shadow: 0 8px 32px var(--shadow);">
+      <h3 style="color: var(--accent); margin-bottom: 15px;">أضف وجبة جديدة</h3>
+      
+      <div class="form-group">
+        <label class="form-label">اختر الطعام</label>
+        <select id="meal-food" class="form-select">
+          <option value="">اختر...</option>
+          <option value="egg">بيض (50غ) - 155 سعرة</option>
+          <option value="rice">أرز أبيض (100غ) - 130 سعرة</option>
+          <option value="chicken">دجاج مسلوق (100غ) - 165 سعرة</option>
+          <option value="fish">سمك مشوي (100غ) - 82 سعرة</option>
+          <option value="bread">خبز أبيض (30غ) - 79 سعرة</option>
+          <option value="milk">حليب كامل (240مل) - 149 سعرة</option>
+          <option value="vegetables">خضروات (100غ) - 35 سعرة</option>
+          <option value="fruits">فواكه (150غ) - 52 سعرة</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">الكمية</label>
+        <input type="number" id="meal-qty" class="form-input" value="1" min="0.5" step="0.5">
+      </div>
+
+      <button class="btn btn-primary" onclick="addMeal()">✅ أضف الوجبة</button>
+    </div>
+
+    <h3 style="color: var(--accent); margin-bottom: 15px;">وجباتك اليوم</h3>
+    <div id="meals-list"></div>
+  </div>
+
+  <!-- Water Screen -->
+  <div id="water-screen" class="screen">
+    <div class="screen-header">
+      <div class="screen-title">الماء</div>
+      <div class="screen-subtitle">تتبع شرب الماء</div>
+    </div>
+
+    <div style="background: linear-gradient(135deg, var(--surface) 0%, var(--surface-light) 100%); border: 1px solid var(--border); border-radius: 15px; padding: 30px 20px; margin-bottom: 20px; box-shadow: 0 8px 32px var(--shadow); text-align: center;">
+      <div style="font-size: 48px; font-weight: 700; color: var(--accent); margin-bottom: 10px;" id="water-display">0%</div>
+      <div class="progress-bar" style="margin: 20px 0; height: 12px;">
+        <div class="progress-fill" id="water-progress-bar" style="width: 0%; background: linear-gradient(90deg, #00d4ff 0%, #0080ff 100%);"></div>
+      </div>
+      <div style="color: var(--text-secondary); font-size: 14px;">
+        <span id="water-current">0</span> من <span id="water-target">8</span> أكواب
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr; gap: 10px;">
+      <button class="btn btn-primary" onclick="addWater()">🥤 أضف كوب ماء</button>
+      <button class="btn btn-secondary" onclick="resetWater()" style="background: var(--warning); color: white; border: none;">🔄 إعادة تعيين</button>
     </div>
   </div>
 
-  <div id="meals-screen" class="screen" style="display: none;">
-    <div class="header-bar">
-      <h1 class="header-title">الوجبات</h1>
+  <!-- Weight Screen -->
+  <div id="weight-screen" class="screen">
+    <div class="screen-header">
+      <div class="screen-title">متابعة الوزن</div>
+      <div class="screen-subtitle">سجل وزنك بانتظام</div>
     </div>
-    <div class="form-container">
-      <h3 class="section-title">أضف وجبة</h3>
-      <div class="form-row">
-        <div>
-          <label class="form-label">الطعام</label>
-          <select class="form-select" id="food-select">
-            <option value="">اختر...</option>
-            <option value="egg">بيض (50غ)</option>
-            <option value="chicken">دجاج (100غ)</option>
-            <option value="rice">أرز (100غ)</option>
-          </select>
-        </div>
-        <div>
-          <label class="form-label">الكمية</label>
-          <input type="number" id="food-qty" class="form-input" value="1" min="0.5" step="0.5">
-        </div>
+
+    <div style="background: linear-gradient(135deg, var(--surface) 0%, var(--surface-light) 100%); border: 1px solid var(--border); border-radius: 15px; padding: 20px; margin-bottom: 20px; box-shadow: 0 8px 32px var(--shadow);">
+      <h3 style="color: var(--accent); margin-bottom: 15px;">سجل وزنك</h3>
+      
+      <div class="form-group">
+        <label class="form-label">الوزن (كغ)</label>
+        <input type="number" id="weight-input" class="form-input" min="30" step="0.1">
       </div>
-      <button class="btn btn-primary" onclick="addMeal()">✅ أضف</button>
+
+      <div class="form-group">
+        <label class="form-label">التاريخ</label>
+        <input type="date" id="weight-date" class="form-input">
+      </div>
+
+      <button class="btn btn-primary" onclick="addWeight()">✅ سجل الوزن</button>
+    </div>
+
+    <div style="background: linear-gradient(135deg, var(--surface) 0%, var(--surface-light) 100%); border: 1px solid var(--border); border-radius: 15px; padding: 20px; margin-bottom: 20px; box-shadow: 0 8px 32px var(--shadow);">
+      <h3 style="color: var(--accent); margin-bottom: 15px;">سجل الأوزان</h3>
+      <div id="weight-history"></div>
     </div>
   </div>
 
-  <div id="water-screen" class="screen" style="display: none;">
-    <div class="header-bar">
-      <h1 class="header-title">الماء</h1>
+  <!-- Chat Screen -->
+  <div id="chat-screen" class="screen">
+    <div class="screen-header">
+      <div class="screen-title">المساعد الذكي 🤖</div>
+      <div class="screen-subtitle">اسأل أي سؤال عن الصحة</div>
     </div>
-    <div class="form-container">
-      <h3 class="section-title">أضف كوب ماء</h3>
-      <button class="btn btn-primary" onclick="addWater()">🥤 أضف كوب</button>
-      <div style="text-align: center; margin-top: 30px;">
-        <div style="font-size: 36px; color: var(--success);" id="water-percent">75%</div>
-        <div id="water-count" style="color: var(--text-secondary); margin-top: 10px;">6 من 8 أكواب</div>
+
+    <div id="chat-messages" style="height: 350px; overflow-y: auto; margin-bottom: 20px;">
+      <div class="message-box" style="background: var(--surface-light);">
+        مرحباً! أنا مساعدك الصحي الذكي. يمكنك سؤالي عن الصحة والتغذية والرياضة وأي شيء يتعلق بأهدافك الصحية! 💚
       </div>
+    </div>
+
+    <div style="display: flex; gap: 10px;">
+      <input type="text" id="chat-input" class="form-input" placeholder="اسأل سؤالك..." style="margin: 0;">
+      <button class="btn btn-primary" onclick="sendChat()" style="width: auto; margin: 0;">إرسال</button>
     </div>
   </div>
 
-  <div id="weight-screen" class="screen" style="display: none;">
-    <div class="header-bar">
-      <h1 class="header-title">الوزن</h1>
+  <!-- Reports Screen -->
+  <div id="reports-screen" class="screen">
+    <div class="screen-header">
+      <div class="screen-title">التقارير والإحصائيات</div>
+      <div class="screen-subtitle">تتبع تقدمك</div>
     </div>
-    <div class="form-container">
-      <h3 class="section-title">سجل وزنك</h3>
-      <div class="form-row">
-        <div>
-          <label class="form-label">الوزن (كغ)</label>
-          <input type="number" id="weight-input" class="form-input" min="30" step="0.1">
-        </div>
-        <div>
-          <label class="form-label">التاريخ</label>
-          <input type="date" id="weight-date" class="form-input">
-        </div>
-      </div>
-      <button class="btn btn-primary" onclick="addWeight()">✅ سجل</button>
-    </div>
-    <div class="form-container">
-      <h3 class="section-title">منحنى الوزن</h3>
-      <div class="chart-container">
-        <canvas id="weightChart"></canvas>
-      </div>
-    </div>
-  </div>
 
-  <div id="chat-screen" class="screen" style="display: none;">
-    <div class="header-bar">
-      <h1 class="header-title">المساعد الذكي 🤖</h1>
-    </div>
-    <div class="form-container" style="height: 600px; display: flex; flex-direction: column;">
-      <div style="flex: 1; overflow-y: auto; margin-bottom: 15px;">
-        <div class="message-box" style="background: var(--surface-light);">
-          مرحباً! أنا مساعدك الصحي. اسأل أي سؤال عن الصحة والتغذية
-        </div>
-      </div>
-      <div style="display: flex; gap: 10px;">
-        <input type="text" id="chat-input" class="form-input" placeholder="اسأل سؤالك..." style="margin: 0; padding: 14px;">
-        <button class="btn btn-primary" onclick="sendMessage()" style="width: auto;">إرسال</button>
-      </div>
-    </div>
-  </div>
-
-  <div id="recommendations-screen" class="screen" style="display: none;">
-    <div class="header-bar">
-      <h1 class="header-title">التوصيات الغذائية</h1>
-    </div>
-    <div class="form-container">
-      <h3 class="section-title">برنامجك الشخصي</h3>
+    <div style="background: linear-gradient(135deg, var(--surface) 0%, var(--surface-light) 100%); border: 1px solid var(--border); border-radius: 15px; padding: 20px; margin-bottom: 20px; box-shadow: 0 8px 32px var(--shadow);">
+      <h3 style="color: var(--accent); margin-bottom: 15px;">ملخص أسبوعي</h3>
+      
       <div class="message-box success">
-        <strong>السعرات اليومية:</strong> 2500 سعرة
+        <strong>📊 إجمالي الوجبات:</strong> <span id="report-meals">0</span>
       </div>
+
       <div class="message-box">
-        <strong>البروتين:</strong> 150 غ يومياً
+        <strong>🔥 متوسط السعرات:</strong> <span id="report-avg-calories">0</span> سعرة
       </div>
+
       <div class="message-box">
-        <strong>الكربوهيدرات:</strong> 280 غ يومياً
+        <strong>💧 أكواب الماء:</strong> <span id="report-water">0</span> كوب
       </div>
-      <div class="message-box">
-        <strong>الدهون:</strong> 83 غ يومياً
+
+      <div class="message-box warning">
+        <strong>⚖️ تغير الوزن:</strong> <span id="report-weight-change">0</span> كغ
       </div>
+    </div>
+
+    <div style="background: linear-gradient(135deg, var(--surface) 0%, var(--surface-light) 100%); border: 1px solid var(--border); border-radius: 15px; padding: 20px; box-shadow: 0 8px 32px var(--shadow);">
+      <h3 style="color: var(--accent); margin-bottom: 15px;">نصائح التحسين</h3>
+      <div id="report-tips"></div>
     </div>
   </div>
 
-  <div id="reports-screen" class="screen" style="display: none;">
-    <div class="header-bar">
-      <h1 class="header-title">التقارير</h1>
+  <!-- Settings Screen -->
+  <div id="settings-screen" class="screen">
+    <div class="screen-header">
+      <div class="screen-title">الإعدادات</div>
+      <div class="screen-subtitle">إدارة حسابك</div>
     </div>
-    <div class="form-container">
-      <h3 class="section-title">إحصائيات الأسبوع</h3>
-      <div class="chart-container">
-        <canvas id="caloriesChart"></canvas>
-      </div>
+
+    <div style="background: linear-gradient(135deg, var(--surface) 0%, var(--surface-light) 100%); border: 1px solid var(--border); border-radius: 15px; padding: 20px; margin-bottom: 20px; box-shadow: 0 8px 32px var(--shadow);">
+      <h3 style="color: var(--accent); margin-bottom: 15px;">ملفك الشخصي</h3>
+      <div id="profile-info"></div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 10px;">
+      <button class="btn btn-secondary" onclick="editProfile()">✏️ تعديل البيانات</button>
+      <button class="btn btn-secondary" style="background: var(--danger); color: white; border: none;" onclick="logout()">🚪 تسجيل الخروج</button>
+      <button class="btn btn-secondary" style="background: var(--warning); color: white; border: none;" onclick="clearAllData()">🗑️ حذف جميع البيانات</button>
     </div>
   </div>
 
-  <div id="settings-screen" class="screen" style="display: none;">
-    <div class="header-bar">
-      <h1 class="header-title">الإعدادات</h1>
-    </div>
-    <div class="form-container">
-      <h3 class="section-title">إدارة الحساب</h3>
-      <button class="btn btn-secondary" style="width: 100%; margin-bottom: 10px;">✏️ تعديل البيانات</button>
-      <button class="btn btn-secondary" style="width: 100%; color: var(--danger); border-color: var(--danger);" onclick="logout()">🚪 تسجيل الخروج</button>
-    </div>
+</div>
+
+<!-- Bottom Navigation -->
+<div class="bottom-nav" id="bottom-nav" style="display: none;">
+  <div class="nav-item active" onclick="switchScreen('dashboard', this)">
+    <div class="nav-icon">📊</div>
+    <div class="nav-label">التحكم</div>
+  </div>
+  <div class="nav-item" onclick="switchScreen('meals', this)">
+    <div class="nav-icon">🍽️</div>
+    <div class="nav-label">الوجبات</div>
+  </div>
+  <div class="nav-item" onclick="switchScreen('water', this)">
+    <div class="nav-icon">💧</div>
+    <div class="nav-label">الماء</div>
+  </div>
+  <div class="nav-item" onclick="switchScreen('weight', this)">
+    <div class="nav-icon">⚖️</div>
+    <div class="nav-label">الوزن</div>
+  </div>
+  <div class="nav-item" onclick="switchScreen('chat', this)">
+    <div class="nav-icon">🤖</div>
+    <div class="nav-label">المساعد</div>
+  </div>
+  <div class="nav-item" onclick="switchScreen('reports', this)">
+    <div class="nav-icon">📈</div>
+    <div class="nav-label">التقارير</div>
+  </div>
+  <div class="nav-item" onclick="switchScreen('settings', this)">
+    <div class="nav-icon">⚙️</div>
+    <div class="nav-label">الإعدادات</div>
   </div>
 </div>
 
 <script>
+// Food Database
 const foodDB = {
-  egg: { cal: 155, protein: 13, carbs: 1.1, fat: 11 },
-  rice: { cal: 130, protein: 2.7, carbs: 28, fat: 0.3 },
-  chicken: { cal: 165, protein: 31, carbs: 0, fat: 3.6 }
+  egg: { cal: 155, protein: 13, carbs: 1.1, fat: 11, name: 'بيض' },
+  rice: { cal: 130, protein: 2.7, carbs: 28, fat: 0.3, name: 'أرز' },
+  chicken: { cal: 165, protein: 31, carbs: 0, fat: 3.6, name: 'دجاج' },
+  fish: { cal: 82, protein: 18, carbs: 0, fat: 0.8, name: 'سمك' },
+  bread: { cal: 79, protein: 3, carbs: 14, fat: 1.1, name: 'خبز' },
+  milk: { cal: 149, protein: 7.7, carbs: 11.5, fat: 7.7, name: 'حليب' },
+  vegetables: { cal: 35, protein: 2.2, carbs: 8, fat: 0.2, name: 'خضروات' },
+  fruits: { cal: 52, protein: 0.3, carbs: 14, fat: 0.2, name: 'فواكه' }
 };
 
+// App State
 let appState = {
   user: null,
   profile: null,
   meals: [],
   weights: [],
-  water: 0
+  water: 0,
+  chat: []
 };
 
-function switchScreen(name) {
+// Initialize
+window.addEventListener('load', () => {
+  loadState();
+  if (!appState.user) {
+    showScreen('login-screen');
+  } else if (!appState.profile) {
+    showScreen('setup-screen');
+  } else {
+    document.getElementById('bottom-nav').style.display = 'flex';
+    showScreen('dashboard-screen');
+    updateDashboard();
+  }
+});
+
+// State Management
+function saveState() {
+  localStorage.setItem('healthAppState', JSON.stringify(appState));
+}
+
+function loadState() {
+  const saved = localStorage.getItem('healthAppState');
+  if (saved) {
+    appState = JSON.parse(saved);
+  }
+}
+
+// Auth Functions
+function showLogin() {
+  document.getElementById('login-form').style.display = 'block';
+  document.getElementById('register-form').style.display = 'none';
+}
+
+function showRegister() {
+  document.getElementById('login-form').style.display = 'none';
+  document.getElementById('register-form').style.display = 'block';
+}
+
+function handleLogin() {
+  const email = document.getElementById('login-email').value;
+  if (!email) {
+    alert('أدخل البريد الإلكتروني');
+    return;
+  }
+  appState.user = { email, name: email.split('@')[0] };
+  saveState();
+  showScreen('setup-screen');
+}
+
+function handleRegister() {
+  const name = document.getElementById('register-name').value;
+  const email = document.getElementById('register-email').value;
+  if (!name || !email) {
+    alert('أدخل البيانات المطلوبة');
+    return;
+  }
+  appState.user = { email, name };
+  saveState();
+  showScreen('setup-screen');
+}
+
+// Setup
+function completeSetup() {
+  const age = parseInt(document.getElementById('setup-age').value);
+  const gender = document.getElementById('setup-gender').value;
+  const height = parseInt(document.getElementById('setup-height').value);
+  const weight = parseFloat(document.getElementById('setup-current-weight').value);
+  const targetWeight = parseFloat(document.getElementById('setup-target-weight').value);
+  const activity = parseFloat(document.getElementById('setup-activity').value);
+  const goal = document.getElementById('setup-goal').value;
+
+  if (!age || !gender || !height || !weight || !goal) {
+    alert('أكمل جميع البيانات المطلوبة');
+    return;
+  }
+
+  // Calculate BMR
+  let bmr;
+  if (gender === 'male') {
+    bmr = 88.362 + (13.397 * weight) + (4.799 * height) - (5.677 * age);
+  } else {
+    bmr = 447.593 + (9.247 * weight) + (3.098 * height) - (4.330 * age);
+  }
+
+  // Calculate TDEE
+  const tdee = bmr * activity;
+
+  // Adjust for goal
+  let dailyCalories = tdee;
+  if (goal === 'lose') dailyCalories = tdee - 500;
+  else if (goal === 'gain') dailyCalories = tdee + 500;
+
+  // Calculate macros
+  appState.profile = {
+    name: document.getElementById('setup-name').value,
+    age,
+    gender,
+    height,
+    currentWeight: weight,
+    targetWeight,
+    activity,
+    goal,
+    chronic: document.getElementById('setup-chronic').value,
+    allergies: document.getElementById('setup-allergies').value,
+    bmr: Math.round(bmr),
+    tdee: Math.round(tdee),
+    dailyCalories: Math.round(dailyCalories),
+    protein: Math.round(weight * 1.6),
+    carbs: Math.round(dailyCalories * 0.45 / 4),
+    fats: Math.round(dailyCalories * 0.3 / 9),
+    water: Math.round(weight * 0.033 * 1000 / 250)
+  };
+
+  appState.meals = [];
+  appState.weights = [{ date: new Date().toISOString().split('T')[0], weight }];
+  appState.water = 0;
+
+  saveState();
+  document.getElementById('bottom-nav').style.display = 'flex';
+  showScreen('dashboard-screen');
+  updateDashboard();
+}
+
+// Navigation
+function switchScreen(screenName, navElement) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-  document.getElementById(name + '-screen')?.classList.add('active');
-  event.target.closest('.nav-link')?.classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  
+  document.getElementById(screenName + '-screen').classList.add('active');
+  if (navElement) navElement.classList.add('active');
+
+  if (screenName === 'dashboard') updateDashboard();
+  if (screenName === 'meals') updateMealsList();
+  if (screenName === 'reports') updateReports();
+  if (screenName === 'settings') updateProfile();
 }
 
-function toggleAuthForm() {
-  document.getElementById('login-form').style.display = document.getElementById('login-form').style.display === 'none' ? 'block' : 'none';
-  document.getElementById('register-form').style.display = document.getElementById('register-form').style.display === 'none' ? 'block' : 'none';
+function showScreen(screenName) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(screenName).classList.add('active');
 }
 
-function login() {
-  appState.user = { email: document.getElementById('email').value };
-  switchScreen('dashboard');
+// Dashboard
+function updateDashboard() {
+  const p = appState.profile;
+  const currentWeight = appState.weights[appState.weights.length - 1]?.weight || p.currentWeight;
+  const consumed = appState.meals.reduce((sum, m) => sum + m.cal, 0);
+  const protein = appState.meals.reduce((sum, m) => sum + m.protein, 0);
+  const carbs = appState.meals.reduce((sum, m) => sum + m.carbs, 0);
+  const fats = appState.meals.reduce((sum, m) => sum + m.fat, 0);
+  
+  const progress = Math.max(0, ((p.currentWeight - currentWeight) / (p.currentWeight - p.targetWeight)) * 100);
+
+  document.getElementById('user-welcome').textContent = `مرحباً ${p.name}`;
+  document.getElementById('dashboard-calories').textContent = p.dailyCalories;
+  document.getElementById('dashboard-consumed').textContent = consumed;
+  document.getElementById('dashboard-weight').textContent = currentWeight.toFixed(1);
+  document.getElementById('dashboard-target').textContent = p.targetWeight;
+  document.getElementById('dashboard-water').textContent = appState.water;
+  document.getElementById('dashboard-water-target').textContent = p.water;
+  document.getElementById('dashboard-progress').textContent = Math.round(progress) + '%';
+  document.getElementById('dashboard-progress-bar').style.width = progress + '%';
+
+  document.getElementById('dashboard-protein').textContent = Math.round(protein);
+  document.getElementById('dashboard-protein-target').textContent = `/ ${p.protein} غ`;
+  document.getElementById('dashboard-carbs').textContent = Math.round(carbs);
+  document.getElementById('dashboard-carbs-target').textContent = `/ ${p.carbs} غ`;
+  document.getElementById('dashboard-fats').textContent = Math.round(fats);
+  document.getElementById('dashboard-fats-target').textContent = `/ ${p.fats} غ`;
+
+  let tips = '<div class="message-box success">✅ استمر في الالتزام!</div>';
+  if (consumed > p.dailyCalories) {
+    tips += '<div class="message-box error">❌ تجاوزت الحد المسموح من السعرات</div>';
+  } else if (consumed < p.dailyCalories * 0.7) {
+    tips += '<div class="message-box warning">⚠️ لم تستهلك السعرات الكافية بعد</div>';
+  }
+  if (appState.water < p.water * 0.5) {
+    tips += '<div class="message-box warning">💧 اشرب المزيد من الماء</div>';
+  }
+  document.getElementById('dashboard-tips').innerHTML = tips;
 }
 
-function register() {
-  appState.user = { email: document.getElementById('reg-email').value, name: document.getElementById('fullname').value };
-  switchScreen('dashboard');
-}
-
+// Meals
 function addMeal() {
-  alert('✅ تم إضافة الوجبة بنجاح!');
+  const food = document.getElementById('meal-food').value;
+  const qty = parseFloat(document.getElementById('meal-qty').value);
+  
+  if (!food) {
+    alert('اختر نوع الطعام');
+    return;
+  }
+
+  const f = foodDB[food];
+  appState.meals.push({
+    name: f.name,
+    food,
+    qty,
+    cal: Math.round(f.cal * qty),
+    protein: f.protein * qty,
+    carbs: f.carbs * qty,
+    fat: f.fat * qty,
+    time: new Date().toLocaleTimeString('ar')
+  });
+
+  saveState();
+  updateDashboard();
+  updateMealsList();
+  document.getElementById('meal-food').value = '';
+  document.getElementById('meal-qty').value = '1';
 }
 
+function deleteMeal(idx) {
+  appState.meals.splice(idx, 1);
+  saveState();
+  updateDashboard();
+  updateMealsList();
+}
+
+function updateMealsList() {
+  const html = appState.meals.length === 0 
+    ? '<div class="message-box">لم تسجل وجبات بعد</div>'
+    : appState.meals.map((m, i) => `
+      <div class="food-item">
+        <div class="food-info">
+          <div class="food-name">${m.name}</div>
+          <div class="food-macros">🔥 ${m.cal} سعرة | 🥛 ${m.protein.toFixed(1)}غ | 🌾 ${m.carbs.toFixed(1)}غ | 🫒 ${m.fat.toFixed(1)}غ</div>
+        </div>
+        <button class="delete-btn" onclick="deleteMeal(${i})">حذف</button>
+      </div>
+    `).join('');
+  
+  document.getElementById('meals-list').innerHTML = html;
+}
+
+// Water
 function addWater() {
-  alert('💧 تم إضافة كوب ماء!');
+  appState.water += 1;
+  saveState();
+  updateWaterScreen();
+  updateDashboard();
 }
 
+function resetWater() {
+  appState.water = 0;
+  saveState();
+  updateWaterScreen();
+  updateDashboard();
+}
+
+function updateWaterScreen() {
+  const p = appState.profile;
+  const percent = (appState.water / p.water) * 100;
+  document.getElementById('water-display').textContent = Math.round(percent) + '%';
+  document.getElementById('water-progress-bar').style.width = percent + '%';
+  document.getElementById('water-current').textContent = appState.water;
+}
+
+// Weight
 function addWeight() {
-  alert('✅ تم تسجيل الوزن!');
+  const weight = parseFloat(document.getElementById('weight-input').value);
+  const date = document.getElementById('weight-date').value || new Date().toISOString().split('T')[0];
+  
+  if (!weight) {
+    alert('أدخل الوزن');
+    return;
+  }
+
+  const idx = appState.weights.findIndex(w => w.date === date);
+  if (idx >= 0) {
+    appState.weights[idx].weight = weight;
+  } else {
+    appState.weights.push({ date, weight });
+  }
+
+  appState.weights.sort((a, b) => new Date(a.date) - new Date(b.date));
+  saveState();
+  updateDashboard();
+  updateWeightList();
+  
+  document.getElementById('weight-input').value = '';
+  document.getElementById('weight-date').value = '';
 }
 
-function sendMessage() {
-  const msg = document.getElementById('chat-input').value;
-  alert('✅ تم إرسال السؤال: ' + msg);
+function updateWeightList() {
+  const html = appState.weights.slice().reverse().map(w => `
+    <div class="food-item">
+      <div class="food-info">
+        <div class="food-name">${w.date}</div>
+      </div>
+      <div style="font-weight: 700; color: var(--accent);">${w.weight.toFixed(1)} كغ</div>
+    </div>
+  `).join('');
+  
+  document.getElementById('weight-history').innerHTML = html;
+}
+
+// Chat
+function sendChat() {
+  const msg = document.getElementById('chat-input').value.trim();
+  if (!msg) return;
+
+  const messagesDiv = document.getElementById('chat-messages');
+  messagesDiv.innerHTML += `<div class="message-box" style="background: var(--accent); color: white; border-right-color: var(--accent);">${msg}</div>`;
+
+  const responses = [
+    'أنت محق تماماً! هذا اختيار صحي وذكي.',
+    'تناول الأطعمة الغنية بالبروتين سيساعدك على تحقيق هدفك.',
+    'الاستمرارية هي مفتاح النجاح في أي برنامج صحي.',
+    'تذكر أن شرب الماء يحسن الهضم والصحة العامة.',
+    'الرياضة تساعد على حرق السعرات وبناء العضلات.',
+    'النوم الكافي ضروري جداً لصحتك الجسدية والعقلية.'
+  ];
+  const response = responses[Math.floor(Math.random() * responses.length)];
+
+  setTimeout(() => {
+    messagesDiv.innerHTML += `<div class="message-box" style="background: var(--surface-light);">${response}</div>`;
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+  }, 500);
+
+  document.getElementById('chat-input').value = '';
+  messagesDiv.scrollTop = messagesDiv.scrollHeight;
+}
+
+// Reports
+function updateReports() {
+  const p = appState.profile;
+  const totalCals = appState.meals.reduce((sum, m) => sum + m.cal, 0);
+  const avgCals = appState.meals.length > 0 ? totalCals / appState.meals.length : 0;
+  
+  const lastWeight = appState.weights[appState.weights.length - 1]?.weight || p.currentWeight;
+  const firstWeight = appState.weights[0]?.weight || p.currentWeight;
+  const weightChange = firstWeight - lastWeight;
+
+  document.getElementById('report-meals').textContent = appState.meals.length;
+  document.getElementById('report-avg-calories').textContent = Math.round(avgCals);
+  document.getElementById('report-water').textContent = appState.water;
+  document.getElementById('report-weight-change').textContent = weightChange > 0 ? '+' + weightChange.toFixed(1) : weightChange.toFixed(1);
+
+  let tips = '';
+  if (weightChange > 0) {
+    tips += '<div class="message-box success">✅ تقدم ممتاز! نزلت ' + weightChange.toFixed(1) + ' كغ</div>';
+  }
+  if (appState.water < p.water * 0.7) {
+    tips += '<div class="message-box warning">💧 اجتهد في شرب الماء أكثر الأسبوع القادم</div>';
+  }
+  if (avgCals < p.dailyCalories * 0.8) {
+    tips += '<div class="message-box warning">🍽️ حاول تسجيل وجبات أكثر</div>';
+  }
+  document.getElementById('report-tips').innerHTML = tips || '<div class="message-box">استمر في الالتزام!</div>';
+}
+
+// Profile
+function updateProfile() {
+  const p = appState.profile;
+  document.getElementById('profile-info').innerHTML = `
+    <div class="message-box">
+      <strong>الاسم:</strong> ${p.name}<br>
+      <strong>العمر:</strong> ${p.age} سنة<br>
+      <strong>الجنس:</strong> ${p.gender === 'male' ? 'ذكر' : 'أنثى'}<br>
+      <strong>الطول:</strong> ${p.height} سم<br>
+      <strong>الوزن الحالي:</strong> ${p.currentWeight} كغ<br>
+      <strong>الهدف:</strong> ${p.targetWeight} كغ
+    </div>
+    <div class="message-box">
+      <strong>السعرات اليومية:</strong> ${p.dailyCalories} سعرة<br>
+      <strong>البروتين:</strong> ${p.protein} غ<br>
+      <strong>الكربوهيدرات:</strong> ${p.carbs} غ<br>
+      <strong>الدهون:</strong> ${p.fats} غ
+    </div>
+  `;
+}
+
+function editProfile() {
+  showScreen('setup-screen');
 }
 
 function logout() {
-  appState.user = null;
-  location.reload();
+  if (confirm('هل تريد تسجيل الخروج؟')) {
+    appState.user = null;
+    saveState();
+    location.reload();
+  }
+}
+
+function clearAllData() {
+  if (confirm('هل تريد حذف جميع البيانات؟ لا يمكن التراجع عن هذا!')) {
+    appState.meals = [];
+    appState.weights = [];
+    appState.water = 0;
+    saveState();
+    updateDashboard();
+    alert('تم حذف جميع البيانات');
+  }
 }
 </script>
 

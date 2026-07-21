@@ -1060,6 +1060,28 @@ async function callGeminiAPI(apiKey, model, systemPrompt, history) {
   return (parts || []).map(p => p.text || '').join('\n') || 'عذراً، لم أستطع معالجة السؤال.';
 }
 
+// إعادة محاولة تلقائية عند الازدحام المؤقت (overloaded / high demand) بدل إظهار الخطأ فوراً
+async function callAiWithRetry(provider, activeKey, model, systemPrompt, history, typingDiv, maxRetries) {
+  maxRetries = maxRetries || 2;
+  let lastErr;
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    try {
+      return provider === 'gemini'
+        ? await callGeminiAPI(activeKey, model, systemPrompt, history)
+        : await callClaudeAPI(activeKey, model, systemPrompt, history);
+    } catch (err) {
+      lastErr = err;
+      const isTransient = /overloaded|high demand|try again later|rate limit|too many requests|503|429/i.test(err.message);
+      if (!isTransient || attempt === maxRetries) throw err;
+      if (typingDiv) {
+        typingDiv.innerHTML = `🤖 الخدمة مزدحمة مؤقتاً، أعيد المحاولة... (${attempt + 1}/${maxRetries})`;
+      }
+      await new Promise(resolve => setTimeout(resolve, 1500 * (attempt + 1)));
+    }
+  }
+  throw lastErr;
+}
+
 async function sendChat() {
   const input = document.getElementById('chat-input');
   const msg = input.value.trim();
@@ -1086,9 +1108,8 @@ async function sendChat() {
 
   try {
     const systemPrompt = buildSystemPrompt();
-    const reply = provider === 'gemini'
-      ? await callGeminiAPI(activeKey, getGeminiModel(), systemPrompt, appState.chat)
-      : await callClaudeAPI(activeKey, getClaudeModel(), systemPrompt, appState.chat);
+    const model = provider === 'gemini' ? getGeminiModel() : getClaudeModel();
+    const reply = await callAiWithRetry(provider, activeKey, model, systemPrompt, appState.chat, typingDiv);
 
     typingDiv.remove();
     renderChatMessage('assistant', reply);
@@ -1103,6 +1124,8 @@ async function sendChat() {
       hint = ' — جرّب تحديث اسم النموذج في ⚙️ الإعدادات إلى الاسم الحالي.';
     } else if (/load failed|failed to fetch|networkerror/i.test(err.message)) {
       hint = ' — هذا عادة بسبب حجب الشبكة/المتصفح للطلب وليس خطأ بالمفتاح أو النموذج. جرّب متصفحاً آخر (Chrome) أو تأكد من اتصال الإنترنت، وإن استمر أخبرني.';
+    } else if (/overloaded|high demand|try again later|rate limit|too many requests/i.test(err.message)) {
+      hint = ' — الخدمة مزدحمة حالياً حتى بعد المحاولات المتكررة. انتظر دقيقة وأعد إرسال سؤالك.';
     }
     renderChatMessage('notice', 'تعذر الاتصال بالخدمة: ' + err.message + hint);
   }

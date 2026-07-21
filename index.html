@@ -447,12 +447,22 @@ body { display: flex; flex-direction: column; }
         <input type="password" id="gemini-key-input" class="form-input" placeholder="AIza...">
         <p style="font-size:11px; color:var(--text-secondary); margin-top:5px;">احصل على مفتاح مجاني فوري من aistudio.google.com/apikey (بدون بطاقة ائتمان)</p>
       </div>
+      <div class="form-group">
+        <label class="form-label">نموذج Gemini</label>
+        <input type="text" id="gemini-model-input" class="form-input" placeholder="gemini-3.5-flash">
+      </div>
 
       <div class="form-group">
         <label class="form-label">مفتاح Claude API</label>
         <input type="password" id="claude-key-input" class="form-input" placeholder="sk-ant-...">
         <p style="font-size:11px; color:var(--text-secondary); margin-top:5px;">من console.anthropic.com (يتطلب رصيداً مدفوعاً)</p>
       </div>
+      <div class="form-group">
+        <label class="form-label">نموذج Claude</label>
+        <input type="text" id="claude-model-input" class="form-input" placeholder="claude-sonnet-5">
+      </div>
+
+      <div class="message-box warning">💡 إذا ظهرت رسالة أن النموذج "لم يعد متاحاً للمستخدمين الجدد"، غيّر اسم النموذج أعلاه فقط (بدون تعديل أي كود) — اسأل أي مساعد ذكاء اصطناعي عن الاسم الحالي للنموذج.</div>
 
       <button class="btn btn-primary" onclick="saveApiSettings()">💾 حفظ الإعدادات</button>
       <p style="font-size:11px; color:var(--text-secondary); margin-top:5px;">المفاتيح تُحفظ في متصفحك فقط وتُرسل مباشرة لمزوّد الخدمة المختار.</p>
@@ -495,6 +505,12 @@ const foodDB = {
   vegetables: { cal: 35, protein: 2.2, carbs: 8, fat: 0.2, name: 'خضروات' },
   fruits: { cal: 52, protein: 0.3, carbs: 14, fat: 0.2, name: 'فواكه' }
 };
+
+// ============ إعدادات النماذج الافتراضية (قابلة للتعديل من الإعدادات) ============
+const DEFAULT_GEMINI_MODEL = 'gemini-3.5-flash';
+const DEFAULT_CLAUDE_MODEL = 'claude-sonnet-5';
+function getGeminiModel() { return localStorage.getItem('healthAppGeminiModel') || DEFAULT_GEMINI_MODEL; }
+function getClaudeModel() { return localStorage.getItem('healthAppClaudeModel') || DEFAULT_CLAUDE_MODEL; }
 
 // ============ Migration: مفتاح Claude القديم كان يُحفظ باسم healthAppApiKey ============
 (function migrateOldApiKey() {
@@ -885,7 +901,7 @@ function clearChat() {
 }
 
 // -------- Claude (Anthropic) --------
-async function callClaudeAPI(apiKey, systemPrompt, history) {
+async function callClaudeAPI(apiKey, model, systemPrompt, history) {
   const res = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: {
@@ -895,7 +911,7 @@ async function callClaudeAPI(apiKey, systemPrompt, history) {
       'anthropic-dangerous-direct-browser-access': 'true'
     },
     body: JSON.stringify({
-      model: 'claude-sonnet-5',
+      model: model,
       max_tokens: 700,
       system: systemPrompt,
       messages: history.map(m => ({ role: m.role, content: m.content }))
@@ -910,13 +926,13 @@ async function callClaudeAPI(apiKey, systemPrompt, history) {
 }
 
 // -------- Google Gemini (مجاني) --------
-async function callGeminiAPI(apiKey, systemPrompt, history) {
+async function callGeminiAPI(apiKey, model, systemPrompt, history) {
   const contents = history.map(m => ({
     role: m.role === 'assistant' ? 'model' : 'user',
     parts: [{ text: m.content }]
   }));
 
-  const res = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent', {
+  const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
     method: 'POST',
     headers: {
       'content-type': 'application/json',
@@ -966,8 +982,8 @@ async function sendChat() {
   try {
     const systemPrompt = buildSystemPrompt();
     const reply = provider === 'gemini'
-      ? await callGeminiAPI(activeKey, systemPrompt, appState.chat)
-      : await callClaudeAPI(activeKey, systemPrompt, appState.chat);
+      ? await callGeminiAPI(activeKey, getGeminiModel(), systemPrompt, appState.chat)
+      : await callClaudeAPI(activeKey, getClaudeModel(), systemPrompt, appState.chat);
 
     typingDiv.remove();
     renderChatMessage('assistant', reply);
@@ -977,7 +993,11 @@ async function sendChat() {
 
   } catch (err) {
     typingDiv.remove();
-    renderChatMessage('notice', 'تعذر الاتصال بالخدمة: ' + err.message);
+    let hint = '';
+    if (/no longer available|not found|not supported|deprecated|invalid model/i.test(err.message)) {
+      hint = ' — جرّب تحديث اسم النموذج في ⚙️ الإعدادات إلى الاسم الحالي.';
+    }
+    renderChatMessage('notice', 'تعذر الاتصال بالخدمة: ' + err.message + hint);
   }
 }
 
@@ -985,6 +1005,8 @@ function saveApiSettings() {
   const provider = document.getElementById('ai-provider-select').value;
   const geminiKey = document.getElementById('gemini-key-input').value.trim();
   const claudeKey = document.getElementById('claude-key-input').value.trim();
+  const geminiModel = document.getElementById('gemini-model-input').value.trim() || DEFAULT_GEMINI_MODEL;
+  const claudeModel = document.getElementById('claude-model-input').value.trim() || DEFAULT_CLAUDE_MODEL;
 
   if (claudeKey && !claudeKey.startsWith('sk-ant-')) {
     alert('⚠️ مفتاح Claude يجب أن يبدأ بـ sk-ant-');
@@ -992,6 +1014,8 @@ function saveApiSettings() {
   }
 
   localStorage.setItem('healthAppAiProvider', provider);
+  localStorage.setItem('healthAppGeminiModel', geminiModel);
+  localStorage.setItem('healthAppClaudeModel', claudeModel);
   if (geminiKey) localStorage.setItem('healthAppGeminiKey', geminiKey); else localStorage.removeItem('healthAppGeminiKey');
   if (claudeKey) localStorage.setItem('healthAppClaudeKey', claudeKey); else localStorage.removeItem('healthAppClaudeKey');
 
@@ -1003,9 +1027,13 @@ function loadApiSettingsIntoUI() {
   const providerSelect = document.getElementById('ai-provider-select');
   const geminiInput = document.getElementById('gemini-key-input');
   const claudeInput = document.getElementById('claude-key-input');
+  const geminiModelInput = document.getElementById('gemini-model-input');
+  const claudeModelInput = document.getElementById('claude-model-input');
   if (providerSelect) providerSelect.value = provider;
   if (geminiInput) geminiInput.value = localStorage.getItem('healthAppGeminiKey') || '';
   if (claudeInput) claudeInput.value = localStorage.getItem('healthAppClaudeKey') || '';
+  if (geminiModelInput) geminiModelInput.value = getGeminiModel();
+  if (claudeModelInput) claudeModelInput.value = getClaudeModel();
 }
 
 // ============ Reports ============

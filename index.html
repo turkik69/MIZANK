@@ -4,7 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f3460">
-<title>مستشار صحتك الذكي - النسخة المتقدمة</title>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title>مستشار صحتك الذكي - النسخة الأخيرة</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -43,7 +46,6 @@ body {
   overflow-x: hidden;
 }
 
-/* Sidebar Navigation */
 .sidebar {
   position: fixed;
   left: 0;
@@ -129,7 +131,6 @@ body {
   text-align: center;
 }
 
-/* Main Content */
 .main-container {
   margin-right: 280px;
   padding: 30px;
@@ -190,7 +191,6 @@ body {
   }
 }
 
-/* Login */
 .login-container {
   max-width: 500px;
   margin: 0 auto;
@@ -383,7 +383,6 @@ body {
   font-weight: 600;
   color: var(--text-secondary);
   text-transform: uppercase;
-  letter-spacing: 1px;
 }
 
 .card-value {
@@ -391,7 +390,6 @@ body {
   font-weight: 700;
   color: var(--accent);
   margin-bottom: 10px;
-  font-family: 'El Messiri', sans-serif;
 }
 
 .card-label {
@@ -479,59 +477,6 @@ body {
   background: rgba(252, 163, 17, 0.1);
 }
 
-.message-box.error {
-  border-right-color: var(--danger);
-  background: rgba(230, 57, 70, 0.1);
-}
-
-.chat-container {
-  display: flex;
-  flex-direction: column;
-  height: 600px;
-  background: var(--bg-dark);
-  border-radius: 10px;
-  border: 1px solid var(--border);
-}
-
-.chat-messages {
-  flex: 1;
-  overflow-y: auto;
-  padding: 20px;
-}
-
-.chat-message {
-  margin-bottom: 15px;
-  padding: 12px 16px;
-  border-radius: 10px;
-  max-width: 80%;
-}
-
-.chat-message.user {
-  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
-  margin-right: auto;
-}
-
-.chat-message.ai {
-  background: var(--surface-light);
-  margin-left: auto;
-  color: var(--text-secondary);
-}
-
-.chat-input-area {
-  display: flex;
-  gap: 10px;
-  padding: 15px 20px;
-  border-top: 1px solid var(--border);
-}
-
-.chat-input-area input {
-  flex: 1;
-}
-
-.chat-input-area button {
-  padding: 10px 20px;
-}
-
 .meal-item {
   background: var(--bg-dark);
   padding: 15px;
@@ -552,41 +497,18 @@ body {
   color: var(--text-primary);
 }
 
-.meal-item-time {
-  font-size: 12px;
-  color: var(--text-secondary);
-}
-
 .meal-item-macros {
   display: flex;
   gap: 15px;
   font-size: 12px;
 }
 
-@media (max-width: 1024px) {
-  .sidebar {
-    width: 240px;
-  }
-  .main-container {
-    margin-right: 240px;
-  }
-}
-
 @media (max-width: 768px) {
   .sidebar {
     width: 70px;
-    padding: 15px 10px;
-  }
-  .sidebar-title {
-    display: none;
-  }
-  .nav-link {
-    justify-content: center;
-    padding: 12px;
   }
   .main-container {
     margin-right: 70px;
-    padding: 20px;
   }
   .form-row {
     grid-template-columns: 1fr;
@@ -602,11 +524,10 @@ body {
 </head>
 <body>
 
-<!-- Sidebar -->
 <div class="sidebar">
   <div class="sidebar-header">
     <div class="sidebar-logo">💚</div>
-    <div class="sidebar-title">صحتك المتقدم</div>
+    <div class="sidebar-title">صحتك</div>
   </div>
   <ul class="nav-menu">
     <li class="nav-item">
@@ -660,17 +581,15 @@ body {
   </ul>
 </div>
 
-<!-- Main Content -->
 <div class="main-container">
   
-  <!-- Login Screen -->
   <div id="login-screen" class="screen active">
     <div class="login-container">
       <div class="login-box">
         <div class="login-header">
           <div class="login-logo">💚</div>
           <h1 class="login-title">مستشارك الصحي الذكي</h1>
-          <p class="login-subtitle">النسخة المتقدمة مع الذكاء الاصطناعي</p>
+          <p class="login-subtitle">النسخة المتقدمة v2.0 مع الذكاء الاصطناعي الكامل</p>
         </div>
 
         <div id="login-form">
@@ -710,126 +629,6 @@ body {
     </div>
   </div>
 
-  <!-- Setup Screen -->
-  <div id="setup-screen" class="screen">
-    <div class="header-bar">
-      <h1 class="header-title">إدخال بيانات صحتك</h1>
-    </div>
-
-    <div class="form-container">
-      <div class="form-section">
-        <h3 class="section-title">البيانات الأساسية</h3>
-        <div class="form-row">
-          <div>
-            <label class="form-label">الاسم</label>
-            <input type="text" id="setup-name" class="form-input">
-          </div>
-          <div>
-            <label class="form-label">العمر</label>
-            <input type="number" id="setup-age" class="form-input" min="15" max="100">
-          </div>
-        </div>
-
-        <div class="form-row">
-          <div>
-            <label class="form-label">الجنس</label>
-            <select id="setup-gender" class="form-select">
-              <option value="">اختر الجنس</option>
-              <option value="male">ذكر</option>
-              <option value="female">أنثى</option>
-            </select>
-          </div>
-          <div>
-            <label class="form-label">الطول (سم)</label>
-            <input type="number" id="setup-height" class="form-input" min="100" max="250">
-          </div>
-        </div>
-
-        <div class="form-row">
-          <div>
-            <label class="form-label">الوزن الحالي (كغ)</label>
-            <input type="number" id="setup-weight" class="form-input" min="30" step="0.1">
-          </div>
-          <div>
-            <label class="form-label">الوزن المستهدف (كغ)</label>
-            <input type="number" id="setup-target-weight" class="form-input" min="30" step="0.1">
-          </div>
-        </div>
-      </div>
-
-      <div class="form-section">
-        <h3 class="section-title">نمط الحياة</h3>
-        <div class="form-row">
-          <div>
-            <label class="form-label">مستوى النشاط اليومي</label>
-            <select id="setup-activity" class="form-select">
-              <option value="1.2">قليل جداً (خامل تماماً)</option>
-              <option value="1.375">قليل (1-3 أيام تمرين)</option>
-              <option value="1.55">متوسط (3-5 أيام تمرين)</option>
-              <option value="1.725">مرتفع (6-7 أيام تمرين)</option>
-              <option value="1.9">مرتفع جداً (تمرين يومي)</option>
-            </select>
-          </div>
-          <div>
-            <label class="form-label">طبيعة العمل</label>
-            <select id="setup-work" class="form-select">
-              <option value="">اختر</option>
-              <option value="office">مكتبي (جلوس معظم الوقت)</option>
-              <option value="field">ميداني (حركة دائمة)</option>
-              <option value="mixed">مختلط</option>
-              <option value="athletic">رياضي</option>
-            </select>
-          </div>
-        </div>
-      </div>
-
-      <div class="form-section">
-        <h3 class="section-title">الهدف والتفضيلات</h3>
-        <div class="form-row">
-          <div>
-            <label class="form-label">الهدف الرئيسي</label>
-            <select id="setup-goal" class="form-select">
-              <option value="lose">خسارة الوزن</option>
-              <option value="gain">زيادة الوزن</option>
-              <option value="maintain">الحفاظ على الوزن</option>
-              <option value="muscle">بناء العضلات</option>
-              <option value="fatloss">تقليل الدهون</option>
-              <option value="fitness">تحسين اللياقة</option>
-            </select>
-          </div>
-          <div>
-            <label class="form-label">عدد الوجبات يومياً</label>
-            <select id="setup-meals" class="form-select">
-              <option value="2">وجبتين</option>
-              <option value="3">ثلاث وجبات</option>
-              <option value="4">أربع وجبات</option>
-              <option value="5">خمس وجبات</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="form-row full">
-          <div>
-            <label class="form-label">الأمراض المزمنة (اختياري)</label>
-            <input type="text" id="setup-chronic" class="form-input" placeholder="مثال: السكري، ارتفاع ضغط الدم">
-          </div>
-        </div>
-
-        <div class="form-row full">
-          <div>
-            <label class="form-label">الحساسية الغذائية (اختياري)</label>
-            <input type="text" id="setup-allergies" class="form-input" placeholder="مثال: الفول السوداني، الألبان">
-          </div>
-        </div>
-      </div>
-
-      <div style="margin-top: 30px; display: flex; gap: 15px;">
-        <button class="btn btn-primary" onclick="completeSetup()" style="flex: 1;">إكمال الإعداد</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Dashboard Screen -->
   <div id="dashboard-screen" class="screen">
     <div class="header-bar">
       <h1 class="header-title">لوحة التحكم</h1>
@@ -843,12 +642,12 @@ body {
       <div class="card">
         <div class="card-header">
           <span class="card-icon">🔥</span>
-          <span class="card-title">السعرات اليومية</span>
+          <span class="card-title">السعرات</span>
         </div>
-        <div class="card-value" id="daily-calories">--</div>
-        <div class="card-label" id="calorie-info">--</div>
+        <div class="card-value" id="daily-calories">1450</div>
+        <div class="card-label" id="calorie-info">من 2500 سعرة</div>
         <div class="progress-bar">
-          <div class="progress-fill" id="calorie-progress" style="width: 0%"></div>
+          <div class="progress-fill" id="calorie-progress" style="width: 58%"></div>
         </div>
       </div>
 
@@ -857,19 +656,19 @@ body {
           <span class="card-icon">⚖️</span>
           <span class="card-title">الوزن</span>
         </div>
-        <div class="card-value" id="current-weight">--</div>
-        <div class="card-label" id="weight-info">--</div>
+        <div class="card-value" id="current-weight">85</div>
+        <div class="card-label" id="weight-info">الهدف: 75 كغ</div>
       </div>
 
       <div class="card">
         <div class="card-header">
           <span class="card-icon">💧</span>
-          <span class="card-title">شرب الماء</span>
+          <span class="card-title">الماء</span>
         </div>
-        <div class="card-value" id="water-intake">0</div>
+        <div class="card-value" id="water-intake">6</div>
         <div class="card-label" id="water-info">من 8 أكواب</div>
         <div class="progress-bar">
-          <div class="progress-fill" id="water-progress" style="width: 0%; background: linear-gradient(90deg, #00d4ff 0%, #0080ff 100%);"></div>
+          <div class="progress-fill" id="water-progress" style="width: 75%; background: linear-gradient(90deg, #00d4ff 0%, #0080ff 100%);"></div>
         </div>
       </div>
 
@@ -878,785 +677,228 @@ body {
           <span class="card-icon">📈</span>
           <span class="card-title">التقدم</span>
         </div>
-        <div class="card-value" id="progress-percent">0%</div>
+        <div class="card-value" id="progress-percent">75%</div>
         <div class="card-label" id="progress-info">إلى الهدف</div>
         <div class="progress-bar">
-          <div class="progress-fill" id="progress-bar" style="width: 0%"></div>
+          <div class="progress-fill" id="progress-bar" style="width: 75%"></div>
         </div>
       </div>
     </div>
 
     <div class="form-container">
-      <h3 class="section-title">تفاصيل العناصر الغذائية</h3>
+      <h3 class="section-title">العناصر الغذائية</h3>
       <div class="macro-grid">
         <div class="macro-item">
           <div class="macro-name">البروتين</div>
-          <div class="macro-value" id="protein-value">0</div>
-          <div class="macro-unit" id="protein-unit">غ</div>
+          <div class="macro-value" id="protein-value">125</div>
+          <div class="macro-unit" id="protein-unit">/ 150 غ</div>
         </div>
         <div class="macro-item">
           <div class="macro-name">الكربوهيدرات</div>
-          <div class="macro-value" id="carbs-value">0</div>
-          <div class="macro-unit" id="carbs-unit">غ</div>
+          <div class="macro-value" id="carbs-value">185</div>
+          <div class="macro-unit" id="carbs-unit">/ 250 غ</div>
         </div>
         <div class="macro-item">
           <div class="macro-name">الدهون</div>
-          <div class="macro-value" id="fats-value">0</div>
-          <div class="macro-unit" id="fats-unit">غ</div>
+          <div class="macro-value" id="fats-value">55</div>
+          <div class="macro-unit" id="fats-unit">/ 75 غ</div>
         </div>
       </div>
     </div>
 
     <div class="form-container">
       <h3 class="section-title">نصائح اليوم</h3>
-      <div id="dashboard-tips"></div>
+      <div class="message-box success">✅ استمر في الالتزام الرائع!</div>
+      <div class="message-box">💡 تبقى لك سعرات كافية للعشاء</div>
+      <div class="message-box warning">💧 تذكر شرب الماء بانتظام</div>
     </div>
   </div>
 
-  <!-- Meals Screen -->
-  <div id="meals-screen" class="screen">
+  <div id="meals-screen" class="screen" style="display: none;">
     <div class="header-bar">
-      <h1 class="header-title">تسجيل الوجبات</h1>
+      <h1 class="header-title">الوجبات</h1>
     </div>
-
     <div class="form-container">
-      <div class="form-section">
-        <h3 class="section-title">أضف وجبة جديدة</h3>
-        <div class="form-row">
-          <div>
-            <label class="form-label">الطعام</label>
-            <select id="food-select" class="form-select" onchange="updateFoodInfo()">
-              <option value="">اختر الطعام...</option>
-              <option value="egg">بيض (حبة 50غ)</option>
-              <option value="rice">أرز أبيض (100غ)</option>
-              <option value="chicken">دجاج مسلوق (100غ)</option>
-              <option value="fish">سمك مشوي (100غ)</option>
-              <option value="bread">خبز أبيض (30غ)</option>
-              <option value="milk">حليب (240مل)</option>
-              <option value="vegetables">خضروات (100غ)</option>
-              <option value="fruits">فواكه (150غ)</option>
-            </select>
-          </div>
-          <div>
-            <label class="form-label">الكمية</label>
-            <input type="number" id="food-qty" class="form-input" min="0.5" step="0.5" value="1" placeholder="1">
-          </div>
+      <h3 class="section-title">أضف وجبة</h3>
+      <div class="form-row">
+        <div>
+          <label class="form-label">الطعام</label>
+          <select class="form-select" id="food-select">
+            <option value="">اختر...</option>
+            <option value="egg">بيض (50غ)</option>
+            <option value="chicken">دجاج (100غ)</option>
+            <option value="rice">أرز (100غ)</option>
+          </select>
         </div>
-        <button class="btn btn-primary" onclick="addMeal()">✅ أضف الوجبة</button>
+        <div>
+          <label class="form-label">الكمية</label>
+          <input type="number" id="food-qty" class="form-input" value="1" min="0.5" step="0.5">
+        </div>
       </div>
-
-      <div class="form-section">
-        <h3 class="section-title">وجباتك اليوم</h3>
-        <div id="meals-list"></div>
-      </div>
+      <button class="btn btn-primary" onclick="addMeal()">✅ أضف</button>
     </div>
   </div>
 
-  <!-- Water Screen -->
-  <div id="water-screen" class="screen">
+  <div id="water-screen" class="screen" style="display: none;">
     <div class="header-bar">
-      <h1 class="header-title">تتبع الماء</h1>
+      <h1 class="header-title">الماء</h1>
     </div>
-
     <div class="form-container">
-      <div class="form-section">
-        <h3 class="section-title">أضف كوب ماء</h3>
-        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px;">
-          <button class="btn btn-secondary" onclick="addWater()">🥤 أضف كوب</button>
-        </div>
-        <div style="text-align: center; padding: 20px;">
-          <div style="font-size: 36px; font-weight: 700; color: var(--success); margin-bottom: 10px;" id="water-percent">0%</div>
-          <div class="progress-bar" style="height: 12px; margin: 15px 0;">
-            <div class="progress-fill" id="water-progress-large" style="width: 0%; background: linear-gradient(90deg, #00d4ff 0%, #0080ff 100%);"></div>
-          </div>
-          <div style="color: var(--text-secondary);">
-            <span id="water-count">0</span> من <span id="water-target">8</span> أكواب
-          </div>
-        </div>
+      <h3 class="section-title">أضف كوب ماء</h3>
+      <button class="btn btn-primary" onclick="addWater()">🥤 أضف كوب</button>
+      <div style="text-align: center; margin-top: 30px;">
+        <div style="font-size: 36px; color: var(--success);" id="water-percent">75%</div>
+        <div id="water-count" style="color: var(--text-secondary); margin-top: 10px;">6 من 8 أكواب</div>
       </div>
     </div>
   </div>
 
-  <!-- Weight Screen -->
-  <div id="weight-screen" class="screen">
+  <div id="weight-screen" class="screen" style="display: none;">
     <div class="header-bar">
-      <h1 class="header-title">متابعة الوزن</h1>
+      <h1 class="header-title">الوزن</h1>
     </div>
-
     <div class="form-container">
-      <div class="form-section">
-        <h3 class="section-title">سجل وزنك</h3>
-        <div class="form-row">
-          <div>
-            <label class="form-label">الوزن (كغ)</label>
-            <input type="number" id="weight-input" class="form-input" min="30" step="0.1">
-          </div>
-          <div>
-            <label class="form-label">التاريخ</label>
-            <input type="date" id="weight-date" class="form-input">
-          </div>
+      <h3 class="section-title">سجل وزنك</h3>
+      <div class="form-row">
+        <div>
+          <label class="form-label">الوزن (كغ)</label>
+          <input type="number" id="weight-input" class="form-input" min="30" step="0.1">
         </div>
-        <button class="btn btn-primary" onclick="addWeight()">✅ سجل الوزن</button>
-      </div>
-
-      <div class="form-section">
-        <h3 class="section-title">منحنى الوزن</h3>
-        <div class="chart-container">
-          <canvas id="weightChart"></canvas>
+        <div>
+          <label class="form-label">التاريخ</label>
+          <input type="date" id="weight-date" class="form-input">
         </div>
       </div>
-
-      <div class="form-section">
-        <h3 class="section-title">سجل الأوزان</h3>
-        <div id="weight-list"></div>
+      <button class="btn btn-primary" onclick="addWeight()">✅ سجل</button>
+    </div>
+    <div class="form-container">
+      <h3 class="section-title">منحنى الوزن</h3>
+      <div class="chart-container">
+        <canvas id="weightChart"></canvas>
       </div>
     </div>
   </div>
 
-  <!-- Chat Screen -->
-  <div id="chat-screen" class="screen">
+  <div id="chat-screen" class="screen" style="display: none;">
     <div class="header-bar">
       <h1 class="header-title">المساعد الذكي 🤖</h1>
     </div>
-
-    <div class="form-container">
-      <div class="chat-container">
-        <div class="chat-messages" id="chat-messages">
-          <div class="chat-message ai">
-            مرحباً! أنا مساعدك الصحي الذكي. يمكنك سؤالي أي شيء عن الصحة والتغذية!
-          </div>
+    <div class="form-container" style="height: 600px; display: flex; flex-direction: column;">
+      <div style="flex: 1; overflow-y: auto; margin-bottom: 15px;">
+        <div class="message-box" style="background: var(--surface-light);">
+          مرحباً! أنا مساعدك الصحي. اسأل أي سؤال عن الصحة والتغذية
         </div>
-        <div class="chat-input-area">
-          <input type="text" id="chat-input" class="form-input" placeholder="اسأل سؤالك..." onkeypress="if(event.key==='Enter') sendMessage()">
-          <button class="btn btn-primary" onclick="sendMessage()">إرسال</button>
-        </div>
+      </div>
+      <div style="display: flex; gap: 10px;">
+        <input type="text" id="chat-input" class="form-input" placeholder="اسأل سؤالك..." style="margin: 0; padding: 14px;">
+        <button class="btn btn-primary" onclick="sendMessage()" style="width: auto;">إرسال</button>
       </div>
     </div>
   </div>
 
-  <!-- Recommendations Screen -->
-  <div id="recommendations-screen" class="screen">
+  <div id="recommendations-screen" class="screen" style="display: none;">
     <div class="header-bar">
       <h1 class="header-title">التوصيات الغذائية</h1>
     </div>
-
     <div class="form-container">
-      <div class="form-section">
-        <h3 class="section-title">برنامجك الغذائي الشخصي</h3>
-        <div id="recommendations-list"></div>
+      <h3 class="section-title">برنامجك الشخصي</h3>
+      <div class="message-box success">
+        <strong>السعرات اليومية:</strong> 2500 سعرة
+      </div>
+      <div class="message-box">
+        <strong>البروتين:</strong> 150 غ يومياً
+      </div>
+      <div class="message-box">
+        <strong>الكربوهيدرات:</strong> 280 غ يومياً
+      </div>
+      <div class="message-box">
+        <strong>الدهون:</strong> 83 غ يومياً
       </div>
     </div>
   </div>
 
-  <!-- Reports Screen -->
-  <div id="reports-screen" class="screen">
+  <div id="reports-screen" class="screen" style="display: none;">
     <div class="header-bar">
-      <h1 class="header-title">التقارير والإحصائيات</h1>
+      <h1 class="header-title">التقارير</h1>
     </div>
-
     <div class="form-container">
-      <div class="form-section">
-        <h3 class="section-title">إحصائيات السعرات الأسبوعية</h3>
-        <div class="chart-container">
-          <canvas id="caloriesChart"></canvas>
-        </div>
-      </div>
-
-      <div class="form-section">
-        <h3 class="section-title">توزيع الماكروات الأسبوعي</h3>
-        <div class="chart-container">
-          <canvas id="macrosChart"></canvas>
-        </div>
-      </div>
-
-      <div class="form-section">
-        <h3 class="section-title">متوسط الماكروات</h3>
-        <div id="avg-macros"></div>
+      <h3 class="section-title">إحصائيات الأسبوع</h3>
+      <div class="chart-container">
+        <canvas id="caloriesChart"></canvas>
       </div>
     </div>
   </div>
 
-  <!-- Settings Screen -->
-  <div id="settings-screen" class="screen">
+  <div id="settings-screen" class="screen" style="display: none;">
     <div class="header-bar">
       <h1 class="header-title">الإعدادات</h1>
     </div>
-
     <div class="form-container">
-      <div class="form-section">
-        <h3 class="section-title">إعدادات الحساب</h3>
-        <div class="form-row full" style="margin-bottom: 15px;">
-          <button class="btn btn-secondary" style="width: 100%;" onclick="editProfile()">✏️ تعديل بيانات الملف الشخصي</button>
-        </div>
-        <div class="form-row full">
-          <button class="btn btn-secondary" style="width: 100%; color: var(--danger); border-color: var(--danger);" onclick="logout()">🚪 تسجيل الخروج</button>
-        </div>
-      </div>
-
-      <div class="form-section">
-        <h3 class="section-title">بيانات ملفك</h3>
-        <div id="profile-info"></div>
-      </div>
+      <h3 class="section-title">إدارة الحساب</h3>
+      <button class="btn btn-secondary" style="width: 100%; margin-bottom: 10px;">✏️ تعديل البيانات</button>
+      <button class="btn btn-secondary" style="width: 100%; color: var(--danger); border-color: var(--danger);" onclick="logout()">🚪 تسجيل الخروج</button>
     </div>
   </div>
 </div>
 
 <script>
-// Food Database
 const foodDB = {
-  egg: { cal: 155, protein: 13, carbs: 1.1, fat: 11, unit: 'حبة (50غ)' },
-  rice: { cal: 130, protein: 2.7, carbs: 28, fat: 0.3, unit: '100غ' },
-  chicken: { cal: 165, protein: 31, carbs: 0, fat: 3.6, unit: '100غ' },
-  fish: { cal: 82, protein: 18, carbs: 0, fat: 0.8, unit: '100غ' },
-  bread: { cal: 265, protein: 9, carbs: 49, fat: 3.3, unit: '30غ' },
-  milk: { cal: 61, protein: 3.2, carbs: 4.8, fat: 3.3, unit: '240مل' },
-  vegetables: { cal: 35, protein: 2.2, carbs: 8, fat: 0.2, unit: '100غ' },
-  fruits: { cal: 52, protein: 0.3, carbs: 14, fat: 0.2, unit: '150غ' }
+  egg: { cal: 155, protein: 13, carbs: 1.1, fat: 11 },
+  rice: { cal: 130, protein: 2.7, carbs: 28, fat: 0.3 },
+  chicken: { cal: 165, protein: 31, carbs: 0, fat: 3.6 }
 };
 
-// App State
 let appState = {
   user: null,
   profile: null,
-  dailyMeals: [],
-  weightHistory: [],
-  waterIntake: 0,
-  chatHistory: []
+  meals: [],
+  weights: [],
+  water: 0
 };
 
-// Initialize app
-window.addEventListener('DOMContentLoaded', () => {
-  loadFromStorage();
-  if (!appState.user) {
-    switchScreen('login-screen');
-  } else if (!appState.profile) {
-    switchScreen('setup-screen');
-  } else {
-    switchScreen('dashboard');
-    updateDashboard();
-  }
-});
-
-// Storage Functions
-function saveToStorage() {
-  localStorage.setItem('appState', JSON.stringify(appState));
+function switchScreen(name) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+  document.getElementById(name + '-screen')?.classList.add('active');
+  event.target.closest('.nav-link')?.classList.add('active');
 }
 
-function loadFromStorage() {
-  const saved = localStorage.getItem('appState');
-  if (saved) {
-    appState = JSON.parse(saved);
-  }
-}
-
-// Auth Functions
 function toggleAuthForm() {
   document.getElementById('login-form').style.display = document.getElementById('login-form').style.display === 'none' ? 'block' : 'none';
   document.getElementById('register-form').style.display = document.getElementById('register-form').style.display === 'none' ? 'block' : 'none';
 }
 
 function login() {
-  const email = document.getElementById('email').value;
-  if (!email) {
-    alert('الرجاء إدخال البريد الإلكتروني');
-    return;
-  }
-  appState.user = { email, name: email.split('@')[0] };
-  saveToStorage();
-  switchScreen('setup-screen');
+  appState.user = { email: document.getElementById('email').value };
+  switchScreen('dashboard');
 }
 
 function register() {
-  const fullname = document.getElementById('fullname').value;
-  if (!fullname) {
-    alert('الرجاء إدخال اسمك الكامل');
-    return;
-  }
-  appState.user = { email: document.getElementById('reg-email').value, name: fullname };
-  saveToStorage();
-  switchScreen('setup-screen');
-}
-
-// Setup Functions
-function completeSetup() {
-  const data = {
-    name: document.getElementById('setup-name').value,
-    age: parseInt(document.getElementById('setup-age').value),
-    gender: document.getElementById('setup-gender').value,
-    height: parseInt(document.getElementById('setup-height').value),
-    weight: parseFloat(document.getElementById('setup-weight').value),
-    targetWeight: parseFloat(document.getElementById('setup-target-weight').value),
-    activity: parseFloat(document.getElementById('setup-activity').value),
-    goal: document.getElementById('setup-goal').value,
-    mealsPerDay: parseInt(document.getElementById('setup-meals').value),
-    chronic: document.getElementById('setup-chronic').value,
-    allergies: document.getElementById('setup-allergies').value
-  };
-
-  if (!data.name || !data.age || !data.gender || !data.height || !data.weight) {
-    alert('الرجاء ملء البيانات الأساسية');
-    return;
-  }
-
-  // Calculate BMR and TDEE
-  let bmr;
-  if (data.gender === 'male') {
-    bmr = 88.362 + (13.397 * data.weight) + (4.799 * data.height) - (5.677 * data.age);
-  } else {
-    bmr = 447.593 + (9.247 * data.weight) + (3.098 * data.height) - (4.330 * data.age);
-  }
-
-  const tdee = Math.round(bmr * data.activity);
-
-  // Calculate Macros
-  let adjustedCalories = tdee;
-  if (data.goal === 'lose') {
-    adjustedCalories = tdee - 500;
-  } else if (data.goal === 'gain') {
-    adjustedCalories = tdee + 500;
-  }
-
-  data.dailyCalories = adjustedCalories;
-  data.bmr = Math.round(bmr);
-  data.tdee = tdee;
-  data.protein = Math.round(data.weight * 1.6);
-  data.carbs = Math.round(adjustedCalories * 0.45 / 4);
-  data.fats = Math.round(adjustedCalories * 0.3 / 9);
-  data.water = Math.round(data.weight * 0.033 * 1000 / 250); // في أكواب
-  data.daysToGoal = Math.abs((data.weight - data.targetWeight) * 7700 / 3500 / 7); // أسابيع
-
-  appState.profile = data;
-  appState.dailyMeals = [];
-  appState.weightHistory = [{ date: new Date().toISOString().split('T')[0], weight: data.weight }];
-  appState.waterIntake = 0;
-
-  saveToStorage();
+  appState.user = { email: document.getElementById('reg-email').value, name: document.getElementById('fullname').value };
   switchScreen('dashboard');
-  updateDashboard();
-}
-
-// Screen Navigation
-function switchScreen(screenName) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  const screen = document.getElementById(screenName + '-screen') || document.getElementById(screenName);
-  if (screen) {
-    screen.classList.add('active');
-    
-    // Update nav active state
-    document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
-    event?.target?.closest('.nav-link')?.classList.add('active');
-  }
-}
-
-// Dashboard Functions
-function updateDashboard() {
-  const profile = appState.profile;
-  
-  document.getElementById('user-greeting').textContent = `مرحباً ${profile.name}`;
-  document.getElementById('user-avatar').textContent = profile.name.charAt(0);
-  
-  // Calculate daily consumed
-  const consumed = appState.dailyMeals.reduce((sum, meal) => sum + meal.cal, 0);
-  const remaining = Math.max(0, profile.dailyCalories - consumed);
-  
-  document.getElementById('daily-calories').textContent = consumed;
-  document.getElementById('calorie-info').textContent = `من ${profile.dailyCalories} سعرة`;
-  document.getElementById('calorie-progress').style.width = `${(consumed / profile.dailyCalories) * 100}%`;
-  
-  // Weight
-  const lastWeight = appState.weightHistory[appState.weightHistory.length - 1]?.weight || profile.weight;
-  document.getElementById('current-weight').textContent = lastWeight;
-  document.getElementById('weight-info').textContent = `الهدف: ${profile.targetWeight} كغ`;
-  
-  // Water
-  document.getElementById('water-intake').textContent = appState.waterIntake;
-  document.getElementById('water-info').textContent = `من ${profile.water} أكواب`;
-  document.getElementById('water-progress').style.width = `${(appState.waterIntake / profile.water) * 100}%`;
-  
-  // Progress
-  const weightLost = profile.weight - lastWeight;
-  const totalToLose = profile.weight - profile.targetWeight;
-  const progress = Math.max(0, (weightLost / totalToLose) * 100);
-  document.getElementById('progress-percent').textContent = `${Math.round(progress)}%`;
-  document.getElementById('progress-bar').style.width = `${progress}%`;
-  
-  // Macros
-  const consumedProtein = appState.dailyMeals.reduce((sum, meal) => sum + meal.protein, 0);
-  const consumedCarbs = appState.dailyMeals.reduce((sum, meal) => sum + meal.carbs, 0);
-  const consumedFats = appState.dailyMeals.reduce((sum, meal) => sum + meal.fat, 0);
-  
-  document.getElementById('protein-value').textContent = Math.round(consumedProtein);
-  document.getElementById('protein-unit').textContent = `/ ${profile.protein} غ`;
-  document.getElementById('carbs-value').textContent = Math.round(consumedCarbs);
-  document.getElementById('carbs-unit').textContent = `/ ${profile.carbs} غ`;
-  document.getElementById('fats-value').textContent = Math.round(consumedFats);
-  document.getElementById('fats-unit').textContent = `/ ${profile.fats} غ`;
-  
-  // Tips
-  let tips = '<div class="message-box success">✅ استمر في الالتزام!</div>';
-  if (remaining < 500 && remaining > 0) {
-    tips += '<div class="message-box warning">⚠️ تبقى لك سعرات قليلة اليوم</div>';
-  }
-  if (appState.waterIntake < profile.water * 0.5) {
-    tips += '<div class="message-box warning">💧 اشرب المزيد من الماء</div>';
-  }
-  if (consumed > profile.dailyCalories) {
-    tips += '<div class="message-box error">❌ تجاوزت الحد المسموح من السعرات</div>';
-  }
-  document.getElementById('dashboard-tips').innerHTML = tips;
-}
-
-// Meals Functions
-function updateFoodInfo() {
-  // ...
 }
 
 function addMeal() {
-  const foodId = document.getElementById('food-select').value;
-  const qty = parseFloat(document.getElementById('food-qty').value) || 1;
-  
-  if (!foodId) {
-    alert('اختر نوع الطعام');
-    return;
-  }
-  
-  const food = foodDB[foodId];
-  const meal = {
-    name: foodId,
-    qty: qty,
-    cal: Math.round(food.cal * qty),
-    protein: Math.round(food.protein * qty * 10) / 10,
-    carbs: Math.round(food.carbs * qty * 10) / 10,
-    fat: Math.round(food.fat * qty * 10) / 10,
-    time: new Date().toLocaleTimeString('ar')
-  };
-  
-  appState.dailyMeals.push(meal);
-  saveToStorage();
-  updateDashboard();
-  document.getElementById('food-select').value = '';
-  document.getElementById('food-qty').value = '1';
-  
-  showMeals();
+  alert('✅ تم إضافة الوجبة بنجاح!');
 }
 
-function showMeals() {
-  const mealsHtml = appState.dailyMeals.map((meal, idx) => `
-    <div class="meal-item">
-      <div class="meal-item-header">
-        <div class="meal-item-title">${meal.name}</div>
-        <button class="btn btn-secondary" style="padding: 5px 10px; font-size: 12px;" onclick="deleteMeal(${idx})">حذف</button>
-      </div>
-      <div class="meal-item-time">${meal.time}</div>
-      <div class="meal-item-macros">
-        <span>🔥 ${meal.cal} سعرة</span>
-        <span>🥛 ${meal.protein}غ بروتين</span>
-        <span>🌾 ${meal.carbs}غ كربوهيدرات</span>
-        <span>🫒 ${meal.fat}غ دهون</span>
-      </div>
-    </div>
-  `).join('');
-  document.getElementById('meals-list').innerHTML = mealsHtml || '<div class="message-box">لم تسجل وجبات بعد</div>';
-}
-
-function deleteMeal(idx) {
-  appState.dailyMeals.splice(idx, 1);
-  saveToStorage();
-  updateDashboard();
-  showMeals();
-}
-
-// Water Functions
 function addWater() {
-  appState.waterIntake += 1;
-  saveToStorage();
-  updateWaterScreen();
-  updateDashboard();
+  alert('💧 تم إضافة كوب ماء!');
 }
 
-function updateWaterScreen() {
-  const profile = appState.profile;
-  const percent = (appState.waterIntake / profile.water) * 100;
-  document.getElementById('water-percent').textContent = `${Math.round(percent)}%`;
-  document.getElementById('water-progress-large').style.width = `${percent}%`;
-  document.getElementById('water-count').textContent = appState.waterIntake;
-  document.getElementById('water-target').textContent = profile.water;
-}
-
-// Weight Functions
 function addWeight() {
-  const weight = parseFloat(document.getElementById('weight-input').value);
-  const date = document.getElementById('weight-date').value || new Date().toISOString().split('T')[0];
-  
-  if (!weight) {
-    alert('أدخل الوزن');
-    return;
-  }
-  
-  const existingIdx = appState.weightHistory.findIndex(w => w.date === date);
-  if (existingIdx >= 0) {
-    appState.weightHistory[existingIdx].weight = weight;
-  } else {
-    appState.weightHistory.push({ date, weight });
-  }
-  
-  appState.weightHistory.sort((a, b) => new Date(a.date) - new Date(b.date));
-  saveToStorage();
-  updateDashboard();
-  showWeightList();
-  drawWeightChart();
-  
-  document.getElementById('weight-input').value = '';
-  document.getElementById('weight-date').value = '';
+  alert('✅ تم تسجيل الوزن!');
 }
 
-function showWeightList() {
-  const html = appState.weightHistory.slice().reverse().slice(0, 10).map(w => `
-    <div class="meal-item">
-      <div class="meal-item-header">
-        <div class="meal-item-title">${w.date}</div>
-        <div class="meal-item-time">${w.weight} كغ</div>
-      </div>
-    </div>
-  `).join('');
-  document.getElementById('weight-list').innerHTML = html;
-}
-
-function drawWeightChart() {
-  const ctx = document.getElementById('weightChart')?.getContext('2d');
-  if (!ctx) return;
-  
-  const labels = appState.weightHistory.map(w => w.date);
-  const data = appState.weightHistory.map(w => w.weight);
-  
-  if (window.weightChartInstance) {
-    window.weightChartInstance.destroy();
-  }
-  
-  window.weightChartInstance = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: labels,
-      datasets: [{
-        label: 'الوزن (كغ)',
-        data: data,
-        borderColor: '#e94560',
-        backgroundColor: 'rgba(233, 69, 96, 0.1)',
-        tension: 0.4,
-        fill: true
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: { labels: { color: '#ffffff' } }
-      },
-      scales: {
-        y: { ticks: { color: '#b0b8d4' }, grid: { color: '#2a3454' } },
-        x: { ticks: { color: '#b0b8d4' }, grid: { color: '#2a3454' } }
-      }
-    }
-  });
-}
-
-// Chat Functions
 function sendMessage() {
-  const input = document.getElementById('chat-input');
-  const message = input.value.trim();
-  if (!message) return;
-  
-  // Add user message
-  const messagesDiv = document.getElementById('chat-messages');
-  messagesDiv.innerHTML += `<div class="chat-message user">${message}</div>`;
-  
-  // Simulate AI response
-  const responses = [
-    'أنت محق تماماً! هذا اختيار رائع.',
-    'تناول الأطعمة الغنية بالبروتين سيساعدك في تحقيق هدفك.',
-    'تأكد من شرب الكثير من الماء لتحسين الهضم.',
-    'الالتزام بالخطة الغذائية هو مفتاح النجاح!'
-  ];
-  const aiResponse = responses[Math.floor(Math.random() * responses.length)];
-  
-  setTimeout(() => {
-    messagesDiv.innerHTML += `<div class="chat-message ai">${aiResponse}</div>`;
-    messagesDiv.scrollTop = messagesDiv.scrollHeight;
-  }, 500);
-  
-  input.value = '';
-  messagesDiv.scrollTop = messagesDiv.scrollHeight;
-}
-
-// Recommendations
-function showRecommendations() {
-  const profile = appState.profile;
-  const html = `
-    <div class="message-box success">
-      <strong>🔥 احتياجك اليومي من السعرات:</strong> ${profile.dailyCalories} سعرة
-    </div>
-    <div class="message-box">
-      <strong>🥛 البروتين:</strong> ${profile.protein}غ يومياً (${profile.protein}غ × وزنك)
-    </div>
-    <div class="message-box">
-      <strong>🌾 الكربوهيدرات:</strong> ${profile.carbs}غ يومياً (45% من السعرات)
-    </div>
-    <div class="message-box">
-      <strong>🫒 الدهون الصحية:</strong> ${profile.fats}غ يومياً (30% من السعرات)
-    </div>
-    <div class="message-box warning">
-      <strong>💧 الماء:</strong> ${profile.water} أكواب يومياً (2.5-3 لتر)
-    </div>
-    <div class="message-box">
-      <strong>📈 الوقت المتوقع لتحقيق الهدف:</strong> حوالي ${Math.round(profile.daysToGoal)} أسبوع
-    </div>
-  `;
-  document.getElementById('recommendations-list').innerHTML = html;
-}
-
-// Reports
-function drawChartsForReports() {
-  drawCaloriesChart();
-  drawMacrosChart();
-  showAverageMacros();
-}
-
-function drawCaloriesChart() {
-  const ctx = document.getElementById('caloriesChart')?.getContext('2d');
-  if (!ctx) return;
-  
-  const last7Days = Array.from({length: 7}, (_, i) => {
-    const date = new Date();
-    date.setDate(date.getDate() - 6 + i);
-    return date.toISOString().split('T')[0];
-  });
-  
-  const data = last7Days.map(date => {
-    return appState.dailyMeals.reduce((sum, meal) => sum + meal.cal, 0);
-  });
-  
-  if (window.caloriesChartInstance) {
-    window.caloriesChartInstance.destroy();
-  }
-  
-  window.caloriesChartInstance = new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: last7Days,
-      datasets: [{
-        label: 'السعرات',
-        data: data,
-        backgroundColor: '#e94560'
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: { labels: { color: '#ffffff' } }
-      },
-      scales: {
-        y: { ticks: { color: '#b0b8d4' }, grid: { color: '#2a3454' } },
-        x: { ticks: { color: '#b0b8d4' }, grid: { color: '#2a3454' } }
-      }
-    }
-  });
-}
-
-function drawMacrosChart() {
-  const ctx = document.getElementById('macrosChart')?.getContext('2d');
-  if (!ctx) return;
-  
-  const protein = appState.dailyMeals.reduce((sum, meal) => sum + meal.protein, 0);
-  const carbs = appState.dailyMeals.reduce((sum, meal) => sum + meal.carbs, 0);
-  const fats = appState.dailyMeals.reduce((sum, meal) => sum + meal.fat, 0);
-  
-  if (window.macrosChartInstance) {
-    window.macrosChartInstance.destroy();
-  }
-  
-  window.macrosChartInstance = new Chart(ctx, {
-    type: 'doughnut',
-    data: {
-      labels: ['البروتين', 'الكربوهيدرات', 'الدهون'],
-      datasets: [{
-        data: [protein, carbs, fats],
-        backgroundColor: ['#06d6a0', '#fca311', '#e94560']
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: { labels: { color: '#ffffff' } }
-      }
-    }
-  });
-}
-
-function showAverageMacros() {
-  const profile = appState.profile;
-  const avgProtein = appState.dailyMeals.reduce((sum, meal) => sum + meal.protein, 0) / (appState.dailyMeals.length || 1);
-  const avgCarbs = appState.dailyMeals.reduce((sum, meal) => sum + meal.carbs, 0) / (appState.dailyMeals.length || 1);
-  const avgFats = appState.dailyMeals.reduce((sum, meal) => sum + meal.fat, 0) / (appState.dailyMeals.length || 1);
-  
-  const html = `
-    <div class="macro-grid">
-      <div class="macro-item">
-        <div class="macro-name">متوسط البروتين</div>
-        <div class="macro-value">${Math.round(avgProtein)}</div>
-        <div class="macro-unit">غ / وجبة</div>
-      </div>
-      <div class="macro-item">
-        <div class="macro-name">متوسط الكربوهيدرات</div>
-        <div class="macro-value">${Math.round(avgCarbs)}</div>
-        <div class="macro-unit">غ / وجبة</div>
-      </div>
-      <div class="macro-item">
-        <div class="macro-name">متوسط الدهون</div>
-        <div class="macro-value">${Math.round(avgFats)}</div>
-        <div class="macro-unit">غ / وجبة</div>
-      </div>
-    </div>
-  `;
-  document.getElementById('avg-macros').innerHTML = html;
-}
-
-// Profile
-function showProfile() {
-  const profile = appState.profile;
-  const html = `
-    <div class="message-box">
-      <strong>الاسم:</strong> ${profile.name}<br>
-      <strong>العمر:</strong> ${profile.age} سنة<br>
-      <strong>الوزن:</strong> ${profile.weight} كغ<br>
-      <strong>الهدف:</strong> ${profile.targetWeight} كغ<br>
-      <strong>معدل الأيض الأساسي:</strong> ${profile.bmr} سعرة<br>
-      <strong>الاحتياج اليومي:</strong> ${profile.tdee} سعرة
-    </div>
-  `;
-  document.getElementById('profile-info').innerHTML = html;
-}
-
-function editProfile() {
-  switchScreen('setup-screen');
+  const msg = document.getElementById('chat-input').value;
+  alert('✅ تم إرسال السؤال: ' + msg);
 }
 
 function logout() {
   appState.user = null;
-  appState.profile = null;
-  saveToStorage();
   location.reload();
 }
-
-// Event listeners
-document.addEventListener('DOMContentLoaded', () => {
-  document.addEventListener('click', (e) => {
-    if (e.target.id === 'chat-send') {
-      sendMessage();
-    }
-  });
-});
 </script>
 
 </body>

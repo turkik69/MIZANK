@@ -38,7 +38,11 @@ html, body {
   overflow: hidden;
 }
 body { display: flex; flex-direction: column; }
-.main-container { flex: 1; overflow-y: auto; padding-bottom: calc(90px + env(safe-area-inset-bottom)); }
+.main-container {
+  flex: 1; overflow-y: auto;
+  padding-top: calc(10px + env(safe-area-inset-top));
+  padding-bottom: calc(90px + env(safe-area-inset-bottom));
+}
 
 .bottom-nav {
   position: fixed; bottom: 0; left: 0; right: 0;

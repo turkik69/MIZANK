@@ -431,14 +431,31 @@ body { display: flex; flex-direction: column; }
     </div>
 
     <div style="background: linear-gradient(135deg, var(--surface) 0%, var(--surface-light) 100%); border: 1px solid var(--border); border-radius: 15px; padding: 20px; margin-bottom: 20px; box-shadow: 0 8px 32px var(--shadow);">
-      <h3 style="color: var(--accent); margin-bottom: 15px;">🔑 مفتاح Claude API</h3>
-      <div class="message-box">لتفعيل إجابات دقيقة وحقيقية من المساعد الذكي، أضف مفتاح Anthropic API الخاص بك. يُحفظ المفتاح في متصفحك فقط ويُرسل مباشرة إلى Anthropic دون المرور بأي خادم آخر.</div>
+      <h3 style="color: var(--accent); margin-bottom: 15px;">🤖 المساعد الذكي</h3>
+      <div class="message-box success">💡 يمكنك استخدام Google Gemini مجاناً بدون بطاقة ائتمان، أو التبديل إلى Claude لاحقاً إن أضفت رصيداً.</div>
+
       <div class="form-group">
-        <label class="form-label">مفتاح API</label>
-        <input type="password" id="api-key-input" class="form-input" placeholder="sk-ant-...">
+        <label class="form-label">مزوّد الذكاء الاصطناعي</label>
+        <select id="ai-provider-select" class="form-select">
+          <option value="gemini">Google Gemini (مجاني)</option>
+          <option value="claude">Claude (Anthropic)</option>
+        </select>
       </div>
-      <button class="btn btn-primary" onclick="saveApiKey()">💾 حفظ المفتاح</button>
-      <p style="font-size:11px; color:var(--text-secondary); margin-top:5px;">احصل على مفتاحك من console.anthropic.com</p>
+
+      <div class="form-group">
+        <label class="form-label">مفتاح Google Gemini API</label>
+        <input type="password" id="gemini-key-input" class="form-input" placeholder="AIza...">
+        <p style="font-size:11px; color:var(--text-secondary); margin-top:5px;">احصل على مفتاح مجاني فوري من aistudio.google.com/apikey (بدون بطاقة ائتمان)</p>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">مفتاح Claude API</label>
+        <input type="password" id="claude-key-input" class="form-input" placeholder="sk-ant-...">
+        <p style="font-size:11px; color:var(--text-secondary); margin-top:5px;">من console.anthropic.com (يتطلب رصيداً مدفوعاً)</p>
+      </div>
+
+      <button class="btn btn-primary" onclick="saveApiSettings()">💾 حفظ الإعدادات</button>
+      <p style="font-size:11px; color:var(--text-secondary); margin-top:5px;">المفاتيح تُحفظ في متصفحك فقط وتُرسل مباشرة لمزوّد الخدمة المختار.</p>
     </div>
 
     <div style="background: linear-gradient(135deg, var(--surface) 0%, var(--surface-light) 100%); border: 1px solid var(--border); border-radius: 15px; padding: 20px; margin-bottom: 20px; box-shadow: 0 8px 32px var(--shadow);">
@@ -479,9 +496,15 @@ const foodDB = {
   fruits: { cal: 52, protein: 0.3, carbs: 14, fat: 0.2, name: 'فواكه' }
 };
 
+// ============ Migration: مفتاح Claude القديم كان يُحفظ باسم healthAppApiKey ============
+(function migrateOldApiKey() {
+  const old = localStorage.getItem('healthAppApiKey');
+  if (old && !localStorage.getItem('healthAppClaudeKey')) {
+    localStorage.setItem('healthAppClaudeKey', old);
+  }
+})();
+
 // ============ Multi-user persistent storage ============
-// كل مستخدم (بالاسم) له بياناته الخاصة محفوظة في healthAppUsers
-// healthAppCurrentUser يحفظ آخر جلسة مسجّلة ليتم استرجاعها تلقائياً
 let currentUsername = null;
 let appState = { profile: null, meals: [], weights: [], water: 0, chat: [] };
 
@@ -499,7 +522,7 @@ function saveCurrentUserData() {
   saveUsersDB(db);
 }
 
-// ============ Init: استرجاع الجلسة تلقائياً إن وُجدت ============
+// ============ Init ============
 window.addEventListener('load', () => {
   const savedUsername = localStorage.getItem('healthAppCurrentUser');
   if (savedUsername) {
@@ -529,13 +552,11 @@ function handleLogin() {
   const existing = db[username];
 
   if (existing && existing.profile) {
-    // مستخدم عائد - استرجاع بياناته المحفوظة مباشرة
     appState = Object.assign({ meals: [], weights: [], water: 0, chat: [] }, existing);
     document.getElementById('bottom-nav').style.display = 'flex';
     showScreen('dashboard-screen');
     updateDashboard();
   } else {
-    // مستخدم جديد - إعداد أولي
     appState = existing || { profile: null, meals: [], weights: [], water: 0, chat: [] };
     showScreen('setup-screen');
   }
@@ -628,7 +649,7 @@ function switchScreen(screenName, navElement) {
   if (screenName === 'water') updateWaterScreen();
   if (screenName === 'chat') renderChatHistory();
   if (screenName === 'reports') updateReports();
-  if (screenName === 'settings') { updateProfile(); loadApiKeyIntoSettings(); }
+  if (screenName === 'settings') { updateProfile(); loadApiSettingsIntoUI(); }
 }
 
 function showScreen(screenName) {
@@ -775,7 +796,7 @@ function updateWeightList() {
   document.getElementById('weight-history').innerHTML = html || '<div class="message-box">لم تسجل أوزان بعد</div>';
 }
 
-// ============ AI Chat (مربوط بـ Claude API الحقيقي) ============
+// ============ AI Chat: يدعم Google Gemini (مجاني) و Claude ============
 function escapeHtml(str) {
   const d = document.createElement('div');
   d.textContent = str;
@@ -847,8 +868,11 @@ function renderChatHistory() {
   } else {
     appState.chat.forEach(m => renderChatMessage(m.role === 'user' ? 'user' : 'assistant', m.content));
   }
-  if (!localStorage.getItem('healthAppApiKey')) {
-    renderChatMessage('notice', 'لم تتم إضافة مفتاح Claude API بعد. أضِفه من ⚙️ الإعدادات لتفعيل إجابات دقيقة وحقيقية من الذكاء الاصطناعي.');
+  const provider = localStorage.getItem('healthAppAiProvider') || 'gemini';
+  const hasKey = provider === 'gemini' ? localStorage.getItem('healthAppGeminiKey') : localStorage.getItem('healthAppClaudeKey');
+  if (!hasKey) {
+    const providerName = provider === 'gemini' ? 'Google Gemini' : 'Claude';
+    renderChatMessage('notice', `لم تتم إضافة مفتاح ${providerName} بعد. أضِفه من ⚙️ الإعدادات لتفعيل إجابات دقيقة وحقيقية.`);
   }
 }
 
@@ -858,6 +882,61 @@ function clearChat() {
     saveCurrentUserData();
     renderChatHistory();
   }
+}
+
+// -------- Claude (Anthropic) --------
+async function callClaudeAPI(apiKey, systemPrompt, history) {
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/json',
+      'x-api-key': apiKey,
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-access': 'true'
+    },
+    body: JSON.stringify({
+      model: 'claude-sonnet-5',
+      max_tokens: 700,
+      system: systemPrompt,
+      messages: history.map(m => ({ role: m.role, content: m.content }))
+    })
+  });
+  if (!res.ok) {
+    const errBody = await res.json().catch(() => ({}));
+    throw new Error((errBody && errBody.error && errBody.error.message) || ('خطأ HTTP ' + res.status));
+  }
+  const data = await res.json();
+  return (data.content || []).filter(b => b.type === 'text').map(b => b.text).join('\n') || 'عذراً، لم أستطع معالجة السؤال.';
+}
+
+// -------- Google Gemini (مجاني) --------
+async function callGeminiAPI(apiKey, systemPrompt, history) {
+  const contents = history.map(m => ({
+    role: m.role === 'assistant' ? 'model' : 'user',
+    parts: [{ text: m.content }]
+  }));
+
+  const res = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent', {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/json',
+      'x-goog-api-key': apiKey
+    },
+    body: JSON.stringify({
+      systemInstruction: { parts: [{ text: systemPrompt }] },
+      contents,
+      generationConfig: { maxOutputTokens: 700 }
+    })
+  });
+
+  if (!res.ok) {
+    const errBody = await res.json().catch(() => ({}));
+    throw new Error((errBody && errBody.error && errBody.error.message) || ('خطأ HTTP ' + res.status));
+  }
+  const data = await res.json();
+  const candidate = data.candidates && data.candidates[0];
+  const parts = candidate && candidate.content && candidate.content.parts;
+  return (parts || []).map(p => p.text || '').join('\n') || 'عذراً، لم أستطع معالجة السؤال.';
 }
 
 async function sendChat() {
@@ -871,46 +950,26 @@ async function sendChat() {
   if (appState.chat.length > 16) appState.chat = appState.chat.slice(-16);
   saveCurrentUserData();
 
-  const apiKey = localStorage.getItem('healthAppApiKey');
-  if (!apiKey) {
-    renderChatMessage('notice', 'أضف مفتاح Claude API من صفحة الإعدادات ⚙️ لتفعيل إجابات حقيقية من الذكاء الاصطناعي.');
+  const provider = localStorage.getItem('healthAppAiProvider') || 'gemini';
+  const geminiKey = localStorage.getItem('healthAppGeminiKey');
+  const claudeKey = localStorage.getItem('healthAppClaudeKey');
+  const activeKey = provider === 'gemini' ? geminiKey : claudeKey;
+
+  if (!activeKey) {
+    const providerName = provider === 'gemini' ? 'Google Gemini' : 'Claude';
+    renderChatMessage('notice', `أضف مفتاح ${providerName} من صفحة الإعدادات ⚙️ لتفعيل إجابات حقيقية من الذكاء الاصطناعي.`);
     return;
   }
 
   const typingDiv = renderChatMessage('assistant', '... يفكر');
 
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json',
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01',
-        'anthropic-dangerous-direct-browser-access': 'true'
-      },
-      body: JSON.stringify({
-        model: 'claude-sonnet-5',
-        max_tokens: 700,
-        system: buildSystemPrompt(),
-        messages: appState.chat.map(m => ({ role: m.role, content: m.content }))
-      })
-    });
+    const systemPrompt = buildSystemPrompt();
+    const reply = provider === 'gemini'
+      ? await callGeminiAPI(activeKey, systemPrompt, appState.chat)
+      : await callClaudeAPI(activeKey, systemPrompt, appState.chat);
 
     typingDiv.remove();
-
-    if (!res.ok) {
-      const errBody = await res.json().catch(() => ({}));
-      const errMsg = (errBody && errBody.error && errBody.error.message) || ('خطأ HTTP ' + res.status);
-      renderChatMessage('notice', errMsg);
-      return;
-    }
-
-    const data = await res.json();
-    const reply = (data.content || [])
-      .filter(b => b.type === 'text')
-      .map(b => b.text)
-      .join('\n') || 'عذراً، لم أستطع معالجة السؤال.';
-
     renderChatMessage('assistant', reply);
     appState.chat.push({ role: 'assistant', content: reply });
     if (appState.chat.length > 16) appState.chat = appState.chat.slice(-16);
@@ -918,27 +977,35 @@ async function sendChat() {
 
   } catch (err) {
     typingDiv.remove();
-    renderChatMessage('notice', 'تعذر الاتصال بالخدمة: ' + err.message + ' — تأكد من صحة المفتاح واتصال الإنترنت.');
+    renderChatMessage('notice', 'تعذر الاتصال بالخدمة: ' + err.message);
   }
 }
 
-function saveApiKey() {
-  const key = document.getElementById('api-key-input').value.trim();
-  if (key && !key.startsWith('sk-ant-')) {
-    alert('⚠️ المفتاح يجب أن يبدأ بـ sk-ant-');
+function saveApiSettings() {
+  const provider = document.getElementById('ai-provider-select').value;
+  const geminiKey = document.getElementById('gemini-key-input').value.trim();
+  const claudeKey = document.getElementById('claude-key-input').value.trim();
+
+  if (claudeKey && !claudeKey.startsWith('sk-ant-')) {
+    alert('⚠️ مفتاح Claude يجب أن يبدأ بـ sk-ant-');
     return;
   }
-  if (key) {
-    localStorage.setItem('healthAppApiKey', key);
-    alert('✅ تم حفظ المفتاح - المساعد الذكي جاهز الآن للإجابة بدقة');
-  } else {
-    localStorage.removeItem('healthAppApiKey');
-    alert('تم مسح المفتاح');
-  }
+
+  localStorage.setItem('healthAppAiProvider', provider);
+  if (geminiKey) localStorage.setItem('healthAppGeminiKey', geminiKey); else localStorage.removeItem('healthAppGeminiKey');
+  if (claudeKey) localStorage.setItem('healthAppClaudeKey', claudeKey); else localStorage.removeItem('healthAppClaudeKey');
+
+  alert('✅ تم حفظ إعدادات المساعد الذكي');
 }
-function loadApiKeyIntoSettings() {
-  const input = document.getElementById('api-key-input');
-  if (input) input.value = localStorage.getItem('healthAppApiKey') || '';
+
+function loadApiSettingsIntoUI() {
+  const provider = localStorage.getItem('healthAppAiProvider') || 'gemini';
+  const providerSelect = document.getElementById('ai-provider-select');
+  const geminiInput = document.getElementById('gemini-key-input');
+  const claudeInput = document.getElementById('claude-key-input');
+  if (providerSelect) providerSelect.value = provider;
+  if (geminiInput) geminiInput.value = localStorage.getItem('healthAppGeminiKey') || '';
+  if (claudeInput) claudeInput.value = localStorage.getItem('healthAppClaudeKey') || '';
 }
 
 // ============ Reports ============

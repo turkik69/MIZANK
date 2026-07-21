@@ -331,6 +331,16 @@ body { display: flex; flex-direction: column; }
     </div>
 
     <div style="background: linear-gradient(135deg, var(--surface) 0%, var(--surface-light) 100%); border: 1px solid var(--border); border-radius: 15px; padding: 20px; margin-bottom: 20px; box-shadow: 0 8px 32px var(--shadow);">
+      <h3 style="color: var(--accent); margin-bottom: 5px;">✏️ اكتب وجبتك بحرية</h3>
+      <p style="font-size:11px; color:var(--text-secondary); margin-bottom:12px;">مو مقيّد بالقائمة الجاهزة — اكتب أي أكلة والذكاء الاصطناعي يقدّر سعراتها</p>
+      <div class="form-group">
+        <input type="text" id="meal-text-input" class="form-input" placeholder="مثال: طبق مكرونة بالصلصة مع دجاج مشوي" onkeypress="if(event.key==='Enter') handleMealText()">
+      </div>
+      <button class="btn btn-primary" onclick="handleMealText()">🔍 حلّل الوجبة</button>
+      <div id="meal-text-preview"></div>
+    </div>
+
+    <div style="background: linear-gradient(135deg, var(--surface) 0%, var(--surface-light) 100%); border: 1px solid var(--border); border-radius: 15px; padding: 20px; margin-bottom: 20px; box-shadow: 0 8px 32px var(--shadow);">
       <h3 style="color: var(--accent); margin-bottom: 15px;">أضف وجبة جديدة</h3>
       <div class="form-group">
         <label class="form-label">اختر الطعام</label>
@@ -1066,6 +1076,145 @@ function confirmPhotoMeal() {
 function cancelPhotoMeal() {
   pendingPhotoMeal = null;
   const previewDiv = document.getElementById('meal-photo-preview');
+  if (previewDiv) previewDiv.innerHTML = '';
+}
+
+// ============ إدخال الوجبة بوصف نصي حر (بدون تقيّد بقائمة الأطعمة الجاهزة) ============
+function buildTextAnalysisPrompt(description) {
+  return `قدّر القيم الغذائية للوجبة التالية التي وصفها المستخدم بنفسه: "${description}"
+اعتبر حجم حصة عادية ما لم يُذكر غير ذلك. أجب بصيغة JSON فقط دون أي نص أو شرح أو علامات تنسيق، بالضبط بهذا الشكل: {"name": "...", "calories": 000, "protein": 00, "carbs": 00, "fat": 00}`;
+}
+
+async function analyzeMealTextGemini(apiKey, model, description) {
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(apiKey)}`;
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({
+      contents: [{ role: 'user', parts: [{ text: buildTextAnalysisPrompt(description) }] }],
+      generationConfig: { maxOutputTokens: 300, responseMimeType: 'application/json' }
+    })
+  });
+  if (!res.ok) {
+    const errBody = await res.json().catch(() => ({}));
+    throw new Error((errBody && errBody.error && errBody.error.message) || ('خطأ HTTP ' + res.status));
+  }
+  const data = await res.json();
+  const candidate = data.candidates && data.candidates[0];
+  const parts = candidate && candidate.content && candidate.content.parts;
+  const text = (parts || []).map(p => p.text || '').join('\n');
+  return parseJsonFromText(text);
+}
+
+async function analyzeMealTextClaude(apiKey, model, description) {
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/json',
+      'x-api-key': apiKey,
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-access': 'true'
+    },
+    body: JSON.stringify({
+      model,
+      max_tokens: 300,
+      messages: [{ role: 'user', content: buildTextAnalysisPrompt(description) }]
+    })
+  });
+  if (!res.ok) {
+    const errBody = await res.json().catch(() => ({}));
+    throw new Error((errBody && errBody.error && errBody.error.message) || ('خطأ HTTP ' + res.status));
+  }
+  const data = await res.json();
+  const text = (data.content || []).filter(b => b.type === 'text').map(b => b.text).join('\n');
+  return parseJsonFromText(text);
+}
+
+async function analyzeMealTextWithRetry(provider, apiKey, model, description, maxRetries) {
+  maxRetries = maxRetries || 1;
+  let lastErr;
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    try {
+      return provider === 'gemini'
+        ? await analyzeMealTextGemini(apiKey, model, description)
+        : await analyzeMealTextClaude(apiKey, model, description);
+    } catch (err) {
+      lastErr = err;
+      const isTransient = /overloaded|high demand|try again later|rate limit|too many requests|503|429/i.test(err.message);
+      if (!isTransient || attempt === maxRetries) throw err;
+      await new Promise(resolve => setTimeout(resolve, 1500 * (attempt + 1)));
+    }
+  }
+  throw lastErr;
+}
+
+let pendingTextMeal = null;
+
+async function handleMealText() {
+  const input = document.getElementById('meal-text-input');
+  const description = input.value.trim();
+  if (!description) { alert('اكتب وصف الوجبة أولاً'); return; }
+
+  const previewDiv = document.getElementById('meal-text-preview');
+  const provider = localStorage.getItem('healthAppAiProvider') || 'gemini';
+  const geminiKey = localStorage.getItem('healthAppGeminiKey');
+  const claudeKey = localStorage.getItem('healthAppClaudeKey');
+  const activeKey = provider === 'gemini' ? geminiKey : claudeKey;
+
+  if (!activeKey) {
+    const providerName = provider === 'gemini' ? 'Google Gemini' : 'Claude';
+    previewDiv.innerHTML = `<div class="message-box warning" style="margin-top:10px;">أضف مفتاح ${providerName} من ⚙️ الإعدادات أولاً.</div>`;
+    return;
+  }
+
+  previewDiv.innerHTML = '<div class="message-box" style="margin-top:10px;">🔍 جاري تقدير القيم الغذائية...</div>';
+
+  try {
+    const model = provider === 'gemini' ? getGeminiModel() : getClaudeModel();
+    const analysis = await analyzeMealTextWithRetry(provider, activeKey, model, description);
+
+    pendingTextMeal = analysis;
+    previewDiv.innerHTML = `
+      <div class="food-item" style="margin-top:10px;">
+        <div class="food-info">
+          <div class="food-name">🍽️ ${escapeHtml(analysis.name)}</div>
+          <div class="food-macros">🔥 ${Math.round(analysis.calories)} سعرة | 🥛 ${analysis.protein}غ | 🌾 ${analysis.carbs}غ | 🫒 ${analysis.fat}غ</div>
+          <div style="font-size:11px; color:var(--text-secondary); margin-top:4px;">⚠️ تقدير ذكاء اصطناعي — راجعه قبل الإضافة</div>
+        </div>
+      </div>
+      <div style="display:flex; gap:10px; margin-top:10px;">
+        <button class="btn btn-primary" style="margin:0;" onclick="confirmTextMeal()">✅ أضف للسجل</button>
+        <button class="btn btn-secondary" style="margin:0;" onclick="cancelTextMeal()">❌ إلغاء</button>
+      </div>
+    `;
+  } catch (err) {
+    previewDiv.innerHTML = `<div class="message-box error" style="margin-top:10px;">تعذر تحليل الوجبة: ${escapeHtml(err.message)}</div>`;
+  }
+}
+
+function confirmTextMeal() {
+  if (!pendingTextMeal) return;
+  appState.meals.push({
+    name: pendingTextMeal.name,
+    food: null,
+    qty: 1,
+    cal: Math.round(pendingTextMeal.calories),
+    protein: pendingTextMeal.protein,
+    carbs: pendingTextMeal.carbs,
+    fat: pendingTextMeal.fat,
+    comboDetails: '✏️ تقدير ذكاء اصطناعي من وصف نصي',
+    time: new Date().toLocaleTimeString('ar')
+  });
+  saveCurrentUserData();
+  updateDashboard();
+  updateMealsList();
+  cancelTextMeal();
+  document.getElementById('meal-text-input').value = '';
+}
+
+function cancelTextMeal() {
+  pendingTextMeal = null;
+  const previewDiv = document.getElementById('meal-text-preview');
   if (previewDiv) previewDiv.innerHTML = '';
 }
 

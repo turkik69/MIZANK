@@ -451,7 +451,7 @@ body {
     <div class="screen-header">
       <div>
         <div class="screen-title">سجل الوجبات والتغذية 🍽️</div>
-        <div class="screen-subtitle">كتابة حرّة + أكلات عمانية وخليجية + مشروبات وحلويات</div>
+        <div class="screen-subtitle">توست + كبسات وصالونات + فواكه ومشروبات وحلويات</div>
       </div>
     </div>
 
@@ -465,7 +465,7 @@ body {
       </p>
 
       <div class="form-group" style="margin-bottom:10px;">
-        <input type="text" id="meal-text-input" class="form-input" placeholder="مثال: صحن أرز أبيض وصالونة دجاج، قهوة أمريكية، شاي كرك..." onkeypress="if(event.key==='Enter') handleMealText()">
+        <input type="text" id="meal-text-input" class="form-input" placeholder="مثال: صحن أرز أبيض وصالونة دجاج، تفاح وموز، قهوة أمريكية..." onkeypress="if(event.key==='Enter') handleMealText()">
       </div>
 
       <div style="display:grid; grid-template-columns: 2fr 1fr; gap:10px;">
@@ -476,17 +476,19 @@ body {
       <div id="meal-text-preview"></div>
     </div>
 
-    <!-- Suggested Meals Categories WITH EXPANDED LOCAL OMANI/GULF DISHES, SWEETS & DRINKS -->
+    <!-- CATEGORIZED MEALS & DRINKS & FRUITS -->
     <div class="glass-card" style="border-color: var(--accent-amber);">
-      <h3 style="color: var(--accent-amber); margin-bottom: 8px; font-size:15px; font-weight:800;">💡 قائمتك المحلية: صالونات، كبسات، حلويات ومشروبات</h3>
-      <p style="font-size:12px; color:var(--text-secondary); margin-bottom:12px;">اختر الوجبات العمانية والخليجية والمشروبات بضغطة زر واحدة:</p>
+      <h3 style="color: var(--accent-amber); margin-bottom: 8px; font-size:15px; font-weight:800;">💡 قائمتك المحلية: توست، صالونات، فواكه، حلويات ومشروبات</h3>
+      <p style="font-size:12px; color:var(--text-secondary); margin-bottom:12px;">اختر التصنيف واضغط لإضافة الوجبة فوراً لمفكرتك اليومية:</p>
 
       <div class="pill-container">
-        <div class="pill active" onclick="selectSuggestedCategory('breakfast', this)">🍳 الإفطار والخبز العماني</div>
-        <div class="pill" onclick="selectSuggestedCategory('lunch', this)">🍗 الأرز والصالونات والكبسات</div>
+        <div class="pill active" onclick="selectSuggestedCategory('breakfast', this)">🍳 الإفطار والتوست</div>
+        <div class="pill" onclick="selectSuggestedCategory('lunch', this)">🍗 الغداء (كبسات وصالونات)</div>
+        <div class="pill" onclick="selectSuggestedCategory('dinner', this)">🥗 العشاء والخفيف</div>
         <div class="pill" onclick="selectSuggestedCategory('grills', this)">🍢 المشاكيك والفرن</div>
+        <div class="pill" onclick="selectSuggestedCategory('fruits', this)">🍎 الفواكه الطازجة والتمر</div>
         <div class="pill" onclick="selectSuggestedCategory('sweets', this)">🍰 الكيك والحلويات</div>
-        <div class="pill" onclick="selectSuggestedCategory('drinks', this)">☕ المشروبات والدايت</div>
+        <div class="pill" onclick="selectSuggestedCategory('drinks', this)">☕ المشروبات والعصائر</div>
       </div>
 
       <div id="suggested-meals-container"></div>
@@ -495,7 +497,7 @@ body {
     <!-- Voice Input Card -->
     <div class="glass-card" style="border-color: var(--accent-emerald);">
       <h3 style="color: var(--accent-emerald); margin-bottom: 4px; font-size:15px; font-weight:800;">🎙️ تسجيل الوجبة بالتحدث الصوتي</h3>
-      <p style="font-size:12px; color:var(--text-secondary); margin-bottom:12px;">انقر وتحدث بما أكلته (مثال: "أكلت أرز أبيض وصالونة سمك وشربت قهوة أمريكية")</p>
+      <p style="font-size:12px; color:var(--text-secondary); margin-bottom:12px;">انقر وتحدث بما أكلته (مثال: "أكلت توست أسمر بالبيض مع موزة وشربت قهوة أمريكية")</p>
       
       <button class="btn btn-primary" id="voice-record-btn" onclick="toggleVoiceRecognition()">
         <span id="voice-btn-text">🎙️ ابدأ التسجيل الصوتي</span>
@@ -939,10 +941,14 @@ async function fetchGeminiWithRetry(payload) {
   throw lastError || new Error("تعذر الاتصال بخدمة الذكاء الاصطناعي حالياً.");
 }
 
-// ============ CATEGORIZED SUGGESTED MEALS (EXPANDED WITH LOCAL OMANI DISHES, SWEETS & DRINKS) ============
+// ============ CATEGORIZED SUGGESTED MEALS (EXPANDED WITH LOCAL DISHES, TOASTS, FRUITS, SWEETS & JUICES) ============
 const suggestedMealsData = {
   breakfast: [
-    { name: '🥚 بيض مسلوق (2 بيضة)', cal: 150, protein: 12, carbs: 1, fat: 10, desc: 'وجبة إفطار خفيفة ومثالية للغرامات الخالية من السكر' },
+    { name: '🥪 ساندويتش توست أسمر بالبيض والجبن', cal: 260, protein: 16, carbs: 24, fat: 10, desc: 'شريحتان توست أسمر + بيضة + جبن قليل الدسم' },
+    { name: '🥪 ساندويتش توست أبيض بالبيض المسلوق', cal: 230, protein: 12, carbs: 26, fat: 8, desc: 'شريحتان توست أبيض + بيض مسلوق ورشة فلفل أسود' },
+    { name: '🥪 توست أسمر باللبنة والزيتون', cal: 210, protein: 9, carbs: 26, fat: 7, desc: 'توست أسمر محمص + 2 ملعقة لبنة خفيفة وسلايس خيار' },
+    { name: '🥪 توست أسمر بزبدة الفول السوداني والموز', cal: 280, protein: 9, carbs: 38, fat: 12, desc: 'شريحة توست أسمر + ملعقة زبدة فول سوداني ونصف موزة' },
+    { name: '🥚 بيض مسلوق (2 بيضة)', cal: 150, protein: 12, carbs: 1, fat: 10, desc: 'وجبة إفطار غنية بالبروتين وخالية من السكر' },
     { name: '🍳 بيض قروص عماني بالهيل والزعفران', cal: 240, protein: 14, carbs: 12, fat: 14, desc: 'قرص بيض عماني مطبوخ ومبهر بالهيل والزعفران' },
     { name: '🫓 قروص وعسل عماني', cal: 320, protein: 8, carbs: 54, fat: 6, desc: 'أقراص خبز القروص الدافئة مع العسل العماني الطبيعي' },
     { name: '🫓 خبز رقاق عماني بالبيض والجبن الخفيف', cal: 310, protein: 18, carbs: 32, fat: 10, desc: '2 شريحة خبز رقاق + بيضة + جبن قليل الدسم' },
@@ -955,14 +961,32 @@ const suggestedMealsData = {
     { name: '🍗 دجاج في الفرن مع خضار مشوية', cal: 380, protein: 42, carbs: 12, fat: 12, desc: 'نصف دجاجة مشوية بالفرن مع البطاطس والكوسة والمشروم' },
     { name: '🥩 قبولي لحم عماني بالبهارات العطرية', cal: 540, protein: 38, carbs: 50, fat: 15, desc: 'أرز القبولي العماني مع قطع اللحم الطري والحمص والمكسرات' },
     { name: '🍗 قبولي دجاج عماني مع الحمص', cal: 480, protein: 40, carbs: 48, fat: 11, desc: 'أرز القبولي المعطر بالبهارات الصحيحة والدجاج المشوي' },
-    { name: '🍗 مجبوس / كبسة دجاج خليجية', cal: 490, protein: 42, carbs: 50, fat: 11, desc: '180غ دجاج مشوي مع بهارات الكبسة + 150غ أرز' },
+    { name: '🐟 قبولي سمك الكنعذ العماني', cal: 450, protein: 36, carbs: 46, fat: 9, desc: 'أرز قبولي مع فيليه سمك الكنعذ/الجنعد المبهر' },
+    { name: '🍗 كبسة دجاج خليجية متوازنة', cal: 490, protein: 42, carbs: 50, fat: 11, desc: '180غ دجاج مشوي مع بهارات الكبسة + 150غ أرز' },
     { name: '🥩 كبسة لحم طازج بالبهارات الخليجية', cal: 560, protein: 38, carbs: 52, fat: 18, desc: 'أرز كبسة اللحم المطهو بالهيل والدارسين' },
+    { name: '🐟 كبسة سمك هامور خليجية', cal: 430, protein: 35, carbs: 48, fat: 9, desc: 'أرز كبسة سمك الهامور المتبل مع الليمون والمكسرات' },
     { name: '🦐 كبسة روبيان خليجية', cal: 420, protein: 36, carbs: 48, fat: 8, desc: 'أرز كبسة الروبيان المتبل مع الليمون والمكسرات' }
+  ],
+  dinner: [
+    { name: '🥣 شوربة بابلو عمانية بالسمك والليمون', cal: 220, protein: 28, carbs: 12, fat: 5, desc: 'وجبة عشاء خفيفة وسريعة الهضم غنية بالبروتين والليمون' },
+    { name: '🍗 شواء عماني مشوي مع سلطة مشكلة', cal: 390, protein: 36, carbs: 10, fat: 16, desc: '150غ لحم شواء متبل بالثوم والتمر الهندي + صحن سلطة كبير' },
+    { name: '🥣 مضروبة دجاج عمانية خفيفة', cal: 310, protein: 26, carbs: 30, fat: 6, desc: 'وجبة دافئة ومغذية من الأرز والدجاج المضروب بالبهارات' },
+    { name: '🥗 علبة تونا بالماء مع سلطة مشكلة', cal: 260, protein: 32, carbs: 10, fat: 4, desc: 'تونا الصافي + طبق سلطة مشكلة مع زيت زيتون خفيف' }
   ],
   grills: [
     { name: '🍢 مشاكيك لحم عمانية مشوية (4 مشاكيك)', cal: 360, protein: 36, carbs: 6, fat: 18, desc: 'أسياخ لحم البقر أو الغنم المتبلة بالخل العماني والمشوية على الفحم' },
     { name: '🍢 مشاكيك دجاج مشوية (4 مشاكيك)', cal: 310, protein: 38, carbs: 4, fat: 12, desc: 'أسياخ صدور الدجاج المتبلة بالثوم والليمون والمشوية' },
     { name: '🍗 شواء عماني أصيل مع السلطة', cal: 420, protein: 38, carbs: 10, fat: 18, desc: 'لحم الشواء المطهو بالتبيل العماني والتمر الهندي' }
+  ],
+  fruits: [
+    { name: '🍌 موزة متوسطة الحجم (100غ)', cal: 105, protein: 1.3, carbs: 27, fat: 0.3, desc: 'مصدر رائع للطاقة البطيئة والبيتاسيوم' },
+    { name: '🍇 عنب طازج (كوب 150غ)', cal: 104, protein: 1.1, carbs: 27, fat: 0.2, desc: 'غني بمضادات الأكسدة والسكريات الطبيعية' },
+    { name: '🍎 تفاحة متوسطة طازجة', cal: 95, protein: 0.5, carbs: 25, fat: 0.3, desc: 'مشبعة وغنية بالألياف الطبيعية' },
+    { name: '🌴 تمر مجفف (3 حبات خلاص / سكري)', cal: 80, protein: 1, carbs: 18, fat: 0, desc: 'طاقة سريعة ومثالية مع القهوة العمانية' },
+    { name: '🌴 رطب طازج (5 حبات رطب)', cal: 90, protein: 1, carbs: 21, fat: 0, desc: 'رطب عماني طازج ولذيذ غني بالمعادن' },
+    { name: '🍊 برتقالة طازجة متوسطة', cal: 62, protein: 1.2, carbs: 15, fat: 0.2, desc: 'غنية بفيتامين C والألياف المنعشة' },
+    { name: '🥭 مانجو طازجة (نصف ثمرة 150غ)', cal: 99, protein: 1.4, carbs: 25, fat: 0.6, desc: 'فاكهة استوائية غنية بفيتامين A و C' },
+    { name: '🔴 رمان طازج (نصف كوب حبات رمان)', cal: 72, protein: 1.5, carbs: 16, fat: 1, desc: 'مفيد لصحة القلب والدورة الدموية' }
   ],
   sweets: [
     { name: '🍰 كيك الشوكولاتة الداكنة (شريحة متوسطة)', cal: 280, protein: 5, carbs: 38, fat: 14, desc: 'شريحة كيك غنية بالشوكولاتة للتحلية' },
@@ -970,10 +994,15 @@ const suggestedMealsData = {
     { name: '🍰 تشيز كيك خفيف (شريحة 80غ)', cal: 290, protein: 6, carbs: 28, fat: 16, desc: 'تشيز كيك بارد بحشو الجبن الخفيف' },
     { name: '🍯 لقيمات بالعسل العماني (5 حبات)', cal: 180, protein: 3, carbs: 32, fat: 6, desc: 'لقيمات مقرمشة مع ملعقة عسل طبيعي' },
     { name: '🍯 حلوى عمانية طازجة (حصّة 30غ)', cal: 160, protein: 1, carbs: 28, fat: 5, desc: 'حصّة معتدلة من الحلوى العمانية بالزعفران والمكسرات' },
-    { name: '🥣 أم علي بالخضار والمكسرات', cal: 320, protein: 7, carbs: 42, fat: 12, desc: 'طبق أم علي الدافئ بالحليب والمكسرات' }
+    { name: '🥣 أم علي بالحليب والمكسرات', cal: 320, protein: 7, carbs: 42, fat: 12, desc: 'طبق أم علي الدافئ بالحليب والمكسرات' }
   ],
   drinks: [
     { name: '☕ قهوة أمريكية (Americano / Filter Coffee)', cal: 5, protein: 0, carbs: 1, fat: 0, desc: 'قهوة سوداء ناصعة بدون سكر ومفيدة للتركيز وحرق الدهون' },
+    { name: '🍊 عصير برتقال طازج (كوب 250مل)', cal: 110, protein: 2, carbs: 26, fat: 0.5, desc: 'عصير برتقال طبيعي 100% بدون سكر مضاف' },
+    { name: '🥭 عصير مانجو طازج (كوب 250مل)', cal: 135, protein: 1, carbs: 33, fat: 0.5, desc: 'عصير مانجو طبيعي منعش غني بالمعادن' },
+    { name: '🍋 عصير ليمون بالنعناع طازج', cal: 85, protein: 0.5, carbs: 20, fat: 0.2, desc: 'عصير منعش خفيف السعرات ومثالي للصيف' },
+    { name: '🧃 عصير تفاح معلب (عبوة 250مل)', cal: 120, protein: 0, carbs: 29, fat: 0, desc: 'عصير تفاح جاهز محلى' },
+    { name: '🧃 عصير فواكه مشكلة معلب (250مل)', cal: 130, protein: 0.5, carbs: 31, fat: 0, desc: 'كوكتيل فواكه معلب غني بالنكهات' },
     { name: '☕ قهوة عمانية / عربية بالهيل والزعفران', cal: 5, protein: 0, carbs: 1, fat: 0, desc: 'مشروب دافئ منعش خالي من السعرات تقريباً' },
     { name: '🥛 شاي كرك / شاي حليب قليل الدسم', cal: 65, protein: 3, carbs: 8, fat: 2, desc: 'كوب شاي بالحليب والبهارات (بدون سكر مضاف)' },
     { name: '🍃 شاي أخضر بالزنجبيل والليمون', cal: 2, protein: 0, carbs: 0, fat: 0, desc: 'مشروب ينشط الأيض ويسرع حرق الدهون' },
@@ -1301,7 +1330,7 @@ function openManualMealModal() {
     <div style="text-align:right;">
       <div class="form-group">
         <label class="form-label">اسم الوجبة</label>
-        <input type="text" id="manual-meal-name" class="form-input" placeholder="مثال: صالونة دجاج، قهوة أمريكية...">
+        <input type="text" id="manual-meal-name" class="form-input" placeholder="مثال: صالونة سمك، قهوة أمريكية...">
       </div>
       <div class="form-group">
         <label class="form-label">السعرات الحرارية (سعرة)</label>

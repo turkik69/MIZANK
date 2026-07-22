@@ -612,38 +612,89 @@ body {
     </div>
   </div>
 
-  <!-- WORKOUTS SCREEN -->
+  <!-- WORKOUTS SCREEN (UPDATED: REPS, JUMP ROPE, ABS ROUTINES) -->
   <div id="workouts-screen" class="screen">
     <div class="screen-header">
       <div>
         <div class="screen-title">سجل التمارين واللياقة 🏋️‍♂️</div>
-        <div class="screen-subtitle">احسب السعرات المحروقة وحافظ على لياقتك</div>
+        <div class="screen-subtitle">نط الحبل، تمارين المعدة والبطن، والعدات</div>
       </div>
     </div>
 
+    <!-- Ready Abs & Core Routines -->
+    <div class="glass-card" style="border-color: var(--accent-coral);">
+      <h3 style="color: var(--accent-coral); margin-bottom: 8px; font-size:15px; font-weight:800;">🔥 برامج تمارين المعدة والبطن الموصى بها</h3>
+      <p style="font-size:12px; color:var(--text-secondary); margin-bottom:12px;">مجموعات تمارين محسوبة الجولات والعدات لنحت وتقوية البطن:</p>
+      
+      <div class="food-item">
+        <div class="food-info">
+          <div style="font-weight:800; font-size:14px; color:#fff;">🧘‍♂️ برنامج نحت البطن الشامل</div>
+          <div style="font-size:11px; color:var(--text-secondary);">3 جولات Crunches (15 عدة) + رفع الأرجل (12 عدة) + بلانك (45 ثانية)</div>
+          <div style="font-size:11px; color:var(--accent-coral); margin-top:2px;">⏱️ ~20 دقيقة | 🔥 ~180 سعرة محروقة</div>
+        </div>
+        <button class="icon-btn" style="background:var(--accent-coral); color:#fff; border:none;" onclick="addPresetWorkoutLog('برنامج نحت البطن الشامل', 20, 180, '3 جولات معدة + أرجل + بلانك')">➕ تسجيل</button>
+      </div>
+
+      <div class="food-item">
+        <div class="food-info">
+          <div style="font-weight:800; font-size:14px; color:#fff;">🪢 تحدي نط الحبل السريع</div>
+          <div style="font-size:11px; color:var(--text-secondary);">500 قفزة حبل (مقسمة على 5 مجموعات × 100 عدة)</div>
+          <div style="font-size:11px; color:var(--accent-coral); margin-top:2px;">⏱️ ~15 دقيقة | 🔥 ~200 سعرة محروقة</div>
+        </div>
+        <button class="icon-btn" style="background:var(--accent-coral); color:#fff; border:none;" onclick="addPresetWorkoutLog('تحدي 500 نط حبل', 15, 200, '500 قفزة حبل')">➕ تسجيل</button>
+      </div>
+    </div>
+
+    <!-- Manual Workout Log Card -->
     <div class="glass-card">
-      <h3 style="color: var(--accent-emerald); margin-bottom: 12px; font-size:15px; font-weight:800;">➕ إضافة نشاط رياضي</h3>
+      <h3 style="color: var(--accent-emerald); margin-bottom: 12px; font-size:15px; font-weight:800;">➕ إضافة نشاط أو تمرين مخصص</h3>
       
       <div class="form-group">
         <label class="form-label">نوع التمرين</label>
         <select id="workout-type" class="form-select" onchange="updateWorkoutCalRate()">
+          <option value="jump_rope">🪢 نط الحبل (Jump Rope)</option>
+          <option value="abs_crunches">🧘‍♂️ تمارين المعدة العلوية (Crunches)</option>
+          <option value="abs_leg_raises">🦵 رفع الأرجل للبطن السفلي (Leg Raises)</option>
+          <option value="abs_bicycle">🚲 تمرين الدراجة للمعدة (Bicycle Crunches)</option>
+          <option value="abs_plank">🪵 تمرين البلانك للثبات (Plank)</option>
+
           <option value="cardio_run">🏃‍♂️ جري متوسط (Cardio)</option>
           <option value="cardio_walk">🚶‍♂️ مشي سريع</option>
           <option value="strength">🏋️‍♂️ تمارين حديد ومقاومة</option>
           <option value="hiit">🔥 تمارين متناوبة الشدة (HIIT)</option>
-          <option value="cycling">🚴‍♂️ ركوب الدراجة</option>
-          <option value="swimming">🏊‍♂️ السباحة</option>
         </select>
       </div>
 
-      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+      <div class="pill-container" style="margin-bottom:12px;">
+        <div class="pill active" id="workout-mode-time" onclick="setWorkoutLogMode('time')">⏱️ التسجيل بالوقت (دقائق)</div>
+        <div class="pill" id="workout-mode-reps" onclick="setWorkoutLogMode('reps')">🔢 التسجيل بالعدات والجولات</div>
+      </div>
+
+      <!-- Mode 1: Duration -->
+      <div id="workout-time-inputs" style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
         <div class="form-group">
           <label class="form-label">المدة (دقائق)</label>
-          <input type="number" id="workout-duration" class="form-input" value="30" min="5" step="5" oninput="updateWorkoutCalRate()">
+          <input type="number" id="workout-duration" class="form-input" value="15" min="1" step="1" oninput="updateWorkoutCalRate()">
         </div>
         <div class="form-group">
           <label class="form-label">السعرات المحروقة</label>
-          <input type="number" id="workout-calories" class="form-input" value="200" readonly style="background:rgba(255,255,255,0.05);">
+          <input type="number" id="workout-calories" class="form-input" value="150" readonly style="background:rgba(255,255,255,0.05);">
+        </div>
+      </div>
+
+      <!-- Mode 2: Reps & Sets -->
+      <div id="workout-reps-inputs" style="display:none; grid-template-columns: 1fr 1fr 1fr; gap:8px;">
+        <div class="form-group">
+          <label class="form-label">الجولات (Sets)</label>
+          <input type="number" id="workout-sets" class="form-input" value="3" min="1" oninput="updateWorkoutCalRate()">
+        </div>
+        <div class="form-group">
+          <label class="form-label">العدات لكل جولة</label>
+          <input type="number" id="workout-reps" class="form-input" value="15" min="1" oninput="updateWorkoutCalRate()">
+        </div>
+        <div class="form-group">
+          <label class="form-label">السعرات (تقريبي)</label>
+          <input type="number" id="workout-reps-calories" class="form-input" value="60" readonly style="background:rgba(255,255,255,0.05);">
         </div>
       </div>
 
@@ -720,14 +771,23 @@ body {
     </div>
 
     <div class="glass-card" style="border-color: var(--accent-purple);">
-      <h3 style="color: var(--accent-purple); margin-bottom: 8px; font-size:15px; font-weight:800;">🔔 نظام التذكيرات والإشعارات</h3>
-      <p style="font-size:12px; color:var(--text-secondary); margin-bottom:14px;">تفعيل التنبيهات لشرب الماء، إدخال الوجبات، وتنبيهات الصيام</p>
+      <h3 style="color: var(--accent-purple); margin-bottom: 8px; font-size:15px; font-weight:800;">🔔 نظام التذكيرات والإشعارات الذكية</h3>
+      <p style="font-size:12px; color:var(--text-secondary); margin-bottom:14px;">تفعيل التنبيهات الدورية لشرب الماء، إدخال الوجبات، وتنبيهات الصيام</p>
       
+      <div class="form-group">
+        <label class="form-label">تكرار تذكير شرب الماء</label>
+        <select id="water-reminder-interval-select" class="form-select" onchange="updateReminderPreferences()">
+          <option value="1">كل ساعة 💧</option>
+          <option value="2" selected>كل ساعتين 💧</option>
+          <option value="3">كل 3 ساعات 💧</option>
+        </select>
+      </div>
+
       <div style="display:flex; flex-direction:column; gap:10px;">
         <button class="btn btn-purple" id="notification-toggle-btn" onclick="requestNotificationPermission()">
-          <span>🔔 تفعيل الإشعارات في الجهاز</span>
+          <span>🔔 تفعيل إشعارات المتصفح والجهاز</span>
         </button>
-        <button class="btn btn-secondary" onclick="sendTestNotification()">⚡ تجربة إرسال إشعار تجريبي</button>
+        <button class="btn btn-secondary" onclick="sendTestNotification()">⚡ تجربة إرسال إشعار فوراً</button>
       </div>
     </div>
 
@@ -814,6 +874,28 @@ document.addEventListener('touchend', e => {
   }
   lastTouchEnd = now;
 }, { passive: false });
+
+// ============ INLINE SERVICE WORKER FOR RELIABLE NOTIFICATIONS ============
+let swRegistration = null;
+if ('serviceWorker' in navigator) {
+  const swCode = `
+    self.addEventListener('install', (e) => self.skipWaiting());
+    self.addEventListener('activate', (e) => e.waitUntil(self.clients.claim()));
+    self.addEventListener('message', (e) => {
+      if (e.data && e.data.type === 'SHOW_NOTIFICATION') {
+        self.registration.showNotification(e.data.title, {
+          body: e.data.body,
+          icon: e.data.icon,
+          badge: e.data.icon
+        });
+      }
+    });
+  `;
+  const blob = new Blob([swCode], { type: 'application/javascript' });
+  navigator.serviceWorker.register(URL.createObjectURL(blob))
+    .then(reg => { swRegistration = reg; })
+    .catch(() => {});
+}
 
 // ============ GEMINI API CORE WITH EXPONENTIAL BACKOFF ============
 const apiKey = ""; // Runtime provided key by host execution environment
@@ -928,6 +1010,9 @@ let appState = {
   chat: [],
   streak: 1,
   notificationsEnabled: false,
+  waterIntervalHours: 2,
+  lastWaterNotifTime: 0,
+  lastMealNotifTime: 0,
   fasting: { active: false, startTime: null, targetHours: 16, logs: [] }
 };
 let dashboardChartInstance = null;
@@ -981,7 +1066,7 @@ window.addEventListener('load', async () => {
     const db = loadUsersDB();
     if (db[savedUsername] && db[savedUsername].profile) {
       currentUsername = savedUsername;
-      appState = Object.assign({ meals: [], workouts: [], weights: [], water: 0, waterDate: null, chat: [], streak: 1, fasting: { active: false, startTime: null, targetHours: 16, logs: [] } }, db[savedUsername]);
+      appState = Object.assign({ meals: [], workouts: [], weights: [], water: 0, waterDate: null, chat: [], streak: 1, waterIntervalHours: 2, lastWaterNotifTime: 0, lastMealNotifTime: 0, fasting: { active: false, startTime: null, targetHours: 16, logs: [] } }, db[savedUsername]);
       document.getElementById('bottom-nav').style.display = 'flex';
       showScreen('dashboard-screen');
       updateDashboard();
@@ -1006,7 +1091,7 @@ function handleLogin() {
 
   const db = loadUsersDB();
   if (db[username] && db[username].profile) {
-    appState = Object.assign({ meals: [], workouts: [], weights: [], water: 0, waterDate: null, chat: [], streak: 1, fasting: { active: false, startTime: null, targetHours: 16, logs: [] } }, db[username]);
+    appState = Object.assign({ meals: [], workouts: [], weights: [], water: 0, waterDate: null, chat: [], streak: 1, waterIntervalHours: 2, lastWaterNotifTime: 0, lastMealNotifTime: 0, fasting: { active: false, startTime: null, targetHours: 16, logs: [] } }, db[username]);
     document.getElementById('bottom-nav').style.display = 'flex';
     showScreen('dashboard-screen');
     updateDashboard();
@@ -1016,7 +1101,7 @@ function handleLogin() {
     fetchLeaderboard();
     startNotificationScheduler();
   } else {
-    appState = db[username] || { profile: null, meals: [], workouts: [], weights: [], water: 0, chat: [], streak: 1, fasting: { active: false, startTime: null, targetHours: 16, logs: [] } };
+    appState = db[username] || { profile: null, meals: [], workouts: [], weights: [], water: 0, chat: [], streak: 1, waterIntervalHours: 2, lastWaterNotifTime: 0, lastMealNotifTime: 0, fasting: { active: false, startTime: null, targetHours: 16, logs: [] } };
     showScreen('setup-screen');
   }
 }
@@ -1301,7 +1386,7 @@ function toggleVoiceRecognition() {
   speechRecognition.start();
 }
 
-// ============ BARCODE SCANNER WITH PHOTO CAPTURE & AI FALLBACK ============
+// ============ BARCODE SCANNER ============
 let html5QrCode = null;
 
 function triggerBarcodeCameraPhoto() {
@@ -1480,10 +1565,17 @@ async function lookupBarcode(barcode) {
   }
 }
 
-// ============ NOTIFICATIONS SYSTEM ============
+// ============ HIGHLY RELIABLE NOTIFICATION & REMINDER SYSTEM ============
+function updateReminderPreferences() {
+  const val = parseInt(document.getElementById('water-reminder-interval-select').value) || 2;
+  appState.waterIntervalHours = val;
+  saveCurrentUserData();
+  showToast(`تم تحديث تذكير الماء ليكون كل ${val} ساعات 💧`, 'success');
+}
+
 function requestNotificationPermission() {
   if (!("Notification" in window)) {
-    showToast("متصفحك لا يدعم الإشعارات", "warning");
+    showToast("متصفحك لا يدعم إشعارات النظام المباشرة", "warning");
     return;
   }
 
@@ -1493,8 +1585,9 @@ function requestNotificationPermission() {
       saveCurrentUserData();
       showToast("تم تفعيل التنبيهات بنجاح! 🔔", "success");
       document.getElementById('notification-toggle-btn').innerHTML = "<span>✅ الإشعارات مفعلة بنجاح</span>";
+      startNotificationScheduler();
     } else {
-      showToast("لم يتم منح الإذن للإشعارات", "warning");
+      showToast("لم يتم منح الإذن للإشعارات في إعدادات جهازك", "warning");
     }
   });
 }
@@ -1502,32 +1595,68 @@ function requestNotificationPermission() {
 function triggerNotification(title, body) {
   const scaleIconUrl = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='120' fill='%23070a16'/><rect x='70' y='70' width='372' height='372' rx='70' fill='%23111827' stroke='%2310b981' stroke-width='22'/><rect x='150' y='115' width='212' height='80' rx='20' fill='%23042f2e' stroke='%2310b981' stroke-width='10'/><circle cx='180' cy='155' r='8' fill='%2310b981'/><path d='M210 155h90' stroke='%2310b981' stroke-width='14' stroke-linecap='round' stroke-dasharray='15 10'/><path d='M150 360 a130 130 0 0 1 212 0' fill='none' stroke='%2306b6d4' stroke-width='24' stroke-linecap='round'/><path d='M256 360 l45 -70' stroke='%23f43f5e' stroke-width='16' stroke-linecap='round'/><circle cx='256' cy='360' r='22' fill='%23f43f5e'/></svg>";
 
-  if ("Notification" in window && Notification.permission === "granted") {
+  // 1. Try Service Worker push if available
+  if (swRegistration && swRegistration.active) {
+    swRegistration.active.postMessage({
+      type: 'SHOW_NOTIFICATION',
+      title: title,
+      body: body,
+      icon: scaleIconUrl
+    });
+  } 
+  // 2. Direct browser notification
+  else if ("Notification" in window && Notification.permission === "granted") {
     new Notification(title, { body: body, icon: scaleIconUrl });
-  } else {
-    showToast(`🔔 [تنبيه]: ${title} - ${body}`, 'info');
   }
+
+  // 3. Always show in-app Toast
+  showToast(`🔔 [تذكير]: ${title} - ${body}`, 'info');
 }
 
 function sendTestNotification() {
-  triggerNotification("مستشار صحتك الذكي ⚖️", "إشعار تجريبي! سنقوم بتذكيرك بانتظام لشرب الماء، التسجيل والصيام.");
+  triggerNotification("مستشار صحتك الذكي ⚖️", "إشعار تجريبي ناجح! تذكير شرب الماء والوجبة القادمة.");
 }
 
-function startNotificationScheduler() {
-  setInterval(() => {
-    if (!appState.notificationsEnabled) return;
-    const hour = new Date().getHours();
+let notificationSchedulerInterval = null;
 
-    if (hour === 9) {
-      triggerNotification("⏰ إفطار الصباح", "لا تنسَ إدخال وجبة الإفطار للالتزام بهدفك اليومي!");
-    } else if (hour === 14) {
-      triggerNotification("🍗 وقت الغداء", "سجل وجبة الغداء بالصوت أو الصورة لتتبع سعراتك!");
-    } else if (hour === 18) {
-      triggerNotification("💧 تذكير شرب الماء", "تذكر شرب كوب ماء لترطيب جسمك والحفاظ على الحيوية!");
-    } else if (hour === 21) {
-      triggerNotification("🌙 عشاء خفيف وتحديث الوزن", "سجل وجبة العشاء وقراءة وزن اليوم للتقدم في الرسم البياني!");
+function startNotificationScheduler() {
+  if (notificationSchedulerInterval) clearInterval(notificationSchedulerInterval);
+
+  // Check every 60 seconds for active reminders
+  notificationSchedulerInterval = setInterval(() => {
+    if (!appState.notificationsEnabled) return;
+
+    const now = Date.now();
+    const currentHour = new Date().getHours();
+    const intervalMs = (appState.waterIntervalHours || 2) * 60 * 60 * 1000;
+
+    // A. Check Water Reminder Interval
+    if (!appState.lastWaterNotifTime || (now - appState.lastWaterNotifTime >= intervalMs)) {
+      if (appState.water < (appState.profile?.water || 8)) {
+        triggerNotification("💧 تذكير شرب الماء", "حان وقت شرب كوب ماء جديد لترطيب جسمك والحفاظ على نشاطك!");
+        appState.lastWaterNotifTime = now;
+        saveCurrentUserData();
+      }
     }
-  }, 3600000);
+
+    // B. Check Scheduled Meal Reminders (Morning, Lunch, Evening)
+    const mealIntervalMs = 4 * 60 * 60 * 1000; // 4 hours check
+    if (!appState.lastMealNotifTime || (now - appState.lastMealNotifTime >= mealIntervalMs)) {
+      if (currentHour === 9) {
+        triggerNotification("🍳 وقت وجبة الإفطار", "لا تنسَ تسجيل وجبة الإفطار لضبط جدول السعرات!");
+        appState.lastMealNotifTime = now;
+        saveCurrentUserData();
+      } else if (currentHour === 14) {
+        triggerNotification("🍗 وقت الغداء الصحي", "تذكير بتسجيل وجبة الغداء بالصوت أو الصورة!");
+        appState.lastMealNotifTime = now;
+        saveCurrentUserData();
+      } else if (currentHour === 20) {
+        triggerNotification("🥗 وقت العشاء والخِتام", "سجل وجبة العشاء الأخيرة وقراءة الوزن للرسم البياني!");
+        appState.lastMealNotifTime = now;
+        saveCurrentUserData();
+      }
+    }
+  }, 60000); // Checks every minute
 }
 
 // ============ INTERMITTENT FASTING TRACKER ============
@@ -1874,32 +2003,98 @@ function deleteMeal(id) {
   showToast('تم حذف الوجبة', 'info');
 }
 
-// ============ WORKOUTS ============
+// ============ EXPANDED WORKOUTS (REPS, JUMP ROPE, ABS) ============
+let workoutLogMode = 'time'; // 'time' or 'reps'
+
+function setWorkoutLogMode(mode) {
+  workoutLogMode = mode;
+  document.getElementById('workout-mode-time').classList.toggle('active', mode === 'time');
+  document.getElementById('workout-mode-reps').classList.toggle('active', mode === 'reps');
+
+  document.getElementById('workout-time-inputs').style.display = mode === 'time' ? 'grid' : 'none';
+  document.getElementById('workout-reps-inputs').style.display = mode === 'reps' ? 'grid' : 'none';
+
+  updateWorkoutCalRate();
+}
+
 function updateWorkoutCalRate() {
   const type = document.getElementById('workout-type').value;
-  const duration = parseFloat(document.getElementById('workout-duration').value) || 30;
-  const rates = { cardio_run: 600, cardio_walk: 280, strength: 400, hiit: 700, cycling: 450, swimming: 500 };
-  const burned = Math.round((rates[type] || 400) * (duration / 60));
-  document.getElementById('workout-calories').value = burned;
+
+  if (workoutLogMode === 'time') {
+    const duration = parseFloat(document.getElementById('workout-duration').value) || 15;
+    const rates = {
+      jump_rope: 750, abs_crunches: 400, abs_leg_raises: 420, abs_bicycle: 450, abs_plank: 350,
+      cardio_run: 600, cardio_walk: 280, strength: 400, hiit: 700
+    };
+    const burned = Math.round((rates[type] || 400) * (duration / 60));
+    document.getElementById('workout-calories').value = burned;
+  } else {
+    const sets = parseInt(document.getElementById('workout-sets').value) || 3;
+    const reps = parseInt(document.getElementById('workout-reps').value) || 15;
+    const totalReps = sets * reps;
+
+    // Calorie estimation per rep based on exercise type
+    let calPerRep = 0.15;
+    if (type === 'jump_rope') calPerRep = 0.20; // ~100 cals for 500 jumps
+    else if (type.startsWith('abs_')) calPerRep = 0.25; // ~15 cals per set of 15 crunches
+    else calPerRep = 0.30;
+
+    const burned = Math.round(totalReps * calPerRep);
+    document.getElementById('workout-reps-calories').value = Math.max(10, burned);
+  }
 }
 
 function addWorkoutLog() {
   const typeSelect = document.getElementById('workout-type');
   const typeText = typeSelect.options[typeSelect.selectedIndex].text;
-  const duration = parseInt(document.getElementById('workout-duration').value) || 30;
-  const calories = parseInt(document.getElementById('workout-calories').value) || 200;
+
+  let durationText = '';
+  let calories = 0;
+
+  if (workoutLogMode === 'time') {
+    const duration = parseInt(document.getElementById('workout-duration').value) || 15;
+    calories = parseInt(document.getElementById('workout-calories').value) || 150;
+    durationText = `${duration} دقيقة`;
+  } else {
+    const sets = parseInt(document.getElementById('workout-sets').value) || 3;
+    const reps = parseInt(document.getElementById('workout-reps').value) || 15;
+    calories = parseInt(document.getElementById('workout-reps-calories').value) || 60;
+    durationText = `${sets} جولات × ${reps} عدة (${sets * reps} إجمالي)`;
+  }
 
   if (!appState.workouts) appState.workouts = [];
 
   appState.workouts.push({
-    id: Date.now(), date: todayStr(), name: typeText, duration, cal: calories,
+    id: Date.now(),
+    date: todayStr(),
+    name: typeText,
+    duration: durationText,
+    cal: calories,
     time: new Date().toLocaleTimeString('ar', { hour: '2-digit', minute: '2-digit' })
   });
 
   saveCurrentUserData();
   updateDashboard();
   updateWorkoutsList();
-  showToast('تم تسجيل التمرين بنجاح 💪', 'success');
+  showToast('تم تسجيل التمرين باليوميات بنجاح 💪', 'success');
+}
+
+function addPresetWorkoutLog(name, durationMins, cal, details) {
+  if (!appState.workouts) appState.workouts = [];
+
+  appState.workouts.push({
+    id: Date.now(),
+    date: todayStr(),
+    name: name,
+    duration: `${durationMins} دقيقة (${details})`,
+    cal: cal,
+    time: new Date().toLocaleTimeString('ar', { hour: '2-digit', minute: '2-digit' })
+  });
+
+  saveCurrentUserData();
+  updateDashboard();
+  updateWorkoutsList();
+  showToast(`تمت إضافة ${name} لسجل اليوم! 💪`, 'success');
 }
 
 function updateWorkoutsList() {
@@ -1916,7 +2111,7 @@ function updateWorkoutsList() {
     <div class="food-item">
       <div class="food-info">
         <div style="font-weight:800; font-size:14px; color:#fff;">🏋️‍♂️ ${w.name}</div>
-        <div style="font-size:11px; color:var(--text-secondary);">⏱️ المدة: ${w.duration} دقيقة | 🔥 السعرات: ${w.cal} سعرة</div>
+        <div style="font-size:11px; color:var(--text-secondary);">⏱️ التفاصيل: ${w.duration} | 🔥 السعرات المحروقة: ${w.cal} سعرة</div>
       </div>
       <button class="delete-btn" onclick="deleteWorkout(${w.id})">حذف</button>
     </div>
@@ -2074,6 +2269,11 @@ function updateProfileUI() {
   const notifBtn = document.getElementById('notification-toggle-btn');
   if (notifBtn && "Notification" in window && Notification.permission === "granted") {
     notifBtn.innerHTML = "<span>✅ الإشعارات مفعلة بنجاح</span>";
+  }
+
+  const intervalSelect = document.getElementById('water-reminder-interval-select');
+  if (intervalSelect) {
+    intervalSelect.value = appState.waterIntervalHours || 2;
   }
 }
 

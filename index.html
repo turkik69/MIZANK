@@ -2,8 +2,10 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<!-- منع الزووم اللمسي وتثبيت عرض الشاشة -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#0f3460">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <title>مستشار صحتك الذكي المتطور</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,7 +13,13 @@
 <!-- Chart.js for interactive analytics -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation; /* منع التكبير والتأخير في اللمس */
+}
 
 :root {
   --primary-dark: #090d16;
@@ -29,16 +37,19 @@
   --text-primary: #ffffff;
   --text-secondary: #b0b8d4;
   --text-muted: #7481a6;
-  --border-glow: rgba(233, 69, 96, 0.4);
   --shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
 }
 
 html, body {
-  width: 100%; height: 100vh; height: 100dvh;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
   font-family: 'Tajawal', system-ui, -apple-system, sans-serif;
   background: radial-gradient(circle at 20% 20%, #16213e 0%, #0a0e27 60%, #050a1a 100%);
   color: var(--text-primary);
   overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 body { display: flex; flex-direction: column; }
@@ -74,7 +85,7 @@ body { display: flex; flex-direction: column; }
   scrollbar-color: var(--accent) transparent;
 }
 
-/* Glassmorphism Navigation */
+/* Navigation */
 .bottom-nav {
   position: fixed; bottom: 0; left: 0; right: 0;
   min-height: 75px;
@@ -105,7 +116,7 @@ body { display: flex; flex-direction: column; }
 .screen.active { display: block; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
-/* Modern Cards */
+/* Cards */
 .glass-card {
   background: var(--surface-glass);
   backdrop-filter: blur(16px);
@@ -114,11 +125,6 @@ body { display: flex; flex-direction: column; }
   border-radius: 20px; padding: 22px;
   box-shadow: var(--shadow); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   margin-bottom: 20px; position: relative; overflow: hidden;
-}
-.glass-card:hover {
-  border-color: rgba(233, 69, 96, 0.3);
-  box-shadow: 0 12px 40px rgba(233, 69, 96, 0.15);
-  transform: translateY(-3px);
 }
 
 .screen-header {
@@ -145,14 +151,17 @@ body { display: flex; flex-direction: column; }
 
 .form-group { margin-bottom: 18px; text-align: right; }
 .form-label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 13px; color: var(--text-secondary); }
-.form-input, .form-select {
-  width: 100%; padding: 14px 16px; background: rgba(11, 17, 32, 0.7);
+
+/* خط 16px للمدخلات يمنع الزووم التلقائي في آيفون وأندرويد عند الكتابة */
+.form-input, .form-select, textarea {
+  width: 100%; padding: 14px 16px; background: rgba(11, 17, 32, 0.8);
   border: 1.5px solid var(--surface-glass-border); border-radius: 12px; color: var(--text-primary);
-  font-size: 15px; font-family: 'Tajawal', system-ui; transition: all 0.25s ease;
+  font-size: 16px !important; font-family: 'Tajawal', system-ui; transition: all 0.25s ease;
+  user-select: text; -webkit-user-select: text;
 }
-.form-input:focus, .form-select:focus {
+.form-input:focus, .form-select:focus, textarea:focus {
   outline: none; border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-glow);
-  background: rgba(11, 17, 32, 0.9);
+  background: rgba(11, 17, 32, 0.95);
 }
 
 .btn {
@@ -163,8 +172,6 @@ body { display: flex; flex-direction: column; }
 .btn-primary { background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%); color: white; box-shadow: 0 8px 20px var(--accent-glow); }
 .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(233, 69, 96, 0.5); }
 .btn-secondary { background: var(--surface-light); color: #fff; border: 1px solid var(--surface-glass-border); }
-.btn-secondary:hover { background: rgba(255, 255, 255, 0.1); border-color: var(--accent); }
-.btn-success { background: linear-gradient(135deg, #06d6a0 0%, #00b4d8 100%); color: #000; font-weight: 800; }
 
 /* Dashboard Grid */
 .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-bottom: 22px; }
@@ -194,29 +201,24 @@ body { display: flex; flex-direction: column; }
   background: rgba(11, 17, 32, 0.6); padding: 14px; border-radius: 14px; border: 1px solid var(--surface-glass-border);
   margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; transition: all 0.2s ease;
 }
-.food-item:hover { background: rgba(26, 35, 62, 0.8); border-color: rgba(255, 255, 255, 0.2); }
 .food-info { flex: 1; padding-left: 10px; }
 .food-name { font-weight: 700; margin-bottom: 4px; font-size: 14px; }
 .food-macros { font-size: 11px; color: var(--text-secondary); }
 
-.delete-btn { background: rgba(230, 57, 70, 0.2); color: #ff8fa3; border: 1px solid var(--danger); padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 12px; transition: 0.2s; }
-.delete-btn:hover { background: var(--danger); color: white; }
+.delete-btn { background: rgba(230, 57, 70, 0.2); color: #ff8fa3; border: 1px solid var(--danger); padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 12px; }
 
 .icon-btn {
   background: rgba(255, 255, 255, 0.05); border: 1px solid var(--surface-glass-border); color: var(--text-secondary);
   padding: 8px 14px; border-radius: 10px; font-size: 12px; cursor: pointer; font-family: 'Tajawal'; transition: 0.2s;
   display: inline-flex; align-items: center; gap: 6px;
 }
-.icon-btn:hover { border-color: var(--accent); color: var(--accent-light); background: rgba(233, 69, 96, 0.1); }
 
-/* Category Pills */
 .pill-container { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 15px; scrollbar-width: none; }
 .pill { padding: 6px 14px; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--surface-glass-border); border-radius: 20px; font-size: 12px; white-space: nowrap; cursor: pointer; color: var(--text-secondary); }
 .pill.active { background: var(--accent); color: white; border-color: var(--accent); font-weight: 700; }
 
 .chart-container { position: relative; width: 100%; height: 260px; margin-top: 15px; }
 
-/* Custom Modal Popups */
 .modal-overlay {
   position: fixed; inset: 0; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(8px);
   z-index: 5000; display: none; align-items: center; justify-content: center; padding: 20px;
@@ -237,10 +239,8 @@ body { display: flex; flex-direction: column; }
 </head>
 <body>
 
-<!-- Global Toast Container -->
 <div id="toast-container" class="toast-container"></div>
 
-<!-- Modal Overlay for Share / Workout / Quick Tools -->
 <div id="app-modal" class="modal-overlay">
   <div class="modal-card">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
@@ -262,12 +262,9 @@ body { display: flex; flex-direction: column; }
         <p style="color: var(--text-secondary); font-size: 13px; margin-bottom: 25px;">تتبع صحتك، تغذيتك وتمارينك بذكاء وشغف</p>
         <div class="form-group">
           <label class="form-label">اسم المستخدم</label>
-          <input type="text" id="username" class="form-input" placeholder="مثال: أحمد" onkeypress="if(event.key==='Enter') handleLogin()">
+          <input type="text" id="username" class="form-input" placeholder="أدخل اسمك" onkeypress="if(event.key==='Enter') handleLogin()">
         </div>
         <button class="btn btn-primary" onclick="handleLogin()">🚀 ابدأ الآن / دخول</button>
-        <p style="font-size:11px; color:var(--text-muted); margin-top:15px; line-height: 1.5;">
-          بياناتك تحفظ محلياً بأمان على جهازك وتتيح التنقل المباشر.
-        </p>
       </div>
     </div>
   </div>
@@ -323,7 +320,6 @@ body { display: flex; flex-direction: column; }
           <option value="1.375">نشاط خفيف (تمارين 1-3 أيام/أسبوع)</option>
           <option value="1.55">نشاط متوسط (تمارين 3-5 أيام/أسبوع)</option>
           <option value="1.725">نشاط عالٍ (تمارين 6-7 أيام/أسبوع)</option>
-          <option value="1.9">نشاط فائق (تمارين شاقة يومية/رياضي)</option>
         </select>
       </div>
 
@@ -334,13 +330,7 @@ body { display: flex; flex-direction: column; }
           <option value="lose">خسارة الوزن والتنشيف</option>
           <option value="gain">زيادة الوزن والكتلة</option>
           <option value="maintain">الحفاظ على الوزن الحاضر</option>
-          <option value="muscle">بناء العضلات مع حرق الدهون</option>
         </select>
-      </div>
-
-      <div class="form-group">
-        <label class="form-label">ملاحظات صحية أو حساسية غذائية (اختياري)</label>
-        <input type="text" id="setup-allergies" class="form-input" placeholder="مثال: حساسية ألبان، سكري...">
       </div>
 
       <button class="btn btn-primary" style="margin-top:15px;" onclick="completeSetup()">✅ حفظ البيانات وبدء الرحلة</button>
@@ -389,11 +379,8 @@ body { display: flex; flex-direction: column; }
       </div>
     </div>
 
-    <!-- Macros Card -->
     <div class="glass-card">
-      <h3 style="font-size:15px; color:var(--accent-light); margin-bottom:14px; display:flex; align-items:center; gap:8px;">
-        🥗 العناصر الغذائية الكبرى (Macros)
-      </h3>
+      <h3 style="font-size:15px; color:var(--accent-light); margin-bottom:14px;">🥗 العناصر الغذائية الكبرى (Macros)</h3>
       <div class="macro-grid">
         <div class="macro-item">
           <div class="macro-name">البروتين</div>
@@ -413,25 +400,22 @@ body { display: flex; flex-direction: column; }
       </div>
     </div>
 
-    <!-- Chart Card -->
     <div class="glass-card">
       <h3 style="font-size:15px; color:var(--accent-light); margin-bottom:10px;">📈 التطور والتغيّر (الوزن وسجل السعرات)</h3>
       <div class="chart-container">
         <canvas id="dashboardChart"></canvas>
       </div>
     </div>
-
-    <div id="dashboard-tips"></div>
   </div>
 
   <!-- Meals Screen -->
   <div id="meals-screen" class="screen">
     <div class="screen-header">
       <div class="screen-title">سجل الوجبات والتغذية</div>
-      <div class="screen-subtitle">سجل طعامك إما بالتصوير، البحث الذكي، أو الوصف النصي الحر</div>
+      <div class="screen-subtitle">سجل طعامك بالتصوير الذكي، البحث، أو الوصف النصي</div>
     </div>
 
-    <!-- AI Photo Analyzer Card -->
+    <!-- AI Photo Card -->
     <div class="glass-card">
       <h3 style="color: var(--accent-light); margin-bottom: 6px; font-size:16px;">📸 تحليل الوجبة بالذكاء الاصطناعي</h3>
       <p style="font-size:12px; color:var(--text-secondary); margin-bottom:14px;">التقط صورة للوجبة وسيحدد الذكاء الاصطناعي مكوناتها وسعراتها تلقائياً</p>
@@ -440,7 +424,7 @@ body { display: flex; flex-direction: column; }
       <div id="meal-photo-preview"></div>
     </div>
 
-    <!-- AI Free Text Input Card -->
+    <!-- AI Free Text Card -->
     <div class="glass-card">
       <h3 style="color: var(--accent-light); margin-bottom: 6px; font-size:16px;">✏️ وصف الوجبة بالذكاء الاصطناعي</h3>
       <p style="font-size:12px; color:var(--text-secondary); margin-bottom:14px;">اكتب ما أكلته بحرية (مثال: "طبق كبسة دجاج مع صحن سلطة صغير")</p>
@@ -451,19 +435,19 @@ body { display: flex; flex-direction: column; }
       <div id="meal-text-preview"></div>
     </div>
 
-    <!-- Smart Search Food DB Card -->
+    <!-- Search Food DB Card -->
     <div class="glass-card">
       <h3 style="color: var(--accent-light); margin-bottom: 12px; font-size:16px;">🔍 قاعدة الأطعمة المفتوحة</h3>
       
       <div class="form-group" style="margin-bottom:10px;">
-        <input type="text" id="food-search-input" class="form-input" placeholder="ابحث عن أي طعام (مثال: دجاج، أرز، شوفان...)" oninput="filterFoodDB()">
+        <input type="text" id="food-search-input" class="form-input" placeholder="ابحث عن طعام (دجاج، أرز، شوفان...)" oninput="filterFoodDB()">
       </div>
 
       <div class="pill-container">
         <div class="pill active" onclick="selectFoodCategory('all', this)">الكل</div>
         <div class="pill" onclick="selectFoodCategory('protein', this)">بروتينات 🍗</div>
         <div class="pill" onclick="selectFoodCategory('carbs', this)">نشويات 🌾</div>
-        <div class="pill" onclick="selectFoodCategory('fats', this)">دهون ومكسرات 🥜</div>
+        <div class="pill" onclick="selectFoodCategory('fats', this)">دهون 🥜</div>
         <div class="pill" onclick="selectFoodCategory('fruits', this)">فواكه وخضار 🍎</div>
       </div>
 
@@ -477,14 +461,7 @@ body { display: flex; flex-direction: column; }
       <button class="btn btn-primary" onclick="addSelectedMealFromDB()">➕ إضافة للسجل</button>
     </div>
 
-    <!-- Suggested Meals -->
-    <div class="glass-card">
-      <h3 style="color: var(--accent-light); margin-bottom: 6px; font-size:16px;">🍽️ اقتراحات الوجبات السريعة</h3>
-      <p style="font-size:11px; color:var(--text-secondary); margin-bottom:14px;">تشكيلات متوازنة جاهزة للإضافة بضغطة واحدة</p>
-      <div id="meal-suggestions"></div>
-    </div>
-
-    <!-- Today's Meal History -->
+    <!-- Today's Meals -->
     <div class="glass-card">
       <h3 style="color: var(--accent-light); margin-bottom: 15px; font-size:16px;">📋 وجباتك المسجلة اليوم</h3>
       <div id="meals-list"></div>
@@ -495,33 +472,31 @@ body { display: flex; flex-direction: column; }
   <div id="workouts-screen" class="screen">
     <div class="screen-header">
       <div class="screen-title">جدول التمارين واللياقة 🏋️‍♂️</div>
-      <div class="screen-subtitle">خطط تمارينك اليومية، وحساب السعرات الحرارية المحروقة</div>
+      <div class="screen-subtitle">سجل تمارينك اليومية وحساب السعرات المحروقة</div>
     </div>
 
-    <!-- Add Workout Card -->
     <div class="glass-card">
       <h3 style="color: var(--accent-light); margin-bottom: 12px; font-size:16px;">➕ تسجيل تمرين جديد</h3>
       
       <div class="form-group">
         <label class="form-label">نوع التمرين</label>
         <select id="workout-type" class="form-select" onchange="updateWorkoutCalRate()">
-          <option value="cardio_run">جري متوسط (Cardio) - ~600 سعرة/ساعة</option>
-          <option value="cardio_walk">مشي سريع - ~280 سعرة/ساعة</option>
-          <option value="strength">تمارين حديد / مقاومة - ~400 سعرة/ساعة</option>
-          <option value="hiit">تمارين متناوبة عالية الشدة (HIIT) - ~700 سعرة/ساعة</option>
-          <option value="cycling">ركوب الدراجة - ~450 سعرة/ساعة</option>
-          <option value="swimming">السباحة - ~500 سعرة/ساعة</option>
-          <option value="home_workout">تمارين منزلية (السويدي) - ~350 سعرة/ساعة</option>
+          <option value="cardio_run">جري متوسط (Cardio)</option>
+          <option value="cardio_walk">مشي سريع</option>
+          <option value="strength">تمارين حديد / مقاومة</option>
+          <option value="hiit">تمارين متناوبة (HIIT)</option>
+          <option value="cycling">ركوب الدراجة</option>
+          <option value="swimming">السباحة</option>
         </select>
       </div>
 
       <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
         <div class="form-group">
           <label class="form-label">المدة (بالدقائق)</label>
-          <input type="number" id="workout-duration" class="form-input" value="30" min="5" step="5">
+          <input type="number" id="workout-duration" class="form-input" value="30" min="5" step="5" oninput="updateWorkoutCalRate()">
         </div>
         <div class="form-group">
-          <label class="form-label">السعرات المحروقة (تقريبي)</label>
+          <label class="form-label">السعرات المحروقة</label>
           <input type="number" id="workout-calories" class="form-input" value="200" readonly style="background:rgba(255,255,255,0.05);">
         </div>
       </div>
@@ -529,13 +504,6 @@ body { display: flex; flex-direction: column; }
       <button class="btn btn-primary" onclick="addWorkoutLog()">💪 تسجيل التمرين</button>
     </div>
 
-    <!-- Suggested Routines -->
-    <div class="glass-card">
-      <h3 style="color: var(--accent-light); margin-bottom: 12px; font-size:16px;">⚡ خطط تمارين جاهزة للمبتدئين والمحترفين</h3>
-      <div id="workout-routines-container"></div>
-    </div>
-
-    <!-- Completed Workouts Log -->
     <div class="glass-card">
       <h3 style="color: var(--accent-light); margin-bottom: 12px; font-size:16px;">🔥 تمارين اليوم المسجلة</h3>
       <div id="workouts-list"></div>
@@ -546,7 +514,7 @@ body { display: flex; flex-direction: column; }
   <div id="water-screen" class="screen">
     <div class="screen-header">
       <div class="screen-title">متابعة شرب الماء 💧</div>
-      <div class="screen-subtitle">الحفاظ على ترطيب الجسم يعزز الأيض والتركيز</div>
+      <div class="screen-subtitle">الترطيب الجيد أساس الصحة والنشاط</div>
     </div>
 
     <div class="glass-card" style="text-align:center; padding:35px 20px;">
@@ -568,7 +536,7 @@ body { display: flex; flex-direction: column; }
   <div id="weight-screen" class="screen">
     <div class="screen-header">
       <div class="screen-title">متابعة تغير الوزن ⚖️</div>
-      <div class="screen-subtitle">سجل قياسات وزنك لمراقبة التقدم نحو هدفك</div>
+      <div class="screen-subtitle">سجل قياسات وزنك لمراقبة التقدم</div>
     </div>
 
     <div class="glass-card">
@@ -597,16 +565,9 @@ body { display: flex; flex-direction: column; }
     <div class="screen-header" style="display:flex; justify-content:space-between; align-items:center;">
       <div>
         <div class="screen-title">المساعد الصحي الذكي 🤖</div>
-        <div class="screen-subtitle">استشر المساعد حول التغذية، التمارين والنصائح الصحية</div>
+        <div class="screen-subtitle">استشر المساعد حول التغذية والتمارين</div>
       </div>
       <button class="icon-btn" onclick="clearChat()">🗑️ مسح</button>
-    </div>
-
-    <!-- Quick Prompts -->
-    <div class="pill-container" style="margin-bottom:12px;">
-      <div class="pill" onclick="sendQuickPrompt('اقترح لي جدول وجبات صحي لهذا اليوم بناءً على السعرات المتبقية لي')">💡 خطة وجبات اليوم</div>
-      <div class="pill" onclick="sendQuickPrompt('كيف أزيد نسق حرق الدهون بدون خسارة العضلات؟')">🔥 حرق الدهون</div>
-      <div class="pill" onclick="sendQuickPrompt('ما أفضل الأطعمة الغنية بالبروتين للرياضيين؟')">🥩 أفضل أطعمة البروتين</div>
     </div>
 
     <div id="chat-messages" style="height: 380px; overflow-y: auto; margin-bottom: 15px; padding-right: 5px;"></div>
@@ -617,86 +578,30 @@ body { display: flex; flex-direction: column; }
     </div>
   </div>
 
-  <!-- Reports & Export Screen -->
-  <div id="reports-screen" class="screen">
-    <div class="screen-header">
-      <div class="screen-title">التقارير وتصدير البيانات 📊</div>
-      <div class="screen-subtitle">تحليل شامل ومشاركة تقاريرك مع المدرب أو الطبيب</div>
-    </div>
-
-    <div class="glass-card">
-      <h3 style="color: var(--accent-light); margin-bottom: 14px;">📌 إحصائيات عامة</h3>
-      <div class="message-box success"><strong>🥗 إجمالي الوجبات المسجلة:</strong> <span id="report-meals">0</span></div>
-      <div class="message-box"><strong>🔥 متوسط السعرات اليومي:</strong> <span id="report-avg-calories">0</span> سعرة</div>
-      <div class="message-box"><strong>💧 متوسط شرب الماء:</strong> <span id="report-water">0</span> أكواب</div>
-      <div class="message-box warning"><strong>⚖️ التغير في الوزن:</strong> <span id="report-weight-change">0</span> كغ</div>
-    </div>
-
-    <div class="glass-card">
-      <h3 style="color: var(--accent-light); margin-bottom: 14px;">📂 تصدير البيانات والمشاركة</h3>
-      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
-        <button class="btn btn-secondary" onclick="exportDataCSV()">📥 تصدير سجل البيانات (CSV)</button>
-        <button class="btn btn-secondary" onclick="printReportPDF()">📄 طباعة / حفظ كـ PDF</button>
-      </div>
-      <button class="btn btn-primary" style="margin-top:10px;" onclick="shareProgressModal()">✨ إنتاج بطاقة مشاركة التقدم</button>
-    </div>
-  </div>
-
-  <!-- Settings & Notifications Screen -->
+  <!-- Settings Screen -->
   <div id="settings-screen" class="screen">
     <div class="screen-header">
-      <div class="screen-title">الإعدادات والتنبيهات ⚙️</div>
-      <div class="screen-subtitle">إدارة الحساب، التذكيرات اليومية ومفاتيح الذكاء الاصطناعي</div>
+      <div class="screen-title">الإعدادات والملف الشخصي ⚙️</div>
+      <div class="screen-subtitle">إدارة الحساب ومفاتيح الخدمة</div>
     </div>
 
-    <!-- Push Reminders Card -->
     <div class="glass-card">
-      <h3 style="color: var(--accent-light); margin-bottom: 10px; font-size:16px;">🔔 التذكيرات والإشعارات اليومية</h3>
-      <p style="font-size:12px; color:var(--text-secondary); margin-bottom:14px;">تفعيل التذكيرات لشرب الماء وتسجيل الوجبات والوزن</p>
-      
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; background:rgba(255,255,255,0.03); padding:10px 14px; border-radius:12px;">
-        <div>
-          <div style="font-weight:700; font-size:14px;">إشعارات المتصفح (Push Notifications)</div>
-          <div style="font-size:11px; color:var(--text-secondary);">إرسال تنبيهات على جهازك للتذكير</div>
-        </div>
-        <button class="icon-btn" id="push-toggle-btn" onclick="togglePushNotifications()">تفعيل الإشعارات</button>
-      </div>
-    </div>
-
-    <!-- AI Settings Card -->
-    <div class="glass-card">
-      <h3 style="color: var(--accent-light); margin-bottom: 12px; font-size:16px;">🤖 إعدادات محرك الذكاء الاصطناعي</h3>
-      
+      <h3 style="color: var(--accent-light); margin-bottom: 12px; font-size:16px;">🔑 مفتاح Google Gemini API (مخصص)</h3>
       <div class="form-group">
-        <label class="form-label">مزوّد الذكاء الاصطناعي</label>
-        <select id="ai-provider-select" class="form-select">
-          <option value="gemini">Google Gemini (موصى به / مجاني)</option>
-          <option value="claude">Claude (Anthropic)</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label class="form-label">مفتاح Google Gemini API (اختياري عند التوفر المباشر)</label>
+        <label class="form-label">مفتاح API الخاص بك (اختياري)</label>
         <input type="password" id="gemini-key-input" class="form-input" placeholder="AIzaSy...">
-        <p style="font-size:11px; color:var(--text-muted); margin-top:4px;">يمكنك الحصول عليه مجاناً من Google AI Studio</p>
+        <p style="font-size:11px; color:var(--text-muted); margin-top:4px;">يمكنك إضافة مفتاحك الخاص للحصول على كوتا غير محدودة من Google AI Studio</p>
       </div>
-
-      <div class="form-group">
-        <label class="form-label">مفتاح Claude API</label>
-        <input type="password" id="claude-key-input" class="form-input" placeholder="sk-ant-...">
-      </div>
-
-      <button class="btn btn-primary" onclick="saveApiSettings()">💾 حفظ إعدادات AI</button>
+      <button class="btn btn-primary" onclick="saveApiSettings()">💾 حفظ المفتاح</button>
     </div>
 
-    <!-- Profile & Actions -->
     <div class="glass-card">
-      <h3 style="color: var(--accent-light); margin-bottom: 12px; font-size:16px;">👤 الملف الشخصي والحساب</h3>
+      <h3 style="color: var(--accent-light); margin-bottom: 12px; font-size:16px;">👤 الملف الشخصي</h3>
       <div id="profile-info"></div>
       <div style="display:flex; flex-direction:column; gap:10px; margin-top:15px;">
         <button class="btn btn-secondary" onclick="editProfile()">✏️ تعديل البيانات الشخصية</button>
         <button class="btn btn-secondary" style="border-color:var(--danger); color:var(--danger);" onclick="logout()">🚪 تسجيل الخروج</button>
-        <button class="btn btn-secondary" style="background:rgba(230,57,70,0.15); color:#ff8fa3;" onclick="clearAllData()">🗑️ حذف السجلات وإعادة الضبط</button>
+        <button class="btn btn-secondary" style="background:rgba(230,57,70,0.15); color:#ff8fa3;" onclick="clearAllData()">🗑️ حذف السجلات</button>
       </div>
     </div>
   </div>
@@ -711,64 +616,83 @@ body { display: flex; flex-direction: column; }
   <div class="nav-item" onclick="switchScreen('water', this)"><div class="nav-icon">💧</div><div class="nav-label">الماء</div></div>
   <div class="nav-item" onclick="switchScreen('weight', this)"><div class="nav-icon">⚖️</div><div class="nav-label">الوزن</div></div>
   <div class="nav-item" onclick="switchScreen('chat', this)"><div class="nav-icon">🤖</div><div class="nav-label">المساعد</div></div>
-  <div class="nav-item" onclick="switchScreen('reports', this)"><div class="nav-icon">📈</div><div class="nav-label">التقارير</div></div>
   <div class="nav-item" onclick="switchScreen('settings', this)"><div class="nav-icon">⚙️</div><div class="nav-label">الإعدادات</div></div>
 </div>
 
 <script>
-// ============ Expanded Food Database ============
+// ============ حظر الزووم اللمسي التلقائي نهائياً ============
+document.addEventListener('gesturestart', function(e) { e.preventDefault(); }, { passive: false });
+document.addEventListener('gesturechange', function(e) { e.preventDefault(); }, { passive: false });
+document.addEventListener('gestureend', function(e) { e.preventDefault(); }, { passive: false });
+
+document.addEventListener('touchstart', function(e) {
+  if (e.touches.length > 1) {
+    e.preventDefault();
+  }
+}, { passive: false });
+
+let lastTouchEnd = 0;
+document.addEventListener('touchend', function(e) {
+  const now = (new Date()).getTime();
+  if (now - lastTouchEnd <= 300) {
+    const target = e.target;
+    // منع الزووم عند النقر السريع المتكرر إلا في عناصر الإدخال
+    if (target.tagName !== 'INPUT' && target.tagName !== 'TEXTAREA' && target.tagName !== 'SELECT') {
+      e.preventDefault();
+    }
+  }
+  lastTouchEnd = now;
+}, { passive: false });
+
+// ============ API Config & Exponential Backoff ============
+const apiKey = ""; // البيئة تزود المفتاح تلقائياً عند عدم وجود مفتاح مخصص
+
+async function fetchGeminiWithRetry(url, payload) {
+  const delays = [1000, 2000, 4000, 8000, 16000];
+  let lastError;
+
+  for (let i = 0; i <= delays.length; i++) {
+    try {
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        throw new Error(errorData?.error?.message || `خطأ HTTP ${res.status}`);
+      }
+      return await res.json();
+    } catch (err) {
+      lastError = err;
+      if (i < delays.length) {
+        await new Promise(r => setTimeout(r, delays[i]));
+      }
+    }
+  }
+  throw lastError;
+}
+
+// ============ Food Database ============
 const extendedFoodDB = [
-  // Proteins
-  { id: 'egg', name: 'بيض مسلوق (حبة واحدة)', cal: 78, protein: 6, carbs: 0.6, fat: 5, cat: 'protein' },
+  { id: 'egg', name: 'بيض مسلوق (حبة)', cal: 78, protein: 6, carbs: 0.6, fat: 5, cat: 'protein' },
   { id: 'chicken_breast', name: 'صدر دجاج مشوي (100غ)', cal: 165, protein: 31, carbs: 0, fat: 3.6, cat: 'protein' },
-  { id: 'beef', name: 'لحم بقر صافي مشوي (100غ)', cal: 250, protein: 26, carbs: 0, fat: 15, cat: 'protein' },
-  { id: 'fish_salmon', name: 'سمك سلمون مشوي (100غ)', cal: 206, protein: 22, carbs: 0, fat: 12, cat: 'protein' },
+  { id: 'beef', name: 'لحم مشوي (100غ)', cal: 250, protein: 26, carbs: 0, fat: 15, cat: 'protein' },
+  { id: 'fish_salmon', name: 'سلمون مشوي (100غ)', cal: 206, protein: 22, carbs: 0, fat: 12, cat: 'protein' },
   { id: 'tuna', name: 'تونا بالماء (علبة 100غ)', cal: 116, protein: 26, carbs: 0, fat: 1, cat: 'protein' },
-  { id: 'greek_yogurt', name: 'زبادي يوناني (150غ)', cal: 130, protein: 15, carbs: 6, fat: 4, cat: 'protein' },
-  
-  // Carbs
   { id: 'rice_white', name: 'أرز أبيض مطبوخ (100غ)', cal: 130, protein: 2.7, carbs: 28, fat: 0.3, cat: 'carbs' },
-  { id: 'rice_brown', name: 'أرز بني مطبوخ (100غ)', cal: 112, protein: 2.5, carbs: 24, fat: 0.8, cat: 'carbs' },
   { id: 'oats', name: 'شوفان كامل (50غ)', cal: 190, protein: 7, carbs: 34, fat: 3.5, cat: 'carbs' },
-  { id: 'bread_brown', name: 'خبز أسمر (شريحة 30غ)', cal: 70, protein: 3, carbs: 12, fat: 1, cat: 'carbs' },
-  { id: 'potato_boiled', name: 'بطاطس مسلوقة (150غ)', cal: 130, protein: 3, carbs: 30, fat: 0.2, cat: 'carbs' },
-  { id: 'sweet_potato', name: 'بطاطا حلوة مشوية (150غ)', cal: 135, protein: 2, carbs: 31, fat: 0.2, cat: 'carbs' },
-
-  // Healthy Fats & Nuts
-  { id: 'olive_oil', name: 'زيت زيتون (ملعقة طعام 13مل)', cal: 119, protein: 0, carbs: 0, fat: 13.5, cat: 'fats' },
-  { id: 'almonds', name: 'لوز خام (حفنة 30غ)', cal: 170, protein: 6, carbs: 6, fat: 15, cat: 'fats' },
-  { id: 'peanut_butter', name: 'زبدة الفول السوداني (ملعقة)', cal: 95, protein: 4, carbs: 3, fat: 8, cat: 'fats' },
-  { id: 'avocado', name: 'أفوكادو (نصف حبة 100غ)', cal: 160, protein: 2, carbs: 8, fat: 15, cat: 'fats' },
-
-  // Fruits & Vegetables
+  { id: 'bread_brown', name: 'خبز أسمر (شريحة)', cal: 70, protein: 3, carbs: 12, fat: 1, cat: 'carbs' },
+  { id: 'olive_oil', name: 'زيت زيتون (ملعقة)', cal: 119, protein: 0, carbs: 0, fat: 13.5, cat: 'fats' },
+  { id: 'almonds', name: 'لوز خام (30غ)', cal: 170, protein: 6, carbs: 6, fat: 15, cat: 'fats' },
   { id: 'apple', name: 'تفاحة متوسطة', cal: 95, protein: 0.5, carbs: 25, fat: 0.3, cat: 'fruits' },
-  { id: 'banana', name: 'موزة متوسطة', cal: 105, protein: 1.3, carbs: 27, fat: 0.3, cat: 'fruits' },
-  { id: 'salad_green', name: 'سلطة خضراء مشكلة (صحن)', cal: 45, protein: 2, carbs: 8, fat: 0.5, cat: 'fruits' },
-  { id: 'dates', name: 'تمر مجفف (3 حبات)', cal: 180, protein: 1.5, carbs: 45, fat: 0.2, cat: 'fruits' }
+  { id: 'banana', name: 'موزة متوسطة', cal: 105, protein: 1.3, carbs: 27, fat: 0.3, cat: 'fruits' }
 ];
 
-const workoutRoutines = [
-  { title: '🏃‍♂️ كارديو حرق الدهون السريع', duration: '20 دقيقة', cals: '220 سعرة', desc: 'مشي سريع + نط الحبل + تمارين سويدي' },
-  { title: '🏋️‍♀️ تمرين الجزء العلوي (قوة)', duration: '40 دقيقة', cals: '280 سعرة', desc: 'ضغك صفيحة + عقلة + تمرين أكتاف' },
-  { title: '🔥 تمرين HIIT شاق', duration: '25 دقيقة', cals: '320 سعرة', desc: 'تكرارات عالية الشدة مع فترات راحة قصيرة' }
-];
-
-// App State
 let currentUsername = null;
-let appState = {
-  profile: null,
-  meals: [],
-  workouts: [],
-  weights: [],
-  water: 0,
-  waterDate: null,
-  chat: [],
-  notificationsEnabled: false
-};
-
+let appState = { profile: null, meals: [], workouts: [], weights: [], water: 0, waterDate: null, chat: [] };
 let dashboardChartInstance = null;
 
-// ============ Toast Notification ============
 function showToast(message, type = 'info') {
   const container = document.getElementById('toast-container');
   const toast = document.createElement('div');
@@ -787,30 +711,20 @@ function closeModal() {
   document.getElementById('app-modal').classList.remove('active');
 }
 
-// ============ Storage & Users ============
 function loadUsersDB() {
   try { return JSON.parse(localStorage.getItem('healthAppUsers') || '{}'); }
   catch (e) { return {}; }
-}
-function saveUsersDB(db) {
-  localStorage.setItem('healthAppUsers', JSON.stringify(db));
 }
 function saveCurrentUserData() {
   if (!currentUsername) return;
   const db = loadUsersDB();
   db[currentUsername] = appState;
-  saveUsersDB(db);
+  localStorage.setItem('healthAppUsers', JSON.stringify(db));
 }
 
-function todayStr() {
-  return new Date().toISOString().split('T')[0];
-}
-function getTodaysMeals() {
-  return appState.meals.filter(m => m.date === todayStr());
-}
-function getTodaysWorkouts() {
-  return (appState.workouts || []).filter(w => w.date === todayStr());
-}
+function todayStr() { return new Date().toISOString().split('T')[0]; }
+function getTodaysMeals() { return appState.meals.filter(m => m.date === todayStr()); }
+function getTodaysWorkouts() { return (appState.workouts || []).filter(w => w.date === todayStr()); }
 function ensureTodayWater() {
   if (appState.waterDate !== todayStr()) {
     appState.water = 0;
@@ -818,7 +732,7 @@ function ensureTodayWater() {
   }
 }
 
-// ============ Init ============
+// ============ On Load ============
 window.addEventListener('load', () => {
   const savedUsername = localStorage.getItem('healthAppCurrentUser');
   if (savedUsername) {
@@ -868,11 +782,10 @@ function completeSetup() {
   const goal = document.getElementById('setup-goal').value;
 
   if (!age || !gender || !height || !weight || !targetWeight || !activity || !goal) {
-    showToast('يرجى ملء جميع الحقول الأساسية', 'warning');
+    showToast('يرجى ملء جميع الحقول المطلوبة', 'warning');
     return;
   }
 
-  // Mifflin-St Jeor BMR Equation
   let bmr = (10 * weight) + (6.25 * height) - (5 * age);
   bmr = gender === 'male' ? bmr + 5 : bmr - 161;
   const tdee = bmr * activity;
@@ -883,12 +796,11 @@ function completeSetup() {
 
   appState.profile = {
     name, age, gender, height, currentWeight: weight, targetWeight, activity, goal,
-    allergies: document.getElementById('setup-allergies').value,
     bmr: Math.round(bmr), tdee: Math.round(tdee), dailyCalories: Math.round(dailyCalories),
     protein: Math.round(weight * 1.8),
     carbs: Math.round((dailyCalories * 0.45) / 4),
     fats: Math.round((dailyCalories * 0.25) / 9),
-    water: Math.round((weight * 0.035) * 4) // Cups
+    water: 8
   };
 
   if (!appState.meals) appState.meals = [];
@@ -901,10 +813,9 @@ function completeSetup() {
   showScreen('dashboard-screen');
   updateDashboard();
   initChart();
-  showToast('تم إعداد حسابك بنجاح! مرحباً بك 🚀', 'success');
+  showToast('تم إعداد حسابك بنجاح! 🚀', 'success');
 }
 
-// ============ Navigation ============
 function switchScreen(screenName, navElement) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -913,12 +824,11 @@ function switchScreen(screenName, navElement) {
   if (navElement) navElement.classList.add('active');
 
   if (screenName === 'dashboard') { updateDashboard(); updateChartData(); }
-  if (screenName === 'meals') { updateMealsList(); renderFoodDBOptions(); renderMealSuggestions(); }
-  if (screenName === 'workouts') { updateWorkoutsList(); renderWorkoutRoutines(); }
+  if (screenName === 'meals') { updateMealsList(); renderFoodDBOptions(); }
+  if (screenName === 'workouts') { updateWorkoutsList(); }
   if (screenName === 'water') updateWaterScreen();
   if (screenName === 'weight') updateWeightList();
   if (screenName === 'chat') renderChatHistory();
-  if (screenName === 'reports') updateReports();
   if (screenName === 'settings') { updateProfileUI(); loadApiSettingsUI(); }
 }
 
@@ -966,11 +876,9 @@ function updateDashboard() {
   document.getElementById('dashboard-fats-target').textContent = `/ ${p.fats} غ`;
 }
 
-// ============ Chart.js Analytics ============
 function initChart() {
   const ctx = document.getElementById('dashboardChart');
   if (!ctx) return;
-
   if (dashboardChartInstance) dashboardChartInstance.destroy();
 
   const dates = appState.weights.slice(-7).map(w => w.date);
@@ -1011,7 +919,7 @@ function updateChartData() {
   dashboardChartInstance.update();
 }
 
-// ============ Smart Food DB & Filter ============
+// ============ Food DB ============
 let currentCategory = 'all';
 
 function renderFoodDBOptions() {
@@ -1061,7 +969,7 @@ function addSelectedMealFromDB() {
   saveCurrentUserData();
   updateDashboard();
   updateMealsList();
-  showToast(`تمت إضافة ${food.name} بنجاح`, 'success');
+  showToast(`تمت إضافة ${food.name}`, 'success');
 }
 
 function updateMealsList() {
@@ -1070,7 +978,7 @@ function updateMealsList() {
   if (!container) return;
 
   if (todaysMeals.length === 0) {
-    container.innerHTML = '<div class="message-box">لم تسجل أي وجبات لهذا اليوم بعد</div>';
+    container.innerHTML = '<div class="message-box">لم تسجل أي وجبات لليوم بعد</div>';
     return;
   }
 
@@ -1093,55 +1001,60 @@ function deleteMeal(id) {
   showToast('تم حذف الوجبة', 'info');
 }
 
-function renderMealSuggestions() {
-  const container = document.getElementById('meal-suggestions');
-  if (!container) return;
-  container.innerHTML = `
-    <div class="food-item">
-      <div class="food-info">
-        <div class="food-name">🍳 وجبة إفطار عالية البروتين</div>
-        <div class="food-macros">3 بيضات مسلوقة + شريحة خبز أسمر + نصف أفوكادو</div>
-        <div class="food-macros">🔥 ~380 سعرة | 🥩 24g بروتين</div>
-      </div>
-      <button class="icon-btn" onclick="addPresetCombo('إفطار بروتين', 380, 24, 20, 15)">➕ أضف</button>
-    </div>
-    <div class="food-item">
-      <div class="food-info">
-        <div class="food-name">🍗 غداء رياضي متكامل</div>
-        <div class="food-macros">150غ صدر دجاج + 150غ أرز بني + سلطة خضراء</div>
-        <div class="food-macros">🔥 ~450 سعرة | 🥩 48g بروتين</div>
-      </div>
-      <button class="icon-btn" onclick="addPresetCombo('غداء رياضي', 450, 48, 42, 6)">➕ أضف</button>
-    </div>
-  `;
-}
+// ============ ضغط وتحليل الصور بالذكاء الاصطناعي ============
+function compressAndResizeImage(file, maxDimension = 1024) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        let width = img.width;
+        let height = img.height;
 
-function addPresetCombo(name, cal, p, c, f) {
-  appState.meals.push({
-    id: Date.now(), date: todayStr(), name, cal, protein: p, carbs: c, fat: f,
-    time: new Date().toLocaleTimeString('ar', { hour: '2-digit', minute: '2-digit' })
+        if (width > height) {
+          if (width > maxDimension) {
+            height = Math.round((height * maxDimension) / width);
+            width = maxDimension;
+          }
+        } else {
+          if (height > maxDimension) {
+            width = Math.round((width * maxDimension) / height);
+            height = maxDimension;
+          }
+        }
+
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+
+        // تصدير JPEG جودة 85% لتقليل الحجم وتسريع التحليل
+        const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
+        resolve(dataUrl.split(',')[1]);
+      };
+      img.onerror = () => reject(new Error('فشل قراءة ملف الصورة'));
+      img.src = e.target.result;
+    };
+    reader.onerror = () => reject(new Error('تعذر تحميل الملف'));
+    reader.readAsDataURL(file);
   });
-  saveCurrentUserData();
-  updateDashboard();
-  updateMealsList();
-  showToast(`تمت إضافة ${name}`, 'success');
 }
 
-// ============ AI Photo & Free Text Analysis ============
 async function handleMealPhoto(event) {
   const file = event.target.files?.[0];
   if (!file) return;
 
   const previewDiv = document.getElementById('meal-photo-preview');
-  previewDiv.innerHTML = '<div class="message-box" style="margin-top:10px;">🔍 جاري ضغط الصورة وتحليلها بالذكاء الاصطناعي...</div>';
+  previewDiv.innerHTML = '<div class="message-box" style="margin-top:10px;">🔍 جاري تحسين الصورة وتحليل المكونات بالذكاء الاصطناعي...</div>';
 
   try {
-    const base64 = await convertFileToBase64(file);
-    const result = await callGeminiImageAPI(base64);
-    
+    const base64Data = await compressAndResizeImage(file, 1024);
+    const result = await analyzeMealImageGemini(base64Data);
+
     previewDiv.innerHTML = `
       <div class="message-box success" style="margin-top:10px;">
-        <strong>تم التحليل:</strong> ${result.name}<br>
+        <strong>🍽️ الوجبة المكتشفة:</strong> ${result.name}<br>
         🔥 ${result.calories} سعرة | 🥩 بروتين: ${result.protein}g | 🌾 كربوهيدرات: ${result.carbs}g | 🫒 دهون: ${result.fat}g
       </div>
       <button class="btn btn-primary" onclick="confirmAiMeal('${result.name}', ${result.calories}, ${result.protein}, ${result.carbs}, ${result.fat})">✅ اعتماد وإضافة للسجل</button>
@@ -1151,29 +1064,98 @@ async function handleMealPhoto(event) {
   }
 }
 
+async function analyzeMealImageGemini(base64Data) {
+  const activeKey = localStorage.getItem('healthAppGeminiKey') || apiKey;
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${activeKey}`;
+
+  const payload = {
+    contents: [
+      {
+        role: "user",
+        parts: [
+          { text: "حلل هذه الصورة لوجبة طعام. قدر الكميات والاسم والسعرات الحرارية والبروتين والكربوهيدرات والدهون باللغة العربية." },
+          { inlineData: { mimeType: "image/jpeg", data: base64Data } }
+        ]
+      }
+    ],
+    generationConfig: {
+      responseMimeType: "application/json",
+      responseSchema: {
+        type: "OBJECT",
+        properties: {
+          name: { type: "STRING", description: "اسم الوجبة بالعربية" },
+          calories: { type: "NUMBER", description: "إجمالي السعرات الحرارية" },
+          protein: { type: "NUMBER", description: "البروتين بالغرام" },
+          carbs: { type: "NUMBER", description: "الكربوهيدرات بالغرام" },
+          fat: { type: "NUMBER", description: "الدهون بالغرام" }
+        },
+        required: ["name", "calories", "protein", "carbs", "fat"]
+      }
+    }
+  };
+
+  const data = await fetchGeminiWithRetry(url, payload);
+  const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+  if (!text) throw new Error("لم تتلق استجابة صحيحة من الذكاء الاصطناعي");
+  return JSON.parse(text);
+}
+
+// ============ تحليل النص الحر بالذكاء الاصطناعي ============
 async function handleMealText() {
   const text = document.getElementById('meal-text-input').value.trim();
   if (!text) { showToast('اكتب وصف الوجبة أولاً', 'warning'); return; }
 
   const previewDiv = document.getElementById('meal-text-preview');
-  previewDiv.innerHTML = '<div class="message-box" style="margin-top:10px;">🤖 جاري تقدير القيم الغذائية...</div>';
+  previewDiv.innerHTML = '<div class="message-box" style="margin-top:10px;">🤖 جاري تقدير القيم الغذائية للوجبة...</div>';
 
   try {
-    const prompt = `قدّر القيم الغذائية للوجبة التالية: "${text}". أرجِع الإجابة كـ JSON بهذا النسق فقط دون زيادات: {"name":"اسم الوجبة","calories":000,"protein":00,"carbs":00,"fat":00}`;
-    const responseText = await callGeminiTextAPI(prompt);
-    const jsonMatch = responseText.match(/\{[\s\S]*\}/);
-    const data = JSON.parse(jsonMatch ? jsonMatch[0] : responseText);
+    const result = await analyzeMealTextGemini(text);
 
     previewDiv.innerHTML = `
       <div class="message-box success" style="margin-top:10px;">
-        <strong>التقدير:</strong> ${data.name}<br>
-        🔥 ${data.calories} سعرة | 🥩 بروتين: ${data.protein}g | 🌾 كربوهيدرات: ${data.carbs}g | 🫒 دهون: ${data.fat}g
+        <strong>🍽️ التقدير:</strong> ${result.name}<br>
+        🔥 ${result.calories} سعرة | 🥩 بروتين: ${result.protein}g | 🌾 كربوهيدرات: ${result.carbs}g | 🫒 دهون: ${result.fat}g
       </div>
-      <button class="btn btn-primary" onclick="confirmAiMeal('${data.name}', ${data.calories}, ${data.protein}, ${data.carbs}, ${data.fat})">✅ اعتماد وإضافة للسجل</button>
+      <button class="btn btn-primary" onclick="confirmAiMeal('${result.name}', ${result.calories}, ${result.protein}, ${result.carbs}, ${result.fat})">✅ اعتماد وإضافة للسجل</button>
     `;
   } catch (e) {
     previewDiv.innerHTML = `<div class="message-box error" style="margin-top:10px;">تعذر التحليل: ${e.message}</div>`;
   }
+}
+
+async function analyzeMealTextGemini(descriptionText) {
+  const activeKey = localStorage.getItem('healthAppGeminiKey') || apiKey;
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${activeKey}`;
+
+  const payload = {
+    contents: [
+      {
+        role: "user",
+        parts: [
+          { text: `قدر القيم الغذائية للوجبة التالية الموصوفة نصياً: "${descriptionText}".` }
+        ]
+      }
+    ],
+    generationConfig: {
+      responseMimeType: "application/json",
+      responseSchema: {
+        type: "OBJECT",
+        properties: {
+          name: { type: "STRING", description: "اسم الوجبة بالعربية" },
+          calories: { type: "NUMBER", description: "إجمالي السعرات الحرارية" },
+          protein: { type: "NUMBER", description: "البروتين بالغرام" },
+          carbs: { type: "NUMBER", description: "الكربوهيدرات بالغرام" },
+          fat: { type: "NUMBER", description: "الدهون بالغرام" }
+        },
+        required: ["name", "calories", "protein", "carbs", "fat"]
+      }
+    }
+  };
+
+  const data = await fetchGeminiWithRetry(url, payload);
+  const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+  if (!text) throw new Error("لم يتم تلقي استجابة من نموذج الذكاء الاصطناعي");
+  return JSON.parse(text);
 }
 
 function confirmAiMeal(name, cal, p, c, f) {
@@ -1187,63 +1169,7 @@ function confirmAiMeal(name, cal, p, c, f) {
   document.getElementById('meal-photo-preview').innerHTML = '';
   document.getElementById('meal-text-preview').innerHTML = '';
   document.getElementById('meal-text-input').value = '';
-  showToast('تم تسجيل الوجبة بنجاح', 'success');
-}
-
-// Helper: Convert File to Base64
-function convertFileToBase64(file) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(reader.result.split(',')[1]);
-    reader.onerror = error => reject(error);
-    reader.readAsDataURL(file);
-  });
-}
-
-// ============ API Integration (Gemini 2.5 Flash) ============
-const apiKey = ""; // Set by environment or user settings
-
-async function callGeminiTextAPI(promptText) {
-  const customKey = localStorage.getItem('healthAppGeminiKey') || apiKey;
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${customKey}`;
-
-  const res = await fetch(url, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      contents: [{ parts: [{ text: promptText }] }]
-    })
-  });
-
-  if (!res.ok) throw new Error('خطأ في الاتصال بالخدمة');
-  const data = await res.json();
-  return data.candidates?.[0]?.content?.parts?.[0]?.text || '';
-}
-
-async function callGeminiImageAPI(base64Data) {
-  const customKey = localStorage.getItem('healthAppGeminiKey') || apiKey;
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${customKey}`;
-
-  const prompt = `حلل صورة الوجبة وأرجع فقط JSON بالصيغة: {"name":"اسم الوجبة بالعربية","calories":350,"protein":25,"carbs":30,"fat":10}`;
-
-  const res = await fetch(url, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      contents: [{
-        parts: [
-          { text: prompt },
-          { inlineData: { mimeType: 'image/jpeg', data: base64Data } }
-        ]
-      }]
-    })
-  });
-
-  if (!res.ok) throw new Error('فشل تحليل الصورة');
-  const data = await res.json();
-  const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
-  const jsonMatch = text.match(/\{[\s\S]*\}/);
-  return JSON.parse(jsonMatch ? jsonMatch[0] : text);
+  showToast('تم تسجيل الوجبة بنجاح 🥗', 'success');
 }
 
 // ============ Workouts ============
@@ -1253,7 +1179,7 @@ function updateWorkoutCalRate() {
   
   const rates = {
     cardio_run: 600, cardio_walk: 280, strength: 400,
-    hiit: 700, cycling: 450, swimming: 500, home_workout: 350
+    hiit: 700, cycling: 450, swimming: 500
   };
 
   const burned = Math.round((rates[type] || 400) * (duration / 60));
@@ -1262,7 +1188,7 @@ function updateWorkoutCalRate() {
 
 function addWorkoutLog() {
   const typeSelect = document.getElementById('workout-type');
-  const typeText = typeSelect.options[typeSelect.selectedIndex].text.split('-')[0].trim();
+  const typeText = typeSelect.options[typeSelect.selectedIndex].text;
   const duration = parseInt(document.getElementById('workout-duration').value) || 30;
   const calories = parseInt(document.getElementById('workout-calories').value) || 200;
 
@@ -1310,30 +1236,6 @@ function deleteWorkout(id) {
   updateDashboard();
   updateWorkoutsList();
   showToast('تم حذف التمرين', 'info');
-}
-
-function renderWorkoutRoutines() {
-  const container = document.getElementById('workout-routines-container');
-  if (!container) return;
-  container.innerHTML = workoutRoutines.map(r => `
-    <div class="food-item">
-      <div class="food-info">
-        <div class="food-name">${r.title}</div>
-        <div class="food-macros">${r.desc}</div>
-        <div class="food-macros">⏱️ ${r.duration} | 🔥 ${r.cals}</div>
-      </div>
-      <button class="icon-btn" onclick="addPresetWorkout('${r.title}', 30, 250)">💪 ابدأ التمرين</button>
-    </div>
-  `).join('');
-}
-
-function addPresetWorkout(name, duration, cal) {
-  if (!appState.workouts) appState.workouts = [];
-  appState.workouts.push({ id: Date.now(), date: todayStr(), name, duration, cal, time: new Date().toLocaleTimeString('ar') });
-  saveCurrentUserData();
-  updateDashboard();
-  updateWorkoutsList();
-  showToast('تمت إضافة الجلسة بنجاح', 'success');
 }
 
 // ============ Water & Weight ============
@@ -1399,7 +1301,7 @@ function renderChatHistory() {
   if (!container) return;
   container.innerHTML = '';
   if (!appState.chat || appState.chat.length === 0) {
-    renderChatMessage('assistant', 'مرحباً بك! أنا مستشارك الصحي الذكي. كيف يمكنني مساعدتك اليوم في نظامك الغذائي أو رياقتك؟');
+    renderChatMessage('assistant', 'مرحباً بك! أنا مستشارك الصحي الذكي. كيف يمكنني مساعدتك في نظامك الغذائي أو لياقتك اليوم؟');
   } else {
     appState.chat.forEach(m => renderChatMessage(m.role, m.content));
   }
@@ -1419,11 +1321,6 @@ function renderChatMessage(role, text) {
   container.scrollTop = container.scrollHeight;
 }
 
-function sendQuickPrompt(promptText) {
-  document.getElementById('chat-input').value = promptText;
-  sendChat();
-}
-
 async function sendChat() {
   const input = document.getElementById('chat-input');
   const msg = input.value.trim();
@@ -1434,20 +1331,35 @@ async function sendChat() {
   appState.chat.push({ role: 'user', content: msg });
 
   const p = appState.profile;
-  const context = `أنا مستشار صحي. بيانات المستخدم الحالية:
+  const context = `أنت مستشار صحي ذكي. بيانات المستخدم الحالية:
 الاسم: ${p?.name || 'مستخدم'}
-الوزن الحالي: ${appState.weights[appState.weights.length-1]?.weight || p?.currentWeight}كغ
-الوزن المستهدف: ${p?.targetWeight}كغ
-السعرات اليومية المستهدفة: ${p?.dailyCalories} سعرة
+الوزن الحالي: ${appState.weights[appState.weights.length-1]?.weight || p?.currentWeight} كغ
+الوزن المستهدف: ${p?.targetWeight} كغ
+السعرات اليومية: ${p?.dailyCalories} سعرة
 الهدف: ${p?.goal}`;
 
   try {
-    const reply = await callGeminiTextAPI(`${context}\n\nالسؤال: ${msg}`);
+    const activeKey = localStorage.getItem('healthAppGeminiKey') || apiKey;
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${activeKey}`;
+
+    const contents = appState.chat.map(m => ({
+      role: m.role === 'assistant' ? 'model' : 'user',
+      parts: [{ text: m.content }]
+    }));
+
+    const payload = {
+      systemInstruction: { parts: [{ text: context }] },
+      contents: contents
+    };
+
+    const data = await fetchGeminiWithRetry(url, payload);
+    const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || 'عذراً، لم أستطع معالجة الإجابة.';
+
     renderChatMessage('assistant', reply);
     appState.chat.push({ role: 'assistant', content: reply });
     saveCurrentUserData();
   } catch (e) {
-    renderChatMessage('assistant', 'عذراً، تعذر الاتصال بمحرك الذكاء الاصطناعي حالياً.');
+    renderChatMessage('assistant', 'عذراً، تعذر الاتصال بالمساعد الذكي حالياً.');
   }
 }
 
@@ -1455,29 +1367,6 @@ function clearChat() {
   appState.chat = [];
   saveCurrentUserData();
   renderChatHistory();
-}
-
-// ============ Export & Sharing ============
-function exportDataCSV() {
-  let csv = 'التاريخ,النوع,الاسم,السعرات,البروتين\n';
-  appState.meals.forEach(m => {
-    csv += `${m.date},وجبة,${m.name},${m.cal},${m.protein}\n`;
-  });
-  appState.weights.forEach(w => {
-    csv += `${w.date},وزن,${w.weight}kg,,\n`;
-  });
-
-  const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `تقرير_صحتك_${todayStr()}.csv`;
-  a.click();
-  showToast('تم تحميل ملف CSV بنجاح', 'success');
-}
-
-function printReportPDF() {
-  window.print();
 }
 
 function shareProgressModal() {
@@ -1491,62 +1380,15 @@ function shareProgressModal() {
     `💧 الالتزام بالماء: ${appState.water} أكواب اليوم\n` +
     `💪 ملتزم برحلتي الصحية ونحو هدف جديد!`;
 
-  showModal('✨ بطاقة مشاركة التقدم', `
+  showModal('✨ مشاركة التقدم', `
     <div class="glass-card" style="text-align:center; background:linear-gradient(135deg, var(--surface-glass) 0%, rgba(233,69,96,0.2) 100%);">
       <div style="font-size:36px; margin-bottom:10px;">🏆</div>
       <pre style="white-space:pre-wrap; font-family:'Tajawal'; text-align:right; font-size:14px; line-height:1.6; color:#fff;">${text}</pre>
     </div>
-    <button class="btn btn-primary" onclick="copyToClipboard('${encodeURIComponent(text)}')">📋 نسخ النص لمشاركته</button>
   `);
 }
 
-function copyToClipboard(encodedText) {
-  const text = decodeURIComponent(encodedText);
-  const dummy = document.createElement('textarea');
-  document.body.appendChild(dummy);
-  dummy.value = text;
-  dummy.select();
-  document.execCommand('copy');
-  document.body.removeChild(dummy);
-  showToast('تم نسخ التقرير إلى الحافظة بنجاح 📋', 'success');
-}
-
-// ============ Push Notifications ============
-function togglePushNotifications() {
-  if (!("Notification" in window)) {
-    showToast("متصفحك لا يدعم الإشعارات", "warning");
-    return;
-  }
-
-  Notification.requestPermission().then(permission => {
-    if (permission === "granted") {
-      appState.notificationsEnabled = true;
-      saveCurrentUserData();
-      showToast("تم تفعيل الإشعارات بنجاح 🔔", "success");
-      document.getElementById('push-toggle-btn').textContent = "الإشعارات مفعلة ✅";
-    } else {
-      showToast("لم يتم منح الإذن للإشعارات", "warning");
-    }
-  });
-}
-
-// ============ Settings ============
-function updateReports() {
-  const p = appState.profile;
-  if (!p) return;
-
-  const totalCals = appState.meals.reduce((s, m) => s + m.cal, 0);
-  const avg = appState.meals.length ? Math.round(totalCals / appState.meals.length) : 0;
-  const firstW = appState.weights[0]?.weight || p.currentWeight;
-  const currW = appState.weights[appState.weights.length - 1]?.weight || p.currentWeight;
-  const diff = (firstW - currW).toFixed(1);
-
-  document.getElementById('report-meals').textContent = appState.meals.length;
-  document.getElementById('report-avg-calories').textContent = avg;
-  document.getElementById('report-water').textContent = appState.water;
-  document.getElementById('report-weight-change').textContent = diff > 0 ? `-${diff}` : `+${Math.abs(diff)}`;
-}
-
+// ============ Profile & Settings ============
 function updateProfileUI() {
   const p = appState.profile;
   if (!p) return;
@@ -1560,14 +1402,13 @@ function updateProfileUI() {
   `;
 }
 
-function editProfile() {
-  showScreen('setup-screen');
-}
+function editProfile() { showScreen('setup-screen'); }
 
 function saveApiSettings() {
   const geminiKey = document.getElementById('gemini-key-input').value.trim();
   if (geminiKey) localStorage.setItem('healthAppGeminiKey', geminiKey);
-  showToast('تم حفظ الإعدادات بنجاح', 'success');
+  else localStorage.removeItem('healthAppGeminiKey');
+  showToast('تم حفظ إعدادات المفتاح بنجاح', 'success');
 }
 
 function loadApiSettingsUI() {
@@ -1580,13 +1421,13 @@ function logout() {
 }
 
 function clearAllData() {
-  if (confirm('هل أنت تأكد من إزالة كافة سجلات الوجبات والأوزان؟')) {
+  if (confirm('هل أنت تأكد من مسح كافة سجلات الوجبات والأوزان؟')) {
     appState.meals = [];
     appState.workouts = [];
     appState.weights = [];
     saveCurrentUserData();
     updateDashboard();
-    showToast('تم إرجاع ضبط السجلات', 'info');
+    showToast('تمت إعادة ضبط السجلات', 'info');
   }
 }
 </script>

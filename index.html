@@ -10,11 +10,12 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="مستشار صحتك">
 
-<!-- PWA Manifest Data URI -->
-<link rel="manifest" href="data:application/manifest+json;charset=utf-8,%7B%22name%22%3A%22%D9%85%D8%B3%D8%AA%D8%B4%D8%A7%D8%B1%20%D8%B5%D8%AD%D8%AA%D9%83%20%D8%A7%D9%84%D8%B0%D9%83%D9%8A%22%2C%22short_name%22%3A%22%D8%B5%D8%AD%D8%AA%D9%83%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23070a16%22%2C%22theme_color%22%3A%22%2310b981%22%7D">
+<!-- PWA Manifest مع أيقونة الميزان المخصصة لتثبيت التطبيق على سطح المكتب -->
+<link rel="manifest" href="data:application/manifest+json;charset=utf-8,%7B%22name%22%3A%22%D9%85%D8%B3%D8%AA%D8%B4%D8%A7%D8%B1%20%D8%B5%D8%AD%D8%AA%D9%83%20%D8%A7%D9%84%D8%B0%D9%83%D9%8A%22%2C%22short_name%22%3A%22%D8%B5%D8%AD%D8%AA%D9%83%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23070a16%22%2C%22theme_color%22%3A%22%2310b981%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage%2Fsvg%2Bxml%3Butf8%2C%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%20512%20512%27%3E%3Crect%20width%3D%27512%27%20height%3D%27512%27%20rx%3D%27120%27%20fill%3D%27%2523070a16%27%2F%3E%3Crect%20x%3D%2770%27%20y%3D%2770%27%20width%3D%27372%27%20height%3D%27372%27%20rx%3D%2770%27%20fill%3D%27%2523111827%27%20stroke%3D%27%252310b981%27%20stroke-width%3D%2722%27%2F%3E%3Crect%20x%3D%27150%27%20y%3D%27115%27%20width%3D%27212%27%20height%3D%2780%27%20rx%3D%2720%27%20fill%3D%27%2523042f2e%27%20stroke%3D%27%252310b981%27%20stroke-width%3D%2710%27%2F%3E%3Ccircle%20cx%3D%27180%27%20cy%3D%27155%27%20r%3D%278%27%20fill%3D%27%252310b981%27%2F%3E%3Cpath%20d%3D%27M210%20155h90%27%20stroke%3D%27%252310b981%27%20stroke-width%3D%2714%27%20stroke-linecap%3D%27round%27%20stroke-dasharray%3D%2715%2010%27%2F%3E%3Cpath%20d%3D%27M150%20360%20a130%20130%200%200%201%20212%200%27%20fill%3D%27none%27%20stroke%3D%27%252306b6d4%27%20stroke-width%3D%2724%27%20stroke-linecap%3D%27round%27%2F%3E%3Cpath%20d%3D%27M256%20360%20l45%20-70%27%20stroke%3D%27%2523f43f5e%27%20stroke-width%3D%2716%27%20stroke-linecap%3D%27round%27%2F%3E%3Ccircle%20cx%3D%27256%27%20cy%3D%27360%27%20r%3D%2722%27%20fill%3D%27%2523f43f5e%27%20%2F%3E%3C%2Fsvg%3E%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%22%2C%22purpose%22%3A%22any%20maskable%22%7D%5D%7D">
 
-<!-- App Icons -->
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512' fill='%2310b981'><rect width='512' height='512' rx='100' fill='%23070a16'/><path d='M256 100v312M356 160H200a50 50 0 0 0 0 100h112a50 50 0 0 1 0 100H140' stroke='%2310b981' stroke-width='40' stroke-linecap='round'/></svg>">
+<!-- أيقونات الميزان للمتصفح والآيفون -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='120' fill='%23070a16'/><rect x='70' y='70' width='372' height='372' rx='70' fill='%23111827' stroke='%2310b981' stroke-width='22'/><rect x='150' y='115' width='212' height='80' rx='20' fill='%23042f2e' stroke='%2310b981' stroke-width='10'/><circle cx='180' cy='155' r='8' fill='%2310b981'/><path d='M210 155h90' stroke='%2310b981' stroke-width='14' stroke-linecap='round' stroke-dasharray='15 10'/><path d='M150 360 a130 130 0 0 1 212 0' fill='none' stroke='%2306b6d4' stroke-width='24' stroke-linecap='round'/><path d='M256 360 l45 -70' stroke='%23f43f5e' stroke-width='16' stroke-linecap='round'/><circle cx='256' cy='360' r='22' fill='%23f43f5e'/></svg>">
+<link rel="apple-touch-icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='120' fill='%23070a16'/><rect x='70' y='70' width='372' height='372' rx='70' fill='%23111827' stroke='%2310b981' stroke-width='22'/><rect x='150' y='115' width='212' height='80' rx='20' fill='%23042f2e' stroke='%2310b981' stroke-width='10'/><circle cx='180' cy='155' r='8' fill='%2310b981'/><path d='M210 155h90' stroke='%2310b981' stroke-width='14' stroke-linecap='round' stroke-dasharray='15 10'/><path d='M150 360 a130 130 0 0 1 212 0' fill='none' stroke='%2306b6d4' stroke-width='24' stroke-linecap='round'/><path d='M256 360 l45 -70' stroke='%23f43f5e' stroke-width='16' stroke-linecap='round'/><circle cx='256' cy='360' r='22' fill='%23f43f5e'/></svg>">
 
 <title>مستشار صحتك الذكي المتطور</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -297,8 +298,17 @@ body {
   <div id="login-screen" class="screen active">
     <div style="max-width: 440px; margin: 40px auto 0; text-align: center;">
       <div class="glass-card" style="padding: 40px 25px;">
-        <div style="width: 70px; height: 70px; margin: 0 auto 15px; border-radius: 20px; background: linear-gradient(135deg, var(--accent-emerald) 0%, #059669 100%); display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 30px var(--accent-emerald-glow);">
-          <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        <!-- أيقونة الميزان الذكي في شاشة الدخول -->
+        <div style="width: 80px; height: 80px; margin: 0 auto 15px; border-radius: 24px; background: rgba(16, 185, 129, 0.1); border: 2px solid var(--accent-emerald); display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 30px var(--accent-emerald-glow);">
+          <svg width="48" height="48" viewBox="0 0 512 512">
+            <rect x="70" y="70" width="372" height="372" rx="70" fill="#111827" stroke="#10b981" stroke-width="22"/>
+            <rect x="150" y="115" width="212" height="80" rx="20" fill="#042f2e" stroke="#10b981" stroke-width="10"/>
+            <circle cx="180" cy="155" r="8" fill="#10b981"/>
+            <path d="M210 155h90" stroke="#10b981" stroke-width="14" stroke-linecap="round" stroke-dasharray="15 10"/>
+            <path d="M150 360 a130 130 0 0 1 212 0" fill="none" stroke="#06b6d4" stroke-width="24" stroke-linecap="round"/>
+            <path d="M256 360 l45 -70" stroke="#f43f5e" stroke-width="16" stroke-linecap="round"/>
+            <circle cx="256" cy="360" r="22" fill="#f43f5e"/>
+          </svg>
         </div>
         <h1 style="font-size: 26px; font-weight: 900; font-family: 'El Messiri', serif; margin-bottom: 6px;">مستشارك الصحي الذكي</h1>
         <p style="color: var(--text-secondary); font-size: 13px; margin-bottom: 25px;">رحلتك الشاملة للصحة والتغذية والصيام والرياضة</p>
@@ -445,7 +455,7 @@ body {
       </div>
     </div>
 
-    <!-- Suggested Meals Categories (Breakfast, Lunch, Dinner, Snacks) -->
+    <!-- Suggested Meals Categories -->
     <div class="glass-card" style="border-color: var(--accent-amber);">
       <h3 style="color: var(--accent-amber); margin-bottom: 8px; font-size:15px; font-weight:800;">💡 الوجبات الصحية المقترحة لليوم</h3>
       <p style="font-size:12px; color:var(--text-secondary); margin-bottom:12px;">اختر من الوجبات الجاهزة المحسوبة السعرات حسب الفترة:</p>
@@ -471,10 +481,10 @@ body {
       <div id="voice-transcript-preview"></div>
     </div>
 
-    <!-- Barcode Scanner Card FIXED -->
+    <!-- Barcode Scanner Card -->
     <div class="glass-card" style="border-color: var(--accent-cyan);">
       <h3 style="color: var(--accent-cyan); margin-bottom: 4px; font-size:15px; font-weight:800;">📲 ماسح الباركود الذكي (Barcode)</h3>
-      <p style="font-size:12px; color:var(--text-secondary); margin-bottom:12px;">قراءة المنتجات مباشرة عبر فتح الكاميرا المباشرة أو التقاط صورة للباركود</p>
+      <p style="font-size:12px; color:var(--text-secondary); margin-bottom:12px;">قراءة المنتجات مباشرة عبر الكاميرا أو رفع صورة الباركود</p>
       
       <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:10px;">
         <button class="btn btn-cyan" onclick="startBarcodeScanner()">📹 فتح الكاميرا للباركود</button>
@@ -524,7 +534,7 @@ body {
         <label class="form-label">نظام الصيام المفضل</label>
         <select id="fasting-protocol-select" class="form-select" onchange="changeFastingProtocol()">
           <option value="16:8">16:8 (الموصى به - 16 ساعة صيام)</option>
-          <option value="18:6">18:6 (صيام متتقدم - 18 ساعة)</option>
+          <option value="18:6">18:6 (صيام متقدم - 18 ساعة)</option>
           <option value="20:4">20:4 (نظام المحارب - 20 ساعة)</option>
           <option value="14:10">14:10 (صيام خفيف - 14 ساعة)</option>
           <option value="24:0">24:0 (صيام يوم كامل)</option>
@@ -1183,7 +1193,7 @@ function toggleVoiceRecognition() {
   speechRecognition.start();
 }
 
-// ============ BARCODE SCANNER FIXED (LIVE & FILE SCAN) ============
+// ============ BARCODE SCANNER FIXED ============
 let html5QrCode = null;
 
 function startBarcodeScanner() {
@@ -1204,11 +1214,8 @@ function startBarcodeScanner() {
       stopBarcodeScanner();
       lookupBarcode(decodedText);
     },
-    (errorMessage) => {
-      // ignore frame scan errors
-    }
+    () => {}
   ).catch(err => {
-    console.warn("Environment camera failed, trying default user camera:", err);
     html5QrCode.start(
       { facingMode: "user" },
       config,
@@ -1219,7 +1226,7 @@ function startBarcodeScanner() {
       },
       () => {}
     ).catch(err2 => {
-      showToast('تعذر فتح البث المباشر للكاميرا. يمكنك تجربة "📸 التقاط صورة الباركود".', 'warning');
+      showToast('تعذر فتح البث المباشر للكاميرا. يمكنك استخدام زر التقاط صورة الباركود.', 'warning');
       container.style.display = 'none';
     });
   });
@@ -1253,7 +1260,7 @@ function handleBarcodeImageUpload(event) {
       lookupBarcode(decodedText);
     })
     .catch(err => {
-      showToast('لم يتم العثور على باركود واضح في الصورة. تأكد من وضوح الصورة.', 'warning');
+      showToast('لم يتم العثور على باركود واضح في الصورة. حاول مجدداً بنقل الصورة بوضوح.', 'warning');
     });
 }
 
@@ -1272,7 +1279,7 @@ async function lookupBarcode(barcode) {
     const data = await res.json();
 
     if (data.status !== 1 || !data.product) {
-      preview.innerHTML = `<div class="message-box warning" style="margin-top:10px;">لم يتم العثور على منتج بهذا الباركود (${barcode}). يمكنك وصفه نصياً أو تصويره.</div>`;
+      preview.innerHTML = `<div class="message-box warning" style="margin-top:10px;">لم يتم العثور على منتج بهذا الباركود (${barcode}).</div>`;
       return;
     }
 
@@ -1299,7 +1306,7 @@ async function lookupBarcode(barcode) {
 // ============ NOTIFICATIONS SYSTEM ============
 function requestNotificationPermission() {
   if (!("Notification" in window)) {
-    showToast("متصفحك لا يدعم الإشعارات في هذا الجهاز", "warning");
+    showToast("متصفحك لا يدعم الإشعارات", "warning");
     return;
   }
 
@@ -1307,7 +1314,7 @@ function requestNotificationPermission() {
     if (permission === "granted") {
       appState.notificationsEnabled = true;
       saveCurrentUserData();
-      showToast("تم تفعيل نظام التنبيهات بنجاح! 🔔", "success");
+      showToast("تم تفعيل التنبيهات بنجاح! 🔔", "success");
       document.getElementById('notification-toggle-btn').innerHTML = "<span>✅ الإشعارات مفعلة بنجاح</span>";
     } else {
       showToast("لم يتم منح الإذن للإشعارات", "warning");
@@ -1316,22 +1323,20 @@ function requestNotificationPermission() {
 }
 
 function triggerNotification(title, body) {
+  const scaleIconUrl = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='120' fill='%23070a16'/><rect x='70' y='70' width='372' height='372' rx='70' fill='%23111827' stroke='%2310b981' stroke-width='22'/><rect x='150' y='115' width='212' height='80' rx='20' fill='%23042f2e' stroke='%2310b981' stroke-width='10'/><circle cx='180' cy='155' r='8' fill='%2310b981'/><path d='M210 155h90' stroke='%2310b981' stroke-width='14' stroke-linecap='round' stroke-dasharray='15 10'/><path d='M150 360 a130 130 0 0 1 212 0' fill='none' stroke='%2306b6d4' stroke-width='24' stroke-linecap='round'/><path d='M256 360 l45 -70' stroke='%23f43f5e' stroke-width='16' stroke-linecap='round'/><circle cx='256' cy='360' r='22' fill='%23f43f5e'/></svg>";
+
   if ("Notification" in window && Notification.permission === "granted") {
-    new Notification(title, {
-      body: body,
-      icon: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512' fill='%2310b981'><rect width='512' height='512' rx='100' fill='%23070a16'/><path d='M256 100v312' stroke='%2310b981' stroke-width='40'/></svg>"
-    });
+    new Notification(title, { body: body, icon: scaleIconUrl });
   } else {
     showToast(`🔔 [تنبيه]: ${title} - ${body}`, 'info');
   }
 }
 
 function sendTestNotification() {
-  triggerNotification("مستشار صحتك الذكي 💚", "هذا إشعار تجريبي! سنقوم بتذكيرك بانتظام لشرب الماء وتسجيل وجباتك والصيام.");
+  triggerNotification("مستشار صحتك الذكي ⚖️", "إشعار تجريبي! سنقوم بتذكيرك بانتظام لشرب الماء، التسجيل والصيام.");
 }
 
 function startNotificationScheduler() {
-  // Check every hour for water or meal logging reminders
   setInterval(() => {
     if (!appState.notificationsEnabled) return;
     const hour = new Date().getHours();
@@ -1345,7 +1350,7 @@ function startNotificationScheduler() {
     } else if (hour === 21) {
       triggerNotification("🌙 عشاء خفيف وتحديث الوزن", "سجل وجبة العشاء وقراءة وزن اليوم للتقدم في الرسم البياني!");
     }
-  }, 3600000); // Hourly check
+  }, 3600000);
 }
 
 // ============ INTERMITTENT FASTING TRACKER ============
@@ -1936,7 +1941,7 @@ function shareProgressModal() {
 
   showModal('✨ مشاركة التقدم', `
     <div class="glass-card" style="text-align:center; background:linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(6, 182, 212, 0.2) 100%);">
-      <div style="font-size:36px; margin-bottom:10px;">🏆</div>
+      <div style="font-size:36px; margin-bottom:10px;">⚖️</div>
       <pre style="white-space:pre-wrap; font-family:'Tajawal'; text-align:right; font-size:14px; line-height:1.6; color:#fff;">${text}</pre>
     </div>
   `);

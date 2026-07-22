@@ -4,169 +4,252 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#0f3460">
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="مستشار صحتك">
-<meta name="mobile-web-app-capable" content="yes">
-<link rel="icon" type="image/png" href="data:image/png;base64,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">
-<link rel="apple-touch-icon" href="data:image/png;base64,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">
-<title>مستشار صحتك الذكي</title>
+<title>مستشار صحتك الذكي المتطور</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@400;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@400;600;700&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<!-- Chart.js for interactive analytics -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 :root {
-  --primary-dark: #0f3460;
-  --primary: #16213e;
+  --primary-dark: #090d16;
+  --bg-dark: #0b1120;
+  --surface-glass: rgba(26, 35, 62, 0.65);
+  --surface-glass-border: rgba(255, 255, 255, 0.12);
+  --surface-light: rgba(42, 54, 88, 0.5);
   --accent: #e94560;
   --accent-light: #ff6b9d;
+  --accent-glow: rgba(233, 69, 96, 0.35);
   --success: #06d6a0;
   --warning: #fca311;
   --danger: #e63946;
-  --bg-dark: #0a0e27;
-  --bg-darker: #050a1a;
-  --surface: #1a1f3a;
-  --surface-light: #252d48;
+  --info: #00b4d8;
   --text-primary: #ffffff;
   --text-secondary: #b0b8d4;
-  --border: #2a3454;
-  --shadow: rgba(0, 0, 0, 0.5);
+  --text-muted: #7481a6;
+  --border-glow: rgba(233, 69, 96, 0.4);
+  --shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
 }
 
 html, body {
   width: 100%; height: 100vh; height: 100dvh;
-  font-family: 'Tajawal', system-ui, sans-serif;
-  background: linear-gradient(135deg, var(--bg-darker) 0%, var(--bg-dark) 100%);
+  font-family: 'Tajawal', system-ui, -apple-system, sans-serif;
+  background: radial-gradient(circle at 20% 20%, #16213e 0%, #0a0e27 60%, #050a1a 100%);
   color: var(--text-primary);
   overflow: hidden;
 }
+
 body { display: flex; flex-direction: column; }
+
+/* Custom Modal / Toast Notification */
+.toast-container {
+  position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+  z-index: 10000; display: flex; flex-direction: column; gap: 10px; width: 90%; max-width: 400px;
+  pointer-events: none;
+}
+.toast {
+  background: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--surface-glass-border);
+  color: var(--text-primary); padding: 14px 20px; border-radius: 14px;
+  box-shadow: var(--shadow); font-size: 13px; font-weight: 600;
+  display: flex; align-items: center; gap: 12px; pointer-events: auto;
+  animation: toastIn 0.3s ease, toastOut 0.3s ease 3.7s forwards;
+}
+.toast.success { border-right: 4px solid var(--success); }
+.toast.error { border-right: 4px solid var(--danger); }
+.toast.info { border-right: 4px solid var(--info); }
+.toast.warning { border-right: 4px solid var(--warning); }
+
+@keyframes toastIn { from { opacity: 0; transform: translateY(-20px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@keyframes toastOut { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-20px); } }
+
 .main-container {
   flex: 1; overflow-y: auto;
-  padding-top: calc(10px + env(safe-area-inset-top));
-  padding-bottom: calc(90px + env(safe-area-inset-bottom));
+  padding-top: calc(12px + env(safe-area-inset-top));
+  padding-bottom: calc(95px + env(safe-area-inset-bottom));
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent) transparent;
 }
 
+/* Glassmorphism Navigation */
 .bottom-nav {
   position: fixed; bottom: 0; left: 0; right: 0;
-  min-height: 80px;
-  background: linear-gradient(180deg, var(--primary-dark) 0%, var(--primary) 100%);
-  border-top: 2px solid var(--border);
+  min-height: 75px;
+  background: rgba(10, 14, 39, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid var(--surface-glass-border);
   display: flex; justify-content: space-around; align-items: center;
-  padding: 10px 0 calc(10px + env(safe-area-inset-bottom));
-  box-shadow: 0 -5px 30px var(--shadow); z-index: 1000;
+  padding: 8px 5px calc(8px + env(safe-area-inset-bottom));
+  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.6); z-index: 1000;
 }
 .nav-item {
-  display: flex; flex-direction: column; align-items: center; gap: 5px;
-  padding: 8px 12px; cursor: pointer; color: var(--text-secondary);
-  transition: all 0.3s ease; border-radius: 10px; text-align: center;
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  padding: 8px 10px; cursor: pointer; color: var(--text-secondary);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); border-radius: 12px; text-align: center;
+  position: relative;
 }
-.nav-item:hover { color: var(--text-primary); background: var(--surface); }
-.nav-item.active { color: var(--accent); background: var(--surface); }
-.nav-icon { font-size: 24px; }
-.nav-label { font-size: 11px; font-weight: 600; }
+.nav-item:hover { color: var(--text-primary); transform: translateY(-2px); }
+.nav-item.active { color: var(--accent-light); background: rgba(233, 69, 96, 0.12); }
+.nav-item.active::after {
+  content: ''; position: absolute; bottom: -2px; width: 18px; height: 3px;
+  background: var(--accent); border-radius: 10px; box-shadow: 0 0 10px var(--accent);
+}
+.nav-icon { font-size: 22px; }
+.nav-label { font-size: 10px; font-weight: 700; }
 
-.screen { display: none; padding: 20px; animation: slideIn 0.3s ease; }
+.screen { display: none; padding: 20px; animation: fadeIn 0.35s ease; max-width: 900px; margin: 0 auto; }
 .screen.active { display: block; }
-@keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Modern Cards */
+.glass-card {
+  background: var(--surface-glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--surface-glass-border);
+  border-radius: 20px; padding: 22px;
+  box-shadow: var(--shadow); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-bottom: 20px; position: relative; overflow: hidden;
+}
+.glass-card:hover {
+  border-color: rgba(233, 69, 96, 0.3);
+  box-shadow: 0 12px 40px rgba(233, 69, 96, 0.15);
+  transform: translateY(-3px);
+}
 
 .screen-header {
-  background: linear-gradient(135deg, var(--surface) 0%, var(--surface-light) 100%);
-  padding: 20px; border-radius: 15px; margin-bottom: 20px;
-  border: 1px solid var(--border); box-shadow: 0 8px 32px var(--shadow);
+  background: linear-gradient(135deg, rgba(30, 41, 75, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%);
+  backdrop-filter: blur(16px); border: 1px solid var(--surface-glass-border);
+  padding: 22px; border-radius: 20px; margin-bottom: 22px;
+  box-shadow: var(--shadow);
 }
-.screen-title { font-size: 22px; font-weight: 700; margin-bottom: 10px; }
-.screen-subtitle { font-size: 12px; color: var(--text-secondary); }
+.screen-title { font-size: 22px; font-weight: 800; font-family: 'El Messiri', serif; background: linear-gradient(90deg, #fff, var(--text-secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.screen-subtitle { font-size: 12px; color: var(--text-secondary); margin-top: 4px; }
 
+/* Auth Box */
 .auth-container {
-  max-width: 500px; margin: 0 auto; padding: 60px 20px;
-  display: flex; justify-content: center; align-items: center; min-height: 100vh; min-height: 100dvh;
+  max-width: 460px; margin: 0 auto; padding: 40px 20px;
+  display: flex; justify-content: center; align-items: center; min-height: 85vh;
 }
 .auth-box {
-  background: linear-gradient(135deg, var(--surface) 0%, var(--surface-light) 100%);
-  padding: 40px; border-radius: 20px; border: 1px solid var(--border);
-  box-shadow: 0 20px 60px var(--shadow); width: 100%;
+  background: var(--surface-glass); backdrop-filter: blur(20px);
+  padding: 35px 30px; border-radius: 24px; border: 1px solid var(--surface-glass-border);
+  box-shadow: var(--shadow); width: 100%; text-align: center;
 }
-.auth-header { text-align: center; margin-bottom: 40px; }
-.auth-logo { font-size: 48px; margin-bottom: 15px; }
-.auth-title { font-size: 24px; font-weight: 700; margin-bottom: 10px; }
+.auth-logo { font-size: 54px; margin-bottom: 12px; display: inline-block; animation: pulseGlow 3s infinite ease-in-out; }
+@keyframes pulseGlow { 0%, 100% { transform: scale(1); filter: drop-shadow(0 0 10px rgba(6, 214, 160, 0.4)); } 50% { transform: scale(1.08); filter: drop-shadow(0 0 20px rgba(6, 214, 160, 0.8)); } }
 
-.form-group { margin-bottom: 20px; }
-.form-label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 14px; color: var(--text-secondary); }
+.form-group { margin-bottom: 18px; text-align: right; }
+.form-label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 13px; color: var(--text-secondary); }
 .form-input, .form-select {
-  width: 100%; padding: 14px 16px; background: var(--bg-dark);
-  border: 2px solid var(--border); border-radius: 10px; color: var(--text-primary);
-  font-size: 16px; font-family: 'Tajawal', system-ui; transition: all 0.3s ease;
+  width: 100%; padding: 14px 16px; background: rgba(11, 17, 32, 0.7);
+  border: 1.5px solid var(--surface-glass-border); border-radius: 12px; color: var(--text-primary);
+  font-size: 15px; font-family: 'Tajawal', system-ui; transition: all 0.25s ease;
 }
 .form-input:focus, .form-select:focus {
-  outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(233, 69, 96, 0.1);
+  outline: none; border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-glow);
+  background: rgba(11, 17, 32, 0.9);
 }
 
 .btn {
-  width: 100%; padding: 14px 24px; border: none; border-radius: 10px;
-  font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.3s ease;
-  font-family: 'Tajawal', system-ui; margin-bottom: 10px;
+  width: 100%; padding: 14px 22px; border: none; border-radius: 12px;
+  font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.25s ease;
+  font-family: 'Tajawal', system-ui; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
 }
-.btn-primary { background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%); color: white; }
-.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(233, 69, 96, 0.3); }
-.btn-secondary { background: var(--surface-light); color: var(--accent); border: 2px solid var(--accent); }
+.btn-primary { background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%); color: white; box-shadow: 0 8px 20px var(--accent-glow); }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(233, 69, 96, 0.5); }
+.btn-secondary { background: var(--surface-light); color: #fff; border: 1px solid var(--surface-glass-border); }
+.btn-secondary:hover { background: rgba(255, 255, 255, 0.1); border-color: var(--accent); }
+.btn-success { background: linear-gradient(135deg, #06d6a0 0%, #00b4d8 100%); color: #000; font-weight: 800; }
 
-.dashboard-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 20px; }
-.card {
-  background: linear-gradient(135deg, var(--surface) 0%, var(--surface-light) 100%);
-  border: 1px solid var(--border); border-radius: 15px; padding: 20px;
-  box-shadow: 0 8px 32px var(--shadow); transition: all 0.3s ease;
-}
-.card:hover { transform: translateY(-5px); border-color: var(--accent); box-shadow: 0 12px 40px rgba(233, 69, 96, 0.2); }
-.card-icon { font-size: 28px; margin-bottom: 10px; }
-.card-label { font-size: 12px; color: var(--text-secondary); text-transform: uppercase; font-weight: 600; margin-bottom: 8px; }
-.card-value { font-size: 28px; font-weight: 700; color: var(--accent); margin-bottom: 10px; }
+/* Dashboard Grid */
+.dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-bottom: 22px; }
+.card-icon { font-size: 26px; margin-bottom: 8px; }
+.card-label { font-size: 11px; color: var(--text-secondary); text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; }
+.card-value { font-size: 26px; font-weight: 800; color: var(--accent-light); margin: 6px 0; }
 
-.progress-bar { width: 100%; height: 8px; background: var(--bg-dark); border-radius: 10px; overflow: hidden; }
-.progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent) 0%, var(--accent-light) 100%); transition: width 0.3s ease; }
+.progress-bar { width: 100%; height: 10px; background: rgba(11, 17, 32, 0.8); border-radius: 10px; overflow: hidden; border: 1px solid var(--surface-glass-border); }
+.progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent) 0%, var(--accent-light) 100%); transition: width 0.5s ease; border-radius: 10px; }
 
-.macro-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
-.macro-item { background: var(--bg-dark); padding: 15px; border-radius: 10px; border: 1px solid var(--border); text-align: center; }
-.macro-name { font-size: 11px; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; font-weight: 600; }
-.macro-value { font-size: 20px; font-weight: 700; color: var(--success); margin-bottom: 5px; }
-.macro-unit { font-size: 11px; color: var(--text-secondary); }
+.macro-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.macro-item { background: rgba(11, 17, 32, 0.6); padding: 14px; border-radius: 14px; border: 1px solid var(--surface-glass-border); text-align: center; }
+.macro-name { font-size: 11px; color: var(--text-secondary); font-weight: 700; }
+.macro-value { font-size: 18px; font-weight: 800; color: var(--success); margin: 4px 0; }
+.macro-unit { font-size: 10px; color: var(--text-muted); }
 
 .message-box {
   background: var(--surface-light); border-right: 4px solid var(--accent);
-  padding: 15px; border-radius: 10px; margin-bottom: 15px;
+  padding: 14px; border-radius: 12px; margin-bottom: 12px;
   color: var(--text-secondary); font-size: 13px; line-height: 1.6;
 }
-.message-box.success { border-right-color: var(--success); background: rgba(6, 214, 160, 0.1); }
-.message-box.warning { border-right-color: var(--warning); background: rgba(252, 163, 17, 0.1); }
-.message-box.error { border-right-color: var(--danger); background: rgba(230, 57, 70, 0.1); }
+.message-box.success { border-right-color: var(--success); background: rgba(6, 214, 160, 0.08); color: #e0f2fe; }
+.message-box.warning { border-right-color: var(--warning); background: rgba(252, 163, 17, 0.08); color: #fef3c7; }
+.message-box.error { border-right-color: var(--danger); background: rgba(230, 57, 70, 0.08); color: #ffe4e6; }
 
 .food-item {
-  background: var(--bg-dark); padding: 12px; border-radius: 10px; border: 1px solid var(--border);
-  margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;
+  background: rgba(11, 17, 32, 0.6); padding: 14px; border-radius: 14px; border: 1px solid var(--surface-glass-border);
+  margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; transition: all 0.2s ease;
 }
-.food-info { flex: 1; }
-.food-name { font-weight: 600; margin-bottom: 3px; }
+.food-item:hover { background: rgba(26, 35, 62, 0.8); border-color: rgba(255, 255, 255, 0.2); }
+.food-info { flex: 1; padding-left: 10px; }
+.food-name { font-weight: 700; margin-bottom: 4px; font-size: 14px; }
 .food-macros { font-size: 11px; color: var(--text-secondary); }
-.delete-btn { background: var(--danger); color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 12px; font-family: 'Tajawal'; }
+
+.delete-btn { background: rgba(230, 57, 70, 0.2); color: #ff8fa3; border: 1px solid var(--danger); padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 12px; transition: 0.2s; }
+.delete-btn:hover { background: var(--danger); color: white; }
 
 .icon-btn {
-  background: none; border: 1px solid var(--border); color: var(--text-secondary);
-  padding: 6px 12px; border-radius: 8px; font-size: 12px; cursor: pointer; font-family: 'Tajawal';
-  white-space: nowrap;
+  background: rgba(255, 255, 255, 0.05); border: 1px solid var(--surface-glass-border); color: var(--text-secondary);
+  padding: 8px 14px; border-radius: 10px; font-size: 12px; cursor: pointer; font-family: 'Tajawal'; transition: 0.2s;
+  display: inline-flex; align-items: center; gap: 6px;
 }
-.icon-btn:hover { border-color: var(--accent); color: var(--accent); }
+.icon-btn:hover { border-color: var(--accent); color: var(--accent-light); background: rgba(233, 69, 96, 0.1); }
 
+/* Category Pills */
+.pill-container { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 15px; scrollbar-width: none; }
+.pill { padding: 6px 14px; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--surface-glass-border); border-radius: 20px; font-size: 12px; white-space: nowrap; cursor: pointer; color: var(--text-secondary); }
+.pill.active { background: var(--accent); color: white; border-color: var(--accent); font-weight: 700; }
+
+.chart-container { position: relative; width: 100%; height: 260px; margin-top: 15px; }
+
+/* Custom Modal Popups */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(8px);
+  z-index: 5000; display: none; align-items: center; justify-content: center; padding: 20px;
+}
+.modal-overlay.active { display: flex; animation: fadeIn 0.25s ease; }
+.modal-card {
+  background: rgba(20, 27, 48, 0.95); border: 1px solid var(--surface-glass-border);
+  border-radius: 24px; padding: 25px; width: 100%; max-width: 500px; max-height: 85vh; overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+}
 
 @media (max-width: 600px) {
-  .dashboard-grid { grid-template-columns: 1fr; }
-  .macro-grid { grid-template-columns: 1fr; }
+  .dashboard-grid { grid-template-columns: repeat(2, 1fr); }
+  .macro-grid { grid-template-columns: repeat(3, 1fr); }
+  .screen { padding: 12px; }
 }
 </style>
 </head>
 <body>
+
+<!-- Global Toast Container -->
+<div id="toast-container" class="toast-container"></div>
+
+<!-- Modal Overlay for Share / Workout / Quick Tools -->
+<div id="app-modal" class="modal-overlay">
+  <div class="modal-card">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+      <h3 id="modal-title" style="font-size:18px; font-weight:800; color:var(--accent-light);">عنوان النافذة</h3>
+      <button class="icon-btn" onclick="closeModal()">✕ إغلاق</button>
+    </div>
+    <div id="modal-body"></div>
+  </div>
+</div>
 
 <div class="main-container">
 
@@ -174,18 +257,16 @@ body { display: flex; flex-direction: column; }
   <div id="login-screen" class="screen active">
     <div class="auth-container">
       <div class="auth-box">
-        <div class="auth-header">
-          <div class="auth-logo">💚</div>
-          <h1 class="auth-title">مستشارك الصحي الذكي</h1>
-          <p style="color: var(--text-secondary); font-size: 13px;">رحلتك نحو حياة أكثر صحة</p>
-        </div>
+        <div class="auth-logo">💚</div>
+        <h1 style="font-size: 26px; font-weight: 800; font-family: 'El Messiri'; margin-bottom: 6px;">مستشارك الصحي الذكي</h1>
+        <p style="color: var(--text-secondary); font-size: 13px; margin-bottom: 25px;">تتبع صحتك، تغذيتك وتمارينك بذكاء وشغف</p>
         <div class="form-group">
           <label class="form-label">اسم المستخدم</label>
-          <input type="text" id="username" class="form-input" placeholder="أدخل اسم المستخدم" onkeypress="if(event.key==='Enter') handleLogin()">
+          <input type="text" id="username" class="form-input" placeholder="مثال: أحمد" onkeypress="if(event.key==='Enter') handleLogin()">
         </div>
-        <button class="btn btn-primary" onclick="handleLogin()">دخول</button>
-        <p style="text-align:center; font-size:11px; color:var(--text-secondary); margin-top:10px;">
-          إذا سجّلت من قبل بنفس الاسم، ستجد بياناتك محفوظة تلقائياً 💾
+        <button class="btn btn-primary" onclick="handleLogin()">🚀 ابدأ الآن / دخول</button>
+        <p style="font-size:11px; color:var(--text-muted); margin-top:15px; line-height: 1.5;">
+          بياناتك تحفظ محلياً بأمان على جهازك وتتيح التنقل المباشر.
         </p>
       </div>
     </div>
@@ -193,343 +274,440 @@ body { display: flex; flex-direction: column; }
 
   <!-- Setup Screen -->
   <div id="setup-screen" class="screen">
-    <div class="auth-container">
-      <div class="auth-box">
-        <div class="auth-header">
-          <h1 class="auth-title">إدخال بيانات صحتك</h1>
-          <p style="color: var(--text-secondary); font-size: 13px;">سنستخدم هذه البيانات لحساب احتياجاتك</p>
+    <div class="glass-card" style="max-width:600px; margin:0 auto;">
+      <div style="text-align:center; margin-bottom:20px;">
+        <h1 class="screen-title">إدخال البيانات الصحية</h1>
+        <p class="screen-subtitle">حساب السعرات، المغذيات، والهدف بدقة علمية</p>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">الاسم الكامل</label>
+        <input type="text" id="setup-name" class="form-input" placeholder="اسمك">
+      </div>
+      
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+        <div class="form-group">
+          <label class="form-label">العمر (سنة)</label>
+          <input type="number" id="setup-age" class="form-input" min="12" max="100" placeholder="25">
         </div>
-        <div style="max-height: 500px; overflow-y: auto;">
-          <h3 style="color: var(--accent); margin: 20px 0 15px; font-size: 16px;">البيانات الأساسية</h3>
-          <div class="form-group">
-            <label class="form-label">الاسم</label>
-            <input type="text" id="setup-name" class="form-input" placeholder="أدخل اسمك">
-          </div>
-          <div class="form-group">
-            <label class="form-label">العمر (سنة)</label>
-            <input type="number" id="setup-age" class="form-input" min="15" max="100">
-          </div>
-          <div class="form-group">
-            <label class="form-label">الجنس</label>
-            <select id="setup-gender" class="form-select">
-              <option value="">اختر الجنس</option>
-              <option value="male">ذكر</option>
-              <option value="female">أنثى</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label class="form-label">الطول (سم)</label>
-            <input type="number" id="setup-height" class="form-input" min="100" max="250" placeholder="مثال: 175">
-          </div>
-          <div class="form-group">
-            <label class="form-label">الوزن الحالي (كغ)</label>
-            <input type="number" id="setup-current-weight" class="form-input" min="30" step="0.1" placeholder="مثال: 85">
-          </div>
-          <div class="form-group">
-            <label class="form-label">الوزن المستهدف (كغ)</label>
-            <input type="number" id="setup-target-weight" class="form-input" min="30" step="0.1" placeholder="مثال: 75">
-          </div>
-
-          <h3 style="color: var(--accent); margin: 20px 0 15px; font-size: 16px;">نمط الحياة</h3>
-          <div class="form-group">
-            <label class="form-label">مستوى النشاط اليومي</label>
-            <select id="setup-activity" class="form-select">
-              <option value="">اختر</option>
-              <option value="1.2">قليل جداً (خامل)</option>
-              <option value="1.375">قليل (1-3 أيام رياضة)</option>
-              <option value="1.55">متوسط (3-5 أيام)</option>
-              <option value="1.725">مرتفع (6-7 أيام)</option>
-              <option value="1.9">مرتفع جداً (يومي)</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label class="form-label">طبيعة العمل</label>
-            <select id="setup-work" class="form-select">
-              <option value="">اختر</option>
-              <option value="office">مكتبي</option>
-              <option value="field">ميداني</option>
-              <option value="mixed">مختلط</option>
-              <option value="athletic">رياضي</option>
-            </select>
-          </div>
-
-          <h3 style="color: var(--accent); margin: 20px 0 15px; font-size: 16px;">الهدف الرئيسي</h3>
-          <div class="form-group">
-            <label class="form-label">اختر هدفك</label>
-            <select id="setup-goal" class="form-select">
-              <option value="">اختر</option>
-              <option value="lose">خسارة الوزن</option>
-              <option value="gain">زيادة الوزن</option>
-              <option value="maintain">الحفاظ على الوزن</option>
-              <option value="muscle">بناء العضلات</option>
-              <option value="fatloss">تقليل الدهون</option>
-              <option value="fitness">تحسين اللياقة</option>
-            </select>
-          </div>
-
-          <h3 style="color: var(--accent); margin: 20px 0 15px; font-size: 16px;">معلومات صحية (اختياري)</h3>
-          <div class="form-group">
-            <label class="form-label">الأمراض المزمنة</label>
-            <input type="text" id="setup-chronic" class="form-input" placeholder="السكري، ارتفاع الضغط...">
-          </div>
-          <div class="form-group">
-            <label class="form-label">الحساسية الغذائية</label>
-            <input type="text" id="setup-allergies" class="form-input" placeholder="الفول السوداني، الألبان...">
-          </div>
-
-          <button class="btn btn-primary" onclick="completeSetup()" style="margin-top: 30px;">✅ إكمال الإعداد</button>
+        <div class="form-group">
+          <label class="form-label">الجنس</label>
+          <select id="setup-gender" class="form-select">
+            <option value="">اختر...</option>
+            <option value="male">ذكر</option>
+            <option value="female">أنثى</option>
+          </select>
         </div>
       </div>
+
+      <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:10px;">
+        <div class="form-group">
+          <label class="form-label">الطول (سم)</label>
+          <input type="number" id="setup-height" class="form-input" min="100" max="230" placeholder="175">
+        </div>
+        <div class="form-group">
+          <label class="form-label">الوزن (كغ)</label>
+          <input type="number" id="setup-current-weight" class="form-input" min="30" step="0.1" placeholder="80">
+        </div>
+        <div class="form-group">
+          <label class="form-label">الهدف (كغ)</label>
+          <input type="number" id="setup-target-weight" class="form-input" min="30" step="0.1" placeholder="70">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">مستوى النشاط اليومي</label>
+        <select id="setup-activity" class="form-select">
+          <option value="">اختر مستوى النشاط...</option>
+          <option value="1.2">خامل (عمل مكتبي، لا تمارين)</option>
+          <option value="1.375">نشاط خفيف (تمارين 1-3 أيام/أسبوع)</option>
+          <option value="1.55">نشاط متوسط (تمارين 3-5 أيام/أسبوع)</option>
+          <option value="1.725">نشاط عالٍ (تمارين 6-7 أيام/أسبوع)</option>
+          <option value="1.9">نشاط فائق (تمارين شاقة يومية/رياضي)</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">الهدف الرئيسي</label>
+        <select id="setup-goal" class="form-select">
+          <option value="">اختر هدفك...</option>
+          <option value="lose">خسارة الوزن والتنشيف</option>
+          <option value="gain">زيادة الوزن والكتلة</option>
+          <option value="maintain">الحفاظ على الوزن الحاضر</option>
+          <option value="muscle">بناء العضلات مع حرق الدهون</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">ملاحظات صحية أو حساسية غذائية (اختياري)</label>
+        <input type="text" id="setup-allergies" class="form-input" placeholder="مثال: حساسية ألبان، سكري...">
+      </div>
+
+      <button class="btn btn-primary" style="margin-top:15px;" onclick="completeSetup()">✅ حفظ البيانات وبدء الرحلة</button>
     </div>
   </div>
 
   <!-- Dashboard Screen -->
   <div id="dashboard-screen" class="screen">
     <div class="screen-header">
-      <div class="screen-title">لوحة التحكم</div>
-      <div class="screen-subtitle" id="user-welcome">مرحباً بك</div>
-    </div>
-    <div id="dashboard-reminders"></div>
-    <div class="dashboard-grid">
-      <div class="card">
-        <div class="card-icon">🔥</div>
-        <div class="card-label">السعرات اليومية</div>
-        <div class="card-value" id="dashboard-calories">0</div>
-        <div style="font-size: 12px; color: var(--text-secondary); margin-top: 5px;">استهلاك: <span id="dashboard-consumed">0</span></div>
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <div>
+          <div class="screen-title" id="user-welcome">مرحباً بك 👋</div>
+          <div class="screen-subtitle">إليك ملخص مؤشراتك الصحية اليوم</div>
+        </div>
+        <button class="icon-btn" onclick="shareProgressModal()">✨ مشاركة الإنجاز</button>
       </div>
-      <div class="card">
+    </div>
+
+    <div class="dashboard-grid">
+      <div class="glass-card" style="margin:0;">
+        <div class="card-icon">🔥</div>
+        <div class="card-label">السعرات المستهدفة</div>
+        <div class="card-value" id="dashboard-calories">0</div>
+        <div style="font-size: 11px; color: var(--text-secondary);">المستهلك: <span id="dashboard-consumed" style="color:#fff; font-weight:700;">0</span> سعرة</div>
+      </div>
+
+      <div class="glass-card" style="margin:0;">
         <div class="card-icon">⚖️</div>
         <div class="card-label">الوزن الحالي</div>
         <div class="card-value" id="dashboard-weight">0</div>
-        <div style="font-size: 12px; color: var(--text-secondary); margin-top: 5px;">الهدف: <span id="dashboard-target">0</span> كغ</div>
+        <div style="font-size: 11px; color: var(--text-secondary);">الهدف: <span id="dashboard-target" style="color:#fff; font-weight:700;">0</span> كغ</div>
       </div>
-      <div class="card">
+
+      <div class="glass-card" style="margin:0;">
         <div class="card-icon">💧</div>
-        <div class="card-label">شرب الماء</div>
+        <div class="card-label">ترطيب الجسم</div>
         <div class="card-value" id="dashboard-water">0</div>
-        <div style="font-size: 12px; color: var(--text-secondary); margin-top: 5px;">من <span id="dashboard-water-target">8</span> أكواب</div>
+        <div style="font-size: 11px; color: var(--text-secondary);">من <span id="dashboard-water-target" style="color:#fff; font-weight:700;">8</span> أكواب</div>
       </div>
-      <div class="card">
-        <div class="card-icon">📈</div>
-        <div class="card-label">التقدم نحو الهدف</div>
+
+      <div class="glass-card" style="margin:0;">
+        <div class="card-icon">🎯</div>
+        <div class="card-label">إنجاز الهدف</div>
         <div class="card-value" id="dashboard-progress">0%</div>
-        <div style="font-size: 12px; color: var(--text-secondary); margin-top: 5px;">
-          <div class="progress-bar" style="margin-top: 5px;"><div class="progress-fill" id="dashboard-progress-bar" style="width: 0%"></div></div>
+        <div class="progress-bar" style="margin-top:6px;"><div class="progress-fill" id="dashboard-progress-bar" style="width: 0%"></div></div>
+      </div>
+    </div>
+
+    <!-- Macros Card -->
+    <div class="glass-card">
+      <h3 style="font-size:15px; color:var(--accent-light); margin-bottom:14px; display:flex; align-items:center; gap:8px;">
+        🥗 العناصر الغذائية الكبرى (Macros)
+      </h3>
+      <div class="macro-grid">
+        <div class="macro-item">
+          <div class="macro-name">البروتين</div>
+          <div class="macro-value" id="dashboard-protein">0</div>
+          <div class="macro-unit" id="dashboard-protein-target">/ 0 غ</div>
+        </div>
+        <div class="macro-item">
+          <div class="macro-name">الكربوهيدرات</div>
+          <div class="macro-value" id="dashboard-carbs">0</div>
+          <div class="macro-unit" id="dashboard-carbs-target">/ 0 غ</div>
+        </div>
+        <div class="macro-item">
+          <div class="macro-name">الدهون الصحّية</div>
+          <div class="macro-value" id="dashboard-fats">0</div>
+          <div class="macro-unit" id="dashboard-fats-target">/ 0 غ</div>
         </div>
       </div>
     </div>
-    <div style="background: linear-gradient(135deg, var(--surface) 0%, var(--surface-light) 100%); border: 1px solid var(--border); border-radius: 15px; padding: 20px; margin-bottom: 20px; box-shadow: 0 8px 32px var(--shadow);">
-      <h3 style="color: var(--accent); margin-bottom: 15px; font-size: 16px;">العناصر الغذائية</h3>
-      <div class="macro-grid">
-        <div class="macro-item"><div class="macro-name">البروتين</div><div class="macro-value" id="dashboard-protein">0</div><div class="macro-unit" id="dashboard-protein-target">/ 0 غ</div></div>
-        <div class="macro-item"><div class="macro-name">الكربوهيدرات</div><div class="macro-value" id="dashboard-carbs">0</div><div class="macro-unit" id="dashboard-carbs-target">/ 0 غ</div></div>
-        <div class="macro-item"><div class="macro-name">الدهون</div><div class="macro-value" id="dashboard-fats">0</div><div class="macro-unit" id="dashboard-fats-target">/ 0 غ</div></div>
+
+    <!-- Chart Card -->
+    <div class="glass-card">
+      <h3 style="font-size:15px; color:var(--accent-light); margin-bottom:10px;">📈 التطور والتغيّر (الوزن وسجل السعرات)</h3>
+      <div class="chart-container">
+        <canvas id="dashboardChart"></canvas>
       </div>
     </div>
+
     <div id="dashboard-tips"></div>
   </div>
 
   <!-- Meals Screen -->
   <div id="meals-screen" class="screen">
     <div class="screen-header">
-      <div class="screen-title">الوجبات</div>
-      <div class="screen-subtitle">سجل وجباتك اليومية</div>
+      <div class="screen-title">سجل الوجبات والتغذية</div>
+      <div class="screen-subtitle">سجل طعامك إما بالتصوير، البحث الذكي، أو الوصف النصي الحر</div>
     </div>
 
-    <div style="background: linear-gradient(135deg, var(--surface) 0%, var(--surface-light) 100%); border: 1px solid var(--border); border-radius: 15px; padding: 20px; margin-bottom: 20px; box-shadow: 0 8px 32px var(--shadow);">
-      <h3 style="color: var(--accent); margin-bottom: 5px;">📸 صوّر وجبتك</h3>
-      <p style="font-size:11px; color:var(--text-secondary); margin-bottom:12px;">التقط صورة والذكاء الاصطناعي يحدد نوعها وسعراتها تلقائياً</p>
+    <!-- AI Photo Analyzer Card -->
+    <div class="glass-card">
+      <h3 style="color: var(--accent-light); margin-bottom: 6px; font-size:16px;">📸 تحليل الوجبة بالذكاء الاصطناعي</h3>
+      <p style="font-size:12px; color:var(--text-secondary); margin-bottom:14px;">التقط صورة للوجبة وسيحدد الذكاء الاصطناعي مكوناتها وسعراتها تلقائياً</p>
       <input type="file" id="meal-photo-input" accept="image/*" capture="environment" style="display:none;" onchange="handleMealPhoto(event)">
-      <button class="btn btn-primary" onclick="document.getElementById('meal-photo-input').click()">📸 التقط صورة الوجبة</button>
+      <button class="btn btn-primary" onclick="document.getElementById('meal-photo-input').click()">📷 التقاط صورة أو اختيار ملف</button>
       <div id="meal-photo-preview"></div>
     </div>
 
-    <div style="background: linear-gradient(135deg, var(--surface) 0%, var(--surface-light) 100%); border: 1px solid var(--border); border-radius: 15px; padding: 20px; margin-bottom: 20px; box-shadow: 0 8px 32px var(--shadow);">
-      <h3 style="color: var(--accent); margin-bottom: 5px;">✏️ اكتب وجبتك بحرية</h3>
-      <p style="font-size:11px; color:var(--text-secondary); margin-bottom:12px;">مو مقيّد بالقائمة الجاهزة — اكتب أي أكلة والذكاء الاصطناعي يقدّر سعراتها</p>
-      <div class="form-group">
-        <input type="text" id="meal-text-input" class="form-input" placeholder="مثال: طبق مكرونة بالصلصة مع دجاج مشوي" onkeypress="if(event.key==='Enter') handleMealText()">
+    <!-- AI Free Text Input Card -->
+    <div class="glass-card">
+      <h3 style="color: var(--accent-light); margin-bottom: 6px; font-size:16px;">✏️ وصف الوجبة بالذكاء الاصطناعي</h3>
+      <p style="font-size:12px; color:var(--text-secondary); margin-bottom:14px;">اكتب ما أكلته بحرية (مثال: "طبق كبسة دجاج مع صحن سلطة صغير")</p>
+      <div class="form-group" style="margin-bottom:10px;">
+        <input type="text" id="meal-text-input" class="form-input" placeholder="اكتب وجبتك هنا..." onkeypress="if(event.key==='Enter') handleMealText()">
       </div>
-      <button class="btn btn-primary" onclick="handleMealText()">🔍 حلّل الوجبة</button>
+      <button class="btn btn-primary" onclick="handleMealText()">🤖 تقدير السعرات الذكي</button>
       <div id="meal-text-preview"></div>
     </div>
 
-    <div style="background: linear-gradient(135deg, var(--surface) 0%, var(--surface-light) 100%); border: 1px solid var(--border); border-radius: 15px; padding: 20px; margin-bottom: 20px; box-shadow: 0 8px 32px var(--shadow);">
-      <h3 style="color: var(--accent); margin-bottom: 15px;">أضف وجبة جديدة</h3>
-      <div class="form-group">
-        <label class="form-label">ابحث عن الطعام (+48 صنف)</label>
-        <input type="text" id="meal-food-search" class="form-input" placeholder="اكتب اسم الطعام... مثال: دجاج، أرز، تفاح" oninput="filterFoodSearch()" autocomplete="off">
-        <input type="hidden" id="meal-food">
-        <div id="meal-food-results" style="margin-top: 10px;"></div>
+    <!-- Smart Search Food DB Card -->
+    <div class="glass-card">
+      <h3 style="color: var(--accent-light); margin-bottom: 12px; font-size:16px;">🔍 قاعدة الأطعمة المفتوحة</h3>
+      
+      <div class="form-group" style="margin-bottom:10px;">
+        <input type="text" id="food-search-input" class="form-input" placeholder="ابحث عن أي طعام (مثال: دجاج، أرز، شوفان...)" oninput="filterFoodDB()">
       </div>
-      <div class="form-group">
-        <label class="form-label">الكمية</label>
-        <input type="number" id="meal-qty" class="form-input" value="1" min="0.5" step="0.5">
+
+      <div class="pill-container">
+        <div class="pill active" onclick="selectFoodCategory('all', this)">الكل</div>
+        <div class="pill" onclick="selectFoodCategory('protein', this)">بروتينات 🍗</div>
+        <div class="pill" onclick="selectFoodCategory('carbs', this)">نشويات 🌾</div>
+        <div class="pill" onclick="selectFoodCategory('fats', this)">دهون ومكسرات 🥜</div>
+        <div class="pill" onclick="selectFoodCategory('fruits', this)">فواكه وخضار 🍎</div>
       </div>
-      <button class="btn btn-primary" onclick="addMeal()">✅ أضف الوجبة</button>
+
+      <div style="display:grid; grid-template-columns: 2fr 1fr; gap:10px; margin-bottom:12px;">
+        <select id="meal-food-select" class="form-select">
+          <option value="">اختر طعاماً من القائمة...</option>
+        </select>
+        <input type="number" id="meal-qty-input" class="form-input" value="1" step="0.5" min="0.5" placeholder="الكمية">
+      </div>
+
+      <button class="btn btn-primary" onclick="addSelectedMealFromDB()">➕ إضافة للسجل</button>
     </div>
 
-    <div style="background: linear-gradient(135deg, var(--surface) 0%, var(--surface-light) 100%); border: 1px solid var(--border); border-radius: 15px; padding: 20px; margin-bottom: 20px; box-shadow: 0 8px 32px var(--shadow);">
-      <h3 style="color: var(--accent); margin-bottom: 5px;">🍽️ وجبات مقترحة جاهزة</h3>
-      <p style="font-size:11px; color:var(--text-secondary); margin-bottom:10px;">اضغط "أضف" لإضافة الوجبة كاملة بضغطة واحدة</p>
+    <!-- Suggested Meals -->
+    <div class="glass-card">
+      <h3 style="color: var(--accent-light); margin-bottom: 6px; font-size:16px;">🍽️ اقتراحات الوجبات السريعة</h3>
+      <p style="font-size:11px; color:var(--text-secondary); margin-bottom:14px;">تشكيلات متوازنة جاهزة للإضافة بضغطة واحدة</p>
       <div id="meal-suggestions"></div>
     </div>
 
-    <h3 style="color: var(--accent); margin-bottom: 15px;">وجباتك اليوم</h3>
-    <div id="meals-list"></div>
+    <!-- Today's Meal History -->
+    <div class="glass-card">
+      <h3 style="color: var(--accent-light); margin-bottom: 15px; font-size:16px;">📋 وجباتك المسجلة اليوم</h3>
+      <div id="meals-list"></div>
+    </div>
+  </div>
+
+  <!-- Workouts Screen -->
+  <div id="workouts-screen" class="screen">
+    <div class="screen-header">
+      <div class="screen-title">جدول التمارين واللياقة 🏋️‍♂️</div>
+      <div class="screen-subtitle">خطط تمارينك اليومية، وحساب السعرات الحرارية المحروقة</div>
+    </div>
+
+    <!-- Add Workout Card -->
+    <div class="glass-card">
+      <h3 style="color: var(--accent-light); margin-bottom: 12px; font-size:16px;">➕ تسجيل تمرين جديد</h3>
+      
+      <div class="form-group">
+        <label class="form-label">نوع التمرين</label>
+        <select id="workout-type" class="form-select" onchange="updateWorkoutCalRate()">
+          <option value="cardio_run">جري متوسط (Cardio) - ~600 سعرة/ساعة</option>
+          <option value="cardio_walk">مشي سريع - ~280 سعرة/ساعة</option>
+          <option value="strength">تمارين حديد / مقاومة - ~400 سعرة/ساعة</option>
+          <option value="hiit">تمارين متناوبة عالية الشدة (HIIT) - ~700 سعرة/ساعة</option>
+          <option value="cycling">ركوب الدراجة - ~450 سعرة/ساعة</option>
+          <option value="swimming">السباحة - ~500 سعرة/ساعة</option>
+          <option value="home_workout">تمارين منزلية (السويدي) - ~350 سعرة/ساعة</option>
+        </select>
+      </div>
+
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+        <div class="form-group">
+          <label class="form-label">المدة (بالدقائق)</label>
+          <input type="number" id="workout-duration" class="form-input" value="30" min="5" step="5">
+        </div>
+        <div class="form-group">
+          <label class="form-label">السعرات المحروقة (تقريبي)</label>
+          <input type="number" id="workout-calories" class="form-input" value="200" readonly style="background:rgba(255,255,255,0.05);">
+        </div>
+      </div>
+
+      <button class="btn btn-primary" onclick="addWorkoutLog()">💪 تسجيل التمرين</button>
+    </div>
+
+    <!-- Suggested Routines -->
+    <div class="glass-card">
+      <h3 style="color: var(--accent-light); margin-bottom: 12px; font-size:16px;">⚡ خطط تمارين جاهزة للمبتدئين والمحترفين</h3>
+      <div id="workout-routines-container"></div>
+    </div>
+
+    <!-- Completed Workouts Log -->
+    <div class="glass-card">
+      <h3 style="color: var(--accent-light); margin-bottom: 12px; font-size:16px;">🔥 تمارين اليوم المسجلة</h3>
+      <div id="workouts-list"></div>
+    </div>
   </div>
 
   <!-- Water Screen -->
   <div id="water-screen" class="screen">
     <div class="screen-header">
-      <div class="screen-title">الماء</div>
-      <div class="screen-subtitle">تتبع شرب الماء</div>
+      <div class="screen-title">متابعة شرب الماء 💧</div>
+      <div class="screen-subtitle">الحفاظ على ترطيب الجسم يعزز الأيض والتركيز</div>
     </div>
-    <div style="background: linear-gradient(135deg, var(--surface) 0%, var(--surface-light) 100%); border: 1px solid var(--border); border-radius: 15px; padding: 30px 20px; margin-bottom: 20px; box-shadow: 0 8px 32px var(--shadow); text-align: center;">
-      <div style="font-size: 48px; font-weight: 700; color: var(--accent); margin-bottom: 10px;" id="water-display">0%</div>
-      <div class="progress-bar" style="margin: 20px 0; height: 12px;"><div class="progress-fill" id="water-progress-bar" style="width: 0%; background: linear-gradient(90deg, #00d4ff 0%, #0080ff 100%);"></div></div>
-      <div style="color: var(--text-secondary); font-size: 14px;"><span id="water-current">0</span> من <span id="water-target">8</span> أكواب</div>
+
+    <div class="glass-card" style="text-align:center; padding:35px 20px;">
+      <div style="font-size: 56px; font-weight: 800; color: var(--accent-light);" id="water-display">0%</div>
+      <div class="progress-bar" style="margin: 20px auto; height: 14px; max-width: 80%;"><div class="progress-fill" id="water-progress-bar" style="width: 0%; background: linear-gradient(90deg, #00d4ff 0%, #0080ff 100%);"></div></div>
+      <div style="color: var(--text-secondary); font-size: 16px; font-weight: 600;">
+        شربت <span id="water-current" style="color:#00d4ff; font-weight:800; font-size:20px;">0</span> من <span id="water-target">8</span> أكواب اليوم
+      </div>
     </div>
-    <div style="display: grid; grid-template-columns: 1fr; gap: 10px;">
-      <button class="btn btn-primary" onclick="addWater()">🥤 أضف كوب ماء</button>
-      <button class="btn btn-secondary" onclick="resetWater()" style="background: var(--warning); color: white; border: none;">🔄 إعادة تعيين</button>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+      <button class="btn btn-primary" style="background: linear-gradient(135deg, #00b4d8 0%, #0077b6 100%);" onclick="addWater(1)">🥤 + كوب ماء (250 مل)</button>
+      <button class="btn btn-primary" style="background: linear-gradient(135deg, #48cae4 0%, #0096c7 100%);" onclick="addWater(2)">🍾 + عبوة (500 مل)</button>
     </div>
+    <button class="btn btn-secondary" style="margin-top:12px;" onclick="resetWater()">🔄 إعادة تعيين السجل</button>
   </div>
 
   <!-- Weight Screen -->
   <div id="weight-screen" class="screen">
     <div class="screen-header">
-      <div class="screen-title">متابعة الوزن</div>
-      <div class="screen-subtitle">سجل وزنك بانتظام</div>
+      <div class="screen-title">متابعة تغير الوزن ⚖️</div>
+      <div class="screen-subtitle">سجل قياسات وزنك لمراقبة التقدم نحو هدفك</div>
     </div>
-    <div style="background: linear-gradient(135deg, var(--surface) 0%, var(--surface-light) 100%); border: 1px solid var(--border); border-radius: 15px; padding: 20px; margin-bottom: 20px; box-shadow: 0 8px 32px var(--shadow);">
-      <h3 style="color: var(--accent); margin-bottom: 15px;">سجل وزنك</h3>
-      <div class="form-group">
-        <label class="form-label">الوزن (كغ)</label>
-        <input type="number" id="weight-input" class="form-input" min="30" step="0.1">
+
+    <div class="glass-card">
+      <h3 style="color: var(--accent-light); margin-bottom: 12px; font-size:16px;">تحديث الوزن اليوم</h3>
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+        <div class="form-group">
+          <label class="form-label">الوزن (كغ)</label>
+          <input type="number" id="weight-input" class="form-input" step="0.1" placeholder="مثال: 75.5">
+        </div>
+        <div class="form-group">
+          <label class="form-label">التاريخ</label>
+          <input type="date" id="weight-date" class="form-input">
+        </div>
       </div>
-      <div class="form-group">
-        <label class="form-label">التاريخ</label>
-        <input type="date" id="weight-date" class="form-input">
-      </div>
-      <button class="btn btn-primary" onclick="addWeight()">✅ سجل الوزن</button>
+      <button class="btn btn-primary" onclick="addWeight()">📌 تسجيل القراءة</button>
     </div>
-    <div style="background: linear-gradient(135deg, var(--surface) 0%, var(--surface-light) 100%); border: 1px solid var(--border); border-radius: 15px; padding: 20px; margin-bottom: 20px; box-shadow: 0 8px 32px var(--shadow);">
-      <h3 style="color: var(--accent); margin-bottom: 15px;">📈 منحنى الوزن</h3>
-      <div style="position: relative; height: 220px;">
-        <canvas id="weight-chart"></canvas>
-      </div>
-    </div>
-    <div style="background: linear-gradient(135deg, var(--surface) 0%, var(--surface-light) 100%); border: 1px solid var(--border); border-radius: 15px; padding: 20px; margin-bottom: 20px; box-shadow: 0 8px 32px var(--shadow);">
-      <h3 style="color: var(--accent); margin-bottom: 15px;">سجل الأوزان</h3>
+
+    <div class="glass-card">
+      <h3 style="color: var(--accent-light); margin-bottom: 12px; font-size:16px;">سجل القياسات السابقة</h3>
       <div id="weight-history"></div>
     </div>
   </div>
 
   <!-- Chat Screen -->
   <div id="chat-screen" class="screen">
-    <div class="screen-header" style="display:flex; justify-content:space-between; align-items:flex-start;">
+    <div class="screen-header" style="display:flex; justify-content:space-between; align-items:center;">
       <div>
-        <div class="screen-title">المساعد الذكي 🤖</div>
-        <div class="screen-subtitle">اسأل أي سؤال عن الصحة</div>
+        <div class="screen-title">المساعد الصحي الذكي 🤖</div>
+        <div class="screen-subtitle">استشر المساعد حول التغذية، التمارين والنصائح الصحية</div>
       </div>
-      <button class="icon-btn" onclick="clearChat()">🗑️ مسح المحادثة</button>
+      <button class="icon-btn" onclick="clearChat()">🗑️ مسح</button>
     </div>
-    <div id="chat-messages" style="height: 350px; overflow-y: auto; margin-bottom: 20px;"></div>
-    <div style="display: flex; gap: 10px;">
-      <input type="text" id="chat-input" class="form-input" placeholder="اسأل سؤالك..." style="margin: 0;" onkeypress="if(event.key==='Enter') sendChat()">
-      <button class="btn btn-primary" onclick="sendChat()" style="width: auto; margin: 0;">إرسال</button>
+
+    <!-- Quick Prompts -->
+    <div class="pill-container" style="margin-bottom:12px;">
+      <div class="pill" onclick="sendQuickPrompt('اقترح لي جدول وجبات صحي لهذا اليوم بناءً على السعرات المتبقية لي')">💡 خطة وجبات اليوم</div>
+      <div class="pill" onclick="sendQuickPrompt('كيف أزيد نسق حرق الدهون بدون خسارة العضلات؟')">🔥 حرق الدهون</div>
+      <div class="pill" onclick="sendQuickPrompt('ما أفضل الأطعمة الغنية بالبروتين للرياضيين؟')">🥩 أفضل أطعمة البروتين</div>
+    </div>
+
+    <div id="chat-messages" style="height: 380px; overflow-y: auto; margin-bottom: 15px; padding-right: 5px;"></div>
+
+    <div style="display: flex; gap: 8px;">
+      <input type="text" id="chat-input" class="form-input" placeholder="اسأل أي سؤال صحي..." style="margin: 0;" onkeypress="if(event.key==='Enter') sendChat()">
+      <button class="btn btn-primary" style="width: auto; padding: 0 20px;" onclick="sendChat()">إرسال</button>
     </div>
   </div>
 
-  <!-- Reports Screen -->
+  <!-- Reports & Export Screen -->
   <div id="reports-screen" class="screen">
     <div class="screen-header">
-      <div class="screen-title">التقارير والإحصائيات</div>
-      <div class="screen-subtitle">تتبع تقدمك</div>
+      <div class="screen-title">التقارير وتصدير البيانات 📊</div>
+      <div class="screen-subtitle">تحليل شامل ومشاركة تقاريرك مع المدرب أو الطبيب</div>
     </div>
-    <div style="background: linear-gradient(135deg, var(--surface) 0%, var(--surface-light) 100%); border: 1px solid var(--border); border-radius: 15px; padding: 20px; margin-bottom: 20px; box-shadow: 0 8px 32px var(--shadow);">
-      <h3 style="color: var(--accent); margin-bottom: 15px;">🔥 السعرات آخر 7 أيام</h3>
-      <div style="position: relative; height: 220px;">
-        <canvas id="calories-chart"></canvas>
+
+    <div class="glass-card">
+      <h3 style="color: var(--accent-light); margin-bottom: 14px;">📌 إحصائيات عامة</h3>
+      <div class="message-box success"><strong>🥗 إجمالي الوجبات المسجلة:</strong> <span id="report-meals">0</span></div>
+      <div class="message-box"><strong>🔥 متوسط السعرات اليومي:</strong> <span id="report-avg-calories">0</span> سعرة</div>
+      <div class="message-box"><strong>💧 متوسط شرب الماء:</strong> <span id="report-water">0</span> أكواب</div>
+      <div class="message-box warning"><strong>⚖️ التغير في الوزن:</strong> <span id="report-weight-change">0</span> كغ</div>
+    </div>
+
+    <div class="glass-card">
+      <h3 style="color: var(--accent-light); margin-bottom: 14px;">📂 تصدير البيانات والمشاركة</h3>
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+        <button class="btn btn-secondary" onclick="exportDataCSV()">📥 تصدير سجل البيانات (CSV)</button>
+        <button class="btn btn-secondary" onclick="printReportPDF()">📄 طباعة / حفظ كـ PDF</button>
       </div>
-    </div>
-    <div style="background: linear-gradient(135deg, var(--surface) 0%, var(--surface-light) 100%); border: 1px solid var(--border); border-radius: 15px; padding: 20px; margin-bottom: 20px; box-shadow: 0 8px 32px var(--shadow);">
-      <h3 style="color: var(--accent); margin-bottom: 15px;">ملخص</h3>
-      <div class="message-box success"><strong>📊 إجمالي الوجبات:</strong> <span id="report-meals">0</span></div>
-      <div class="message-box"><strong>🔥 متوسط السعرات:</strong> <span id="report-avg-calories">0</span> سعرة</div>
-      <div class="message-box"><strong>💧 أكواب الماء:</strong> <span id="report-water">0</span> كوب</div>
-      <div class="message-box warning"><strong>⚖️ تغير الوزن:</strong> <span id="report-weight-change">0</span> كغ</div>
-    </div>
-    <div style="background: linear-gradient(135deg, var(--surface) 0%, var(--surface-light) 100%); border: 1px solid var(--border); border-radius: 15px; padding: 20px; box-shadow: 0 8px 32px var(--shadow);">
-      <h3 style="color: var(--accent); margin-bottom: 15px;">نصائح التحسين</h3>
-      <div id="report-tips"></div>
+      <button class="btn btn-primary" style="margin-top:10px;" onclick="shareProgressModal()">✨ إنتاج بطاقة مشاركة التقدم</button>
     </div>
   </div>
 
-  <!-- Settings Screen -->
+  <!-- Settings & Notifications Screen -->
   <div id="settings-screen" class="screen">
     <div class="screen-header">
-      <div class="screen-title">الإعدادات</div>
-      <div class="screen-subtitle">إدارة حسابك</div>
+      <div class="screen-title">الإعدادات والتنبيهات ⚙️</div>
+      <div class="screen-subtitle">إدارة الحساب، التذكيرات اليومية ومفاتيح الذكاء الاصطناعي</div>
     </div>
 
-    <div style="background: linear-gradient(135deg, var(--surface) 0%, var(--surface-light) 100%); border: 1px solid var(--border); border-radius: 15px; padding: 20px; margin-bottom: 20px; box-shadow: 0 8px 32px var(--shadow);">
-      <h3 style="color: var(--accent); margin-bottom: 15px;">🤖 المساعد الذكي</h3>
-      <div class="message-box success">💡 يمكنك استخدام Google Gemini مجاناً بدون بطاقة ائتمان، أو التبديل إلى Claude لاحقاً إن أضفت رصيداً.</div>
+    <!-- Push Reminders Card -->
+    <div class="glass-card">
+      <h3 style="color: var(--accent-light); margin-bottom: 10px; font-size:16px;">🔔 التذكيرات والإشعارات اليومية</h3>
+      <p style="font-size:12px; color:var(--text-secondary); margin-bottom:14px;">تفعيل التذكيرات لشرب الماء وتسجيل الوجبات والوزن</p>
+      
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; background:rgba(255,255,255,0.03); padding:10px 14px; border-radius:12px;">
+        <div>
+          <div style="font-weight:700; font-size:14px;">إشعارات المتصفح (Push Notifications)</div>
+          <div style="font-size:11px; color:var(--text-secondary);">إرسال تنبيهات على جهازك للتذكير</div>
+        </div>
+        <button class="icon-btn" id="push-toggle-btn" onclick="togglePushNotifications()">تفعيل الإشعارات</button>
+      </div>
+    </div>
 
+    <!-- AI Settings Card -->
+    <div class="glass-card">
+      <h3 style="color: var(--accent-light); margin-bottom: 12px; font-size:16px;">🤖 إعدادات محرك الذكاء الاصطناعي</h3>
+      
       <div class="form-group">
         <label class="form-label">مزوّد الذكاء الاصطناعي</label>
         <select id="ai-provider-select" class="form-select">
-          <option value="gemini">Google Gemini (مجاني)</option>
+          <option value="gemini">Google Gemini (موصى به / مجاني)</option>
           <option value="claude">Claude (Anthropic)</option>
         </select>
       </div>
 
       <div class="form-group">
-        <label class="form-label">مفتاح Google Gemini API</label>
-        <input type="password" id="gemini-key-input" class="form-input" placeholder="AIza...">
-        <p style="font-size:11px; color:var(--text-secondary); margin-top:5px;">احصل على مفتاح مجاني فوري من aistudio.google.com/apikey (بدون بطاقة ائتمان)</p>
-      </div>
-      <div class="form-group">
-        <label class="form-label">نموذج Gemini</label>
-        <input type="text" id="gemini-model-input" class="form-input" placeholder="gemini-3.5-flash">
+        <label class="form-label">مفتاح Google Gemini API (اختياري عند التوفر المباشر)</label>
+        <input type="password" id="gemini-key-input" class="form-input" placeholder="AIzaSy...">
+        <p style="font-size:11px; color:var(--text-muted); margin-top:4px;">يمكنك الحصول عليه مجاناً من Google AI Studio</p>
       </div>
 
       <div class="form-group">
         <label class="form-label">مفتاح Claude API</label>
         <input type="password" id="claude-key-input" class="form-input" placeholder="sk-ant-...">
-        <p style="font-size:11px; color:var(--text-secondary); margin-top:5px;">من console.anthropic.com (يتطلب رصيداً مدفوعاً)</p>
-      </div>
-      <div class="form-group">
-        <label class="form-label">نموذج Claude</label>
-        <input type="text" id="claude-model-input" class="form-input" placeholder="claude-sonnet-5">
       </div>
 
-      <div class="message-box warning">💡 إذا ظهرت رسالة أن النموذج "لم يعد متاحاً للمستخدمين الجدد"، غيّر اسم النموذج أعلاه فقط (بدون تعديل أي كود) — اسأل أي مساعد ذكاء اصطناعي عن الاسم الحالي للنموذج.</div>
-
-      <button class="btn btn-primary" onclick="saveApiSettings()">💾 حفظ الإعدادات</button>
-      <p style="font-size:11px; color:var(--text-secondary); margin-top:5px;">المفاتيح تُحفظ في متصفحك فقط وتُرسل مباشرة لمزوّد الخدمة المختار.</p>
+      <button class="btn btn-primary" onclick="saveApiSettings()">💾 حفظ إعدادات AI</button>
     </div>
 
-    <div style="background: linear-gradient(135deg, var(--surface) 0%, var(--surface-light) 100%); border: 1px solid var(--border); border-radius: 15px; padding: 20px; margin-bottom: 20px; box-shadow: 0 8px 32px var(--shadow);">
-      <h3 style="color: var(--accent); margin-bottom: 15px;">ملفك الشخصي</h3>
+    <!-- Profile & Actions -->
+    <div class="glass-card">
+      <h3 style="color: var(--accent-light); margin-bottom: 12px; font-size:16px;">👤 الملف الشخصي والحساب</h3>
       <div id="profile-info"></div>
-    </div>
-
-    <div style="display: flex; flex-direction: column; gap: 10px;">
-      <button class="btn btn-secondary" onclick="editProfile()">✏️ تعديل البيانات</button>
-      <button class="btn btn-secondary" style="background: var(--danger); color: white; border: none;" onclick="logout()">🚪 تسجيل الخروج</button>
-      <button class="btn btn-secondary" style="background: var(--warning); color: white; border: none;" onclick="clearAllData()">🗑️ حذف سجل الوجبات والأوزان</button>
+      <div style="display:flex; flex-direction:column; gap:10px; margin-top:15px;">
+        <button class="btn btn-secondary" onclick="editProfile()">✏️ تعديل البيانات الشخصية</button>
+        <button class="btn btn-secondary" style="border-color:var(--danger); color:var(--danger);" onclick="logout()">🚪 تسجيل الخروج</button>
+        <button class="btn btn-secondary" style="background:rgba(230,57,70,0.15); color:#ff8fa3;" onclick="clearAllData()">🗑️ حذف السجلات وإعادة الضبط</button>
+      </div>
     </div>
   </div>
 
 </div>
 
-<!-- Bottom Navigation -->
+<!-- Bottom Glass Navigation -->
 <div class="bottom-nav" id="bottom-nav" style="display: none;">
-  <div class="nav-item active" onclick="switchScreen('dashboard', this)"><div class="nav-icon">📊</div><div class="nav-label">التحكم</div></div>
+  <div class="nav-item active" onclick="switchScreen('dashboard', this)"><div class="nav-icon">📊</div><div class="nav-label">الرئيسية</div></div>
   <div class="nav-item" onclick="switchScreen('meals', this)"><div class="nav-icon">🍽️</div><div class="nav-label">الوجبات</div></div>
+  <div class="nav-item" onclick="switchScreen('workouts', this)"><div class="nav-icon">🏋️‍♂️</div><div class="nav-label">التمارين</div></div>
   <div class="nav-item" onclick="switchScreen('water', this)"><div class="nav-icon">💧</div><div class="nav-label">الماء</div></div>
   <div class="nav-item" onclick="switchScreen('weight', this)"><div class="nav-icon">⚖️</div><div class="nav-label">الوزن</div></div>
   <div class="nav-item" onclick="switchScreen('chat', this)"><div class="nav-icon">🤖</div><div class="nav-label">المساعد</div></div>
@@ -538,172 +716,78 @@ body { display: flex; flex-direction: column; }
 </div>
 
 <script>
-// ============ Food Database ============
-const foodDB = {
-  egg: { cal: 155, protein: 13, carbs: 1.1, fat: 11, name: 'بيض' },
-  rice: { cal: 130, protein: 2.7, carbs: 28, fat: 0.3, name: 'أرز أبيض' },
-  chicken: { cal: 165, protein: 31, carbs: 0, fat: 3.6, name: 'دجاج مسلوق' },
-  fish: { cal: 82, protein: 18, carbs: 0, fat: 0.8, name: 'سمك مشوي' },
-  bread: { cal: 79, protein: 3, carbs: 14, fat: 1.1, name: 'خبز أبيض' },
-  milk: { cal: 149, protein: 7.7, carbs: 11.5, fat: 7.7, name: 'حليب كامل' },
-  vegetables: { cal: 35, protein: 2.2, carbs: 8, fat: 0.2, name: 'خضروات مشكلة' },
-  fruits: { cal: 52, protein: 0.3, carbs: 14, fat: 0.2, name: 'فواكه مشكلة' },
-  yogurt: { cal: 100, protein: 10, carbs: 6, fat: 2, name: 'زبادي' },
-  oats: { cal: 150, protein: 5, carbs: 27, fat: 3, name: 'شوفان' },
-  cheese: { cal: 120, protein: 7, carbs: 1, fat: 10, name: 'جبن' },
-  dates: { cal: 170, protein: 1.5, carbs: 45, fat: 0.2, name: 'تمر' },
-  nuts: { cal: 180, protein: 6, carbs: 6, fat: 16, name: 'مكسرات' },
+// ============ Expanded Food Database ============
+const extendedFoodDB = [
+  // Proteins
+  { id: 'egg', name: 'بيض مسلوق (حبة واحدة)', cal: 78, protein: 6, carbs: 0.6, fat: 5, cat: 'protein' },
+  { id: 'chicken_breast', name: 'صدر دجاج مشوي (100غ)', cal: 165, protein: 31, carbs: 0, fat: 3.6, cat: 'protein' },
+  { id: 'beef', name: 'لحم بقر صافي مشوي (100غ)', cal: 250, protein: 26, carbs: 0, fat: 15, cat: 'protein' },
+  { id: 'fish_salmon', name: 'سمك سلمون مشوي (100غ)', cal: 206, protein: 22, carbs: 0, fat: 12, cat: 'protein' },
+  { id: 'tuna', name: 'تونا بالماء (علبة 100غ)', cal: 116, protein: 26, carbs: 0, fat: 1, cat: 'protein' },
+  { id: 'greek_yogurt', name: 'زبادي يوناني (150غ)', cal: 130, protein: 15, carbs: 6, fat: 4, cat: 'protein' },
+  
+  // Carbs
+  { id: 'rice_white', name: 'أرز أبيض مطبوخ (100غ)', cal: 130, protein: 2.7, carbs: 28, fat: 0.3, cat: 'carbs' },
+  { id: 'rice_brown', name: 'أرز بني مطبوخ (100غ)', cal: 112, protein: 2.5, carbs: 24, fat: 0.8, cat: 'carbs' },
+  { id: 'oats', name: 'شوفان كامل (50غ)', cal: 190, protein: 7, carbs: 34, fat: 3.5, cat: 'carbs' },
+  { id: 'bread_brown', name: 'خبز أسمر (شريحة 30غ)', cal: 70, protein: 3, carbs: 12, fat: 1, cat: 'carbs' },
+  { id: 'potato_boiled', name: 'بطاطس مسلوقة (150غ)', cal: 130, protein: 3, carbs: 30, fat: 0.2, cat: 'carbs' },
+  { id: 'sweet_potato', name: 'بطاطا حلوة مشوية (150غ)', cal: 135, protein: 2, carbs: 31, fat: 0.2, cat: 'carbs' },
 
-  turkey: { cal: 135, protein: 30, carbs: 0, fat: 1, name: 'ديك رومي مشوي' },
-  lamb: { cal: 294, protein: 25, carbs: 0, fat: 21, name: 'لحم غنم' },
-  shrimp: { cal: 99, protein: 24, carbs: 0.2, fat: 0.3, name: 'روبيان مسلوق' },
-  tuna: { cal: 116, protein: 26, carbs: 0, fat: 1, name: 'تونة معلبة' },
-  salmon: { cal: 208, protein: 20, carbs: 0, fat: 13, name: 'سلمون مشوي' },
+  // Healthy Fats & Nuts
+  { id: 'olive_oil', name: 'زيت زيتون (ملعقة طعام 13مل)', cal: 119, protein: 0, carbs: 0, fat: 13.5, cat: 'fats' },
+  { id: 'almonds', name: 'لوز خام (حفنة 30غ)', cal: 170, protein: 6, carbs: 6, fat: 15, cat: 'fats' },
+  { id: 'peanut_butter', name: 'زبدة الفول السوداني (ملعقة)', cal: 95, protein: 4, carbs: 3, fat: 8, cat: 'fats' },
+  { id: 'avocado', name: 'أفوكادو (نصف حبة 100غ)', cal: 160, protein: 2, carbs: 8, fat: 15, cat: 'fats' },
 
-  brownRice: { cal: 112, protein: 2.6, carbs: 24, fat: 0.9, name: 'أرز بني' },
-  pasta: { cal: 158, protein: 5.8, carbs: 31, fat: 0.9, name: 'معكرونة' },
-  wholeBread: { cal: 74, protein: 3.6, carbs: 12, fat: 1, name: 'خبز أسمر' },
-  quinoa: { cal: 120, protein: 4.4, carbs: 21, fat: 1.9, name: 'كينوا' },
-  potato: { cal: 87, protein: 1.9, carbs: 20, fat: 0.1, name: 'بطاطا مسلوقة' },
-  sweetPotato: { cal: 86, protein: 1.6, carbs: 20, fat: 0.1, name: 'بطاطا حلوة' },
+  // Fruits & Vegetables
+  { id: 'apple', name: 'تفاحة متوسطة', cal: 95, protein: 0.5, carbs: 25, fat: 0.3, cat: 'fruits' },
+  { id: 'banana', name: 'موزة متوسطة', cal: 105, protein: 1.3, carbs: 27, fat: 0.3, cat: 'fruits' },
+  { id: 'salad_green', name: 'سلطة خضراء مشكلة (صحن)', cal: 45, protein: 2, carbs: 8, fat: 0.5, cat: 'fruits' },
+  { id: 'dates', name: 'تمر مجفف (3 حبات)', cal: 180, protein: 1.5, carbs: 45, fat: 0.2, cat: 'fruits' }
+];
 
-  lowFatMilk: { cal: 103, protein: 8.2, carbs: 12, fat: 2.4, name: 'حليب قليل الدسم' },
-  labneh: { cal: 60, protein: 3, carbs: 2, fat: 4.5, name: 'لبنة' },
-  cottageCheese: { cal: 98, protein: 11, carbs: 3.4, fat: 4.3, name: 'جبن قريش' },
+const workoutRoutines = [
+  { title: '🏃‍♂️ كارديو حرق الدهون السريع', duration: '20 دقيقة', cals: '220 سعرة', desc: 'مشي سريع + نط الحبل + تمارين سويدي' },
+  { title: '🏋️‍♀️ تمرين الجزء العلوي (قوة)', duration: '40 دقيقة', cals: '280 سعرة', desc: 'ضغك صفيحة + عقلة + تمرين أكتاف' },
+  { title: '🔥 تمرين HIIT شاق', duration: '25 دقيقة', cals: '320 سعرة', desc: 'تكرارات عالية الشدة مع فترات راحة قصيرة' }
+];
 
-  orange: { cal: 62, protein: 1.2, carbs: 15, fat: 0.2, name: 'برتقال' },
-  apple: { cal: 95, protein: 0.5, carbs: 25, fat: 0.3, name: 'تفاح' },
-  banana: { cal: 105, protein: 1.3, carbs: 27, fat: 0.4, name: 'موز' },
-  grapes: { cal: 69, protein: 0.7, carbs: 18, fat: 0.2, name: 'عنب' },
-  watermelon: { cal: 45, protein: 0.9, carbs: 11, fat: 0.2, name: 'بطيخ' },
-  mango: { cal: 99, protein: 1.4, carbs: 25, fat: 0.6, name: 'مانجو' },
-  avocado: { cal: 160, protein: 2, carbs: 8.5, fat: 15, name: 'أفوكادو' },
-  strawberry: { cal: 32, protein: 0.7, carbs: 7.7, fat: 0.3, name: 'فراولة' },
-
-  cucumber: { cal: 15, protein: 0.7, carbs: 3.6, fat: 0.1, name: 'خيار' },
-  tomato: { cal: 18, protein: 0.9, carbs: 3.9, fat: 0.2, name: 'طماطم' },
-  lettuce: { cal: 15, protein: 1.4, carbs: 2.9, fat: 0.2, name: 'خس' },
-  carrot: { cal: 41, protein: 0.9, carbs: 10, fat: 0.2, name: 'جزر' },
-
-  chickpeas: { cal: 164, protein: 8.9, carbs: 27, fat: 2.6, name: 'حمص مطبوخ' },
-  favaBeans: { cal: 110, protein: 7.6, carbs: 19, fat: 0.6, name: 'فول مدمس' },
-  beans: { cal: 127, protein: 8.7, carbs: 23, fat: 0.5, name: 'فاصوليا مطبوخة' },
-
-  almonds: { cal: 164, protein: 6, carbs: 6, fat: 14, name: 'لوز' },
-  cashews: { cal: 157, protein: 5.2, carbs: 8.6, fat: 12, name: 'كاجو' },
-  chiaSeeds: { cal: 68, protein: 2.3, carbs: 6, fat: 4.3, name: 'بذور شيا' },
-
-  pizza: { cal: 285, protein: 12, carbs: 36, fat: 10, name: 'شريحة بيتزا' },
-  burger: { cal: 354, protein: 20, carbs: 29, fat: 17, name: 'برجر لحم' },
-  shawarma: { cal: 450, protein: 25, carbs: 40, fat: 20, name: 'شاورما دجاج' },
-  fries: { cal: 365, protein: 4, carbs: 48, fat: 17, name: 'بطاطا مقلية' },
-  kabsa: { cal: 550, protein: 30, carbs: 65, fat: 20, name: 'كبسة لحم' }
-};
-
-// وجبات مقترحة جاهزة لكل نوع وجبة (تُبنى من عناصر foodDB أعلاه)
-const mealSuggestions = {
-  breakfast: [
-    { name: 'إفطار بروتين', icon: '🍳', items: { egg: 2, bread: 1, milk: 1 } },
-    { name: 'إفطار الشوفان', icon: '🥣', items: { oats: 1, milk: 1, fruits: 1 } },
-    { name: 'إفطار خفيف', icon: '🥛', items: { yogurt: 1, dates: 1, nuts: 1 } }
-  ],
-  lunch: [
-    { name: 'دجاج وأرز', icon: '🍗', items: { chicken: 1.5, rice: 1, vegetables: 1 } },
-    { name: 'سمك صحي', icon: '🐟', items: { fish: 1.5, rice: 1, vegetables: 1 } },
-    { name: 'وجبة نباتية', icon: '🥗', items: { vegetables: 2, cheese: 1, bread: 1 } }
-  ],
-  dinner: [
-    { name: 'عشاء خفيف', icon: '🍽️', items: { fish: 1, vegetables: 1.5 } },
-    { name: 'سلطة دجاج', icon: '🥙', items: { chicken: 1, vegetables: 2 } },
-    { name: 'عشاء بسيط', icon: '🧀', items: { cheese: 1, bread: 1, vegetables: 1 } }
-  ],
-  snack: [
-    { name: 'فواكه ولبن', icon: '🍎', items: { fruits: 1, milk: 1 } },
-    { name: 'زبادي بالتمر', icon: '🥄', items: { yogurt: 1, dates: 1 } },
-    { name: 'حفنة مكسرات', icon: '🥜', items: { nuts: 1 } }
-  ]
-};
-const mealTypeLabels = { breakfast: '🌅 الإفطار', lunch: '☀️ الغداء', dinner: '🌙 العشاء', snack: '🍎 وجبة خفيفة' };
-
-function calcSuggestionTotals(items) {
-  let cal = 0, protein = 0, carbs = 0, fat = 0;
-  const parts = [];
-  Object.keys(items).forEach(key => {
-    const qty = items[key];
-    const f = foodDB[key];
-    if (!f) return;
-    cal += f.cal * qty;
-    protein += f.protein * qty;
-    carbs += f.carbs * qty;
-    fat += f.fat * qty;
-    parts.push(qty === 1 ? f.name : `${f.name}×${qty}`);
-  });
-  return { cal: Math.round(cal), protein, carbs, fat, details: parts.join('، ') };
-}
-
-function renderMealSuggestions() {
-  const container = document.getElementById('meal-suggestions');
-  if (!container) return;
-  let html = '';
-  Object.keys(mealSuggestions).forEach(mealType => {
-    html += `<h4 style="color:var(--text-secondary); font-size:13px; margin:15px 0 8px;">${mealTypeLabels[mealType]}</h4>`;
-    mealSuggestions[mealType].forEach((s, idx) => {
-      const t = calcSuggestionTotals(s.items);
-      html += `
-        <div class="food-item">
-          <div class="food-info">
-            <div class="food-name">${s.icon} ${escapeHtml(s.name)}</div>
-            <div class="food-macros">${escapeHtml(t.details)}</div>
-            <div class="food-macros">🔥 ${t.cal} سعرة</div>
-          </div>
-          <button class="icon-btn" style="background:var(--accent); color:white; border:none;" onclick="addSuggestedMeal('${mealType}', ${idx})">➕ أضف</button>
-        </div>
-      `;
-    });
-  });
-  container.innerHTML = html;
-}
-
-function addSuggestedMeal(mealType, idx) {
-  const suggestion = mealSuggestions[mealType] && mealSuggestions[mealType][idx];
-  if (!suggestion) return;
-  const t = calcSuggestionTotals(suggestion.items);
-  appState.meals.push({
-    id: Date.now(),
-    date: todayStr(),
-    name: suggestion.name,
-    food: null,
-    qty: 1,
-    cal: t.cal,
-    protein: t.protein,
-    carbs: t.carbs,
-    fat: t.fat,
-    comboDetails: t.details,
-    time: new Date().toLocaleTimeString('ar')
-  });
-  saveCurrentUserData();
-  updateDashboard();
-  updateMealsList();
-}
-
-// ============ إعدادات النماذج الافتراضية (قابلة للتعديل من الإعدادات) ============
-const DEFAULT_GEMINI_MODEL = 'gemini-3.5-flash';
-const DEFAULT_CLAUDE_MODEL = 'claude-sonnet-5';
-function getGeminiModel() { return localStorage.getItem('healthAppGeminiModel') || DEFAULT_GEMINI_MODEL; }
-function getClaudeModel() { return localStorage.getItem('healthAppClaudeModel') || DEFAULT_CLAUDE_MODEL; }
-
-// ============ Migration: مفتاح Claude القديم كان يُحفظ باسم healthAppApiKey ============
-(function migrateOldApiKey() {
-  const old = localStorage.getItem('healthAppApiKey');
-  if (old && !localStorage.getItem('healthAppClaudeKey')) {
-    localStorage.setItem('healthAppClaudeKey', old);
-  }
-})();
-
-// ============ Multi-user persistent storage ============
+// App State
 let currentUsername = null;
-let appState = { profile: null, meals: [], weights: [], water: 0, waterDate: null, chat: [] };
+let appState = {
+  profile: null,
+  meals: [],
+  workouts: [],
+  weights: [],
+  water: 0,
+  waterDate: null,
+  chat: [],
+  notificationsEnabled: false
+};
 
+let dashboardChartInstance = null;
+
+// ============ Toast Notification ============
+function showToast(message, type = 'info') {
+  const container = document.getElementById('toast-container');
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  toast.innerHTML = `<span>${message}</span>`;
+  container.appendChild(toast);
+  setTimeout(() => { toast.remove(); }, 4000);
+}
+
+function showModal(title, contentHtml) {
+  document.getElementById('modal-title').textContent = title;
+  document.getElementById('modal-body').innerHTML = contentHtml;
+  document.getElementById('app-modal').classList.add('active');
+}
+function closeModal() {
+  document.getElementById('app-modal').classList.remove('active');
+}
+
+// ============ Storage & Users ============
 function loadUsersDB() {
   try { return JSON.parse(localStorage.getItem('healthAppUsers') || '{}'); }
   catch (e) { return {}; }
@@ -718,90 +802,20 @@ function saveCurrentUserData() {
   saveUsersDB(db);
 }
 
-// ============ إعادة تعيين يومية للوجبات وشرب الماء ============
 function todayStr() {
   return new Date().toISOString().split('T')[0];
 }
 function getTodaysMeals() {
-  const today = todayStr();
-  return appState.meals.filter(m => m.date === today);
+  return appState.meals.filter(m => m.date === todayStr());
+}
+function getTodaysWorkouts() {
+  return (appState.workouts || []).filter(w => w.date === todayStr());
 }
 function ensureTodayWater() {
-  const today = todayStr();
-  if (appState.waterDate !== today) {
+  if (appState.waterDate !== todayStr()) {
     appState.water = 0;
-    appState.waterDate = today;
+    appState.waterDate = todayStr();
   }
-}
-
-// ============ التذكيرات اليومية (شرب الماء + تسجيل الوزن) ============
-// ملاحظة صريحة: هذه تذكيرات داخل التطبيق فقط — تعمل طالما المتصفح/التطبيق مفتوح،
-// وليست إشعارات نظام حقيقية (تلك تحتاج تثبيت PWA + Service Worker، وهو ما تراجعنا عنه سابقاً)
-function hasLoggedWeightToday() {
-  const today = todayStr();
-  return appState.weights.some(w => w.date === today);
-}
-
-function getWeightReminderMessage() {
-  if (!appState.profile) return null;
-  if (hasLoggedWeightToday()) return null;
-  const hour = new Date().getHours();
-  if (hour < 8) return null; // بدري جداً، لسا الوقت مبكر
-  return '⚖️ لم تسجل وزنك اليوم بعد — سجّله من تبويب "الوزن"';
-}
-
-function getWaterReminderMessage() {
-  const p = appState.profile;
-  if (!p) return null;
-  ensureTodayWater();
-  const hour = new Date().getHours();
-  let expectedRatio;
-  if (hour < 12) return null;
-  else if (hour < 17) expectedRatio = 0.4;
-  else if (hour < 21) expectedRatio = 0.75;
-  else expectedRatio = 1.0;
-  const expectedCups = Math.round(p.water * expectedRatio);
-  if (appState.water < expectedCups) {
-    return `💧 شربت حتى الآن ${appState.water} من ${p.water} أكواب — حاول تلحق بمعدلك اليومي`;
-  }
-  return null;
-}
-
-function renderRemindersCard() {
-  const container = document.getElementById('dashboard-reminders');
-  if (!container) return;
-  const messages = [getWeightReminderMessage(), getWaterReminderMessage()].filter(Boolean);
-  if (messages.length === 0) {
-    container.innerHTML = '';
-    return;
-  }
-  container.innerHTML = `
-    <div style="background: linear-gradient(135deg, var(--surface) 0%, var(--surface-light) 100%); border: 1px solid var(--border); border-radius: 15px; padding: 20px; margin-bottom: 20px; box-shadow: 0 8px 32px var(--shadow);">
-      <h3 style="color: var(--accent); margin-bottom: 15px; font-size: 16px;">🔔 تذكيراتك</h3>
-      ${messages.map(m => `<div class="message-box warning">${m}</div>`).join('')}
-    </div>
-  `;
-}
-
-let reminderIntervalStarted = false;
-function startReminderInterval() {
-  if (reminderIntervalStarted) return;
-  reminderIntervalStarted = true;
-  setInterval(() => {
-    if (!appState.profile) return;
-    const msg = getWeightReminderMessage() || getWaterReminderMessage();
-    if (msg) showReminderToast(msg);
-  }, 60 * 60 * 1000); // كل ساعة، فقط طالما الصفحة مفتوحة فعلياً
-}
-
-function showReminderToast(message) {
-  const existing = document.getElementById('reminder-toast');
-  if (existing) existing.remove();
-  const toast = document.createElement('div');
-  toast.id = 'reminder-toast';
-  toast.style.cssText = 'position:fixed; top:0; left:0; right:0; z-index:2000; background:linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%); color:white; padding:12px 16px; padding-top:calc(12px + env(safe-area-inset-top)); font-size:13px; display:flex; align-items:center; justify-content:space-between; gap:10px; box-shadow:0 4px 20px rgba(0,0,0,0.35);';
-  toast.innerHTML = `<span>${escapeHtml(message)}</span><button onclick="document.getElementById('reminder-toast').remove()" style="background:rgba(255,255,255,0.25); border:none; color:white; border-radius:8px; padding:6px 10px; font-size:16px; cursor:pointer; flex-shrink:0;">✕</button>`;
-  document.body.insertBefore(toast, document.body.firstChild);
 }
 
 // ============ Init ============
@@ -809,212 +823,88 @@ window.addEventListener('load', () => {
   const savedUsername = localStorage.getItem('healthAppCurrentUser');
   if (savedUsername) {
     const db = loadUsersDB();
-    const existing = db[savedUsername];
-    if (existing && existing.profile) {
+    if (db[savedUsername] && db[savedUsername].profile) {
       currentUsername = savedUsername;
-      appState = Object.assign({ meals: [], weights: [], water: 0, waterDate: null, chat: [] }, existing);
+      appState = Object.assign({ meals: [], workouts: [], weights: [], water: 0, waterDate: null, chat: [] }, db[savedUsername]);
       document.getElementById('bottom-nav').style.display = 'flex';
-      startReminderInterval();
       showScreen('dashboard-screen');
       updateDashboard();
+      initChart();
       return;
     }
   }
   showScreen('login-screen');
 });
 
-// ============ Auth ============
+// ============ Auth & Setup ============
 function handleLogin() {
   const username = document.getElementById('username').value.trim();
-  if (!username) { alert('أدخل اسم المستخدم'); return; }
+  if (!username) { showToast('يرجى إدخال اسم المستخدم', 'warning'); return; }
 
   currentUsername = username;
   localStorage.setItem('healthAppCurrentUser', username);
 
   const db = loadUsersDB();
-  const existing = db[username];
-
-  if (existing && existing.profile) {
-    appState = Object.assign({ meals: [], weights: [], water: 0, waterDate: null, chat: [] }, existing);
+  if (db[username] && db[username].profile) {
+    appState = Object.assign({ meals: [], workouts: [], weights: [], water: 0, waterDate: null, chat: [] }, db[username]);
     document.getElementById('bottom-nav').style.display = 'flex';
-      startReminderInterval();
     showScreen('dashboard-screen');
     updateDashboard();
+    initChart();
   } else {
-    appState = existing || { profile: null, meals: [], weights: [], water: 0, chat: [] };
+    appState = db[username] || { profile: null, meals: [], workouts: [], weights: [], water: 0, chat: [] };
     showScreen('setup-screen');
   }
 }
 
-// ============ Setup ============
 function completeSetup() {
+  const name = document.getElementById('setup-name').value.trim() || currentUsername;
   const age = parseInt(document.getElementById('setup-age').value);
   const gender = document.getElementById('setup-gender').value;
   const height = parseInt(document.getElementById('setup-height').value);
   const weight = parseFloat(document.getElementById('setup-current-weight').value);
   const targetWeight = parseFloat(document.getElementById('setup-target-weight').value);
   const activity = parseFloat(document.getElementById('setup-activity').value);
-  const work = document.getElementById('setup-work').value;
   const goal = document.getElementById('setup-goal').value;
 
-  if (!age || !gender || !height || !weight || !activity || !goal) {
-    alert('أكمل جميع البيانات المطلوبة');
+  if (!age || !gender || !height || !weight || !targetWeight || !activity || !goal) {
+    showToast('يرجى ملء جميع الحقول الأساسية', 'warning');
     return;
   }
 
-  let bmr;
-  if (gender === 'male') {
-    bmr = 88.362 + (13.397 * weight) + (4.799 * height) - (5.677 * age);
-  } else {
-    bmr = 447.593 + (9.247 * weight) + (3.098 * height) - (4.330 * age);
-  }
+  // Mifflin-St Jeor BMR Equation
+  let bmr = (10 * weight) + (6.25 * height) - (5 * age);
+  bmr = gender === 'male' ? bmr + 5 : bmr - 161;
   const tdee = bmr * activity;
+
   let dailyCalories = tdee;
   if (goal === 'lose') dailyCalories = tdee - 500;
-  else if (goal === 'gain') dailyCalories = tdee + 500;
+  else if (goal === 'gain') dailyCalories = tdee + 400;
 
   appState.profile = {
-    name: document.getElementById('setup-name').value,
-    age, gender, height,
-    currentWeight: weight, targetWeight, activity, work, goal,
-    chronic: document.getElementById('setup-chronic').value,
+    name, age, gender, height, currentWeight: weight, targetWeight, activity, goal,
     allergies: document.getElementById('setup-allergies').value,
-    bmr: Math.round(bmr),
-    tdee: Math.round(tdee),
-    dailyCalories: Math.round(dailyCalories),
-    protein: Math.round(weight * 1.6),
-    carbs: Math.round(dailyCalories * 0.45 / 4),
-    fats: Math.round(dailyCalories * 0.3 / 9),
-    water: Math.round(weight * 0.033 * 1000 / 250)
+    bmr: Math.round(bmr), tdee: Math.round(tdee), dailyCalories: Math.round(dailyCalories),
+    protein: Math.round(weight * 1.8),
+    carbs: Math.round((dailyCalories * 0.45) / 4),
+    fats: Math.round((dailyCalories * 0.25) / 9),
+    water: Math.round((weight * 0.035) * 4) // Cups
   };
 
   if (!appState.meals) appState.meals = [];
+  if (!appState.workouts) appState.workouts = [];
   if (!appState.weights) appState.weights = [];
-  if (appState.water === undefined) appState.water = 0;
-  if (!appState.waterDate) appState.waterDate = todayStr();
-  if (!appState.chat) appState.chat = [];
-  if (appState.weights.length === 0) {
-    appState.weights.push({ date: new Date().toISOString().split('T')[0], weight });
-  }
+  if (appState.weights.length === 0) appState.weights.push({ date: todayStr(), weight });
 
   saveCurrentUserData();
   document.getElementById('bottom-nav').style.display = 'flex';
-      startReminderInterval();
   showScreen('dashboard-screen');
   updateDashboard();
-}
-
-function prefillSetupForm() {
-  const p = appState.profile;
-  if (!p) return;
-  document.getElementById('setup-name').value = p.name || '';
-  document.getElementById('setup-age').value = p.age || '';
-  document.getElementById('setup-gender').value = p.gender || '';
-  document.getElementById('setup-height').value = p.height || '';
-  const lastW = appState.weights[appState.weights.length - 1]?.weight ?? p.currentWeight;
-  document.getElementById('setup-current-weight').value = lastW || '';
-  document.getElementById('setup-target-weight').value = p.targetWeight || '';
-  document.getElementById('setup-activity').value = p.activity || '';
-  document.getElementById('setup-work').value = p.work || '';
-  document.getElementById('setup-goal').value = p.goal || '';
-  document.getElementById('setup-chronic').value = p.chronic || '';
-  document.getElementById('setup-allergies').value = p.allergies || '';
+  initChart();
+  showToast('تم إعداد حسابك بنجاح! مرحباً بك 🚀', 'success');
 }
 
 // ============ Navigation ============
-// ============ الرسوم البيانية (Chart.js يُحمَّل عند الحاجة فقط لتحسين سرعة التحميل الأولي) ============
-let chartJsLoadPromise = null;
-function ensureChartJsLoaded() {
-  if (typeof Chart !== 'undefined') return Promise.resolve();
-  if (chartJsLoadPromise) return chartJsLoadPromise;
-  chartJsLoadPromise = new Promise((resolve, reject) => {
-    const script = document.createElement('script');
-    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js';
-    script.onload = () => resolve();
-    script.onerror = () => reject(new Error('تعذر تحميل مكتبة الرسم البياني'));
-    document.head.appendChild(script);
-  });
-  return chartJsLoadPromise;
-}
-
-function chartAxisOptions() {
-  return {
-    plugins: { legend: { labels: { color: '#ffffff' } } },
-    scales: {
-      x: { ticks: { color: '#b0b8d4' }, grid: { color: '#2a3454' } },
-      y: { ticks: { color: '#b0b8d4' }, grid: { color: '#2a3454' }, beginAtZero: true }
-    }
-  };
-}
-
-function renderWeightChart() {
-  ensureChartJsLoaded().then(() => {
-    const canvas = document.getElementById('weight-chart');
-    if (!canvas) return;
-    const sorted = appState.weights.slice().sort((a, b) => new Date(a.date) - new Date(b.date));
-    const labels = sorted.map(w => w.date.slice(5));
-    const data = sorted.map(w => w.weight);
-
-    if (window._weightChartInstance) window._weightChartInstance.destroy();
-    window._weightChartInstance = new Chart(canvas.getContext('2d'), {
-      type: 'line',
-      data: {
-        labels,
-        datasets: [{
-          label: 'الوزن (كغ)', data,
-          borderColor: '#e94560', backgroundColor: 'rgba(233,69,96,0.15)',
-          fill: true, tension: 0.35, pointBackgroundColor: '#e94560', pointRadius: 4
-        }]
-      },
-      options: Object.assign({ responsive: true, maintainAspectRatio: false }, chartAxisOptions())
-    });
-  }).catch(err => {
-    const canvas = document.getElementById('weight-chart');
-    if (canvas && canvas.parentElement) canvas.parentElement.innerHTML = `<div class="message-box error">${escapeHtml(err.message)}</div>`;
-  });
-}
-
-function getLast7DaysCalories() {
-  const days = [];
-  for (let i = 6; i >= 0; i--) {
-    const d = new Date();
-    d.setDate(d.getDate() - i);
-    const dateStr = d.toISOString().split('T')[0];
-    const total = appState.meals.filter(m => m.date === dateStr).reduce((s, m) => s + m.cal, 0);
-    days.push({ date: dateStr, total });
-  }
-  return days;
-}
-
-function renderCaloriesChart() {
-  ensureChartJsLoaded().then(() => {
-    const canvas = document.getElementById('calories-chart');
-    if (!canvas) return;
-    const days = getLast7DaysCalories();
-    const labels = days.map(d => d.date.slice(5));
-    const data = days.map(d => d.total);
-    const target = appState.profile ? appState.profile.dailyCalories : null;
-
-    const datasets = [{ label: 'السعرات المستهلكة', data, backgroundColor: '#06d6a0', borderRadius: 6 }];
-    if (target) {
-      datasets.push({
-        label: 'الهدف اليومي', data: labels.map(() => target),
-        type: 'line', borderColor: '#fca311', borderDash: [6, 4], pointRadius: 0, fill: false
-      });
-    }
-
-    if (window._caloriesChartInstance) window._caloriesChartInstance.destroy();
-    window._caloriesChartInstance = new Chart(canvas.getContext('2d'), {
-      type: 'bar',
-      data: { labels, datasets },
-      options: Object.assign({ responsive: true, maintainAspectRatio: false }, chartAxisOptions())
-    });
-  }).catch(err => {
-    const canvas = document.getElementById('calories-chart');
-    if (canvas && canvas.parentElement) canvas.parentElement.innerHTML = `<div class="message-box error">${escapeHtml(err.message)}</div>`;
-  });
-}
-
 function switchScreen(screenName, navElement) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -1022,18 +912,19 @@ function switchScreen(screenName, navElement) {
   document.getElementById(screenName + '-screen').classList.add('active');
   if (navElement) navElement.classList.add('active');
 
-  if (screenName === 'dashboard') updateDashboard();
-  if (screenName === 'meals') { updateMealsList(); renderMealSuggestions(); }
-  if (screenName === 'weight') { updateWeightList(); renderWeightChart(); }
+  if (screenName === 'dashboard') { updateDashboard(); updateChartData(); }
+  if (screenName === 'meals') { updateMealsList(); renderFoodDBOptions(); renderMealSuggestions(); }
+  if (screenName === 'workouts') { updateWorkoutsList(); renderWorkoutRoutines(); }
   if (screenName === 'water') updateWaterScreen();
+  if (screenName === 'weight') updateWeightList();
   if (screenName === 'chat') renderChatHistory();
-  if (screenName === 'reports') { updateReports(); renderCaloriesChart(); }
-  if (screenName === 'settings') { updateProfile(); loadApiSettingsIntoUI(); }
+  if (screenName === 'reports') updateReports();
+  if (screenName === 'settings') { updateProfileUI(); loadApiSettingsUI(); }
 }
 
-function showScreen(screenName) {
+function showScreen(screenId) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(screenName).classList.add('active');
+  document.getElementById(screenId).classList.add('active');
 }
 
 // ============ Dashboard ============
@@ -1041,26 +932,31 @@ function updateDashboard() {
   const p = appState.profile;
   if (!p) return;
   ensureTodayWater();
+
   const todaysMeals = getTodaysMeals();
+  const todaysWorkouts = getTodaysWorkouts();
+
   const currentWeight = appState.weights[appState.weights.length - 1]?.weight ?? p.currentWeight;
-  const consumed = todaysMeals.reduce((s, m) => s + m.cal, 0);
+  const consumedCals = todaysMeals.reduce((s, m) => s + m.cal, 0);
+  const burnedCals = todaysWorkouts.reduce((s, w) => s + w.cal, 0);
+  const netCals = consumedCals - burnedCals;
+
   const protein = todaysMeals.reduce((s, m) => s + m.protein, 0);
   const carbs = todaysMeals.reduce((s, m) => s + m.carbs, 0);
   const fats = todaysMeals.reduce((s, m) => s + m.fat, 0);
 
   const totalToChange = Math.abs(p.currentWeight - p.targetWeight) || 1;
-  const changed = Math.abs(p.currentWeight - currentWeight);
-  const progress = Math.min(100, Math.max(0, (changed / totalToChange) * 100));
+  const progressVal = Math.min(100, Math.max(0, (Math.abs(p.currentWeight - currentWeight) / totalToChange) * 100));
 
-  document.getElementById('user-welcome').textContent = `مرحباً ${currentUsername} 👋`;
+  document.getElementById('user-welcome').textContent = `مرحباً ${p.name || currentUsername} 👋`;
   document.getElementById('dashboard-calories').textContent = p.dailyCalories;
-  document.getElementById('dashboard-consumed').textContent = consumed;
+  document.getElementById('dashboard-consumed').textContent = `${netCals} (صافي)`;
   document.getElementById('dashboard-weight').textContent = currentWeight.toFixed(1);
   document.getElementById('dashboard-target').textContent = p.targetWeight;
   document.getElementById('dashboard-water').textContent = appState.water;
   document.getElementById('dashboard-water-target').textContent = p.water;
-  document.getElementById('dashboard-progress').textContent = Math.round(progress) + '%';
-  document.getElementById('dashboard-progress-bar').style.width = progress + '%';
+  document.getElementById('dashboard-progress').textContent = Math.round(progressVal) + '%';
+  document.getElementById('dashboard-progress-bar').style.width = progressVal + '%';
 
   document.getElementById('dashboard-protein').textContent = Math.round(protein);
   document.getElementById('dashboard-protein-target').textContent = `/ ${p.protein} غ`;
@@ -1068,81 +964,125 @@ function updateDashboard() {
   document.getElementById('dashboard-carbs-target').textContent = `/ ${p.carbs} غ`;
   document.getElementById('dashboard-fats').textContent = Math.round(fats);
   document.getElementById('dashboard-fats-target').textContent = `/ ${p.fats} غ`;
-
-  let tips = '<div class="message-box success">✅ استمر في الالتزام!</div>';
-  if (consumed > p.dailyCalories) {
-    tips += '<div class="message-box error">❌ تجاوزت الحد المسموح من السعرات</div>';
-  } else if (todaysMeals.length > 0 && consumed < p.dailyCalories * 0.7) {
-    tips += '<div class="message-box warning">⚠️ لم تستهلك السعرات الكافية بعد</div>';
-  }
-  if (appState.water < p.water * 0.5) {
-    tips += '<div class="message-box warning">💧 اشرب المزيد من الماء</div>';
-  }
-  document.getElementById('dashboard-tips').innerHTML = tips;
-  renderRemindersCard();
 }
 
-// ============ Meals ============
-// ============ بحث ذكي في قاعدة الأطعمة ============
-function filterFoodSearch() {
-  const query = document.getElementById('meal-food-search').value.trim();
-  const resultsDiv = document.getElementById('meal-food-results');
-  document.getElementById('meal-food').value = ''; // إلغاء أي اختيار سابق عند تعديل نص البحث
+// ============ Chart.js Analytics ============
+function initChart() {
+  const ctx = document.getElementById('dashboardChart');
+  if (!ctx) return;
 
-  if (!query) { resultsDiv.innerHTML = ''; return; }
+  if (dashboardChartInstance) dashboardChartInstance.destroy();
 
-  const matches = Object.keys(foodDB).filter(key => foodDB[key].name.includes(query)).slice(0, 8);
+  const dates = appState.weights.slice(-7).map(w => w.date);
+  const weightValues = appState.weights.slice(-7).map(w => w.weight);
 
-  if (matches.length === 0) {
-    resultsDiv.innerHTML = '<div class="message-box">لا توجد نتائج مطابقة — جرّب كلمة أخرى</div>';
-    return;
-  }
-
-  resultsDiv.innerHTML = matches.map(key => {
-    const f = foodDB[key];
-    return `
-      <div class="food-item" style="cursor:pointer;" onclick="selectSearchedFood('${key}')">
-        <div class="food-info">
-          <div class="food-name">${escapeHtml(f.name)}</div>
-          <div class="food-macros">🔥 ${f.cal} سعرة | 🥛 ${f.protein}غ بروتين | 🌾 ${f.carbs}غ كربوهيدرات | 🫒 ${f.fat}غ دهون</div>
-        </div>
-      </div>
-    `;
-  }).join('');
+  dashboardChartInstance = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: dates.length ? dates : ['اليوم'],
+      datasets: [{
+        label: 'تتبع الوزن (كغ)',
+        data: weightValues.length ? weightValues : [appState.profile?.currentWeight || 70],
+        borderColor: '#e94560',
+        backgroundColor: 'rgba(233, 69, 96, 0.15)',
+        fill: true,
+        tension: 0.35,
+        pointRadius: 5
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { labels: { color: '#b0b8d4', font: { family: 'Tajawal' } } } },
+      scales: {
+        x: { ticks: { color: '#b0b8d4' }, grid: { color: 'rgba(255,255,255,0.05)' } },
+        y: { ticks: { color: '#b0b8d4' }, grid: { color: 'rgba(255,255,255,0.05)' } }
+      }
+    }
+  });
 }
 
-function selectSearchedFood(key) {
-  const f = foodDB[key];
-  if (!f) return;
-  document.getElementById('meal-food').value = key;
-  document.getElementById('meal-food-search').value = f.name;
-  document.getElementById('meal-food-results').innerHTML = `<div class="message-box success">✅ تم اختيار: ${escapeHtml(f.name)} (${f.cal} سعرة)</div>`;
+function updateChartData() {
+  if (!dashboardChartInstance) { initChart(); return; }
+  const dates = appState.weights.slice(-7).map(w => w.date);
+  const weightValues = appState.weights.slice(-7).map(w => w.weight);
+  dashboardChartInstance.data.labels = dates;
+  dashboardChartInstance.data.datasets[0].data = weightValues;
+  dashboardChartInstance.update();
 }
 
-function addMeal() {
-  const food = document.getElementById('meal-food').value;
-  const qty = parseFloat(document.getElementById('meal-qty').value);
-  if (!food) { alert('اختر نوع الطعام'); return; }
+// ============ Smart Food DB & Filter ============
+let currentCategory = 'all';
 
-  const f = foodDB[food];
+function renderFoodDBOptions() {
+  const select = document.getElementById('meal-food-select');
+  if (!select) return;
+  const search = (document.getElementById('food-search-input')?.value || '').toLowerCase().trim();
+
+  const filtered = extendedFoodDB.filter(f => {
+    const matchCat = currentCategory === 'all' || f.cat === currentCategory;
+    const matchSearch = f.name.toLowerCase().includes(search);
+    return matchCat && matchSearch;
+  });
+
+  select.innerHTML = '<option value="">اختر طعاماً من القائمة...</option>' +
+    filtered.map(f => `<option value="${f.id}">${f.name} - ${f.cal} سعرة</option>`).join('');
+}
+
+function filterFoodDB() { renderFoodDBOptions(); }
+
+function selectFoodCategory(cat, el) {
+  currentCategory = cat;
+  document.querySelectorAll('.pill-container .pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  renderFoodDBOptions();
+}
+
+function addSelectedMealFromDB() {
+  const foodId = document.getElementById('meal-food-select').value;
+  const qty = parseFloat(document.getElementById('meal-qty-input').value) || 1;
+
+  if (!foodId) { showToast('اختر طعاماً أولاً', 'warning'); return; }
+
+  const food = extendedFoodDB.find(f => f.id === foodId);
+  if (!food) return;
+
   appState.meals.push({
     id: Date.now(),
     date: todayStr(),
-    name: f.name, food, qty,
-    cal: Math.round(f.cal * qty),
-    protein: f.protein * qty,
-    carbs: f.carbs * qty,
-    fat: f.fat * qty,
-    time: new Date().toLocaleTimeString('ar')
+    name: food.name,
+    cal: Math.round(food.cal * qty),
+    protein: Math.round(food.protein * qty),
+    carbs: Math.round(food.carbs * qty),
+    fat: Math.round(food.fat * qty),
+    time: new Date().toLocaleTimeString('ar', { hour: '2-digit', minute: '2-digit' })
   });
 
   saveCurrentUserData();
   updateDashboard();
   updateMealsList();
-  document.getElementById('meal-food').value = '';
-  document.getElementById('meal-food-search').value = '';
-  document.getElementById('meal-food-results').innerHTML = '';
-  document.getElementById('meal-qty').value = '1';
+  showToast(`تمت إضافة ${food.name} بنجاح`, 'success');
+}
+
+function updateMealsList() {
+  const todaysMeals = getTodaysMeals();
+  const container = document.getElementById('meals-list');
+  if (!container) return;
+
+  if (todaysMeals.length === 0) {
+    container.innerHTML = '<div class="message-box">لم تسجل أي وجبات لهذا اليوم بعد</div>';
+    return;
+  }
+
+  container.innerHTML = todaysMeals.map(m => `
+    <div class="food-item">
+      <div class="food-info">
+        <div class="food-name">${m.name}</div>
+        <div class="food-macros">🔥 ${m.cal} سعرة | 🥩 بروتين: ${m.protein}غ | 🌾 كربوهيدرات: ${m.carbs}غ | 🫒 دهون: ${m.fat}غ</div>
+      </div>
+      <button class="delete-btn" onclick="deleteMeal(${m.id})">حذف</button>
+    </div>
+  `).join('');
 }
 
 function deleteMeal(id) {
@@ -1150,373 +1090,262 @@ function deleteMeal(id) {
   saveCurrentUserData();
   updateDashboard();
   updateMealsList();
+  showToast('تم حذف الوجبة', 'info');
 }
 
-function updateMealsList() {
-  const todaysMeals = getTodaysMeals();
-  const html = todaysMeals.length === 0
-    ? '<div class="message-box">لم تسجل وجبات اليوم بعد</div>'
-    : todaysMeals.map((m) => `
-      <div class="food-item">
-        <div class="food-info">
-          <div class="food-name">${escapeHtml(m.name)}</div>
-          ${m.comboDetails ? `<div class="food-macros">${escapeHtml(m.comboDetails)}</div>` : ''}
-          <div class="food-macros">🔥 ${m.cal} سعرة | 🥛 ${m.protein.toFixed(1)}غ | 🌾 ${m.carbs.toFixed(1)}غ | 🫒 ${m.fat.toFixed(1)}غ</div>
-        </div>
-        <button class="delete-btn" onclick="deleteMeal(${m.id})">حذف</button>
+function renderMealSuggestions() {
+  const container = document.getElementById('meal-suggestions');
+  if (!container) return;
+  container.innerHTML = `
+    <div class="food-item">
+      <div class="food-info">
+        <div class="food-name">🍳 وجبة إفطار عالية البروتين</div>
+        <div class="food-macros">3 بيضات مسلوقة + شريحة خبز أسمر + نصف أفوكادو</div>
+        <div class="food-macros">🔥 ~380 سعرة | 🥩 24g بروتين</div>
       </div>
-    `).join('');
-  document.getElementById('meals-list').innerHTML = html;
+      <button class="icon-btn" onclick="addPresetCombo('إفطار بروتين', 380, 24, 20, 15)">➕ أضف</button>
+    </div>
+    <div class="food-item">
+      <div class="food-info">
+        <div class="food-name">🍗 غداء رياضي متكامل</div>
+        <div class="food-macros">150غ صدر دجاج + 150غ أرز بني + سلطة خضراء</div>
+        <div class="food-macros">🔥 ~450 سعرة | 🥩 48g بروتين</div>
+      </div>
+      <button class="icon-btn" onclick="addPresetCombo('غداء رياضي', 450, 48, 42, 6)">➕ أضف</button>
+    </div>
+  `;
 }
 
-// ============ تحليل صورة الوجبة بالذكاء الاصطناعي ============
-// يضغط الصورة قبل الإرسال (أسرع رفعاً، أقل استهلاكاً لحصة الـ API)
-function resizeImageFile(file, maxDim) {
-  maxDim = maxDim || 1024;
+function addPresetCombo(name, cal, p, c, f) {
+  appState.meals.push({
+    id: Date.now(), date: todayStr(), name, cal, protein: p, carbs: c, fat: f,
+    time: new Date().toLocaleTimeString('ar', { hour: '2-digit', minute: '2-digit' })
+  });
+  saveCurrentUserData();
+  updateDashboard();
+  updateMealsList();
+  showToast(`تمت إضافة ${name}`, 'success');
+}
+
+// ============ AI Photo & Free Text Analysis ============
+async function handleMealPhoto(event) {
+  const file = event.target.files?.[0];
+  if (!file) return;
+
+  const previewDiv = document.getElementById('meal-photo-preview');
+  previewDiv.innerHTML = '<div class="message-box" style="margin-top:10px;">🔍 جاري ضغط الصورة وتحليلها بالذكاء الاصطناعي...</div>';
+
+  try {
+    const base64 = await convertFileToBase64(file);
+    const result = await callGeminiImageAPI(base64);
+    
+    previewDiv.innerHTML = `
+      <div class="message-box success" style="margin-top:10px;">
+        <strong>تم التحليل:</strong> ${result.name}<br>
+        🔥 ${result.calories} سعرة | 🥩 بروتين: ${result.protein}g | 🌾 كربوهيدرات: ${result.carbs}g | 🫒 دهون: ${result.fat}g
+      </div>
+      <button class="btn btn-primary" onclick="confirmAiMeal('${result.name}', ${result.calories}, ${result.protein}, ${result.carbs}, ${result.fat})">✅ اعتماد وإضافة للسجل</button>
+    `;
+  } catch (e) {
+    previewDiv.innerHTML = `<div class="message-box error" style="margin-top:10px;">تعذر تحليل الصورة: ${e.message}</div>`;
+  }
+}
+
+async function handleMealText() {
+  const text = document.getElementById('meal-text-input').value.trim();
+  if (!text) { showToast('اكتب وصف الوجبة أولاً', 'warning'); return; }
+
+  const previewDiv = document.getElementById('meal-text-preview');
+  previewDiv.innerHTML = '<div class="message-box" style="margin-top:10px;">🤖 جاري تقدير القيم الغذائية...</div>';
+
+  try {
+    const prompt = `قدّر القيم الغذائية للوجبة التالية: "${text}". أرجِع الإجابة كـ JSON بهذا النسق فقط دون زيادات: {"name":"اسم الوجبة","calories":000,"protein":00,"carbs":00,"fat":00}`;
+    const responseText = await callGeminiTextAPI(prompt);
+    const jsonMatch = responseText.match(/\{[\s\S]*\}/);
+    const data = JSON.parse(jsonMatch ? jsonMatch[0] : responseText);
+
+    previewDiv.innerHTML = `
+      <div class="message-box success" style="margin-top:10px;">
+        <strong>التقدير:</strong> ${data.name}<br>
+        🔥 ${data.calories} سعرة | 🥩 بروتين: ${data.protein}g | 🌾 كربوهيدرات: ${data.carbs}g | 🫒 دهون: ${data.fat}g
+      </div>
+      <button class="btn btn-primary" onclick="confirmAiMeal('${data.name}', ${data.calories}, ${data.protein}, ${data.carbs}, ${data.fat})">✅ اعتماد وإضافة للسجل</button>
+    `;
+  } catch (e) {
+    previewDiv.innerHTML = `<div class="message-box error" style="margin-top:10px;">تعذر التحليل: ${e.message}</div>`;
+  }
+}
+
+function confirmAiMeal(name, cal, p, c, f) {
+  appState.meals.push({
+    id: Date.now(), date: todayStr(), name, cal, protein: p, carbs: c, fat: f,
+    time: new Date().toLocaleTimeString('ar', { hour: '2-digit', minute: '2-digit' })
+  });
+  saveCurrentUserData();
+  updateDashboard();
+  updateMealsList();
+  document.getElementById('meal-photo-preview').innerHTML = '';
+  document.getElementById('meal-text-preview').innerHTML = '';
+  document.getElementById('meal-text-input').value = '';
+  showToast('تم تسجيل الوجبة بنجاح', 'success');
+}
+
+// Helper: Convert File to Base64
+function convertFileToBase64(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
-    reader.onload = (e) => {
-      const img = new Image();
-      img.onload = () => {
-        let width = img.width, height = img.height;
-        if (width > height && width > maxDim) {
-          height = Math.round(height * (maxDim / width));
-          width = maxDim;
-        } else if (height > maxDim) {
-          width = Math.round(width * (maxDim / height));
-          height = maxDim;
-        }
-        const canvas = document.createElement('canvas');
-        canvas.width = width;
-        canvas.height = height;
-        canvas.getContext('2d').drawImage(img, 0, 0, width, height);
-        const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
-        resolve({ base64: dataUrl.split(',')[1], mimeType: 'image/jpeg' });
-      };
-      img.onerror = () => reject(new Error('تعذرت قراءة الصورة'));
-      img.src = e.target.result;
-    };
-    reader.onerror = () => reject(new Error('تعذرت قراءة الملف'));
+    reader.onload = () => resolve(reader.result.split(',')[1]);
+    reader.onerror = error => reject(error);
     reader.readAsDataURL(file);
   });
 }
 
-function buildPhotoAnalysisPrompt() {
-  return 'حلل الصورة المرفقة لوجبة طعام. قدّر بناءً على الكمية الظاهرة فعلياً في الصورة: اسم الوجبة/الأطعمة بالعربية، السعرات الحرارية التقريبية، البروتين بالغرام، الكربوهيدرات بالغرام، الدهون بالغرام. أجب بصيغة JSON فقط دون أي نص أو شرح أو علامات تنسيق، بالضبط بهذا الشكل: {"name": "...", "calories": 000, "protein": 00, "carbs": 00, "fat": 00}';
-}
+// ============ API Integration (Gemini 2.5 Flash) ============
+const apiKey = ""; // Set by environment or user settings
 
-function parseJsonFromText(text) {
-  const cleaned = String(text || '').replace(/```json|```/gi, '').trim();
-  const match = cleaned.match(/\{[\s\S]*\}/);
-  const jsonStr = match ? match[0] : cleaned;
-  const obj = JSON.parse(jsonStr);
-  return {
-    name: obj.name || 'وجبة من صورة',
-    calories: Number(obj.calories) || 0,
-    protein: Number(obj.protein) || 0,
-    carbs: Number(obj.carbs) || 0,
-    fat: Number(obj.fat) || 0
-  };
-}
+async function callGeminiTextAPI(promptText) {
+  const customKey = localStorage.getItem('healthAppGeminiKey') || apiKey;
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${customKey}`;
 
-async function analyzeMealPhotoGemini(apiKey, model, base64, mimeType) {
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(apiKey)}`;
   const res = await fetch(url, {
     method: 'POST',
-    headers: { 'content-type': 'application/json' },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      contents: [{
-        role: 'user',
-        parts: [
-          { text: buildPhotoAnalysisPrompt() },
-          { inlineData: { mimeType, data: base64 } }
-        ]
-      }],
-      generationConfig: { maxOutputTokens: 300, responseMimeType: 'application/json' }
+      contents: [{ parts: [{ text: promptText }] }]
     })
   });
-  if (!res.ok) {
-    const errBody = await res.json().catch(() => ({}));
-    throw new Error((errBody && errBody.error && errBody.error.message) || ('خطأ HTTP ' + res.status));
-  }
+
+  if (!res.ok) throw new Error('خطأ في الاتصال بالخدمة');
   const data = await res.json();
-  const candidate = data.candidates && data.candidates[0];
-  const parts = candidate && candidate.content && candidate.content.parts;
-  const text = (parts || []).map(p => p.text || '').join('\n');
-  return parseJsonFromText(text);
+  return data.candidates?.[0]?.content?.parts?.[0]?.text || '';
 }
 
-async function analyzeMealPhotoClaude(apiKey, model, base64, mimeType) {
-  const res = await fetch('https://api.anthropic.com/v1/messages', {
+async function callGeminiImageAPI(base64Data) {
+  const customKey = localStorage.getItem('healthAppGeminiKey') || apiKey;
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${customKey}`;
+
+  const prompt = `حلل صورة الوجبة وأرجع فقط JSON بالصيغة: {"name":"اسم الوجبة بالعربية","calories":350,"protein":25,"carbs":30,"fat":10}`;
+
+  const res = await fetch(url, {
     method: 'POST',
-    headers: {
-      'content-type': 'application/json',
-      'x-api-key': apiKey,
-      'anthropic-version': '2023-06-01',
-      'anthropic-dangerous-direct-browser-access': 'true'
-    },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      model,
-      max_tokens: 300,
-      messages: [{
-        role: 'user',
-        content: [
-          { type: 'image', source: { type: 'base64', media_type: mimeType, data: base64 } },
-          { type: 'text', text: buildPhotoAnalysisPrompt() }
+      contents: [{
+        parts: [
+          { text: prompt },
+          { inlineData: { mimeType: 'image/jpeg', data: base64Data } }
         ]
       }]
     })
   });
-  if (!res.ok) {
-    const errBody = await res.json().catch(() => ({}));
-    throw new Error((errBody && errBody.error && errBody.error.message) || ('خطأ HTTP ' + res.status));
-  }
+
+  if (!res.ok) throw new Error('فشل تحليل الصورة');
   const data = await res.json();
-  const text = (data.content || []).filter(b => b.type === 'text').map(b => b.text).join('\n');
-  return parseJsonFromText(text);
+  const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+  const jsonMatch = text.match(/\{[\s\S]*\}/);
+  return JSON.parse(jsonMatch ? jsonMatch[0] : text);
 }
 
-async function analyzeMealPhotoWithRetry(provider, apiKey, model, base64, mimeType, maxRetries) {
-  maxRetries = maxRetries || 1;
-  let lastErr;
-  for (let attempt = 0; attempt <= maxRetries; attempt++) {
-    try {
-      return provider === 'gemini'
-        ? await analyzeMealPhotoGemini(apiKey, model, base64, mimeType)
-        : await analyzeMealPhotoClaude(apiKey, model, base64, mimeType);
-    } catch (err) {
-      lastErr = err;
-      const isTransient = /overloaded|high demand|try again later|rate limit|too many requests|503|429/i.test(err.message);
-      if (!isTransient || attempt === maxRetries) throw err;
-      await new Promise(resolve => setTimeout(resolve, 1500 * (attempt + 1)));
-    }
-  }
-  throw lastErr;
+// ============ Workouts ============
+function updateWorkoutCalRate() {
+  const type = document.getElementById('workout-type').value;
+  const duration = parseFloat(document.getElementById('workout-duration').value) || 30;
+  
+  const rates = {
+    cardio_run: 600, cardio_walk: 280, strength: 400,
+    hiit: 700, cycling: 450, swimming: 500, home_workout: 350
+  };
+
+  const burned = Math.round((rates[type] || 400) * (duration / 60));
+  document.getElementById('workout-calories').value = burned;
 }
 
-let pendingPhotoMeal = null;
+function addWorkoutLog() {
+  const typeSelect = document.getElementById('workout-type');
+  const typeText = typeSelect.options[typeSelect.selectedIndex].text.split('-')[0].trim();
+  const duration = parseInt(document.getElementById('workout-duration').value) || 30;
+  const calories = parseInt(document.getElementById('workout-calories').value) || 200;
 
-async function handleMealPhoto(event) {
-  const file = event.target.files && event.target.files[0];
-  if (!file) return;
+  if (!appState.workouts) appState.workouts = [];
 
-  const previewDiv = document.getElementById('meal-photo-preview');
-  const provider = localStorage.getItem('healthAppAiProvider') || 'gemini';
-  const geminiKey = localStorage.getItem('healthAppGeminiKey');
-  const claudeKey = localStorage.getItem('healthAppClaudeKey');
-  const activeKey = provider === 'gemini' ? geminiKey : claudeKey;
+  appState.workouts.push({
+    id: Date.now(),
+    date: todayStr(),
+    name: typeText,
+    duration,
+    cal: calories,
+    time: new Date().toLocaleTimeString('ar', { hour: '2-digit', minute: '2-digit' })
+  });
 
-  if (!activeKey) {
-    const providerName = provider === 'gemini' ? 'Google Gemini' : 'Claude';
-    previewDiv.innerHTML = `<div class="message-box warning" style="margin-top:10px;">أضف مفتاح ${providerName} من ⚙️ الإعدادات أولاً لتفعيل تحليل الصور.</div>`;
-    event.target.value = '';
+  saveCurrentUserData();
+  updateDashboard();
+  updateWorkoutsList();
+  showToast('تم تسجيل التمرين بنجاح 💪', 'success');
+}
+
+function updateWorkoutsList() {
+  const todays = getTodaysWorkouts();
+  const container = document.getElementById('workouts-list');
+  if (!container) return;
+
+  if (todays.length === 0) {
+    container.innerHTML = '<div class="message-box">لم تسجل أي تمارين اليوم بعد</div>';
     return;
   }
 
-  previewDiv.innerHTML = '<div class="message-box" style="margin-top:10px;">🔍 جاري ضغط الصورة وتحليلها...</div>';
-
-  try {
-    const { base64, mimeType } = await resizeImageFile(file, 1024);
-    const model = provider === 'gemini' ? getGeminiModel() : getClaudeModel();
-    const analysis = await analyzeMealPhotoWithRetry(provider, activeKey, model, base64, mimeType);
-
-    pendingPhotoMeal = analysis;
-    previewDiv.innerHTML = `
-      <div class="food-item" style="margin-top:10px;">
-        <div class="food-info">
-          <div class="food-name">🍽️ ${escapeHtml(analysis.name)}</div>
-          <div class="food-macros">🔥 ${Math.round(analysis.calories)} سعرة | 🥛 ${analysis.protein}غ | 🌾 ${analysis.carbs}غ | 🫒 ${analysis.fat}غ</div>
-          <div style="font-size:11px; color:var(--text-secondary); margin-top:4px;">⚠️ تقدير ذكاء اصطناعي — راجعه قبل الإضافة</div>
-        </div>
+  container.innerHTML = todays.map(w => `
+    <div class="food-item">
+      <div class="food-info">
+        <div class="food-name">🏋️‍♂️ ${w.name}</div>
+        <div class="food-macros">⏱️ المدة: ${w.duration} دقيقة | 🔥 السعرات المحروقة: ${w.cal} سعرة</div>
       </div>
-      <div style="display:flex; gap:10px; margin-top:10px;">
-        <button class="btn btn-primary" style="margin:0;" onclick="confirmPhotoMeal()">✅ أضف للسجل</button>
-        <button class="btn btn-secondary" style="margin:0;" onclick="cancelPhotoMeal()">❌ إلغاء</button>
-      </div>
-    `;
-  } catch (err) {
-    previewDiv.innerHTML = `<div class="message-box error" style="margin-top:10px;">تعذر تحليل الصورة: ${escapeHtml(err.message)}</div>`;
-  }
-
-  event.target.value = '';
+      <button class="delete-btn" onclick="deleteWorkout(${w.id})">حذف</button>
+    </div>
+  `).join('');
 }
 
-function confirmPhotoMeal() {
-  if (!pendingPhotoMeal) return;
-  appState.meals.push({
-    id: Date.now(),
-    date: todayStr(),
-    name: pendingPhotoMeal.name,
-    food: null,
-    qty: 1,
-    cal: Math.round(pendingPhotoMeal.calories),
-    protein: pendingPhotoMeal.protein,
-    carbs: pendingPhotoMeal.carbs,
-    fat: pendingPhotoMeal.fat,
-    comboDetails: '📸 تحليل ذكاء اصطناعي من صورة',
-    time: new Date().toLocaleTimeString('ar')
-  });
+function deleteWorkout(id) {
+  appState.workouts = appState.workouts.filter(w => w.id !== id);
   saveCurrentUserData();
   updateDashboard();
-  updateMealsList();
-  cancelPhotoMeal();
+  updateWorkoutsList();
+  showToast('تم حذف التمرين', 'info');
 }
 
-function cancelPhotoMeal() {
-  pendingPhotoMeal = null;
-  const previewDiv = document.getElementById('meal-photo-preview');
-  if (previewDiv) previewDiv.innerHTML = '';
-}
-
-// ============ إدخال الوجبة بوصف نصي حر (بدون تقيّد بقائمة الأطعمة الجاهزة) ============
-function buildTextAnalysisPrompt(description) {
-  return `قدّر القيم الغذائية للوجبة التالية التي وصفها المستخدم بنفسه: "${description}"
-اعتبر حجم حصة عادية ما لم يُذكر غير ذلك. أجب بصيغة JSON فقط دون أي نص أو شرح أو علامات تنسيق، بالضبط بهذا الشكل: {"name": "...", "calories": 000, "protein": 00, "carbs": 00, "fat": 00}`;
-}
-
-async function analyzeMealTextGemini(apiKey, model, description) {
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(apiKey)}`;
-  const res = await fetch(url, {
-    method: 'POST',
-    headers: { 'content-type': 'application/json' },
-    body: JSON.stringify({
-      contents: [{ role: 'user', parts: [{ text: buildTextAnalysisPrompt(description) }] }],
-      generationConfig: { maxOutputTokens: 300, responseMimeType: 'application/json' }
-    })
-  });
-  if (!res.ok) {
-    const errBody = await res.json().catch(() => ({}));
-    throw new Error((errBody && errBody.error && errBody.error.message) || ('خطأ HTTP ' + res.status));
-  }
-  const data = await res.json();
-  const candidate = data.candidates && data.candidates[0];
-  const parts = candidate && candidate.content && candidate.content.parts;
-  const text = (parts || []).map(p => p.text || '').join('\n');
-  return parseJsonFromText(text);
-}
-
-async function analyzeMealTextClaude(apiKey, model, description) {
-  const res = await fetch('https://api.anthropic.com/v1/messages', {
-    method: 'POST',
-    headers: {
-      'content-type': 'application/json',
-      'x-api-key': apiKey,
-      'anthropic-version': '2023-06-01',
-      'anthropic-dangerous-direct-browser-access': 'true'
-    },
-    body: JSON.stringify({
-      model,
-      max_tokens: 300,
-      messages: [{ role: 'user', content: buildTextAnalysisPrompt(description) }]
-    })
-  });
-  if (!res.ok) {
-    const errBody = await res.json().catch(() => ({}));
-    throw new Error((errBody && errBody.error && errBody.error.message) || ('خطأ HTTP ' + res.status));
-  }
-  const data = await res.json();
-  const text = (data.content || []).filter(b => b.type === 'text').map(b => b.text).join('\n');
-  return parseJsonFromText(text);
-}
-
-async function analyzeMealTextWithRetry(provider, apiKey, model, description, maxRetries) {
-  maxRetries = maxRetries || 1;
-  let lastErr;
-  for (let attempt = 0; attempt <= maxRetries; attempt++) {
-    try {
-      return provider === 'gemini'
-        ? await analyzeMealTextGemini(apiKey, model, description)
-        : await analyzeMealTextClaude(apiKey, model, description);
-    } catch (err) {
-      lastErr = err;
-      const isTransient = /overloaded|high demand|try again later|rate limit|too many requests|503|429/i.test(err.message);
-      if (!isTransient || attempt === maxRetries) throw err;
-      await new Promise(resolve => setTimeout(resolve, 1500 * (attempt + 1)));
-    }
-  }
-  throw lastErr;
-}
-
-let pendingTextMeal = null;
-
-async function handleMealText() {
-  const input = document.getElementById('meal-text-input');
-  const description = input.value.trim();
-  if (!description) { alert('اكتب وصف الوجبة أولاً'); return; }
-
-  const previewDiv = document.getElementById('meal-text-preview');
-  const provider = localStorage.getItem('healthAppAiProvider') || 'gemini';
-  const geminiKey = localStorage.getItem('healthAppGeminiKey');
-  const claudeKey = localStorage.getItem('healthAppClaudeKey');
-  const activeKey = provider === 'gemini' ? geminiKey : claudeKey;
-
-  if (!activeKey) {
-    const providerName = provider === 'gemini' ? 'Google Gemini' : 'Claude';
-    previewDiv.innerHTML = `<div class="message-box warning" style="margin-top:10px;">أضف مفتاح ${providerName} من ⚙️ الإعدادات أولاً.</div>`;
-    return;
-  }
-
-  previewDiv.innerHTML = '<div class="message-box" style="margin-top:10px;">🔍 جاري تقدير القيم الغذائية...</div>';
-
-  try {
-    const model = provider === 'gemini' ? getGeminiModel() : getClaudeModel();
-    const analysis = await analyzeMealTextWithRetry(provider, activeKey, model, description);
-
-    pendingTextMeal = analysis;
-    previewDiv.innerHTML = `
-      <div class="food-item" style="margin-top:10px;">
-        <div class="food-info">
-          <div class="food-name">🍽️ ${escapeHtml(analysis.name)}</div>
-          <div class="food-macros">🔥 ${Math.round(analysis.calories)} سعرة | 🥛 ${analysis.protein}غ | 🌾 ${analysis.carbs}غ | 🫒 ${analysis.fat}غ</div>
-          <div style="font-size:11px; color:var(--text-secondary); margin-top:4px;">⚠️ تقدير ذكاء اصطناعي — راجعه قبل الإضافة</div>
-        </div>
+function renderWorkoutRoutines() {
+  const container = document.getElementById('workout-routines-container');
+  if (!container) return;
+  container.innerHTML = workoutRoutines.map(r => `
+    <div class="food-item">
+      <div class="food-info">
+        <div class="food-name">${r.title}</div>
+        <div class="food-macros">${r.desc}</div>
+        <div class="food-macros">⏱️ ${r.duration} | 🔥 ${r.cals}</div>
       </div>
-      <div style="display:flex; gap:10px; margin-top:10px;">
-        <button class="btn btn-primary" style="margin:0;" onclick="confirmTextMeal()">✅ أضف للسجل</button>
-        <button class="btn btn-secondary" style="margin:0;" onclick="cancelTextMeal()">❌ إلغاء</button>
-      </div>
-    `;
-  } catch (err) {
-    previewDiv.innerHTML = `<div class="message-box error" style="margin-top:10px;">تعذر تحليل الوجبة: ${escapeHtml(err.message)}</div>`;
-  }
+      <button class="icon-btn" onclick="addPresetWorkout('${r.title}', 30, 250)">💪 ابدأ التمرين</button>
+    </div>
+  `).join('');
 }
 
-function confirmTextMeal() {
-  if (!pendingTextMeal) return;
-  appState.meals.push({
-    id: Date.now(),
-    date: todayStr(),
-    name: pendingTextMeal.name,
-    food: null,
-    qty: 1,
-    cal: Math.round(pendingTextMeal.calories),
-    protein: pendingTextMeal.protein,
-    carbs: pendingTextMeal.carbs,
-    fat: pendingTextMeal.fat,
-    comboDetails: '✏️ تقدير ذكاء اصطناعي من وصف نصي',
-    time: new Date().toLocaleTimeString('ar')
-  });
+function addPresetWorkout(name, duration, cal) {
+  if (!appState.workouts) appState.workouts = [];
+  appState.workouts.push({ id: Date.now(), date: todayStr(), name, duration, cal, time: new Date().toLocaleTimeString('ar') });
   saveCurrentUserData();
   updateDashboard();
-  updateMealsList();
-  cancelTextMeal();
-  document.getElementById('meal-text-input').value = '';
+  updateWorkoutsList();
+  showToast('تمت إضافة الجلسة بنجاح', 'success');
 }
 
-function cancelTextMeal() {
-  pendingTextMeal = null;
-  const previewDiv = document.getElementById('meal-text-preview');
-  if (previewDiv) previewDiv.innerHTML = '';
-}
-
-// ============ Water ============
-function addWater() {
+// ============ Water & Weight ============
+function addWater(cups = 1) {
   ensureTodayWater();
-  appState.water += 1;
+  appState.water += cups;
   saveCurrentUserData();
   updateWaterScreen();
   updateDashboard();
+  showToast(`تمت إضافة ${cups} كوب ماء 💧`, 'info');
 }
+
 function resetWater() {
   appState.water = 0;
   appState.waterDate = todayStr();
@@ -1524,212 +1353,75 @@ function resetWater() {
   updateWaterScreen();
   updateDashboard();
 }
+
 function updateWaterScreen() {
   ensureTodayWater();
-  const p = appState.profile;
-  if (!p) return;
-  const percent = Math.min(100, (appState.water / p.water) * 100);
-  document.getElementById('water-display').textContent = Math.round(percent) + '%';
-  document.getElementById('water-progress-bar').style.width = percent + '%';
+  const target = appState.profile?.water || 8;
+  const pct = Math.min(100, Math.round((appState.water / target) * 100));
+  document.getElementById('water-display').textContent = pct + '%';
+  document.getElementById('water-progress-bar').style.width = pct + '%';
   document.getElementById('water-current').textContent = appState.water;
-  document.getElementById('water-target').textContent = p.water;
+  document.getElementById('water-target').textContent = target;
 }
 
-// ============ Weight ============
 function addWeight() {
-  const weight = parseFloat(document.getElementById('weight-input').value);
-  const date = document.getElementById('weight-date').value || new Date().toISOString().split('T')[0];
-  if (!weight) { alert('أدخل الوزن'); return; }
+  const w = parseFloat(document.getElementById('weight-input').value);
+  const date = document.getElementById('weight-date').value || todayStr();
+  if (!w) { showToast('أدخل قيمة الوزن', 'warning'); return; }
 
-  const idx = appState.weights.findIndex(w => w.date === date);
-  if (idx >= 0) appState.weights[idx].weight = weight;
-  else appState.weights.push({ date, weight });
+  const idx = appState.weights.findIndex(x => x.date === date);
+  if (idx >= 0) appState.weights[idx].weight = w;
+  else appState.weights.push({ date, weight: w });
 
-  appState.weights.sort((a, b) => new Date(a.date) - new Date(b.date));
+  appState.weights.sort((a,b) => new Date(a.date) - new Date(b.date));
   saveCurrentUserData();
   updateDashboard();
   updateWeightList();
-  renderWeightChart();
-  document.getElementById('weight-input').value = '';
-  document.getElementById('weight-date').value = '';
+  updateChartData();
+  showToast('تم تحديث قراءة الوزن ⚖️', 'success');
 }
 
 function updateWeightList() {
+  const container = document.getElementById('weight-history');
+  if (!container) return;
   const html = appState.weights.slice().reverse().map(w => `
     <div class="food-item">
-      <div class="food-info"><div class="food-name">${w.date}</div></div>
-      <div style="font-weight:700; color: var(--accent);">${w.weight.toFixed(1)} كغ</div>
+      <div class="food-info"><div class="food-name">📅 ${w.date}</div></div>
+      <div style="font-weight:800; color:var(--accent-light);">${w.weight.toFixed(1)} كغ</div>
     </div>
   `).join('');
-  document.getElementById('weight-history').innerHTML = html || '<div class="message-box">لم تسجل أوزان بعد</div>';
+  container.innerHTML = html || '<div class="message-box">لا توجد قراءات مسجلة بعد</div>';
 }
 
-// ============ AI Chat: يدعم Google Gemini (مجاني) و Claude ============
-function escapeHtml(str) {
-  const d = document.createElement('div');
-  d.textContent = str;
-  return d.innerHTML;
-}
-function goalLabel(g) {
-  return { lose:'خسارة الوزن', gain:'زيادة الوزن', maintain:'الحفاظ على الوزن',
-    muscle:'بناء العضلات', fatloss:'تقليل الدهون', fitness:'تحسين اللياقة' }[g] || g || '';
-}
-function workLabel(w) {
-  return { office:'مكتبي', field:'ميداني', mixed:'مختلط', athletic:'رياضي' }[w] || w || '';
-}
-
-function buildUserContext() {
-  const p = appState.profile;
-  if (!p) return 'لم يتم إعداد بيانات صحية بعد.';
-  const currentWeight = appState.weights[appState.weights.length - 1]?.weight ?? p.currentWeight;
-  const consumed = appState.meals.reduce((s, m) => s + m.cal, 0);
-  const remaining = Math.max(0, p.dailyCalories - consumed);
-  const lines = [
-    `الاسم: ${p.name || currentUsername || ''}`,
-    `العمر: ${p.age} سنة، الجنس: ${p.gender === 'male' ? 'ذكر' : 'أنثى'}`,
-    `الطول: ${p.height} سم`,
-    `الوزن الحالي: ${currentWeight} كغ، الوزن المستهدف: ${p.targetWeight} كغ`,
-    `الهدف الرئيسي: ${goalLabel(p.goal)}`,
-    p.work ? `طبيعة العمل: ${workLabel(p.work)}` : '',
-    `السعرات اليومية المستهدفة: ${p.dailyCalories} سعرة (المستهلك اليوم: ${consumed}، المتبقي: ${remaining})`,
-    `المستهدف اليومي: بروتين ${p.protein}غ، كربوهيدرات ${p.carbs}غ، دهون ${p.fats}غ`,
-    `الماء: شرب ${appState.water} من ${p.water} أكواب اليوم`,
-    p.chronic ? `أمراض مزمنة: ${p.chronic}` : '',
-    p.allergies ? `حساسية غذائية: ${p.allergies}` : ''
-  ].filter(Boolean);
-  return lines.join('\n');
-}
-
-function buildSystemPrompt() {
-  return `أنت "المساعد الذكي" داخل تطبيق صحي شخصي اسمه "مستشارك الصحي الذكي". ساعد المستخدم في أسئلته عن التغذية والسعرات والوزن واللياقة بناءً على بياناته الحقيقية التالية:
-
-${buildUserContext()}
-
-تعليمات:
-- استخدم هذه البيانات في إجاباتك عند الحاجة (مثل السعرات المتبقية اليوم).
-- أجب بإيجاز ووضوح، بنص عادي دون تنسيق Markdown (بدون **، #، أو -).
-- لا تقدّم تشخيصاً طبياً؛ عند وجود أعراض أو سؤال طبي انصح بمراجعة طبيب أو أخصائي تغذية.
-- أجب دائماً باللغة العربية.`;
+// ============ AI Chat ============
+function renderChatHistory() {
+  const container = document.getElementById('chat-messages');
+  if (!container) return;
+  container.innerHTML = '';
+  if (!appState.chat || appState.chat.length === 0) {
+    renderChatMessage('assistant', 'مرحباً بك! أنا مستشارك الصحي الذكي. كيف يمكنني مساعدتك اليوم في نظامك الغذائي أو رياقتك؟');
+  } else {
+    appState.chat.forEach(m => renderChatMessage(m.role, m.content));
+  }
 }
 
 function renderChatMessage(role, text) {
-  const messagesDiv = document.getElementById('chat-messages');
+  const container = document.getElementById('chat-messages');
   const div = document.createElement('div');
-  div.className = 'message-box' + (role === 'notice' ? ' warning' : '');
+  div.className = 'message-box';
   if (role === 'user') {
     div.style.background = 'var(--accent)';
-    div.style.color = 'white';
+    div.style.color = '#fff';
     div.style.borderRightColor = 'var(--accent)';
   }
-  const prefix = role === 'user' ? '👤 ' : (role === 'notice' ? '⚠️ ' : '🤖 ');
-  div.innerHTML = prefix + escapeHtml(text).replace(/\n/g, '<br>');
-  messagesDiv.appendChild(div);
-  messagesDiv.scrollTop = messagesDiv.scrollHeight;
-  return div;
+  div.innerHTML = `<strong>${role === 'user' ? '👤 أنت' : '🤖 المساعد'}:</strong> ${text}`;
+  container.appendChild(div);
+  container.scrollTop = container.scrollHeight;
 }
 
-function renderChatHistory() {
-  const messagesDiv = document.getElementById('chat-messages');
-  messagesDiv.innerHTML = '';
-  if (!appState.chat || appState.chat.length === 0) {
-    renderChatMessage('assistant', 'مرحباً! أنا مساعدك الصحي الذكي. اسألني عن التغذية، السعرات، أو أي شيء يخص أهدافك الصحية 💚');
-  } else {
-    appState.chat.forEach(m => renderChatMessage(m.role === 'user' ? 'user' : 'assistant', m.content));
-  }
-  const provider = localStorage.getItem('healthAppAiProvider') || 'gemini';
-  const hasKey = provider === 'gemini' ? localStorage.getItem('healthAppGeminiKey') : localStorage.getItem('healthAppClaudeKey');
-  if (!hasKey) {
-    const providerName = provider === 'gemini' ? 'Google Gemini' : 'Claude';
-    renderChatMessage('notice', `لم تتم إضافة مفتاح ${providerName} بعد. أضِفه من ⚙️ الإعدادات لتفعيل إجابات دقيقة وحقيقية.`);
-  }
-}
-
-function clearChat() {
-  if (confirm('هل تريد مسح سجل المحادثة؟')) {
-    appState.chat = [];
-    saveCurrentUserData();
-    renderChatHistory();
-  }
-}
-
-// -------- Claude (Anthropic) --------
-async function callClaudeAPI(apiKey, model, systemPrompt, history) {
-  const res = await fetch('https://api.anthropic.com/v1/messages', {
-    method: 'POST',
-    headers: {
-      'content-type': 'application/json',
-      'x-api-key': apiKey,
-      'anthropic-version': '2023-06-01',
-      'anthropic-dangerous-direct-browser-access': 'true'
-    },
-    body: JSON.stringify({
-      model: model,
-      max_tokens: 700,
-      system: systemPrompt,
-      messages: history.map(m => ({ role: m.role, content: m.content }))
-    })
-  });
-  if (!res.ok) {
-    const errBody = await res.json().catch(() => ({}));
-    throw new Error((errBody && errBody.error && errBody.error.message) || ('خطأ HTTP ' + res.status));
-  }
-  const data = await res.json();
-  return (data.content || []).filter(b => b.type === 'text').map(b => b.text).join('\n') || 'عذراً، لم أستطع معالجة السؤال.';
-}
-
-// -------- Google Gemini (مجاني) --------
-async function callGeminiAPI(apiKey, model, systemPrompt, history) {
-  const contents = history.map(m => ({
-    role: m.role === 'assistant' ? 'model' : 'user',
-    parts: [{ text: m.content }]
-  }));
-
-  // مفتاح API يُمرَّر كـ query param وليس Header مخصص، لأن Google لا تسمح
-  // بـ x-goog-api-key ضمن CORS للمتصفح مباشرة (يسبب فشل الطلب بصمت / Load failed)
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(apiKey)}`;
-
-  const res = await fetch(url, {
-    method: 'POST',
-    headers: {
-      'content-type': 'application/json'
-    },
-    body: JSON.stringify({
-      systemInstruction: { parts: [{ text: systemPrompt }] },
-      contents,
-      generationConfig: { maxOutputTokens: 700 }
-    })
-  });
-
-  if (!res.ok) {
-    const errBody = await res.json().catch(() => ({}));
-    throw new Error((errBody && errBody.error && errBody.error.message) || ('خطأ HTTP ' + res.status));
-  }
-  const data = await res.json();
-  const candidate = data.candidates && data.candidates[0];
-  const parts = candidate && candidate.content && candidate.content.parts;
-  return (parts || []).map(p => p.text || '').join('\n') || 'عذراً، لم أستطع معالجة السؤال.';
-}
-
-// إعادة محاولة تلقائية عند الازدحام المؤقت (overloaded / high demand) بدل إظهار الخطأ فوراً
-async function callAiWithRetry(provider, activeKey, model, systemPrompt, history, typingDiv, maxRetries) {
-  maxRetries = maxRetries || 2;
-  let lastErr;
-  for (let attempt = 0; attempt <= maxRetries; attempt++) {
-    try {
-      return provider === 'gemini'
-        ? await callGeminiAPI(activeKey, model, systemPrompt, history)
-        : await callClaudeAPI(activeKey, model, systemPrompt, history);
-    } catch (err) {
-      lastErr = err;
-      const isTransient = /overloaded|high demand|try again later|rate limit|too many requests|503|429/i.test(err.message);
-      if (!isTransient || attempt === maxRetries) throw err;
-      if (typingDiv) {
-        typingDiv.innerHTML = `🤖 الخدمة مزدحمة مؤقتاً، أعيد المحاولة... (${attempt + 1}/${maxRetries})`;
-      }
-      await new Promise(resolve => setTimeout(resolve, 1500 * (attempt + 1)));
-    }
-  }
-  throw lastErr;
+function sendQuickPrompt(promptText) {
+  document.getElementById('chat-input').value = promptText;
+  sendChat();
 }
 
 async function sendChat() {
@@ -1740,152 +1432,165 @@ async function sendChat() {
 
   renderChatMessage('user', msg);
   appState.chat.push({ role: 'user', content: msg });
-  if (appState.chat.length > 16) appState.chat = appState.chat.slice(-16);
-  saveCurrentUserData();
 
-  const provider = localStorage.getItem('healthAppAiProvider') || 'gemini';
-  const geminiKey = localStorage.getItem('healthAppGeminiKey');
-  const claudeKey = localStorage.getItem('healthAppClaudeKey');
-  const activeKey = provider === 'gemini' ? geminiKey : claudeKey;
-
-  if (!activeKey) {
-    const providerName = provider === 'gemini' ? 'Google Gemini' : 'Claude';
-    renderChatMessage('notice', `أضف مفتاح ${providerName} من صفحة الإعدادات ⚙️ لتفعيل إجابات حقيقية من الذكاء الاصطناعي.`);
-    return;
-  }
-
-  const typingDiv = renderChatMessage('assistant', '... يفكر');
+  const p = appState.profile;
+  const context = `أنا مستشار صحي. بيانات المستخدم الحالية:
+الاسم: ${p?.name || 'مستخدم'}
+الوزن الحالي: ${appState.weights[appState.weights.length-1]?.weight || p?.currentWeight}كغ
+الوزن المستهدف: ${p?.targetWeight}كغ
+السعرات اليومية المستهدفة: ${p?.dailyCalories} سعرة
+الهدف: ${p?.goal}`;
 
   try {
-    const systemPrompt = buildSystemPrompt();
-    const model = provider === 'gemini' ? getGeminiModel() : getClaudeModel();
-    const reply = await callAiWithRetry(provider, activeKey, model, systemPrompt, appState.chat, typingDiv);
-
-    typingDiv.remove();
+    const reply = await callGeminiTextAPI(`${context}\n\nالسؤال: ${msg}`);
     renderChatMessage('assistant', reply);
     appState.chat.push({ role: 'assistant', content: reply });
-    if (appState.chat.length > 16) appState.chat = appState.chat.slice(-16);
     saveCurrentUserData();
-
-  } catch (err) {
-    typingDiv.remove();
-    let hint = '';
-    if (/no longer available|not found|not supported|deprecated|invalid model/i.test(err.message)) {
-      hint = ' — جرّب تحديث اسم النموذج في ⚙️ الإعدادات إلى الاسم الحالي.';
-    } else if (/load failed|failed to fetch|networkerror/i.test(err.message)) {
-      hint = ' — هذا عادة بسبب حجب الشبكة/المتصفح للطلب وليس خطأ بالمفتاح أو النموذج. جرّب متصفحاً آخر (Chrome) أو تأكد من اتصال الإنترنت، وإن استمر أخبرني.';
-    } else if (/overloaded|high demand|try again later|rate limit|too many requests/i.test(err.message)) {
-      hint = ' — الخدمة مزدحمة حالياً حتى بعد المحاولات المتكررة. انتظر دقيقة وأعد إرسال سؤالك.';
-    }
-    renderChatMessage('notice', 'تعذر الاتصال بالخدمة: ' + err.message + hint);
+  } catch (e) {
+    renderChatMessage('assistant', 'عذراً، تعذر الاتصال بمحرك الذكاء الاصطناعي حالياً.');
   }
 }
 
-function saveApiSettings() {
-  const provider = document.getElementById('ai-provider-select').value;
-  const geminiKey = document.getElementById('gemini-key-input').value.trim();
-  const claudeKey = document.getElementById('claude-key-input').value.trim();
-  const geminiModel = document.getElementById('gemini-model-input').value.trim() || DEFAULT_GEMINI_MODEL;
-  const claudeModel = document.getElementById('claude-model-input').value.trim() || DEFAULT_CLAUDE_MODEL;
+function clearChat() {
+  appState.chat = [];
+  saveCurrentUserData();
+  renderChatHistory();
+}
 
-  if (claudeKey && !claudeKey.startsWith('sk-ant-')) {
-    alert('⚠️ مفتاح Claude يجب أن يبدأ بـ sk-ant-');
+// ============ Export & Sharing ============
+function exportDataCSV() {
+  let csv = 'التاريخ,النوع,الاسم,السعرات,البروتين\n';
+  appState.meals.forEach(m => {
+    csv += `${m.date},وجبة,${m.name},${m.cal},${m.protein}\n`;
+  });
+  appState.weights.forEach(w => {
+    csv += `${w.date},وزن,${w.weight}kg,,\n`;
+  });
+
+  const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `تقرير_صحتك_${todayStr()}.csv`;
+  a.click();
+  showToast('تم تحميل ملف CSV بنجاح', 'success');
+}
+
+function printReportPDF() {
+  window.print();
+}
+
+function shareProgressModal() {
+  const p = appState.profile;
+  if (!p) return;
+  const currW = appState.weights[appState.weights.length - 1]?.weight || p.currentWeight;
+  
+  const text = `🎯 ملخص إنجازاتي الصحية مع مستشارك الذكي:\n` +
+    `👤 المستخدم: ${p.name}\n` +
+    `⚖️ الوزن الحالي: ${currW} كغ (الهدف: ${p.targetWeight} كغ)\n` +
+    `💧 الالتزام بالماء: ${appState.water} أكواب اليوم\n` +
+    `💪 ملتزم برحلتي الصحية ونحو هدف جديد!`;
+
+  showModal('✨ بطاقة مشاركة التقدم', `
+    <div class="glass-card" style="text-align:center; background:linear-gradient(135deg, var(--surface-glass) 0%, rgba(233,69,96,0.2) 100%);">
+      <div style="font-size:36px; margin-bottom:10px;">🏆</div>
+      <pre style="white-space:pre-wrap; font-family:'Tajawal'; text-align:right; font-size:14px; line-height:1.6; color:#fff;">${text}</pre>
+    </div>
+    <button class="btn btn-primary" onclick="copyToClipboard('${encodeURIComponent(text)}')">📋 نسخ النص لمشاركته</button>
+  `);
+}
+
+function copyToClipboard(encodedText) {
+  const text = decodeURIComponent(encodedText);
+  const dummy = document.createElement('textarea');
+  document.body.appendChild(dummy);
+  dummy.value = text;
+  dummy.select();
+  document.execCommand('copy');
+  document.body.removeChild(dummy);
+  showToast('تم نسخ التقرير إلى الحافظة بنجاح 📋', 'success');
+}
+
+// ============ Push Notifications ============
+function togglePushNotifications() {
+  if (!("Notification" in window)) {
+    showToast("متصفحك لا يدعم الإشعارات", "warning");
     return;
   }
 
-  localStorage.setItem('healthAppAiProvider', provider);
-  localStorage.setItem('healthAppGeminiModel', geminiModel);
-  localStorage.setItem('healthAppClaudeModel', claudeModel);
-  if (geminiKey) localStorage.setItem('healthAppGeminiKey', geminiKey); else localStorage.removeItem('healthAppGeminiKey');
-  if (claudeKey) localStorage.setItem('healthAppClaudeKey', claudeKey); else localStorage.removeItem('healthAppClaudeKey');
-
-  alert('✅ تم حفظ إعدادات المساعد الذكي');
+  Notification.requestPermission().then(permission => {
+    if (permission === "granted") {
+      appState.notificationsEnabled = true;
+      saveCurrentUserData();
+      showToast("تم تفعيل الإشعارات بنجاح 🔔", "success");
+      document.getElementById('push-toggle-btn').textContent = "الإشعارات مفعلة ✅";
+    } else {
+      showToast("لم يتم منح الإذن للإشعارات", "warning");
+    }
+  });
 }
 
-function loadApiSettingsIntoUI() {
-  const provider = localStorage.getItem('healthAppAiProvider') || 'gemini';
-  const providerSelect = document.getElementById('ai-provider-select');
-  const geminiInput = document.getElementById('gemini-key-input');
-  const claudeInput = document.getElementById('claude-key-input');
-  const geminiModelInput = document.getElementById('gemini-model-input');
-  const claudeModelInput = document.getElementById('claude-model-input');
-  if (providerSelect) providerSelect.value = provider;
-  if (geminiInput) geminiInput.value = localStorage.getItem('healthAppGeminiKey') || '';
-  if (claudeInput) claudeInput.value = localStorage.getItem('healthAppClaudeKey') || '';
-  if (geminiModelInput) geminiModelInput.value = getGeminiModel();
-  if (claudeModelInput) claudeModelInput.value = getClaudeModel();
-}
-
-// ============ Reports ============
+// ============ Settings ============
 function updateReports() {
   const p = appState.profile;
   if (!p) return;
-  ensureTodayWater();
-  const totalCals = appState.meals.reduce((s, m) => s + m.cal, 0);
-  const avgCals = appState.meals.length > 0 ? totalCals / appState.meals.length : 0;
 
-  const lastWeight = appState.weights[appState.weights.length - 1]?.weight ?? p.currentWeight;
-  const firstWeight = appState.weights[0]?.weight ?? p.currentWeight;
-  const weightChange = firstWeight - lastWeight;
+  const totalCals = appState.meals.reduce((s, m) => s + m.cal, 0);
+  const avg = appState.meals.length ? Math.round(totalCals / appState.meals.length) : 0;
+  const firstW = appState.weights[0]?.weight || p.currentWeight;
+  const currW = appState.weights[appState.weights.length - 1]?.weight || p.currentWeight;
+  const diff = (firstW - currW).toFixed(1);
 
   document.getElementById('report-meals').textContent = appState.meals.length;
-  document.getElementById('report-avg-calories').textContent = Math.round(avgCals);
+  document.getElementById('report-avg-calories').textContent = avg;
   document.getElementById('report-water').textContent = appState.water;
-  document.getElementById('report-weight-change').textContent = weightChange > 0 ? '+' + weightChange.toFixed(1) : weightChange.toFixed(1);
-
-  let tips = '';
-  if (weightChange > 0) tips += '<div class="message-box success">✅ تقدم ممتاز! تغيّر الوزن ' + weightChange.toFixed(1) + ' كغ</div>';
-  if (appState.water < p.water * 0.7) tips += '<div class="message-box warning">💧 اجتهد في شرب الماء أكثر</div>';
-  if (appState.meals.length > 0 && avgCals < p.dailyCalories * 0.8) tips += '<div class="message-box warning">🍽️ حاول تسجيل وجبات أكثر</div>';
-  document.getElementById('report-tips').innerHTML = tips || '<div class="message-box">استمر في تسجيل بياناتك يومياً!</div>';
+  document.getElementById('report-weight-change').textContent = diff > 0 ? `-${diff}` : `+${Math.abs(diff)}`;
 }
 
-// ============ Settings / Profile ============
-function updateProfile() {
+function updateProfileUI() {
   const p = appState.profile;
   if (!p) return;
   document.getElementById('profile-info').innerHTML = `
     <div class="message-box">
-      <strong>اسم المستخدم:</strong> ${escapeHtml(currentUsername || '')}<br>
-      <strong>الاسم:</strong> ${escapeHtml(p.name || '')}<br>
-      <strong>العمر:</strong> ${p.age} سنة<br>
-      <strong>الجنس:</strong> ${p.gender === 'male' ? 'ذكر' : 'أنثى'}<br>
-      <strong>الطول:</strong> ${p.height} سم<br>
-      <strong>الوزن الحالي:</strong> ${p.currentWeight} كغ<br>
-      <strong>الهدف:</strong> ${p.targetWeight} كغ
-    </div>
-    <div class="message-box">
-      <strong>السعرات اليومية:</strong> ${p.dailyCalories} سعرة<br>
-      <strong>البروتين:</strong> ${p.protein} غ<br>
-      <strong>الكربوهيدرات:</strong> ${p.carbs} غ<br>
-      <strong>الدهون:</strong> ${p.fats} غ
+      <strong>الاسم:</strong> ${p.name}<br>
+      <strong>العمر:</strong> ${p.age} سنة | <strong>الجنس:</strong> ${p.gender === 'male' ? 'ذكر' : 'أنثى'}<br>
+      <strong>الطول:</strong> ${p.height}سم | <strong>الوزن الحالي:</strong> ${p.currentWeight}كغ<br>
+      <strong>الهدف اليومي:</strong> ${p.dailyCalories} سعرة حرارية
     </div>
   `;
 }
 
 function editProfile() {
   showScreen('setup-screen');
-  prefillSetupForm();
+}
+
+function saveApiSettings() {
+  const geminiKey = document.getElementById('gemini-key-input').value.trim();
+  if (geminiKey) localStorage.setItem('healthAppGeminiKey', geminiKey);
+  showToast('تم حفظ الإعدادات بنجاح', 'success');
+}
+
+function loadApiSettingsUI() {
+  document.getElementById('gemini-key-input').value = localStorage.getItem('healthAppGeminiKey') || '';
 }
 
 function logout() {
-  if (confirm('هل تريد تسجيل الخروج؟ بياناتك محفوظة وستجدها عند الدخول بنفس الاسم لاحقاً')) {
-    localStorage.removeItem('healthAppCurrentUser');
-    location.reload();
-  }
+  localStorage.removeItem('healthAppCurrentUser');
+  location.reload();
 }
 
 function clearAllData() {
-  if (confirm('هل تريد حذف سجل الوجبات والأوزان والماء؟ (لن يتم حذف بيانات ملفك الشخصي)')) {
+  if (confirm('هل أنت تأكد من إزالة كافة سجلات الوجبات والأوزان؟')) {
     appState.meals = [];
+    appState.workouts = [];
     appState.weights = [];
-    appState.water = 0;
     saveCurrentUserData();
     updateDashboard();
-    alert('تم حذف السجلات بنجاح');
+    showToast('تم إرجاع ضبط السجلات', 'info');
   }
 }
 </script>
-
 </body>
 </html>
+
+```

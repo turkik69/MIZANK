@@ -501,15 +501,16 @@ body {
       <div id="voice-transcript-preview"></div>
     </div>
 
-    <!-- Barcode Scanner Card -->
+    <!-- Barcode Scanner Card FIXED -->
     <div class="glass-card" style="border-color: var(--accent-cyan);">
       <h3 style="color: var(--accent-cyan); margin-bottom: 4px; font-size:15px; font-weight:800;">📲 ماسح الباركود الذكي (Barcode)</h3>
-      <p style="font-size:12px; color:var(--text-secondary); margin-bottom:12px;">قراءة المنتجات مباشرة عبر الكاميرا أو رفع صورة الباركود</p>
+      <p style="font-size:12px; color:var(--text-secondary); margin-bottom:12px;">توجيه الكاميرا المباشرة أو فتح كاميرا الهاتف لالتقاط صورة الباركود فوراً</p>
       
       <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:10px;">
-        <button class="btn btn-cyan" onclick="startBarcodeScanner()">📹 فتح الكاميرا للباركود</button>
+        <button class="btn btn-cyan" onclick="startBarcodeScanner()">📹 فتح الكاميرا المباشرة</button>
+        <!-- capture="environment" لتوجيه الكاميرا الخلفية مباشرة بدون فتح الاستوديو -->
         <button class="btn btn-secondary" onclick="document.getElementById('barcode-file-input').click()">📸 التقاط صورة الباركود</button>
-        <input type="file" id="barcode-file-input" accept="image/*" style="display:none;" onchange="handleBarcodeImageUpload(event)">
+        <input type="file" id="barcode-file-input" accept="image/*" capture="environment" style="display:none;" onchange="handleBarcodeImageUpload(event)">
       </div>
 
       <div style="display:grid; grid-template-columns: 2fr 1fr; gap:10px;">
@@ -554,7 +555,7 @@ body {
         <label class="form-label">نظام الصيام المفضل</label>
         <select id="fasting-protocol-select" class="form-select" onchange="changeFastingProtocol()">
           <option value="16:8">16:8 (الموصى به - 16 ساعة صيام)</option>
-          <option value="18:6">18:6 (صيام متتقدم - 18 ساعة)</option>
+          <option value="18:6">18:6 (صيام متقدم - 18 ساعة)</option>
           <option value="20:4">20:4 (نظام المحارب - 20 ساعة)</option>
           <option value="14:10">14:10 (صيام خفيف - 14 ساعة)</option>
           <option value="24:0">24:0 (صيام يوم كامل)</option>
@@ -834,9 +835,8 @@ async function fetchGeminiWithRetry(payload, modelIndex = 0) {
         const errorData = await res.json().catch(() => ({}));
         const message = errorData?.error?.message || `HTTP ${res.status}`;
 
-        // If the specific model was not found, fallback to next model in list immediately
         if ((res.status === 404 || message.includes('not found')) && modelIndex < GEMINI_MODELS.length - 1) {
-          console.warn(`Model ${currentModel} not found on this API key. Falling back to ${GEMINI_MODELS[modelIndex + 1]}...`);
+          console.warn(`Model ${currentModel} not found. Falling back to ${GEMINI_MODELS[modelIndex + 1]}...`);
           return await fetchGeminiWithRetry(payload, modelIndex + 1);
         }
 
@@ -1303,31 +1303,29 @@ function toggleVoiceRecognition() {
   speechRecognition.start();
 }
 
-// ============ BARCODE SCANNER ============
+// ============ BARCODE SCANNER WITH FALLBACK & DIRECT PHOTO CAPTURE ============
 let html5QrCode = null;
 
-function startBarcodeScanner() {
+async function startBarcodeScanner() {
   const container = document.getElementById('barcode-scanner-container');
   container.style.display = 'block';
 
-  if (!html5QrCode) {
-    html5QrCode = new Html5Qrcode("barcode-reader");
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+    showToast('البث المباشر للكاميرا غير مدعوم في هذا المتصفح. جاري فتح كاميرا الالتقاط الفوري...', 'warning');
+    container.style.display = 'none';
+    document.getElementById('barcode-file-input').click();
+    return;
   }
 
-  const config = { fps: 10, qrbox: { width: 250, height: 150 } };
+  try {
+    if (!html5QrCode) {
+      html5QrCode = new Html5Qrcode("barcode-reader");
+    }
 
-  html5QrCode.start(
-    { facingMode: "environment" },
-    config,
-    (decodedText) => {
-      document.getElementById('barcode-input').value = decodedText;
-      stopBarcodeScanner();
-      lookupBarcode(decodedText);
-    },
-    () => {}
-  ).catch(err => {
-    html5QrCode.start(
-      { facingMode: "user" },
+    const config = { fps: 10, qrbox: { width: 250, height: 150 } };
+
+    await html5QrCode.start(
+      { facingMode: "environment" },
       config,
       (decodedText) => {
         document.getElementById('barcode-input').value = decodedText;
@@ -1335,11 +1333,28 @@ function startBarcodeScanner() {
         lookupBarcode(decodedText);
       },
       () => {}
-    ).catch(err2 => {
-      showToast('تعذر فتح البث المباشر للكاميرا. يمكنك استخدام زر التقاط صورة الباركود.', 'warning');
+    );
+  } catch (err) {
+    console.warn("Live camera facing environment failed:", err);
+    try {
+      await html5QrCode.start(
+        { facingMode: "user" },
+        { fps: 10, qrbox: { width: 250, height: 150 } },
+        (decodedText) => {
+          document.getElementById('barcode-input').value = decodedText;
+          stopBarcodeScanner();
+          lookupBarcode(decodedText);
+        },
+        () => {}
+      );
+    } catch (err2) {
       container.style.display = 'none';
-    });
-  });
+      showToast('تعذر فتح بث الكاميرا المباشر بسبب القيود. جاري فتح كاميرا التقاط الصور...', 'info');
+      setTimeout(() => {
+        document.getElementById('barcode-file-input').click();
+      }, 300);
+    }
+  }
 }
 
 function stopBarcodeScanner() {
@@ -1354,24 +1369,72 @@ function stopBarcodeScanner() {
   }
 }
 
-function handleBarcodeImageUpload(event) {
+async function handleBarcodeImageUpload(event) {
   const file = event.target.files?.[0];
   if (!file) return;
+
+  const preview = document.getElementById('barcode-result-preview');
+  preview.innerHTML = '<div class="message-box" style="margin-top:10px;">🔍 جاري فحص الباركود أو صورة المنتج...</div>';
 
   if (!html5QrCode) {
     html5QrCode = new Html5Qrcode("barcode-reader");
   }
 
-  showToast('جاري تحليل صورة الباركود...', 'info');
-  html5QrCode.scanFileV2(file, true)
-    .then(result => {
-      const decodedText = result.decodedText;
-      document.getElementById('barcode-input').value = decodedText;
-      lookupBarcode(decodedText);
-    })
-    .catch(err => {
-      showToast('لم يتم العثور على باركود واضح في الصورة. حاول مجدداً بنقل الصورة بوضوح.', 'warning');
-    });
+  try {
+    // 1. Try decoding barcode lines via Javascript
+    const result = await html5QrCode.scanFileV2(file, true);
+    const decodedText = result.decodedText;
+    document.getElementById('barcode-input').value = decodedText;
+    lookupBarcode(decodedText);
+  } catch (err) {
+    // 2. Smart Fallback: Use Gemini Vision AI to decode barcode or read product name directly from photo!
+    try {
+      preview.innerHTML = '<div class="message-box info" style="margin-top:10px;">🤖 جاري قراءة معلومات المنتَج أو الباركود بالذكاء الاصطناعي...</div>';
+      const base64Data = await compressAndResizeImage(file, 1024);
+
+      const payload = {
+        contents: [
+          {
+            role: "user",
+            parts: [
+              { text: "افحص صورة غلاف المنتج أو الباركود: اقرأ رقم الباركود إن وجد أو استخرج اسم المنتج الغذائي وقدر سعراته الحرارية والبروتين والكربوهيدرات والدهون باللغة العربية." },
+              { inlineData: { mimeType: "image/jpeg", data: base64Data } }
+            ]
+          }
+        ],
+        generationConfig: {
+          responseMimeType: "application/json",
+          responseSchema: {
+            type: "OBJECT",
+            properties: {
+              name: { type: "STRING" },
+              calories: { type: "NUMBER" },
+              protein: { type: "NUMBER" },
+              carbs: { type: "NUMBER" },
+              fat: { type: "NUMBER" }
+            },
+            required: ["name", "calories", "protein", "carbs", "fat"]
+          }
+        }
+      };
+
+      const data = await fetchGeminiWithRetry(payload);
+      const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+      const result = JSON.parse(text);
+
+      preview.innerHTML = `
+        <div class="message-box success" style="margin-top:10px;">
+          <strong>📦 المنتج المكتشف:</strong> ${result.name}<br>
+          🔥 ${result.calories} سعرة | 🥩 بروتين: ${result.protein}g | 🌾 كربوهيدرات: ${result.carbs}g | 🫒 دهون: ${result.fat}g
+        </div>
+        <button class="btn btn-cyan" onclick="confirmAiMeal('${result.name.replace(/'/g, "\\'")}', ${result.calories}, ${result.protein}, ${result.carbs}, ${result.fat})">✅ إضافة الوجبة للسجل</button>
+      `;
+    } catch (aiErr) {
+      preview.innerHTML = `<div class="message-box warning" style="margin-top:10px;">لم يتم التعرف على الباركود بوضوح. يمكنك كتابة اسم الوجبة أو إدخال رقم الباركود يدوياً.</div>`;
+    }
+  }
+
+  event.target.value = '';
 }
 
 function lookupBarcodeManual() {
@@ -1382,14 +1445,14 @@ function lookupBarcodeManual() {
 
 async function lookupBarcode(barcode) {
   const preview = document.getElementById('barcode-result-preview');
-  preview.innerHTML = `<div class="message-box" style="margin-top:10px;">🔍 جاري البحث في Open Food Facts... (${barcode})</div>`;
+  preview.innerHTML = `<div class="message-box" style="margin-top:10px;">🔍 جاري البحث في قاعدة البيانات... (${barcode})</div>`;
 
   try {
     const res = await fetch(`https://world.openfoodfacts.org/api/v0/product/${barcode}.json`);
     const data = await res.json();
 
     if (data.status !== 1 || !data.product) {
-      preview.innerHTML = `<div class="message-box warning" style="margin-top:10px;">لم يتم العثور على منتج بهذا الباركود (${barcode}).</div>`;
+      preview.innerHTML = `<div class="message-box warning" style="margin-top:10px;">لم يتم العثور على منتج بهذا الباركود (${barcode}). يمكن تحليله بالذكاء الاصطناعي.</div>`;
       return;
     }
 

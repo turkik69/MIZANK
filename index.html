@@ -554,7 +554,7 @@ body {
         <label class="form-label">نظام الصيام المفضل</label>
         <select id="fasting-protocol-select" class="form-select" onchange="changeFastingProtocol()">
           <option value="16:8">16:8 (الموصى به - 16 ساعة صيام)</option>
-          <option value="18:6">18:6 (صيام متقدم - 18 ساعة)</option>
+          <option value="18:6">18:6 (صيام متتقدم - 18 ساعة)</option>
           <option value="20:4">20:4 (نظام المحارب - 20 ساعة)</option>
           <option value="14:10">14:10 (صيام خفيف - 14 ساعة)</option>
           <option value="24:0">24:0 (صيام يوم كامل)</option>
@@ -734,7 +734,7 @@ body {
     <div class="glass-card">
       <h3 style="color: var(--accent-emerald); margin-bottom: 12px; font-size:15px; font-weight:800;">🔑 مفتاح Google Gemini API</h3>
       <div class="form-group">
-        <label class="form-label">مفتاح API المخصص (اختياري)</label>
+        <label class="form-label">مفتاح API المخصص (من Google AI Studio)</label>
         <input type="password" id="gemini-key-input" class="form-input" placeholder="AIzaSy...">
       </div>
       <button class="btn btn-primary" onclick="saveApiSettings()">💾 حفظ المفتاح</button>
@@ -811,12 +811,16 @@ document.addEventListener('touchend', e => {
   lastTouchEnd = now;
 }, { passive: false });
 
-// ============ API CONFIG & BACKOFF ============
-const apiKey = ""; // Runtime set
+// ============ API CONFIG & ROBUST MODEL FALLBACK ============
+const defaultApiKey = ""; // Runtime fallback
+const GEMINI_MODELS = ['gemini-2.5-flash', 'gemini-1.5-flash'];
 
-async function fetchGeminiWithRetry(url, payload) {
-  const delays = [1000, 2000, 4000, 8000, 16000];
-  let lastError;
+async function fetchGeminiWithRetry(payload, modelIndex = 0) {
+  const activeKey = localStorage.getItem('healthAppGeminiKey') || defaultApiKey;
+  const currentModel = GEMINI_MODELS[modelIndex] || GEMINI_MODELS[0];
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${currentModel}:generateContent?key=${encodeURIComponent(activeKey)}`;
+
+  const delays = [1000, 2000, 4000];
 
   for (let i = 0; i <= delays.length; i++) {
     try {
@@ -825,19 +829,32 @@ async function fetchGeminiWithRetry(url, payload) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
+
       if (!res.ok) {
         const errorData = await res.json().catch(() => ({}));
-        throw new Error(errorData?.error?.message || `HTTP ${res.status}`);
+        const message = errorData?.error?.message || `HTTP ${res.status}`;
+
+        // If the specific model was not found, fallback to next model in list immediately
+        if ((res.status === 404 || message.includes('not found')) && modelIndex < GEMINI_MODELS.length - 1) {
+          console.warn(`Model ${currentModel} not found on this API key. Falling back to ${GEMINI_MODELS[modelIndex + 1]}...`);
+          return await fetchGeminiWithRetry(payload, modelIndex + 1);
+        }
+
+        throw new Error(message);
       }
+
       return await res.json();
     } catch (err) {
-      lastError = err;
-      if (i < delays.length) {
+      if (err.message.includes('not found') && modelIndex < GEMINI_MODELS.length - 1) {
+        return await fetchGeminiWithRetry(payload, modelIndex + 1);
+      }
+      if (i < delays.length && !err.message.includes('not found')) {
         await new Promise(r => setTimeout(r, delays[i]));
+      } else {
+        throw err;
       }
     }
   }
-  throw lastError;
 }
 
 // ============ CATEGORIZED SUGGESTED MEALS ============
@@ -1651,38 +1668,9 @@ function pcmToWav(pcmBytes, sampleRate = 24000) {
 
 async function speakAiResponse(textToSpeak) {
   showToast('جاري تحضير الصوت الناطق...', 'info');
-  const activeKey = localStorage.getItem('healthAppGeminiKey') || apiKey;
-  const ttsUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${activeKey}`;
-
-  try {
-    const payload = {
-      contents: [{ parts: [{ text: "تحدث بنبرة مشجعة ومحفزة: " + textToSpeak }] }],
-      generationConfig: {
-        responseModalities: ["AUDIO"],
-        speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: "Kore" } } }
-      }
-    };
-
-    const resData = await fetchGeminiWithRetry(ttsUrl, payload);
-    const base64Audio = resData.candidates?.[0]?.content?.parts?.find(p => p.inlineData)?.inlineData?.data;
-
-    if (base64Audio) {
-      const binaryString = atob(base64Audio);
-      const len = binaryString.length;
-      const bytes = new Uint8Array(len);
-      for (let i = 0; i < len; i++) bytes[i] = binaryString.charCodeAt(i);
-
-      const blob = pcmToWav(bytes, 24000);
-      const audioUrl = URL.createObjectURL(blob);
-      const audio = new Audio(audioUrl);
-      audio.play();
-      return;
-    }
-  } catch (e) {
-    console.warn("Gemini TTS fallback:", e);
-  }
 
   if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
     const utterance = new SpeechSynthesisUtterance(textToSpeak);
     utterance.lang = 'ar-SA';
     window.speechSynthesis.speak(utterance);
@@ -1732,8 +1720,6 @@ async function handleMealPhoto(event) {
 
   try {
     const base64Data = await compressAndResizeImage(file, 1024);
-    const activeKey = localStorage.getItem('healthAppGeminiKey') || apiKey;
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${activeKey}`;
 
     const payload = {
       contents: [
@@ -1761,7 +1747,7 @@ async function handleMealPhoto(event) {
       }
     };
 
-    const data = await fetchGeminiWithRetry(url, payload);
+    const data = await fetchGeminiWithRetry(payload);
     const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
     const result = JSON.parse(text);
 
@@ -1778,9 +1764,6 @@ async function handleMealPhoto(event) {
 }
 
 async function analyzeMealTextGemini(descriptionText) {
-  const activeKey = localStorage.getItem('healthAppGeminiKey') || apiKey;
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${activeKey}`;
-
   const payload = {
     contents: [
       {
@@ -1804,7 +1787,7 @@ async function analyzeMealTextGemini(descriptionText) {
     }
   };
 
-  const data = await fetchGeminiWithRetry(url, payload);
+  const data = await fetchGeminiWithRetry(payload);
   const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
   if (!text) throw new Error("استجابة غير مكتملة");
   return JSON.parse(text);
@@ -1994,9 +1977,6 @@ async function sendChat() {
 الهدف: ${p?.goal}`;
 
   try {
-    const activeKey = localStorage.getItem('healthAppGeminiKey') || apiKey;
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${activeKey}`;
-
     const contents = appState.chat.map(m => ({
       role: m.role === 'assistant' ? 'model' : 'user',
       parts: [{ text: m.content }]
@@ -2007,7 +1987,7 @@ async function sendChat() {
       contents: contents
     };
 
-    const data = await fetchGeminiWithRetry(url, payload);
+    const data = await fetchGeminiWithRetry(payload);
     const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || 'عذراً، لم أستطع الإجابة.';
 
     renderChatMessage('assistant', reply);

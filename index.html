@@ -464,7 +464,7 @@ body {
       </p>
 
       <div class="form-group" style="margin-bottom:10px;">
-        <input type="text" id="meal-text-input" class="form-input" placeholder="مثال: طبق كبسة دجاج مع صحن سلطة وصافية زبادي..." onkeypress="if(event.key==='Enter') handleMealText()">
+        <input type="text" id="meal-text-input" class="form-input" placeholder="مثال: موز، سندويتش بيض وخيار..." onkeypress="if(event.key==='Enter') handleMealText()">
       </div>
 
       <div style="display:grid; grid-template-columns: 2fr 1fr; gap:10px;">
@@ -501,20 +501,19 @@ body {
       <div id="voice-transcript-preview"></div>
     </div>
 
-    <!-- Barcode Scanner Card FIXED -->
+    <!-- Barcode Scanner Card -->
     <div class="glass-card" style="border-color: var(--accent-cyan);">
       <h3 style="color: var(--accent-cyan); margin-bottom: 4px; font-size:15px; font-weight:800;">📲 ماسح الباركود الذكي (Barcode)</h3>
-      <p style="font-size:12px; color:var(--text-secondary); margin-bottom:12px;">توجيه الكاميرا المباشرة أو فتح كاميرا الهاتف لالتقاط صورة الباركود فوراً</p>
+      <p style="font-size:12px; color:var(--text-secondary); margin-bottom:12px;">توجيه الكاميرا المباشرة أو التقاط صورة للباركود مباشرة</p>
       
       <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:10px;">
         <button class="btn btn-cyan" onclick="startBarcodeScanner()">📹 فتح الكاميرا المباشرة</button>
-        <!-- capture="environment" لتوجيه الكاميرا الخلفية مباشرة بدون فتح الاستوديو -->
-        <button class="btn btn-secondary" onclick="document.getElementById('barcode-file-input').click()">📸 التقاط صورة الباركود</button>
+        <button class="btn btn-secondary" onclick="triggerBarcodeCameraPhoto()">📸 التقاط صورة الباركود</button>
         <input type="file" id="barcode-file-input" accept="image/*" capture="environment" style="display:none;" onchange="handleBarcodeImageUpload(event)">
       </div>
 
       <div style="display:grid; grid-template-columns: 2fr 1fr; gap:10px;">
-        <input type="text" id="barcode-input" class="form-input" placeholder="أو أدخل رقم الباركود هنا...">
+        <input type="text" id="barcode-input" class="form-input" placeholder="أو أدخل رقم الباركود يدوياً...">
         <button class="btn btn-secondary" onclick="lookupBarcodeManual()">بحث</button>
       </div>
 
@@ -735,10 +734,14 @@ body {
     <div class="glass-card">
       <h3 style="color: var(--accent-emerald); margin-bottom: 12px; font-size:15px; font-weight:800;">🔑 مفتاح Google Gemini API</h3>
       <div class="form-group">
-        <label class="form-label">مفتاح API المخصص (من Google AI Studio)</label>
+        <label class="form-label">مفتاح API المخصص (اختياري)</label>
         <input type="password" id="gemini-key-input" class="form-input" placeholder="AIzaSy...">
+        <p style="font-size:11px; color:var(--text-muted); margin-top:5px;">التطبيق يملك مفتاح مدمج يعمل تلقائياً، يمكنك وضع مفتاحك الخارجي هنا إن أردت.</p>
       </div>
-      <button class="btn btn-primary" onclick="saveApiSettings()">💾 حفظ المفتاح</button>
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+        <button class="btn btn-primary" onclick="saveApiSettings()">💾 حفظ المفتاح</button>
+        <button class="btn btn-secondary" onclick="clearCustomApiKey()">🔄 استخدام الافتراضي</button>
+      </div>
     </div>
 
     <div class="glass-card">
@@ -812,49 +815,44 @@ document.addEventListener('touchend', e => {
   lastTouchEnd = now;
 }, { passive: false });
 
-// ============ API CONFIG & ROBUST MODEL FALLBACK ============
-const defaultApiKey = ""; // Runtime fallback
-const GEMINI_MODELS = ['gemini-2.5-flash', 'gemini-1.5-flash'];
+// ============ GEMINI API CORE WITH EXPONENTIAL BACKOFF ============
+const apiKey = ""; // Runtime provided key by host execution environment
 
-async function fetchGeminiWithRetry(payload, modelIndex = 0) {
-  const activeKey = localStorage.getItem('healthAppGeminiKey') || defaultApiKey;
-  const currentModel = GEMINI_MODELS[modelIndex] || GEMINI_MODELS[0];
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/${currentModel}:generateContent?key=${encodeURIComponent(activeKey)}`;
+async function fetchGeminiWithRetry(payload) {
+  const customKey = localStorage.getItem('healthAppGeminiKey');
+  const keysToTry = (customKey && customKey.trim() !== "") ? [customKey.trim(), apiKey] : [apiKey];
+  const delays = [1000, 2000, 4000, 8000, 16000];
 
-  const delays = [1000, 2000, 4000];
+  let lastError = null;
 
-  for (let i = 0; i <= delays.length; i++) {
-    try {
-      const res = await fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
+  for (const currentKey of keysToTry) {
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${currentKey}`;
 
-      if (!res.ok) {
-        const errorData = await res.json().catch(() => ({}));
-        const message = errorData?.error?.message || `HTTP ${res.status}`;
+    for (let attempt = 0; attempt <= delays.length; attempt++) {
+      try {
+        const res = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
 
-        if ((res.status === 404 || message.includes('not found')) && modelIndex < GEMINI_MODELS.length - 1) {
-          console.warn(`Model ${currentModel} not found. Falling back to ${GEMINI_MODELS[modelIndex + 1]}...`);
-          return await fetchGeminiWithRetry(payload, modelIndex + 1);
+        if (!res.ok) {
+          const errorData = await res.json().catch(() => ({}));
+          const msg = errorData?.error?.message || `HTTP ${res.status}`;
+          throw new Error(msg);
         }
 
-        throw new Error(message);
-      }
-
-      return await res.json();
-    } catch (err) {
-      if (err.message.includes('not found') && modelIndex < GEMINI_MODELS.length - 1) {
-        return await fetchGeminiWithRetry(payload, modelIndex + 1);
-      }
-      if (i < delays.length && !err.message.includes('not found')) {
-        await new Promise(r => setTimeout(r, delays[i]));
-      } else {
-        throw err;
+        return await res.json();
+      } catch (err) {
+        lastError = err;
+        if (attempt < delays.length) {
+          await new Promise(r => setTimeout(r, delays[attempt]));
+        }
       }
     }
   }
+
+  throw lastError || new Error("تعذر الاتصال بخدمة الذكاء الاصطناعي حالياً.");
 }
 
 // ============ CATEGORIZED SUGGESTED MEALS ============
@@ -1197,7 +1195,7 @@ function openManualMealModal() {
     <div style="text-align:right;">
       <div class="form-group">
         <label class="form-label">اسم الوجبة</label>
-        <input type="text" id="manual-meal-name" class="form-input" placeholder="مثال: تفاحة أحمر، وجبة خفيفة...">
+        <input type="text" id="manual-meal-name" class="form-input" placeholder="مثال: تفاحة، وجبة خفيفة...">
       </div>
       <div class="form-group">
         <label class="form-label">السعرات الحرارية (سعرة)</label>
@@ -1303,17 +1301,25 @@ function toggleVoiceRecognition() {
   speechRecognition.start();
 }
 
-// ============ BARCODE SCANNER WITH FALLBACK & DIRECT PHOTO CAPTURE ============
+// ============ BARCODE SCANNER WITH PHOTO CAPTURE & AI FALLBACK ============
 let html5QrCode = null;
+
+function triggerBarcodeCameraPhoto() {
+  const input = document.getElementById('barcode-file-input');
+  if (input) {
+    input.value = '';
+    input.click();
+  }
+}
 
 async function startBarcodeScanner() {
   const container = document.getElementById('barcode-scanner-container');
   container.style.display = 'block';
 
   if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-    showToast('البث المباشر للكاميرا غير مدعوم في هذا المتصفح. جاري فتح كاميرا الالتقاط الفوري...', 'warning');
+    showToast('البث المباشر للكاميرا غير متاح في هذا المتصفح. جاري فتح كاميرا اللقطة الفورية...', 'warning');
     container.style.display = 'none';
-    document.getElementById('barcode-file-input').click();
+    triggerBarcodeCameraPhoto();
     return;
   }
 
@@ -1335,7 +1341,7 @@ async function startBarcodeScanner() {
       () => {}
     );
   } catch (err) {
-    console.warn("Live camera facing environment failed:", err);
+    console.warn("Camera facing environment failed:", err);
     try {
       await html5QrCode.start(
         { facingMode: "user" },
@@ -1349,9 +1355,9 @@ async function startBarcodeScanner() {
       );
     } catch (err2) {
       container.style.display = 'none';
-      showToast('تعذر فتح بث الكاميرا المباشر بسبب القيود. جاري فتح كاميرا التقاط الصور...', 'info');
+      showToast('تعذر فتح بث الكاميرا المباشر. جاري فتح كاميرا التقاط الصور الفورية...', 'info');
       setTimeout(() => {
-        document.getElementById('barcode-file-input').click();
+        triggerBarcodeCameraPhoto();
       }, 300);
     }
   }
@@ -1381,15 +1387,13 @@ async function handleBarcodeImageUpload(event) {
   }
 
   try {
-    // 1. Try decoding barcode lines via Javascript
     const result = await html5QrCode.scanFileV2(file, true);
     const decodedText = result.decodedText;
     document.getElementById('barcode-input').value = decodedText;
     lookupBarcode(decodedText);
   } catch (err) {
-    // 2. Smart Fallback: Use Gemini Vision AI to decode barcode or read product name directly from photo!
     try {
-      preview.innerHTML = '<div class="message-box info" style="margin-top:10px;">🤖 جاري قراءة معلومات المنتَج أو الباركود بالذكاء الاصطناعي...</div>';
+      preview.innerHTML = '<div class="message-box info" style="margin-top:10px;">🤖 جاري تحليل غلاف المنتج والمعلومات بالذكاء الاصطناعي...</div>';
       const base64Data = await compressAndResizeImage(file, 1024);
 
       const payload = {
@@ -1397,7 +1401,7 @@ async function handleBarcodeImageUpload(event) {
           {
             role: "user",
             parts: [
-              { text: "افحص صورة غلاف المنتج أو الباركود: اقرأ رقم الباركود إن وجد أو استخرج اسم المنتج الغذائي وقدر سعراته الحرارية والبروتين والكربوهيدرات والدهون باللغة العربية." },
+              { text: "اقرأ صورة غلاف هذا المنتج أو الباركود وقدر اسمه والسعرات والبروتين والكربوهيدرات والدهون باللغة العربية." },
               { inlineData: { mimeType: "image/jpeg", data: base64Data } }
             ]
           }
@@ -1430,7 +1434,7 @@ async function handleBarcodeImageUpload(event) {
         <button class="btn btn-cyan" onclick="confirmAiMeal('${result.name.replace(/'/g, "\\'")}', ${result.calories}, ${result.protein}, ${result.carbs}, ${result.fat})">✅ إضافة الوجبة للسجل</button>
       `;
     } catch (aiErr) {
-      preview.innerHTML = `<div class="message-box warning" style="margin-top:10px;">لم يتم التعرف على الباركود بوضوح. يمكنك كتابة اسم الوجبة أو إدخال رقم الباركود يدوياً.</div>`;
+      preview.innerHTML = `<div class="message-box warning" style="margin-top:10px;">لم يتم التعرف على الباركود بشكل واضح. يمكنك كتابة اسم الوجبة أو إدخال الباركود يدوياً.</div>`;
     }
   }
 
@@ -1445,14 +1449,14 @@ function lookupBarcodeManual() {
 
 async function lookupBarcode(barcode) {
   const preview = document.getElementById('barcode-result-preview');
-  preview.innerHTML = `<div class="message-box" style="margin-top:10px;">🔍 جاري البحث في قاعدة البيانات... (${barcode})</div>`;
+  preview.innerHTML = `<div class="message-box" style="margin-top:10px;">🔍 جاري البحث في Open Food Facts... (${barcode})</div>`;
 
   try {
     const res = await fetch(`https://world.openfoodfacts.org/api/v0/product/${barcode}.json`);
     const data = await res.json();
 
     if (data.status !== 1 || !data.product) {
-      preview.innerHTML = `<div class="message-box warning" style="margin-top:10px;">لم يتم العثور على منتج بهذا الباركود (${barcode}). يمكن تحليله بالذكاء الاصطناعي.</div>`;
+      preview.innerHTML = `<div class="message-box warning" style="margin-top:10px;">لم يتم العثور على منتج بهذا الباركود (${barcode}). يمكن تحليله بكتابة اسمه بالذكاء الاصطناعي.</div>`;
       return;
     }
 
@@ -1698,37 +1702,6 @@ async function fetchLeaderboard() {
 }
 
 // ============ TEXT-TO-SPEECH (TTS) ============
-function pcmToWav(pcmBytes, sampleRate = 24000) {
-  const numChannels = 1;
-  const sampleBits = 16;
-  const dataLength = pcmBytes.length;
-  const buffer = new ArrayBuffer(44 + dataLength);
-  const view = new DataView(buffer);
-
-  const writeString = (view, offset, str) => {
-    for (let i = 0; i < str.length; i++) view.setUint8(offset + i, str.charCodeAt(i));
-  };
-
-  writeString(view, 0, 'RIFF');
-  view.setUint32(4, 36 + dataLength, true);
-  writeString(view, 8, 'WAVE');
-  writeString(view, 12, 'fmt ');
-  view.setUint32(16, 16, true);
-  view.setUint16(20, 1, true);
-  view.setUint16(22, numChannels, true);
-  view.setUint32(24, sampleRate, true);
-  view.setUint32(28, sampleRate * numChannels * (sampleBits / 8), true);
-  view.setUint16(32, numChannels * (sampleBits / 8), true);
-  view.setUint16(34, sampleBits, true);
-  writeString(view, 36, 'data');
-  view.setUint32(40, dataLength, true);
-
-  const u8View = new Uint8Array(buffer, 44, dataLength);
-  u8View.set(pcmBytes);
-
-  return new Blob([buffer], { type: 'audio/wav' });
-}
-
 async function speakAiResponse(textToSpeak) {
   showToast('جاري تحضير الصوت الناطق...', 'info');
 
@@ -1779,7 +1752,7 @@ async function handleMealPhoto(event) {
   if (!file) return;
 
   const previewDiv = document.getElementById('meal-photo-preview');
-  previewDiv.innerHTML = '<div class="message-box" style="margin-top:10px;">🔍 جاري تحليل الصورة بذكاء الاصطناعي...</div>';
+  previewDiv.innerHTML = '<div class="message-box" style="margin-top:10px;">🔍 جاري تحليل الصورة بالذكاء الاصطناعي...</div>';
 
   try {
     const base64Data = await compressAndResizeImage(file, 1024);
@@ -2111,6 +2084,12 @@ function saveApiSettings() {
   if (geminiKey) localStorage.setItem('healthAppGeminiKey', geminiKey);
   else localStorage.removeItem('healthAppGeminiKey');
   showToast('تم حفظ المفتاح بنجاح', 'success');
+}
+
+function clearCustomApiKey() {
+  localStorage.removeItem('healthAppGeminiKey');
+  document.getElementById('gemini-key-input').value = '';
+  showToast('تمت العودة لمفتاح النظام الافتراضي بنجاح ✅', 'success');
 }
 
 function loadApiSettingsUI() {

@@ -357,23 +357,10 @@ body { display: flex; flex-direction: column; }
     <div style="background: linear-gradient(135deg, var(--surface) 0%, var(--surface-light) 100%); border: 1px solid var(--border); border-radius: 15px; padding: 20px; margin-bottom: 20px; box-shadow: 0 8px 32px var(--shadow);">
       <h3 style="color: var(--accent); margin-bottom: 15px;">أضف وجبة جديدة</h3>
       <div class="form-group">
-        <label class="form-label">اختر الطعام</label>
-        <select id="meal-food" class="form-select">
-          <option value="">اختر...</option>
-          <option value="egg">بيض (50غ) - 155 سعرة</option>
-          <option value="rice">أرز أبيض (100غ) - 130 سعرة</option>
-          <option value="chicken">دجاج مسلوق (100غ) - 165 سعرة</option>
-          <option value="fish">سمك مشوي (100غ) - 82 سعرة</option>
-          <option value="bread">خبز أبيض (30غ) - 79 سعرة</option>
-          <option value="milk">حليب كامل (240مل) - 149 سعرة</option>
-          <option value="vegetables">خضروات (100غ) - 35 سعرة</option>
-          <option value="fruits">فواكه (150غ) - 52 سعرة</option>
-          <option value="yogurt">زبادي (170غ) - 100 سعرة</option>
-          <option value="oats">شوفان (40غ) - 150 سعرة</option>
-          <option value="cheese">جبن (30غ) - 120 سعرة</option>
-          <option value="dates">تمر (3 حبات) - 170 سعرة</option>
-          <option value="nuts">مكسرات (حفنة 30غ) - 180 سعرة</option>
-        </select>
+        <label class="form-label">ابحث عن الطعام (+48 صنف)</label>
+        <input type="text" id="meal-food-search" class="form-input" placeholder="اكتب اسم الطعام... مثال: دجاج، أرز، تفاح" oninput="filterFoodSearch()" autocomplete="off">
+        <input type="hidden" id="meal-food">
+        <div id="meal-food-results" style="margin-top: 10px;"></div>
       </div>
       <div class="form-group">
         <label class="form-label">الكمية</label>
@@ -554,18 +541,63 @@ body { display: flex; flex-direction: column; }
 // ============ Food Database ============
 const foodDB = {
   egg: { cal: 155, protein: 13, carbs: 1.1, fat: 11, name: 'بيض' },
-  rice: { cal: 130, protein: 2.7, carbs: 28, fat: 0.3, name: 'أرز' },
-  chicken: { cal: 165, protein: 31, carbs: 0, fat: 3.6, name: 'دجاج' },
-  fish: { cal: 82, protein: 18, carbs: 0, fat: 0.8, name: 'سمك' },
-  bread: { cal: 79, protein: 3, carbs: 14, fat: 1.1, name: 'خبز' },
-  milk: { cal: 149, protein: 7.7, carbs: 11.5, fat: 7.7, name: 'حليب' },
-  vegetables: { cal: 35, protein: 2.2, carbs: 8, fat: 0.2, name: 'خضروات' },
-  fruits: { cal: 52, protein: 0.3, carbs: 14, fat: 0.2, name: 'فواكه' },
+  rice: { cal: 130, protein: 2.7, carbs: 28, fat: 0.3, name: 'أرز أبيض' },
+  chicken: { cal: 165, protein: 31, carbs: 0, fat: 3.6, name: 'دجاج مسلوق' },
+  fish: { cal: 82, protein: 18, carbs: 0, fat: 0.8, name: 'سمك مشوي' },
+  bread: { cal: 79, protein: 3, carbs: 14, fat: 1.1, name: 'خبز أبيض' },
+  milk: { cal: 149, protein: 7.7, carbs: 11.5, fat: 7.7, name: 'حليب كامل' },
+  vegetables: { cal: 35, protein: 2.2, carbs: 8, fat: 0.2, name: 'خضروات مشكلة' },
+  fruits: { cal: 52, protein: 0.3, carbs: 14, fat: 0.2, name: 'فواكه مشكلة' },
   yogurt: { cal: 100, protein: 10, carbs: 6, fat: 2, name: 'زبادي' },
   oats: { cal: 150, protein: 5, carbs: 27, fat: 3, name: 'شوفان' },
   cheese: { cal: 120, protein: 7, carbs: 1, fat: 10, name: 'جبن' },
   dates: { cal: 170, protein: 1.5, carbs: 45, fat: 0.2, name: 'تمر' },
-  nuts: { cal: 180, protein: 6, carbs: 6, fat: 16, name: 'مكسرات' }
+  nuts: { cal: 180, protein: 6, carbs: 6, fat: 16, name: 'مكسرات' },
+
+  turkey: { cal: 135, protein: 30, carbs: 0, fat: 1, name: 'ديك رومي مشوي' },
+  lamb: { cal: 294, protein: 25, carbs: 0, fat: 21, name: 'لحم غنم' },
+  shrimp: { cal: 99, protein: 24, carbs: 0.2, fat: 0.3, name: 'روبيان مسلوق' },
+  tuna: { cal: 116, protein: 26, carbs: 0, fat: 1, name: 'تونة معلبة' },
+  salmon: { cal: 208, protein: 20, carbs: 0, fat: 13, name: 'سلمون مشوي' },
+
+  brownRice: { cal: 112, protein: 2.6, carbs: 24, fat: 0.9, name: 'أرز بني' },
+  pasta: { cal: 158, protein: 5.8, carbs: 31, fat: 0.9, name: 'معكرونة' },
+  wholeBread: { cal: 74, protein: 3.6, carbs: 12, fat: 1, name: 'خبز أسمر' },
+  quinoa: { cal: 120, protein: 4.4, carbs: 21, fat: 1.9, name: 'كينوا' },
+  potato: { cal: 87, protein: 1.9, carbs: 20, fat: 0.1, name: 'بطاطا مسلوقة' },
+  sweetPotato: { cal: 86, protein: 1.6, carbs: 20, fat: 0.1, name: 'بطاطا حلوة' },
+
+  lowFatMilk: { cal: 103, protein: 8.2, carbs: 12, fat: 2.4, name: 'حليب قليل الدسم' },
+  labneh: { cal: 60, protein: 3, carbs: 2, fat: 4.5, name: 'لبنة' },
+  cottageCheese: { cal: 98, protein: 11, carbs: 3.4, fat: 4.3, name: 'جبن قريش' },
+
+  orange: { cal: 62, protein: 1.2, carbs: 15, fat: 0.2, name: 'برتقال' },
+  apple: { cal: 95, protein: 0.5, carbs: 25, fat: 0.3, name: 'تفاح' },
+  banana: { cal: 105, protein: 1.3, carbs: 27, fat: 0.4, name: 'موز' },
+  grapes: { cal: 69, protein: 0.7, carbs: 18, fat: 0.2, name: 'عنب' },
+  watermelon: { cal: 45, protein: 0.9, carbs: 11, fat: 0.2, name: 'بطيخ' },
+  mango: { cal: 99, protein: 1.4, carbs: 25, fat: 0.6, name: 'مانجو' },
+  avocado: { cal: 160, protein: 2, carbs: 8.5, fat: 15, name: 'أفوكادو' },
+  strawberry: { cal: 32, protein: 0.7, carbs: 7.7, fat: 0.3, name: 'فراولة' },
+
+  cucumber: { cal: 15, protein: 0.7, carbs: 3.6, fat: 0.1, name: 'خيار' },
+  tomato: { cal: 18, protein: 0.9, carbs: 3.9, fat: 0.2, name: 'طماطم' },
+  lettuce: { cal: 15, protein: 1.4, carbs: 2.9, fat: 0.2, name: 'خس' },
+  carrot: { cal: 41, protein: 0.9, carbs: 10, fat: 0.2, name: 'جزر' },
+
+  chickpeas: { cal: 164, protein: 8.9, carbs: 27, fat: 2.6, name: 'حمص مطبوخ' },
+  favaBeans: { cal: 110, protein: 7.6, carbs: 19, fat: 0.6, name: 'فول مدمس' },
+  beans: { cal: 127, protein: 8.7, carbs: 23, fat: 0.5, name: 'فاصوليا مطبوخة' },
+
+  almonds: { cal: 164, protein: 6, carbs: 6, fat: 14, name: 'لوز' },
+  cashews: { cal: 157, protein: 5.2, carbs: 8.6, fat: 12, name: 'كاجو' },
+  chiaSeeds: { cal: 68, protein: 2.3, carbs: 6, fat: 4.3, name: 'بذور شيا' },
+
+  pizza: { cal: 285, protein: 12, carbs: 36, fat: 10, name: 'شريحة بيتزا' },
+  burger: { cal: 354, protein: 20, carbs: 29, fat: 17, name: 'برجر لحم' },
+  shawarma: { cal: 450, protein: 25, carbs: 40, fat: 20, name: 'شاورما دجاج' },
+  fries: { cal: 365, protein: 4, carbs: 48, fat: 17, name: 'بطاطا مقلية' },
+  kabsa: { cal: 550, protein: 30, carbs: 65, fat: 20, name: 'كبسة لحم' }
 };
 
 // وجبات مقترحة جاهزة لكل نوع وجبة (تُبنى من عناصر foodDB أعلاه)
@@ -1051,6 +1083,42 @@ function updateDashboard() {
 }
 
 // ============ Meals ============
+// ============ بحث ذكي في قاعدة الأطعمة ============
+function filterFoodSearch() {
+  const query = document.getElementById('meal-food-search').value.trim();
+  const resultsDiv = document.getElementById('meal-food-results');
+  document.getElementById('meal-food').value = ''; // إلغاء أي اختيار سابق عند تعديل نص البحث
+
+  if (!query) { resultsDiv.innerHTML = ''; return; }
+
+  const matches = Object.keys(foodDB).filter(key => foodDB[key].name.includes(query)).slice(0, 8);
+
+  if (matches.length === 0) {
+    resultsDiv.innerHTML = '<div class="message-box">لا توجد نتائج مطابقة — جرّب كلمة أخرى</div>';
+    return;
+  }
+
+  resultsDiv.innerHTML = matches.map(key => {
+    const f = foodDB[key];
+    return `
+      <div class="food-item" style="cursor:pointer;" onclick="selectSearchedFood('${key}')">
+        <div class="food-info">
+          <div class="food-name">${escapeHtml(f.name)}</div>
+          <div class="food-macros">🔥 ${f.cal} سعرة | 🥛 ${f.protein}غ بروتين | 🌾 ${f.carbs}غ كربوهيدرات | 🫒 ${f.fat}غ دهون</div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function selectSearchedFood(key) {
+  const f = foodDB[key];
+  if (!f) return;
+  document.getElementById('meal-food').value = key;
+  document.getElementById('meal-food-search').value = f.name;
+  document.getElementById('meal-food-results').innerHTML = `<div class="message-box success">✅ تم اختيار: ${escapeHtml(f.name)} (${f.cal} سعرة)</div>`;
+}
+
 function addMeal() {
   const food = document.getElementById('meal-food').value;
   const qty = parseFloat(document.getElementById('meal-qty').value);
@@ -1072,6 +1140,8 @@ function addMeal() {
   updateDashboard();
   updateMealsList();
   document.getElementById('meal-food').value = '';
+  document.getElementById('meal-food-search').value = '';
+  document.getElementById('meal-food-results').innerHTML = '';
   document.getElementById('meal-qty').value = '1';
 }
 

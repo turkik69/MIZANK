@@ -618,6 +618,8 @@ function addSuggestedMeal(mealType, idx) {
   if (!suggestion) return;
   const t = calcSuggestionTotals(suggestion.items);
   appState.meals.push({
+    id: Date.now(),
+    date: todayStr(),
     name: suggestion.name,
     food: null,
     qty: 1,
@@ -649,7 +651,7 @@ function getClaudeModel() { return localStorage.getItem('healthAppClaudeModel') 
 
 // ============ Multi-user persistent storage ============
 let currentUsername = null;
-let appState = { profile: null, meals: [], weights: [], water: 0, chat: [] };
+let appState = { profile: null, meals: [], weights: [], water: 0, waterDate: null, chat: [] };
 
 function loadUsersDB() {
   try { return JSON.parse(localStorage.getItem('healthAppUsers') || '{}'); }
@@ -665,6 +667,22 @@ function saveCurrentUserData() {
   saveUsersDB(db);
 }
 
+// ============ إعادة تعيين يومية للوجبات وشرب الماء ============
+function todayStr() {
+  return new Date().toISOString().split('T')[0];
+}
+function getTodaysMeals() {
+  const today = todayStr();
+  return appState.meals.filter(m => m.date === today);
+}
+function ensureTodayWater() {
+  const today = todayStr();
+  if (appState.waterDate !== today) {
+    appState.water = 0;
+    appState.waterDate = today;
+  }
+}
+
 // ============ Init ============
 window.addEventListener('load', () => {
   const savedUsername = localStorage.getItem('healthAppCurrentUser');
@@ -673,7 +691,7 @@ window.addEventListener('load', () => {
     const existing = db[savedUsername];
     if (existing && existing.profile) {
       currentUsername = savedUsername;
-      appState = Object.assign({ meals: [], weights: [], water: 0, chat: [] }, existing);
+      appState = Object.assign({ meals: [], weights: [], water: 0, waterDate: null, chat: [] }, existing);
       document.getElementById('bottom-nav').style.display = 'flex';
       showScreen('dashboard-screen');
       updateDashboard();
@@ -695,7 +713,7 @@ function handleLogin() {
   const existing = db[username];
 
   if (existing && existing.profile) {
-    appState = Object.assign({ meals: [], weights: [], water: 0, chat: [] }, existing);
+    appState = Object.assign({ meals: [], weights: [], water: 0, waterDate: null, chat: [] }, existing);
     document.getElementById('bottom-nav').style.display = 'flex';
     showScreen('dashboard-screen');
     updateDashboard();
@@ -750,6 +768,7 @@ function completeSetup() {
   if (!appState.meals) appState.meals = [];
   if (!appState.weights) appState.weights = [];
   if (appState.water === undefined) appState.water = 0;
+  if (!appState.waterDate) appState.waterDate = todayStr();
   if (!appState.chat) appState.chat = [];
   if (appState.weights.length === 0) {
     appState.weights.push({ date: new Date().toISOString().split('T')[0], weight });
@@ -804,11 +823,13 @@ function showScreen(screenName) {
 function updateDashboard() {
   const p = appState.profile;
   if (!p) return;
+  ensureTodayWater();
+  const todaysMeals = getTodaysMeals();
   const currentWeight = appState.weights[appState.weights.length - 1]?.weight ?? p.currentWeight;
-  const consumed = appState.meals.reduce((s, m) => s + m.cal, 0);
-  const protein = appState.meals.reduce((s, m) => s + m.protein, 0);
-  const carbs = appState.meals.reduce((s, m) => s + m.carbs, 0);
-  const fats = appState.meals.reduce((s, m) => s + m.fat, 0);
+  const consumed = todaysMeals.reduce((s, m) => s + m.cal, 0);
+  const protein = todaysMeals.reduce((s, m) => s + m.protein, 0);
+  const carbs = todaysMeals.reduce((s, m) => s + m.carbs, 0);
+  const fats = todaysMeals.reduce((s, m) => s + m.fat, 0);
 
   const totalToChange = Math.abs(p.currentWeight - p.targetWeight) || 1;
   const changed = Math.abs(p.currentWeight - currentWeight);
@@ -834,7 +855,7 @@ function updateDashboard() {
   let tips = '<div class="message-box success">✅ استمر في الالتزام!</div>';
   if (consumed > p.dailyCalories) {
     tips += '<div class="message-box error">❌ تجاوزت الحد المسموح من السعرات</div>';
-  } else if (appState.meals.length > 0 && consumed < p.dailyCalories * 0.7) {
+  } else if (todaysMeals.length > 0 && consumed < p.dailyCalories * 0.7) {
     tips += '<div class="message-box warning">⚠️ لم تستهلك السعرات الكافية بعد</div>';
   }
   if (appState.water < p.water * 0.5) {
@@ -851,6 +872,8 @@ function addMeal() {
 
   const f = foodDB[food];
   appState.meals.push({
+    id: Date.now(),
+    date: todayStr(),
     name: f.name, food, qty,
     cal: Math.round(f.cal * qty),
     protein: f.protein * qty,
@@ -866,24 +889,25 @@ function addMeal() {
   document.getElementById('meal-qty').value = '1';
 }
 
-function deleteMeal(idx) {
-  appState.meals.splice(idx, 1);
+function deleteMeal(id) {
+  appState.meals = appState.meals.filter(m => m.id !== id);
   saveCurrentUserData();
   updateDashboard();
   updateMealsList();
 }
 
 function updateMealsList() {
-  const html = appState.meals.length === 0
-    ? '<div class="message-box">لم تسجل وجبات بعد</div>'
-    : appState.meals.map((m, i) => `
+  const todaysMeals = getTodaysMeals();
+  const html = todaysMeals.length === 0
+    ? '<div class="message-box">لم تسجل وجبات اليوم بعد</div>'
+    : todaysMeals.map((m) => `
       <div class="food-item">
         <div class="food-info">
           <div class="food-name">${escapeHtml(m.name)}</div>
           ${m.comboDetails ? `<div class="food-macros">${escapeHtml(m.comboDetails)}</div>` : ''}
           <div class="food-macros">🔥 ${m.cal} سعرة | 🥛 ${m.protein.toFixed(1)}غ | 🌾 ${m.carbs.toFixed(1)}غ | 🫒 ${m.fat.toFixed(1)}غ</div>
         </div>
-        <button class="delete-btn" onclick="deleteMeal(${i})">حذف</button>
+        <button class="delete-btn" onclick="deleteMeal(${m.id})">حذف</button>
       </div>
     `).join('');
   document.getElementById('meals-list').innerHTML = html;
@@ -1064,6 +1088,8 @@ async function handleMealPhoto(event) {
 function confirmPhotoMeal() {
   if (!pendingPhotoMeal) return;
   appState.meals.push({
+    id: Date.now(),
+    date: todayStr(),
     name: pendingPhotoMeal.name,
     food: null,
     qty: 1,
@@ -1202,6 +1228,8 @@ async function handleMealText() {
 function confirmTextMeal() {
   if (!pendingTextMeal) return;
   appState.meals.push({
+    id: Date.now(),
+    date: todayStr(),
     name: pendingTextMeal.name,
     food: null,
     qty: 1,
@@ -1227,6 +1255,7 @@ function cancelTextMeal() {
 
 // ============ Water ============
 function addWater() {
+  ensureTodayWater();
   appState.water += 1;
   saveCurrentUserData();
   updateWaterScreen();
@@ -1234,11 +1263,13 @@ function addWater() {
 }
 function resetWater() {
   appState.water = 0;
+  appState.waterDate = todayStr();
   saveCurrentUserData();
   updateWaterScreen();
   updateDashboard();
 }
 function updateWaterScreen() {
+  ensureTodayWater();
   const p = appState.profile;
   if (!p) return;
   const percent = Math.min(100, (appState.water / p.water) * 100);
@@ -1532,6 +1563,7 @@ function loadApiSettingsIntoUI() {
 function updateReports() {
   const p = appState.profile;
   if (!p) return;
+  ensureTodayWater();
   const totalCals = appState.meals.reduce((s, m) => s + m.cal, 0);
   const avgCals = appState.meals.length > 0 ? totalCals / appState.meals.length : 0;
 

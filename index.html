@@ -441,8 +441,23 @@ body {
     <div class="screen-header">
       <div>
         <div class="screen-title">سجل الوجبات والتغذية 🍽️</div>
-        <div class="screen-subtitle">تسجيل الذكاء الاصطناعي والصوت والباركد</div>
+        <div class="screen-subtitle">إدخال ذكي + اقتراحات متكاملة لكل فترة</div>
       </div>
+    </div>
+
+    <!-- Suggested Meals Categories (Breakfast, Lunch, Dinner, Snacks) -->
+    <div class="glass-card" style="border-color: var(--accent-amber);">
+      <h3 style="color: var(--accent-amber); margin-bottom: 8px; font-size:15px; font-weight:800;">💡 الوجبات الصحية المقترحة لليوم</h3>
+      <p style="font-size:12px; color:var(--text-secondary); margin-bottom:12px;">اختر من الوجبات الجاهزة المحسوبة السعرات حسب الفترة:</p>
+
+      <div class="pill-container">
+        <div class="pill active" onclick="selectSuggestedCategory('breakfast', this)">🍳 الإفطار</div>
+        <div class="pill" onclick="selectSuggestedCategory('lunch', this)">🍗 الغداء</div>
+        <div class="pill" onclick="selectSuggestedCategory('dinner', this)">🥗 العشاء</div>
+        <div class="pill" onclick="selectSuggestedCategory('snack', this)">🥑 سناكس خفيفة</div>
+      </div>
+
+      <div id="suggested-meals-container"></div>
     </div>
 
     <!-- Voice Input Card -->
@@ -456,22 +471,27 @@ body {
       <div id="voice-transcript-preview"></div>
     </div>
 
-    <!-- Barcode Scanner Card -->
+    <!-- Barcode Scanner Card FIXED -->
     <div class="glass-card" style="border-color: var(--accent-cyan);">
       <h3 style="color: var(--accent-cyan); margin-bottom: 4px; font-size:15px; font-weight:800;">📲 ماسح الباركود الذكي (Barcode)</h3>
-      <p style="font-size:12px; color:var(--text-secondary); margin-bottom:12px;">امسح باركود غلاف الطعام لقراءة القيمة الغذائية تلقائياً من Open Food Facts</p>
+      <p style="font-size:12px; color:var(--text-secondary); margin-bottom:12px;">قراءة المنتجات مباشرة عبر فتح الكاميرا المباشرة أو التقاط صورة للباركود</p>
       
-      <div style="display:flex; gap:10px; margin-bottom:10px;">
-        <button class="btn btn-cyan" onclick="startBarcodeScanner()">📷 فتح كاميرا الباركود</button>
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:10px;">
+        <button class="btn btn-cyan" onclick="startBarcodeScanner()">📹 فتح الكاميرا للباركود</button>
+        <button class="btn btn-secondary" onclick="document.getElementById('barcode-file-input').click()">📸 التقاط صورة الباركود</button>
+        <input type="file" id="barcode-file-input" accept="image/*" style="display:none;" onchange="handleBarcodeImageUpload(event)">
       </div>
+
       <div style="display:grid; grid-template-columns: 2fr 1fr; gap:10px;">
         <input type="text" id="barcode-input" class="form-input" placeholder="أو أدخل رقم الباركود هنا...">
         <button class="btn btn-secondary" onclick="lookupBarcodeManual()">بحث</button>
       </div>
-      <div id="barcode-scanner-container" style="display:none; margin-top:10px;">
-        <div id="barcode-reader" style="width:100%; border-radius:14px; overflow:hidden;"></div>
-        <button class="btn btn-coral" style="margin-top:8px;" onclick="stopBarcodeScanner()">إغلاق الكاميرا</button>
+
+      <div id="barcode-scanner-container" style="display:none; margin-top:12px; background:#000; border-radius:16px; padding:10px; text-align:center;">
+        <div id="barcode-reader" style="width:100%; border-radius:12px; overflow:hidden;"></div>
+        <button class="btn btn-coral" style="margin-top:10px;" onclick="stopBarcodeScanner()">إغلاق الكاميرا ✕</button>
       </div>
+
       <div id="barcode-result-preview"></div>
     </div>
 
@@ -504,14 +524,13 @@ body {
         <label class="form-label">نظام الصيام المفضل</label>
         <select id="fasting-protocol-select" class="form-select" onchange="changeFastingProtocol()">
           <option value="16:8">16:8 (الموصى به - 16 ساعة صيام)</option>
-          <option value="18:6">18:6 (صيام متقدم - 18 ساعة)</option>
+          <option value="18:6">18:6 (صيام متتقدم - 18 ساعة)</option>
           <option value="20:4">20:4 (نظام المحارب - 20 ساعة)</option>
           <option value="14:10">14:10 (صيام خفيف - 14 ساعة)</option>
           <option value="24:0">24:0 (صيام يوم كامل)</option>
         </select>
       </div>
 
-      <!-- Ring SVG -->
       <div class="fasting-ring-container">
         <svg class="fasting-svg" viewBox="0 0 200 200">
           <defs>
@@ -546,7 +565,7 @@ body {
     </div>
   </div>
 
-  <!-- COMMUNITY & LEADERBOARD SCREEN -->
+  <!-- COMMUNITY SCREEN -->
   <div id="community-screen" class="screen">
     <div class="screen-header">
       <div>
@@ -559,26 +578,6 @@ body {
       <h3 style="color: var(--accent-amber); margin-bottom: 12px; font-size:15px; font-weight:800;">🌟 قائمة المتصدرين (Leaderboard)</h3>
       <div id="leaderboard-list">
         <div class="message-box">جاري تحميل قائمة المتصدرين...</div>
-      </div>
-    </div>
-
-    <div class="glass-card">
-      <h3 style="color: var(--accent-cyan); margin-bottom: 12px; font-size:15px; font-weight:800;">🎯 التحديات الجماعية النشطة</h3>
-      
-      <div class="food-item">
-        <div class="food-info">
-          <div class="food-name">💧 تحدي الالتزام بشرب 8 أكواب ماء</div>
-          <div style="font-size:11px; color:var(--text-secondary);">تحدي يومي مستمر للترطيب الكامل</div>
-        </div>
-        <button class="icon-btn" onclick="joinChallenge('ماء')">انضمام للتحدي</button>
-      </div>
-
-      <div class="food-item">
-        <div class="food-info">
-          <div class="food-name">⏱️ تحدي الصيام 16 ساعة لمدة 3 أيام</div>
-          <div style="font-size:11px; color:var(--text-secondary);">تحدي الانضباط وحرق الدهون المتواصل</div>
-        </div>
-        <button class="icon-btn" onclick="joinChallenge('صيام')">انضمام للتحدي</button>
       </div>
     </div>
   </div>
@@ -663,7 +662,7 @@ body {
     </div>
   </div>
 
-  <!-- CHAT SCREEN WITH VOICE OUTPUT -->
+  <!-- CHAT SCREEN -->
   <div id="chat-screen" class="screen">
     <div class="screen-header">
       <div>
@@ -681,12 +680,25 @@ body {
     </div>
   </div>
 
-  <!-- SETTINGS SCREEN -->
+  <!-- SETTINGS SCREEN & NOTIFICATIONS -->
   <div id="settings-screen" class="screen">
     <div class="screen-header">
       <div>
-        <div class="screen-title">الإعدادات والملف الشخصي ⚙️</div>
-        <div class="screen-subtitle">إدارة الحساب ومفاتيح الذكاء الاصطناعي</div>
+        <div class="screen-title">الإعدادات والتنبيهات ⚙️🔔</div>
+        <div class="screen-subtitle">إدارة الإشعارات ومفاتيح الذكاء الاصطناعي</div>
+      </div>
+    </div>
+
+    <!-- Notifications Control Card -->
+    <div class="glass-card" style="border-color: var(--accent-purple);">
+      <h3 style="color: var(--accent-purple); margin-bottom: 8px; font-size:15px; font-weight:800;">🔔 نظام التذكيرات والإشعارات</h3>
+      <p style="font-size:12px; color:var(--text-secondary); margin-bottom:14px;">تفعيل التنبيهات لشرب الماء، إدخال الوجبات، وتنبيهات الصيام</p>
+      
+      <div style="display:flex; flex-direction:column; gap:10px;">
+        <button class="btn btn-purple" id="notification-toggle-btn" onclick="requestNotificationPermission()">
+          <span>🔔 تفعيل الإشعارات في الجهاز</span>
+        </button>
+        <button class="btn btn-secondary" onclick="sendTestNotification()">⚡ تجربة إرسال إشعار تجريبي</button>
       </div>
     </div>
 
@@ -799,6 +811,67 @@ async function fetchGeminiWithRetry(url, payload) {
   throw lastError;
 }
 
+// ============ CATEGORIZED SUGGESTED MEALS ============
+const suggestedMealsData = {
+  breakfast: [
+    { name: '🍳 إفطار بياض البيض والخبز الأسمر', cal: 320, protein: 24, carbs: 28, fat: 8, desc: '3 بيضات + 2 شريحة خبز أسمر + خيار وطماطم' },
+    { name: '🥣 طبق الشوفان بالحليب والمكسرات', cal: 380, protein: 16, carbs: 52, fat: 12, desc: '50غ شوفان + كوب حليب قليلة الدسم + ملعقة عسل ولوز' },
+    { name: '🧀 جبنة قريش بالزيتون وخبز التوست', cal: 290, protein: 22, carbs: 24, fat: 9, desc: '150غ جبن قريش صحي + 5 حبات زيتون + توست أسمر' }
+  ],
+  lunch: [
+    { name: '🍗 صدر دجاج مشوي مع أرز بني وسلطة', cal: 480, protein: 42, carbs: 45, fat: 9, desc: '180غ دجاج + 150غ أرز بني مطبوخ + سلطة خضراء' },
+    { name: '🥩 شريحة لحم بقر صافي مع بطاطا حلوة', cal: 520, protein: 38, carbs: 42, fat: 16, desc: '150غ لحم مشوي + 150غ بطاطا حلوة مشوية' },
+    { name: '🐟 فيليه سلمون مشوي مع خضار سوتيه', cal: 440, protein: 35, carbs: 18, fat: 18, desc: '150غ سلمون + كوسة وبوكلي وجزر مسلوق' }
+  ],
+  dinner: [
+    { name: '🥗 علبة تونا بالماء مع سلطة مشكلة', cal: 260, protein: 32, carbs: 10, fat: 4, desc: 'تونا الصافي + طبق سلطة مشكلة مع زيت زيتون خفيف' },
+    { name: '🥣 زبادي يوناني مع بذور الشيا والتوت', cal: 210, protein: 18, carbs: 18, fat: 5, desc: '170غ زبادي يوناني + ملعقة بذور شيا + حفنة توت' },
+    { name: '🍳 بيضتان مسلوقتان مع طبق سلطة خضراء', cal: 220, protein: 16, carbs: 8, fat: 11, desc: 'وجبة عشاء خفيفة وسريعة الهضم' }
+  ],
+  snack: [
+    { name: '🍎 تفاحة متوسطة مع ملعقة زبدة الفول السوداني', cal: 190, protein: 5, carbs: 25, fat: 8, desc: 'سناك طاقة مثالي وقليل السعرات' },
+    { name: '🥜 حفنة مكسرات مشكلة نيئة (30غ)', cal: 175, protein: 6, carbs: 6, fat: 15, desc: 'لوز، جوز، وكاجو غني بالدهون الصحية' },
+    { name: '🍌 موزة مع 5 حبات لوز', cal: 150, protein: 3, carbs: 28, fat: 4, desc: 'وجبة خفيفة قبل أو بعد التمرين' }
+  ]
+};
+
+let currentSuggestedCategory = 'breakfast';
+
+function renderSuggestedMeals() {
+  const container = document.getElementById('suggested-meals-container');
+  if (!container) return;
+
+  const list = suggestedMealsData[currentSuggestedCategory] || [];
+  container.innerHTML = list.map(item => `
+    <div class="food-item">
+      <div class="food-info">
+        <div style="font-weight:800; font-size:14px; color:#fff;">${item.name}</div>
+        <div style="font-size:11px; color:var(--text-secondary);">${item.desc}</div>
+        <div style="font-size:11px; color:var(--accent-emerald); margin-top:2px;">🔥 ${item.cal} سعرة | 🥩 ${item.protein}g بروتين | 🌾 ${item.carbs}g كربوهيدرات</div>
+      </div>
+      <button class="icon-btn" style="background:var(--accent-emerald); color:#042f2e; font-weight:800; border:none;" onclick="addPresetCombo('${item.name}', ${item.cal}, ${item.protein}, ${item.carbs}, ${item.fat})">➕ إضافة للسجل</button>
+    </div>
+  `).join('');
+}
+
+function selectSuggestedCategory(cat, el) {
+  currentSuggestedCategory = cat;
+  document.querySelectorAll('#meals-screen .pill-container .pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  renderSuggestedMeals();
+}
+
+function addPresetCombo(name, cal, p, c, f) {
+  appState.meals.push({
+    id: Date.now(), date: todayStr(), name, cal, protein: p, carbs: c, fat: f,
+    time: new Date().toLocaleTimeString('ar', { hour: '2-digit', minute: '2-digit' })
+  });
+  saveCurrentUserData();
+  updateDashboard();
+  updateMealsList();
+  showToast(`تمت إضافة ${name} لسجل وجبات اليوم! 🥗`, 'success');
+}
+
 // ============ APP STATE ============
 let currentUsername = null;
 let appState = {
@@ -810,7 +883,7 @@ let appState = {
   waterDate: null,
   chat: [],
   streak: 1,
-  lastActiveDate: null,
+  notificationsEnabled: false,
   fasting: { active: false, startTime: null, targetHours: 16, logs: [] }
 };
 let dashboardChartInstance = null;
@@ -870,7 +943,9 @@ window.addEventListener('load', async () => {
       updateDashboard();
       initChart();
       initFastingTimer();
+      renderSuggestedMeals();
       fetchLeaderboard();
+      startNotificationScheduler();
       return;
     }
   }
@@ -893,7 +968,9 @@ function handleLogin() {
     updateDashboard();
     initChart();
     initFastingTimer();
+    renderSuggestedMeals();
     fetchLeaderboard();
+    startNotificationScheduler();
   } else {
     appState = db[username] || { profile: null, meals: [], workouts: [], weights: [], water: 0, chat: [], streak: 1, fasting: { active: false, startTime: null, targetHours: 16, logs: [] } };
     showScreen('setup-screen');
@@ -941,6 +1018,8 @@ function completeSetup() {
   updateDashboard();
   initChart();
   initFastingTimer();
+  renderSuggestedMeals();
+  startNotificationScheduler();
   showToast('تم إعداد حسابك بنجاح! 🚀', 'success');
 }
 
@@ -952,7 +1031,7 @@ function switchScreen(screenName, navElement) {
   if (navElement) navElement.classList.add('active');
 
   if (screenName === 'dashboard') { updateDashboard(); updateChartData(); }
-  if (screenName === 'meals') updateMealsList();
+  if (screenName === 'meals') { updateMealsList(); renderSuggestedMeals(); }
   if (screenName === 'fasting') renderFastingHistory();
   if (screenName === 'community') fetchLeaderboard();
   if (screenName === 'workouts') updateWorkoutsList();
@@ -1044,7 +1123,7 @@ function updateChartData() {
   dashboardChartInstance.update();
 }
 
-// ============ 1. VOICE LOGGING FOR MEALS ============
+// ============ VOICE LOGGING FOR MEALS ============
 let speechRecognition = null;
 
 function toggleVoiceRecognition() {
@@ -1096,7 +1175,7 @@ function toggleVoiceRecognition() {
   };
 
   speechRecognition.onerror = (e) => {
-    showToast('حدث خطأ أثناء التقاط الصوت: ' + e.error, 'error');
+    showToast('حدث خطأ أثناء التقاط الصوت', 'error');
     document.getElementById('voice-btn-text').textContent = '🎙️ ابدأ التسجيل الصوتي';
     speechRecognition = null;
   };
@@ -1104,37 +1183,78 @@ function toggleVoiceRecognition() {
   speechRecognition.start();
 }
 
-// ============ 2. BARCODE SCANNER & OPEN FOOD FACTS ============
+// ============ BARCODE SCANNER FIXED (LIVE & FILE SCAN) ============
 let html5QrCode = null;
 
 function startBarcodeScanner() {
-  document.getElementById('barcode-scanner-container').style.display = 'block';
+  const container = document.getElementById('barcode-scanner-container');
+  container.style.display = 'block';
+
   if (!html5QrCode) {
     html5QrCode = new Html5Qrcode("barcode-reader");
   }
-  
+
+  const config = { fps: 10, qrbox: { width: 250, height: 150 } };
+
   html5QrCode.start(
     { facingMode: "environment" },
-    { fps: 10, qrbox: { width: 250, height: 150 } },
+    config,
     (decodedText) => {
       document.getElementById('barcode-input').value = decodedText;
       stopBarcodeScanner();
       lookupBarcode(decodedText);
     },
-    () => {}
+    (errorMessage) => {
+      // ignore frame scan errors
+    }
   ).catch(err => {
-    showToast('تعذر الكاميرا: ' + err, 'error');
+    console.warn("Environment camera failed, trying default user camera:", err);
+    html5QrCode.start(
+      { facingMode: "user" },
+      config,
+      (decodedText) => {
+        document.getElementById('barcode-input').value = decodedText;
+        stopBarcodeScanner();
+        lookupBarcode(decodedText);
+      },
+      () => {}
+    ).catch(err2 => {
+      showToast('تعذر فتح البث المباشر للكاميرا. يمكنك تجربة "📸 التقاط صورة الباركود".', 'warning');
+      container.style.display = 'none';
+    });
   });
 }
 
 function stopBarcodeScanner() {
-  if (html5QrCode) {
+  if (html5QrCode && html5QrCode.isScanning) {
     html5QrCode.stop().then(() => {
       document.getElementById('barcode-scanner-container').style.display = 'none';
     }).catch(() => {
       document.getElementById('barcode-scanner-container').style.display = 'none';
     });
+  } else {
+    document.getElementById('barcode-scanner-container').style.display = 'none';
   }
+}
+
+function handleBarcodeImageUpload(event) {
+  const file = event.target.files?.[0];
+  if (!file) return;
+
+  if (!html5QrCode) {
+    html5QrCode = new Html5Qrcode("barcode-reader");
+  }
+
+  showToast('جاري تحليل صورة الباركود...', 'info');
+  html5QrCode.scanFileV2(file, true)
+    .then(result => {
+      const decodedText = result.decodedText;
+      document.getElementById('barcode-input').value = decodedText;
+      lookupBarcode(decodedText);
+    })
+    .catch(err => {
+      showToast('لم يتم العثور على باركود واضح في الصورة. تأكد من وضوح الصورة.', 'warning');
+    });
 }
 
 function lookupBarcodeManual() {
@@ -1145,14 +1265,14 @@ function lookupBarcodeManual() {
 
 async function lookupBarcode(barcode) {
   const preview = document.getElementById('barcode-result-preview');
-  preview.innerHTML = `<div class="message-box" style="margin-top:10px;">🔍 جاري البحث في قاعدة بيانات Open Food Facts... (${barcode})</div>`;
+  preview.innerHTML = `<div class="message-box" style="margin-top:10px;">🔍 جاري البحث في Open Food Facts... (${barcode})</div>`;
 
   try {
     const res = await fetch(`https://world.openfoodfacts.org/api/v0/product/${barcode}.json`);
     const data = await res.json();
 
     if (data.status !== 1 || !data.product) {
-      preview.innerHTML = `<div class="message-box warning" style="margin-top:10px;">لم يتم العثور على المنتج برقم الباركود ${barcode}. يمكنك استخدام البحث النصي أو الصور.</div>`;
+      preview.innerHTML = `<div class="message-box warning" style="margin-top:10px;">لم يتم العثور على منتج بهذا الباركود (${barcode}). يمكنك وصفه نصياً أو تصويره.</div>`;
       return;
     }
 
@@ -1166,17 +1286,69 @@ async function lookupBarcode(barcode) {
 
     preview.innerHTML = `
       <div class="message-box success" style="margin-top:10px;">
-        <strong>📦 المنتج المكتشف:</strong> ${name}<br>
+        <strong>📦 المنتج:</strong> ${name}<br>
         🔥 ${calories} سعرة /100g | 🥩 بروتين: ${protein}g | 🌾 كربوهيدرات: ${carbs}g | 🫒 دهون: ${fat}g
       </div>
       <button class="btn btn-cyan" onclick="confirmAiMeal('${name}', ${calories}, ${protein}, ${carbs}, ${fat})">✅ إضافة الوجبة للسجل</button>
     `;
   } catch (e) {
-    preview.innerHTML = `<div class="message-box error" style="margin-top:10px;">فشل الاتصال بـ Open Food Facts: ${e.message}</div>`;
+    preview.innerHTML = `<div class="message-box error" style="margin-top:10px;">فشل الاتصال: ${e.message}</div>`;
   }
 }
 
-// ============ 3. INTERMITTENT FASTING TRACKER ============
+// ============ NOTIFICATIONS SYSTEM ============
+function requestNotificationPermission() {
+  if (!("Notification" in window)) {
+    showToast("متصفحك لا يدعم الإشعارات في هذا الجهاز", "warning");
+    return;
+  }
+
+  Notification.requestPermission().then(permission => {
+    if (permission === "granted") {
+      appState.notificationsEnabled = true;
+      saveCurrentUserData();
+      showToast("تم تفعيل نظام التنبيهات بنجاح! 🔔", "success");
+      document.getElementById('notification-toggle-btn').innerHTML = "<span>✅ الإشعارات مفعلة بنجاح</span>";
+    } else {
+      showToast("لم يتم منح الإذن للإشعارات", "warning");
+    }
+  });
+}
+
+function triggerNotification(title, body) {
+  if ("Notification" in window && Notification.permission === "granted") {
+    new Notification(title, {
+      body: body,
+      icon: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512' fill='%2310b981'><rect width='512' height='512' rx='100' fill='%23070a16'/><path d='M256 100v312' stroke='%2310b981' stroke-width='40'/></svg>"
+    });
+  } else {
+    showToast(`🔔 [تنبيه]: ${title} - ${body}`, 'info');
+  }
+}
+
+function sendTestNotification() {
+  triggerNotification("مستشار صحتك الذكي 💚", "هذا إشعار تجريبي! سنقوم بتذكيرك بانتظام لشرب الماء وتسجيل وجباتك والصيام.");
+}
+
+function startNotificationScheduler() {
+  // Check every hour for water or meal logging reminders
+  setInterval(() => {
+    if (!appState.notificationsEnabled) return;
+    const hour = new Date().getHours();
+
+    if (hour === 9) {
+      triggerNotification("⏰ إفطار الصباح", "لا تنسَ إدخال وجبة الإفطار للالتزام بهدفك اليومي!");
+    } else if (hour === 14) {
+      triggerNotification("🍗 وقت الغداء", "سجل وجبة الغداء بالصوت أو الصورة لتتبع سعراتك!");
+    } else if (hour === 18) {
+      triggerNotification("💧 تذكير شرب الماء", "تذكر شرب كوب ماء لترطيب جسمك والحفاظ على الحيوية!");
+    } else if (hour === 21) {
+      triggerNotification("🌙 عشاء خفيف وتحديث الوزن", "سجل وجبة العشاء وقراءة وزن اليوم للتقدم في الرسم البياني!");
+    }
+  }, 3600000); // Hourly check
+}
+
+// ============ INTERMITTENT FASTING TRACKER ============
 function changeFastingProtocol() {
   const sel = document.getElementById('fasting-protocol-select').value;
   const target = parseInt(sel.split(':')[0]) || 16;
@@ -1210,7 +1382,7 @@ function stopFasting() {
   saveCurrentUserData();
   initFastingTimer();
   renderFastingHistory();
-  showToast(`أتممت ${elapsedHours} ساعة صيام بنجاح! 🎉`, 'success');
+  triggerNotification("🎉 مبارك أكتمال الصيام!", `أتممت ${elapsedHours} ساعة صيام بنجاح.`);
 }
 
 function initFastingTimer() {
@@ -1281,14 +1453,14 @@ function renderFastingHistory() {
   container.innerHTML = logs.slice().reverse().map(l => `
     <div class="food-item">
       <div class="food-info">
-        <div class="food-name">⏱️ صيام ${l.hours} ساعة</div>
+        <div style="font-weight:800; font-size:14px; color:#fff;">⏱️ صيام ${l.hours} ساعة</div>
         <div style="font-size:11px; color:var(--text-secondary);">التاريخ: ${l.date} (الهدف: ${l.target} ساعة)</div>
       </div>
     </div>
   `).join('');
 }
 
-// ============ 4. COMMUNITY & LEADERBOARD ============
+// ============ COMMUNITY & LEADERBOARD ============
 async function syncLeaderboardToFirestore() {
   if (!window.firebaseDb || !currentUsername || !appState.profile) return;
   try {
@@ -1301,7 +1473,7 @@ async function syncLeaderboardToFirestore() {
       updatedAt: todayStr()
     });
   } catch (e) {
-    console.warn("Firestore leaderboard sync error:", e);
+    console.warn("Firestore leaderboard sync:", e);
   }
 }
 
@@ -1312,7 +1484,7 @@ async function fetchLeaderboard() {
   if (!window.firebaseDb) {
     container.innerHTML = `
       <div class="food-item">
-        <div class="food-info"><div class="food-name">👑 ${appState.profile?.name || currentUsername} (أنت)</div></div>
+        <div class="food-info"><div style="font-weight:800; color:#fff;">👑 ${appState.profile?.name || currentUsername} (أنت)</div></div>
         <div style="font-weight:900; color:var(--accent-amber);">🔥 ${appState.streak || 1} أيام</div>
       </div>
     `;
@@ -1336,7 +1508,7 @@ async function fetchLeaderboard() {
       <div class="food-item">
         <div style="font-size:18px; font-weight:900; margin-left:10px; color:var(--accent-cyan);">#${index + 1}</div>
         <div class="food-info">
-          <div class="food-name">${item.name || item.username}</div>
+          <div style="font-weight:800; font-size:14px; color:#fff;">${item.name || item.username}</div>
           <div style="font-size:11px; color:var(--text-secondary);">💧 شرب الماء: ${item.water || 0} أكواب</div>
         </div>
         <div style="font-weight:900; color:var(--accent-amber);">🔥 ${item.streak || 1} أيام</div>
@@ -1347,11 +1519,7 @@ async function fetchLeaderboard() {
   }
 }
 
-function joinChallenge(type) {
-  showToast(`تم انضمامك لتحدي الـ ${type} بنجاح! 💪`, 'success');
-}
-
-// ============ 5. TEXT-TO-SPEECH OUTPUT (TTS) ============
+// ============ TEXT-TO-SPEECH (TTS) ============
 function pcmToWav(pcmBytes, sampleRate = 24000) {
   const numChannels = 1;
   const sampleBits = 16;
@@ -1413,10 +1581,9 @@ async function speakAiResponse(textToSpeak) {
       return;
     }
   } catch (e) {
-    console.warn("Gemini TTS fallback to WebSpeechSynthesis:", e);
+    console.warn("Gemini TTS fallback:", e);
   }
 
-  // Fallback Web Speech Synthesis
   if ('speechSynthesis' in window) {
     const utterance = new SpeechSynthesisUtterance(textToSpeak);
     utterance.lang = 'ar-SA';
@@ -1426,7 +1593,7 @@ async function speakAiResponse(textToSpeak) {
   }
 }
 
-// ============ AI IMAGE & TEXT CORE ============
+// ============ AI IMAGE & TEXT ANALYSIS ============
 function compressAndResizeImage(file, maxDimension = 1024) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -1787,6 +1954,11 @@ function updateProfileUI() {
       <strong>السعرات المستهدفة:</strong> ${p.dailyCalories} سعرة حرارية
     </div>
   `;
+
+  const notifBtn = document.getElementById('notification-toggle-btn');
+  if (notifBtn && "Notification" in window && Notification.permission === "granted") {
+    notifBtn.innerHTML = "<span>✅ الإشعارات مفعلة بنجاح</span>";
+  }
 }
 
 function editProfile() { showScreen('setup-screen'); }

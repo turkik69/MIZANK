@@ -450,7 +450,7 @@ body {
     <div class="screen-header">
       <div>
         <div class="screen-title">سجل الوجبات والتغذية 🍽️</div>
-        <div class="screen-subtitle">كتابة حرّة + صوت + تصوير + باركود</div>
+        <div class="screen-subtitle">كتابة حرّة + أكلات عمانية وخليجية + مشروبات</div>
       </div>
     </div>
 
@@ -464,7 +464,7 @@ body {
       </p>
 
       <div class="form-group" style="margin-bottom:10px;">
-        <input type="text" id="meal-text-input" class="form-input" placeholder="مثال: موز، سندويتش بيض وخيار..." onkeypress="if(event.key==='Enter') handleMealText()">
+        <input type="text" id="meal-text-input" class="form-input" placeholder="مثال: صحن كبسة دجاج مع سلطة، شاي كرك..." onkeypress="if(event.key==='Enter') handleMealText()">
       </div>
 
       <div style="display:grid; grid-template-columns: 2fr 1fr; gap:10px;">
@@ -475,16 +475,17 @@ body {
       <div id="meal-text-preview"></div>
     </div>
 
-    <!-- Suggested Meals Categories -->
+    <!-- Suggested Meals Categories WITH OMANI/GULF DISHES & DRINKS -->
     <div class="glass-card" style="border-color: var(--accent-amber);">
-      <h3 style="color: var(--accent-amber); margin-bottom: 8px; font-size:15px; font-weight:800;">💡 الوجبات الصحية المقترحة لليوم</h3>
-      <p style="font-size:12px; color:var(--text-secondary); margin-bottom:12px;">اختر من الوجبات الجاهزة المحسوبة السعرات حسب الفترة:</p>
+      <h3 style="color: var(--accent-amber); margin-bottom: 8px; font-size:15px; font-weight:800;">💡 أكلات عمانية وخليجية ومشروبات مقترحة</h3>
+      <p style="font-size:12px; color:var(--text-secondary); margin-bottom:12px;">اختر من الوجبات الجاهزة والمشروبات بضغطة زر:</p>
 
       <div class="pill-container">
         <div class="pill active" onclick="selectSuggestedCategory('breakfast', this)">🍳 الإفطار</div>
-        <div class="pill" onclick="selectSuggestedCategory('lunch', this)">🍗 الغداء</div>
+        <div class="pill" onclick="selectSuggestedCategory('lunch', this)">🍗 الغداء العماني والخليجي</div>
         <div class="pill" onclick="selectSuggestedCategory('dinner', this)">🥗 العشاء</div>
-        <div class="pill" onclick="selectSuggestedCategory('snack', this)">🥑 سناكس خفيفة</div>
+        <div class="pill" onclick="selectSuggestedCategory('snack', this)">🥑 سناكس وحلويات</div>
+        <div class="pill" onclick="selectSuggestedCategory('drinks', this)">☕ المشروبات والدايت</div>
       </div>
 
       <div id="suggested-meals-container"></div>
@@ -493,7 +494,7 @@ body {
     <!-- Voice Input Card -->
     <div class="glass-card" style="border-color: var(--accent-emerald);">
       <h3 style="color: var(--accent-emerald); margin-bottom: 4px; font-size:15px; font-weight:800;">🎙️ تسجيل الوجبة بالتحدث الصوتي</h3>
-      <p style="font-size:12px; color:var(--text-secondary); margin-bottom:12px;">انقر وتحدث بما أكلته (مثال: "أكلت اليوم تفاحة ومعلقتين زبدة فول سوداني")</p>
+      <p style="font-size:12px; color:var(--text-secondary); margin-bottom:12px;">انقر وتحدث بما أكلته (مثال: "شربت شاي كرك وأكلت صحن مجبوس")</p>
       
       <button class="btn btn-primary" id="voice-record-btn" onclick="toggleVoiceRecognition()">
         <span id="voice-btn-text">🎙️ ابدأ التسجيل الصوتي</span>
@@ -612,7 +613,7 @@ body {
     </div>
   </div>
 
-  <!-- WORKOUTS SCREEN (UPDATED: REPS, JUMP ROPE, ABS ROUTINES) -->
+  <!-- WORKOUTS SCREEN -->
   <div id="workouts-screen" class="screen">
     <div class="screen-header">
       <div>
@@ -937,27 +938,38 @@ async function fetchGeminiWithRetry(payload) {
   throw lastError || new Error("تعذر الاتصال بخدمة الذكاء الاصطناعي حالياً.");
 }
 
-// ============ CATEGORIZED SUGGESTED MEALS ============
+// ============ CATEGORIZED SUGGESTED MEALS WITH OMANI, GULF & DRINKS ============
 const suggestedMealsData = {
   breakfast: [
-    { name: '🍳 إفطار بياض البيض والخبز الأسمر', cal: 320, protein: 24, carbs: 28, fat: 8, desc: '3 بيضات + 2 شريحة خبز أسمر + خيار وطماطم' },
-    { name: '🥣 طبق الشوفان بالحليب والمكسرات', cal: 380, protein: 16, carbs: 52, fat: 12, desc: '50غ شوفان + كوب حليب قليلة الدسم + ملعقة عسل ولوز' },
-    { name: '🧀 جبنة قريش بالزيتون وخبز التوست', cal: 290, protein: 22, carbs: 24, fat: 9, desc: '150غ جبن قريش صحي + 5 حبات زيتون + توست أسمر' }
+    { name: '🫓 خبز رقاق عماني بالبيض والجبن الخفيف', cal: 310, protein: 18, carbs: 32, fat: 10, desc: '2 شريحة خبز رقاق + بيضة + جبن قليل الدسم + طماطم' },
+    { name: '🍳 بلاليط بالبيض على الطريقة الخليجية', cal: 340, protein: 14, carbs: 45, fat: 9, desc: 'شعيرية محلاة خفيفة مع البيض المقلي والهيل والزعفران' },
+    { name: '🥣 فول مدمس بالزيتون وخبز رقاق', cal: 290, protein: 16, carbs: 38, fat: 8, desc: 'طبق فول بالكمون وشيت زيت زيتون + خبز رقاق' },
+    { name: '🥣 طبق الشوفان بالحليب والمكسرات', cal: 380, protein: 16, carbs: 52, fat: 12, desc: '50غ شوفان + كوب حليب قليل الدسم + ملعقة عسل ولوز' }
   ],
   lunch: [
-    { name: '🍗 صدر دجاج مشوي مع أرز بني وسلطة', cal: 480, protein: 42, carbs: 45, fat: 9, desc: '180غ دجاج + 150غ أرز بني مطبوخ + سلطة خضراء' },
-    { name: '🥩 شريحة لحم بقر صافي مع بطاطا حلوة', cal: 520, protein: 38, carbs: 42, fat: 16, desc: '150غ لحم مشوي + 150غ بطاطا حلوة مشوية' },
-    { name: '🐟 فيليه سلمون مشوي مع خضار سوتيه', cal: 440, protein: 35, carbs: 18, fat: 18, desc: '150غ سلمون + كوسة وبوكلي وجزر مسلوق' }
+    { name: '🍗 مجبوس / كبسة دجاج خليجية متوازنة', cal: 490, protein: 42, carbs: 50, fat: 11, desc: '180غ دجاج مشوي مع بهارات الكبسة + 150غ أرز مع السلطة' },
+    { name: '🥩 قبولي لحم عماني بالبهارات العطرية', cal: 530, protein: 38, carbs: 48, fat: 15, desc: '150غ لحم صافي + أرز القبولي العماني مع الحمص والمكسرات' },
+    { name: '🐟 بابلو سمك عماني بالليمون مع أرز أبيض', cal: 420, protein: 36, carbs: 40, fat: 8, desc: 'مرق بابلو السمك العماني الحامض مع 120غ أرز وسلطة' },
+    { name: '🍲 هريس دجاج عماني صحي', cal: 380, protein: 32, carbs: 42, fat: 7, desc: 'قمح هرائس مطبوخ مع صدر الدجاج المهروس وبهارات هادئة' }
   ],
   dinner: [
-    { name: '🥗 علبة تونا بالماء مع سلطة مشكلة', cal: 260, protein: 32, carbs: 10, fat: 4, desc: 'تونا الصافي + طبق سلطة مشكلة مع زيت زيتون خفيف' },
-    { name: '🥣 زبادي يوناني مع بذور الشيا والتوت', cal: 210, protein: 18, carbs: 18, fat: 5, desc: '170غ زبادي يوناني + ملعقة بذور شيا + حفنة توت' },
-    { name: '🍳 بيضتان مسلوقتان مع طبق سلطة خضراء', cal: 220, protein: 16, carbs: 8, fat: 11, desc: 'وجبة عشاء خفيفة وسريعة الهضم' }
+    { name: '🥣 شوربة بابلو عمانية بالسمك والليمون', cal: 220, protein: 28, carbs: 12, fat: 5, desc: 'وجبة عشاء خفيفة وسريعة الهضم غنية بالبروتين والليمون' },
+    { name: '🍗 شواء عماني مشوي مع سلطة مشكلة', cal: 390, protein: 36, carbs: 15, fat: 16, desc: '150غ لحم شواء متبل بالثوم والتمر الهندي + صحن سلطة كبير' },
+    { name: '🥣 مضروبة دجاج عمانية خفيفة', cal: 310, protein: 26, carbs: 30, fat: 6, desc: 'وجبة دافئة ومغذية من الأرز والدجاج المضروب بالبهارات' },
+    { name: '🥗 علبة تونا بالماء مع سلطة مشكلة', cal: 260, protein: 32, carbs: 10, fat: 4, desc: 'تونا الصافي + طبق سلطة مشكلة مع زيت زيتون خفيف' }
   ],
   snack: [
-    { name: '🍎 تفاحة متوسطة مع ملعقة زبدة الفول السوداني', cal: 190, protein: 5, carbs: 25, fat: 8, desc: 'سناك طاقة مثالي وقليل السعرات' },
-    { name: '🥜 حفنة مكسرات مشكلة نيئة (30غ)', cal: 175, protein: 6, carbs: 6, fat: 15, desc: 'لوز، جوز، وكاجو غني بالدهون الصحية' },
-    { name: '🍌 موزة مع 5 حبات لوز', cal: 150, protein: 3, carbs: 28, fat: 4, desc: 'وجبة خفيفة قبل أو بعد التمرين' }
+    { name: '☕ قهوة عمانية مع 3 حبات تمر مجفف', cal: 80, protein: 1, carbs: 18, fat: 0, desc: 'قهوة بالهيل والزعفران مع تمر سكري أو خلاص' },
+    { name: '🍯 قطعة صغيرة حلوى عمانية مع قهوة', cal: 160, protein: 1, carbs: 28, fat: 5, desc: 'حصّة معتدلة (30غ) للتحلية دون تخريب السعرات' },
+    { name: '🥜 مكسرات خليجية نيئة مع شاي أحمر', cal: 170, protein: 6, carbs: 8, fat: 14, desc: 'حفنة لوز وفستق نيء مع كوب شاي أحمر بالنعناع' },
+    { name: '🍎 تفاحة متوسطة مع زبدة الفول السوداني', cal: 190, protein: 5, carbs: 25, fat: 8, desc: 'سناك طاقة مثالي وقليل السعرات' }
+  ],
+  drinks: [
+    { name: '☕ قهوة عمانية / عربية بالهيل والزعفران', cal: 5, protein: 0, carbs: 1, fat: 0, desc: 'مشروب دافئ منعش خالي من السعرات تقريباً' },
+    { name: '🥛 شاي كرك / شاي حليب قليل الدسم', cal: 65, protein: 3, carbs: 8, fat: 2, desc: 'كوب شاي بالحليب والبهارات (بدون سكر مضاف)' },
+    { name: '🍃 شاي أخضر بالزنجبيل والليمون', cal: 2, protein: 0, carbs: 0, fat: 0, desc: 'مشروب ينشط الأيض ويسرع حرق الدهون' },
+    { name: '☕ شاي أحمر بالنعناع أو الهيل', cal: 5, protein: 0, carbs: 1, fat: 0, desc: 'شاي أحمر خفيف بدون سكر' },
+    { name: '🥤 مشروب غازي دايت (كولا دايت / سبرايت دايت)', cal: 0, protein: 0, carbs: 0, fat: 0, desc: 'خيار منعش خالٍ من السعرات الحرارية والسكر' }
   ]
 };
 
@@ -975,7 +987,7 @@ function renderSuggestedMeals() {
         <div style="font-size:11px; color:var(--text-secondary);">${item.desc}</div>
         <div style="font-size:11px; color:var(--accent-emerald); margin-top:2px;">🔥 ${item.cal} سعرة | 🥩 ${item.protein}g بروتين | 🌾 ${item.carbs}g كربوهيدرات</div>
       </div>
-      <button class="icon-btn" style="background:var(--accent-emerald); color:#042f2e; font-weight:800; border:none;" onclick="addPresetCombo('${item.name}', ${item.cal}, ${item.protein}, ${item.carbs}, ${item.fat})">➕ إضافة للسجل</button>
+      <button class="icon-btn" style="background:var(--accent-emerald); color:#042f2e; font-weight:800; border:none;" onclick="addPresetCombo('${item.name.replace(/'/g, "\\'")}', ${item.cal}, ${item.protein}, ${item.carbs}, ${item.fat})">➕ إضافة للسجل</button>
     </div>
   `).join('');
 }
@@ -1595,7 +1607,6 @@ function requestNotificationPermission() {
 function triggerNotification(title, body) {
   const scaleIconUrl = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='120' fill='%23070a16'/><rect x='70' y='70' width='372' height='372' rx='70' fill='%23111827' stroke='%2310b981' stroke-width='22'/><rect x='150' y='115' width='212' height='80' rx='20' fill='%23042f2e' stroke='%2310b981' stroke-width='10'/><circle cx='180' cy='155' r='8' fill='%2310b981'/><path d='M210 155h90' stroke='%2310b981' stroke-width='14' stroke-linecap='round' stroke-dasharray='15 10'/><path d='M150 360 a130 130 0 0 1 212 0' fill='none' stroke='%2306b6d4' stroke-width='24' stroke-linecap='round'/><path d='M256 360 l45 -70' stroke='%23f43f5e' stroke-width='16' stroke-linecap='round'/><circle cx='256' cy='360' r='22' fill='%23f43f5e'/></svg>";
 
-  // 1. Try Service Worker push if available
   if (swRegistration && swRegistration.active) {
     swRegistration.active.postMessage({
       type: 'SHOW_NOTIFICATION',
@@ -1603,13 +1614,10 @@ function triggerNotification(title, body) {
       body: body,
       icon: scaleIconUrl
     });
-  } 
-  // 2. Direct browser notification
-  else if ("Notification" in window && Notification.permission === "granted") {
+  } else if ("Notification" in window && Notification.permission === "granted") {
     new Notification(title, { body: body, icon: scaleIconUrl });
   }
 
-  // 3. Always show in-app Toast
   showToast(`🔔 [تذكير]: ${title} - ${body}`, 'info');
 }
 
@@ -1622,7 +1630,6 @@ let notificationSchedulerInterval = null;
 function startNotificationScheduler() {
   if (notificationSchedulerInterval) clearInterval(notificationSchedulerInterval);
 
-  // Check every 60 seconds for active reminders
   notificationSchedulerInterval = setInterval(() => {
     if (!appState.notificationsEnabled) return;
 
@@ -1630,7 +1637,6 @@ function startNotificationScheduler() {
     const currentHour = new Date().getHours();
     const intervalMs = (appState.waterIntervalHours || 2) * 60 * 60 * 1000;
 
-    // A. Check Water Reminder Interval
     if (!appState.lastWaterNotifTime || (now - appState.lastWaterNotifTime >= intervalMs)) {
       if (appState.water < (appState.profile?.water || 8)) {
         triggerNotification("💧 تذكير شرب الماء", "حان وقت شرب كوب ماء جديد لترطيب جسمك والحفاظ على نشاطك!");
@@ -1639,8 +1645,7 @@ function startNotificationScheduler() {
       }
     }
 
-    // B. Check Scheduled Meal Reminders (Morning, Lunch, Evening)
-    const mealIntervalMs = 4 * 60 * 60 * 1000; // 4 hours check
+    const mealIntervalMs = 4 * 60 * 60 * 1000;
     if (!appState.lastMealNotifTime || (now - appState.lastMealNotifTime >= mealIntervalMs)) {
       if (currentHour === 9) {
         triggerNotification("🍳 وقت وجبة الإفطار", "لا تنسَ تسجيل وجبة الإفطار لضبط جدول السعرات!");
@@ -1656,7 +1661,7 @@ function startNotificationScheduler() {
         saveCurrentUserData();
       }
     }
-  }, 60000); // Checks every minute
+  }, 60000);
 }
 
 // ============ INTERMITTENT FASTING TRACKER ============
@@ -2004,7 +2009,7 @@ function deleteMeal(id) {
 }
 
 // ============ EXPANDED WORKOUTS (REPS, JUMP ROPE, ABS) ============
-let workoutLogMode = 'time'; // 'time' or 'reps'
+let workoutLogMode = 'time';
 
 function setWorkoutLogMode(mode) {
   workoutLogMode = mode;
@@ -2033,10 +2038,9 @@ function updateWorkoutCalRate() {
     const reps = parseInt(document.getElementById('workout-reps').value) || 15;
     const totalReps = sets * reps;
 
-    // Calorie estimation per rep based on exercise type
     let calPerRep = 0.15;
-    if (type === 'jump_rope') calPerRep = 0.20; // ~100 cals for 500 jumps
-    else if (type.startsWith('abs_')) calPerRep = 0.25; // ~15 cals per set of 15 crunches
+    if (type === 'jump_rope') calPerRep = 0.20;
+    else if (type.startsWith('abs_')) calPerRep = 0.25;
     else calPerRep = 0.30;
 
     const burned = Math.round(totalReps * calPerRep);

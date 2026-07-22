@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -437,6 +436,18 @@ body {
       </div>
     </div>
 
+    <!-- Calorie Balance Card -->
+    <div class="glass-card">
+      <h3 style="font-size:14px; font-weight:800; color:#fff; margin-bottom:12px;">⚖️ السعرات والفائض/العجز اليومي</h3>
+      <div id="calorie-balance-display"></div>
+    </div>
+
+    <!-- Body Shape / BMI Card -->
+    <div class="glass-card">
+      <h3 style="font-size:14px; font-weight:800; color:#fff; margin-bottom:12px;">🧍 معدل ونمط جسمك (BMI)</h3>
+      <div id="body-shape-display"></div>
+    </div>
+
     <!-- Chart Card -->
     <div class="glass-card">
       <h3 style="font-size:14px; font-weight:800; color:#fff; margin-bottom:10px;">📈 سجل الوزن والتطور</h3>
@@ -486,6 +497,8 @@ body {
         <div class="pill" onclick="selectSuggestedCategory('lunch', this)">🍗 الغداء (كبسات وصالونات)</div>
         <div class="pill" onclick="selectSuggestedCategory('dinner', this)">🥗 العشاء والخفيف</div>
         <div class="pill" onclick="selectSuggestedCategory('grills', this)">🍢 المشاكيك والفرن</div>
+        <div class="pill" onclick="selectSuggestedCategory('fastfood', this)">🍔 المطاعم والوجبات السريعة</div>
+        <div class="pill" onclick="selectSuggestedCategory('bakery', this)">🥖 المخبوزات وأنواع الخبز</div>
         <div class="pill" onclick="selectSuggestedCategory('fruits', this)">🍎 الفواكه الطازجة والتمر</div>
         <div class="pill" onclick="selectSuggestedCategory('sweets', this)">🍰 الكيك والحلويات</div>
         <div class="pill" onclick="selectSuggestedCategory('drinks', this)">☕ المشروبات والعصائر</div>
@@ -978,6 +991,33 @@ const suggestedMealsData = {
     { name: '🍢 مشاكيك دجاج مشوية (4 مشاكيك)', cal: 310, protein: 38, carbs: 4, fat: 12, desc: 'أسياخ صدور الدجاج المتبلة بالثوم والليمون والمشوية' },
     { name: '🍗 شواء عماني أصيل مع السلطة', cal: 420, protein: 38, carbs: 10, fat: 18, desc: 'لحم الشواء المطهو بالتبيل العماني والتمر الهندي' }
   ],
+  fastfood: [
+    { name: '🍔 برجر لحم عادي', cal: 295, protein: 17, carbs: 28, fat: 14, desc: 'قرص لحم بقري (~120غ) مع خبز البرجر والخضار الأساسية' },
+    { name: '🧀 تشيز برجر', cal: 350, protein: 20, carbs: 30, fat: 17, desc: 'برجر لحم مع شريحة جبن أمريكي وصوص خاص' },
+    { name: '🍔 برجر دبل لحم', cal: 550, protein: 32, carbs: 32, fat: 30, desc: 'قرصان لحم بقري مع جبن مزدوج وخبز برجر' },
+    { name: '🍗 برجر دجاج مقرمش', cal: 400, protein: 18, carbs: 40, fat: 18, desc: 'صدر دجاج مقرمش مقلي مع مايونيز وخس وطماطم' },
+    { name: '🍔 برجر ديلوكس كبير (دبل جبن ولحم)', cal: 590, protein: 28, carbs: 45, fat: 33, desc: 'حجم كبير مع طبقتين لحم وجبن وصوصات إضافية' },
+    { name: '🍕 بيتزا مارجريتا (شريحة)', cal: 250, protein: 11, carbs: 30, fat: 9, desc: 'عجينة رقيقة مع صلصة طماطم وجبن موزاريلا' },
+    { name: '🍕 بيتزا ببروني (شريحة)', cal: 300, protein: 13, carbs: 30, fat: 14, desc: 'شريحة بيتزا كلاسيكية بالببروني والجبن' },
+    { name: '🍕 بيتزا دجاج (شريحة)', cal: 280, protein: 15, carbs: 29, fat: 11, desc: 'بيتزا بقطع الدجاج المشوي والفلفل الملون' },
+    { name: '🍕 بيتزا خضار (شريحة)', cal: 220, protein: 9, carbs: 28, fat: 8, desc: 'بيتزا بالخضروات المشكلة وجبن قليل الدسم' },
+    { name: '🍕 بيتزا فور تشيز (شريحة)', cal: 320, protein: 15, carbs: 28, fat: 17, desc: 'أربعة أنواع جبن ذائبة على عجينة كلاسيكية' },
+    { name: '🥙 ساندويتش شاورما دجاج', cal: 450, protein: 25, carbs: 40, fat: 20, desc: 'لفة شاورما دجاج مع الثومية والمخللات' },
+    { name: '🥪 ساندويتش كلوب', cal: 460, protein: 24, carbs: 38, fat: 22, desc: 'ثلاث طبقات توست مع دجاج وبيض ولحم مقدد وخس' },
+    { name: '🥪 ساندويتش تونة', cal: 340, protein: 20, carbs: 34, fat: 12, desc: 'خبز مع تونة بالمايونيز وخضار طازجة' },
+    { name: '🧆 ساندويتش فلافل', cal: 330, protein: 11, carbs: 45, fat: 12, desc: 'أقراص فلافل مقرمشة مع طحينة وخضار في خبز عربي' },
+    { name: '🥪 ساندويتش دجاج مشوي', cal: 380, protein: 28, carbs: 36, fat: 12, desc: 'صدر دجاج مشوي مع خس وطماطم وصوص خفيف' }
+  ],
+  bakery: [
+    { name: '🫓 خبز لبناني (رغيف)', cal: 165, protein: 5.5, carbs: 33, fat: 1, desc: 'رغيف خبز لبناني رقيق تقليدي (~60غ)' },
+    { name: '🫓 خبز شباتي', cal: 120, protein: 3, carbs: 18, fat: 3.5, desc: 'خبز هندي رقيق مطبوخ على الصاج (~40غ)' },
+    { name: '🫓 خبز تنور عماني', cal: 180, protein: 5, carbs: 34, fat: 2.5, desc: 'خبز تقليدي مخبوز في التنور الطيني' },
+    { name: '🫓 خبز صاج رقيق', cal: 100, protein: 3, carbs: 20, fat: 1, desc: 'خبز رقيق جداً يُخبز على الصاج الحار' },
+    { name: '🥐 كرواسون بالزبدة', cal: 230, protein: 5, carbs: 26, fat: 12, desc: 'معجنات فرنسية طبقية بالزبدة' },
+    { name: '🥖 خبز فرنسي (باغيت، شريحة)', cal: 140, protein: 4.5, carbs: 27, fat: 1, desc: 'خبز أوروبي مقرمش من الخارج طري من الداخل' },
+    { name: '🌽 خبز الذرة', cal: 190, protein: 4, carbs: 33, fat: 6, desc: 'خبز طري بنكهة الذرة الحلوة' },
+    { name: '🫓 مناقيش زعتر', cal: 280, protein: 6, carbs: 40, fat: 11, desc: 'عجينة مخبوزة مغطاة بالزعتر وزيت الزيتون' }
+  ],
   fruits: [
     { name: '🍌 موزة متوسطة الحجم (100غ)', cal: 105, protein: 1.3, carbs: 27, fat: 0.3, desc: 'مصدر رائع للطاقة البطيئة والبيتاسيوم' },
     { name: '🍇 عنب طازج (كوب 150غ)', cal: 104, protein: 1.1, carbs: 27, fat: 0.2, desc: 'غني بمضادات الأكسدة والسكريات الطبيعية' },
@@ -1257,6 +1297,120 @@ function updateDashboard() {
   document.getElementById('dashboard-carbs-target').textContent = `/ ${p.carbs} غ`;
   document.getElementById('dashboard-fats').textContent = Math.round(fats);
   document.getElementById('dashboard-fats-target').textContent = `/ ${p.fats} غ`;
+
+  renderCalorieBalance(consumedCals, netCals);
+  renderBodyShape();
+}
+
+// ============ توازن السعرات اليومي (فائض/عجز) وتقدير التغير في الوزن ============
+function renderCalorieBalance(consumedCals, netCals) {
+  const container = document.getElementById('calorie-balance-display');
+  const p = appState.profile;
+  if (!container || !p) return;
+
+  const diff = netCals - p.dailyCalories; // موجب = فائض (أكل أكثر من المسموح)، سالب = عجز
+  const gramsChange = Math.abs(diff) / 7.7; // تقريب شائع: 7700 سعرة ≈ 1 كغ دهون
+
+  let statusHtml;
+  if (diff > 20) {
+    statusHtml = `<div class="message-box" style="border-right-color: var(--accent-coral); background: rgba(244,63,94,0.1);">
+      📈 فائض ${Math.round(diff)} سعرة اليوم — قد يزيد هذا وزنك بحوالي <strong>${gramsChange.toFixed(0)} غرام</strong> لو استمر هذا النمط يومياً</div>`;
+  } else if (diff < -20) {
+    statusHtml = `<div class="message-box" style="border-right-color: var(--accent-emerald); background: rgba(16,185,129,0.1);">
+      📉 عجز ${Math.round(Math.abs(diff))} سعرة اليوم — قد تفقد بحوالي <strong>${gramsChange.toFixed(0)} غرام</strong> لو استمر هذا النمط يومياً</div>`;
+  } else {
+    statusHtml = `<div class="message-box" style="border-right-color: var(--accent-cyan); background: rgba(6,182,212,0.1);">
+      ⚖️ سعراتك اليوم قريبة جداً من هدفك — لا تغيير يُذكر متوقع بالوزن</div>`;
+  }
+
+  container.innerHTML = `
+    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:12px;">
+      <div class="macro-item">
+        <div style="font-size:11px; color:var(--text-secondary);">المستهلك اليوم</div>
+        <div style="font-size:20px; font-weight:900; color:#fff;">${consumedCals}</div>
+        <div style="font-size:10px; color:var(--text-muted);">سعرة</div>
+      </div>
+      <div class="macro-item">
+        <div style="font-size:11px; color:var(--text-secondary);">${diff >= 0 ? 'الفائض' : 'العجز'}</div>
+        <div style="font-size:20px; font-weight:900; color:${diff >= 0 ? 'var(--accent-coral)' : 'var(--accent-emerald)'};">${Math.abs(Math.round(diff))}</div>
+        <div style="font-size:10px; color:var(--text-muted);">سعرة</div>
+      </div>
+    </div>
+    ${statusHtml}
+    <p style="font-size:10px; color:var(--text-muted); margin-top:8px;">* تقدير تقريبي وليس دقيقاً طبياً — التغير الفعلي بالوزن يتأثر بعوامل أخرى كالماء والنشاط.</p>
+  `;
+}
+
+// ============ مؤشر كتلة الجسم (BMI) ونمط توزيع الدهون التوضيحي ============
+function calculateBMI(weightKg, heightCm) {
+  const heightM = heightCm / 100;
+  return weightKg / (heightM * heightM);
+}
+
+function getBMICategory(bmi) {
+  if (bmi < 18.5) return { label: 'أقل من الطبيعي (نحافة)', color: 'var(--accent-cyan)' };
+  if (bmi < 25) return { label: 'وزن طبيعي', color: 'var(--accent-emerald)' };
+  if (bmi < 30) return { label: 'زيادة وزن', color: 'var(--accent-amber)' };
+  return { label: 'سمنة', color: 'var(--accent-coral)' };
+}
+
+function getBodyShapePattern(gender, bmiCategory) {
+  if (bmiCategory.label === 'وزن طبيعي') {
+    return { pattern: 'توزيع متوازن للجسم', zone: 'balanced',
+      focus: 'حافظ على نشاطك ونظامك الغذائي المتوازن الحالي — مزيج من الكارديو وتمارين المقاومة يكفي للمحافظة على لياقتك.' };
+  }
+  if (bmiCategory.label === 'أقل من الطبيعي (نحافة)') {
+    return { pattern: 'نحافة عامة', zone: 'legs',
+      focus: 'ركّز على تمارين المقاومة/الأثقال لبناء الكتلة العضلية، مع زيادة تدريجية وصحية للسعرات (بروتين وكربوهيدرات معقدة).' };
+  }
+  if (gender === 'male') {
+    return { pattern: 'نمط تراكم بطني — الأكثر شيوعاً لدى الرجال عموماً', zone: 'abdomen',
+      focus: 'ركّز على تمارين الكارديو وتمارين الجذع/البطن، وقلّل السكريات والدهون المشبعة والمشروبات الغازية.' };
+  }
+  return { pattern: 'نمط تراكم في الأرداف والفخذين — الأكثر شيوعاً لدى النساء عموماً', zone: 'hips',
+    focus: 'ركّز على تمارين الأرداف والفخذين وتمارين المقاومة الشاملة، مع نظام غذائي متوازن قليل السكريات المكررة.' };
+}
+
+function renderBodyShape() {
+  const container = document.getElementById('body-shape-display');
+  const p = appState.profile;
+  if (!container || !p || !p.height) return;
+
+  const currentWeight = appState.weights[appState.weights.length - 1]?.weight ?? p.currentWeight;
+  const bmi = calculateBMI(currentWeight, p.height);
+  const cat = getBMICategory(bmi);
+  const shape = getBodyShapePattern(p.gender, cat);
+
+  const zoneCoords = {
+    abdomen: { cx: 60, cy: 92, rx: 30, ry: 24 },
+    hips: { cx: 60, cy: 150, rx: 34, ry: 36 },
+    legs: { cx: 60, cy: 165, rx: 22, ry: 45 },
+    balanced: { cx: 60, cy: 110, rx: 36, ry: 90 }
+  };
+  const zone = zoneCoords[shape.zone] || zoneCoords.balanced;
+
+  container.innerHTML = `
+    <div style="display:flex; gap:16px; align-items:center; flex-wrap:wrap;">
+      <svg viewBox="0 0 120 220" style="width:100px; height:180px; flex-shrink:0;">
+        <circle cx="60" cy="20" r="16" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
+        <path d="M 40 40 Q 30 70 32 110 L 88 110 Q 90 70 80 40 Z" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
+        <path d="M 32 110 Q 28 150 35 205 L 55 205 L 58 130 L 62 130 L 65 205 L 85 205 Q 92 150 88 110 Z" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
+        <path d="M 40 45 Q 20 70 22 100" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="9" stroke-linecap="round"/>
+        <path d="M 80 45 Q 100 70 98 100" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="9" stroke-linecap="round"/>
+        <ellipse cx="${zone.cx}" cy="${zone.cy}" rx="${zone.rx}" ry="${zone.ry}" style="fill:${cat.color}; opacity:0.4;"/>
+      </svg>
+      <div style="flex:1; min-width:170px;">
+        <div style="font-size:12px; color:var(--text-secondary);">مؤشر كتلة الجسم (BMI)</div>
+        <div style="font-size:26px; font-weight:900; color:${cat.color};">${bmi.toFixed(1)}</div>
+        <div style="font-size:13px; font-weight:700; color:${cat.color}; margin-bottom:8px;">${cat.label}</div>
+        <div style="font-size:12px; color:var(--text-secondary);">${shape.pattern}</div>
+      </div>
+    </div>
+    <div class="message-box" style="margin-top:12px; border-right-color:${cat.color};">
+      🎯 <strong>مناطق التركيز المقترحة:</strong> ${shape.focus}
+    </div>
+    <p style="font-size:10px; color:var(--text-muted); margin-top:6px;">* تصنيف عام تقريبي بناءً على الوزن والطول والجنس فقط وليس تشخيصاً طبياً — الرسم توضيحي وليس تمثيلاً فعلياً لجسمك.</p>
+  `;
 }
 
 function initChart() {
@@ -2356,5 +2510,3 @@ function clearAllData() {
 </script>
 </body>
 </html>
-
-```

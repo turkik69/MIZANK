@@ -455,6 +455,19 @@ body {
         <canvas id="dashboardChart"></canvas>
       </div>
     </div>
+
+    <!-- Weekly Report Card -->
+    <div class="glass-card">
+      <h3 style="font-size:14px; font-weight:800; color:#fff; margin-bottom:12px;">📊 التقرير الأسبوعي</h3>
+      <div id="weekly-report-display"></div>
+    </div>
+
+    <!-- Daily Archive Card -->
+    <div class="glass-card">
+      <h3 style="font-size:14px; font-weight:800; color:#fff; margin-bottom:4px;">📅 أرشيف الأيام السابقة</h3>
+      <p style="font-size:11px; color:var(--text-secondary); margin-bottom:12px;">سجلاتك محفوظة دائماً ولا تُحذف — كل يوم يُقفل تلقائياً ويُؤرشف عند دخول يوم جديد</p>
+      <div id="daily-archive-display"></div>
+    </div>
   </div>
 
   <!-- MEALS SCREEN -->
@@ -1322,6 +1335,8 @@ function updateDashboard() {
 
   renderCalorieBalance(consumedCals, netCals);
   renderBodyShape();
+  renderWeeklyReport();
+  renderDailyArchive();
 }
 
 // ============ توازن السعرات اليومي (فائض/عجز) وتقدير التغير في الوزن ============
@@ -1434,6 +1449,116 @@ function renderBodyShape() {
     <p style="font-size:10px; color:var(--text-muted); margin-top:6px;">* تصنيف عام تقريبي بناءً على الوزن والطول والجنس فقط وليس تشخيصاً طبياً — الرسم توضيحي وليس تمثيلاً فعلياً لجسمك.</p>
   `;
 }
+
+// ============ أرشيف الأيام السابقة + التقرير الأسبوعي (قراءة فقط — لا حذف لأي سجل إطلاقاً) ============
+function getAllRecordedDates() {
+  const dates = new Set();
+  appState.meals.forEach(m => { if (m.date) dates.add(m.date); });
+  (appState.workouts || []).forEach(w => { if (w.date) dates.add(w.date); });
+  return Array.from(dates).sort((a, b) => new Date(b) - new Date(a));
+}
+
+function getDaySummary(date) {
+  const p = appState.profile;
+  const dayMeals = appState.meals.filter(m => m.date === date);
+  const dayWorkouts = (appState.workouts || []).filter(w => w.date === date);
+  const consumed = dayMeals.reduce((s, m) => s + m.cal, 0);
+  const burned = dayWorkouts.reduce((s, w) => s + w.cal, 0);
+  const net = consumed - burned;
+  const target = p ? p.dailyCalories : 0;
+  const diff = net - target;
+  const gramsChange = Math.abs(diff) / 7.7;
+  return {
+    date, consumed, burned, net, diff, gramsChange,
+    mealsCount: dayMeals.length,
+    protein: dayMeals.reduce((s, m) => s + m.protein, 0),
+    carbs: dayMeals.reduce((s, m) => s + m.carbs, 0),
+    fat: dayMeals.reduce((s, m) => s + m.fat, 0)
+  };
+}
+
+function renderDailyArchive() {
+  const container = document.getElementById('daily-archive-display');
+  if (!container) return;
+  const today = todayStr();
+  const pastDates = getAllRecordedDates().filter(d => d !== today);
+
+  if (pastDates.length === 0) {
+    container.innerHTML = '<div class="message-box">لا توجد أيام سابقة مؤرشفة بعد — ستظهر هنا تلقائياً بعد أول يوم كامل من التسجيل</div>';
+    return;
+  }
+
+  container.innerHTML = pastDates.map(date => {
+    const s = getDaySummary(date);
+    const color = s.diff > 20 ? 'var(--accent-coral)' : (s.diff < -20 ? 'var(--accent-emerald)' : 'var(--accent-cyan)');
+    const changeLabel = s.diff > 20 ? `+${s.gramsChange.toFixed(0)} غ متوقع` : (s.diff < -20 ? `-${s.gramsChange.toFixed(0)} غ متوقع` : 'ثابت تقريباً');
+    return `
+      <div class="food-item">
+        <div class="food-info">
+          <div style="font-weight:800; font-size:13px; color:#fff;">${date}</div>
+          <div style="font-size:11px; color:var(--text-secondary);">🔥 ${s.consumed} مستهلك | 🏃 ${s.burned} محروق | 🍽️ ${s.mealsCount} وجبة</div>
+          <div style="font-size:11px; color:${color}; margin-top:2px; font-weight:700;">⚖️ ${changeLabel}</div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function getLast7DaysSummaries() {
+  const days = [];
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date();
+    d.setDate(d.getDate() - i);
+    days.push(getDaySummary(d.toISOString().split('T')[0]));
+  }
+  return days;
+}
+
+function renderWeeklyReport() {
+  const container = document.getElementById('weekly-report-display');
+  const p = appState.profile;
+  if (!container || !p) return;
+
+  const days = getLast7DaysSummaries();
+  const activeDays = days.filter(d => d.consumed > 0 || d.burned > 0);
+  const daysWithData = activeDays.length;
+
+  // نحسب المعدل من الأيام المسجّلة فقط، ثم نسقطه على أسبوع كامل — بدل معاملة الأيام غير المسجّلة كعجز وهمي ضخم
+  const avgDailyDiff = daysWithData > 0 ? activeDays.reduce((s, d) => s + d.diff, 0) / daysWithData : 0;
+  const weeklyProjectedDiff = avgDailyDiff * 7;
+  const totalGramsChange = Math.abs(weeklyProjectedDiff) / 7.7;
+
+  let projectionHtml;
+  if (daysWithData === 0) {
+    projectionHtml = `<div class="message-box">سجّل وجباتك يومياً لتظهر التوقعات الأسبوعية هنا</div>`;
+  } else if (weeklyProjectedDiff > 100) {
+    projectionHtml = `<div class="message-box" style="border-right-color: var(--accent-coral); background: rgba(244,63,94,0.1);">
+      📈 بمعدلك الحالي (فائض ~${Math.round(avgDailyDiff)} سعرة/يوم) — توقع زيادة بحوالي <strong>${totalGramsChange.toFixed(0)} غرام</strong> إذا استمر هذا النمط أسبوعاً كاملاً</div>`;
+  } else if (weeklyProjectedDiff < -100) {
+    projectionHtml = `<div class="message-box" style="border-right-color: var(--accent-emerald); background: rgba(16,185,129,0.1);">
+      📉 بمعدلك الحالي (عجز ~${Math.round(Math.abs(avgDailyDiff))} سعرة/يوم) — توقع نقصان بحوالي <strong>${totalGramsChange.toFixed(0)} غرام</strong> إذا استمر هذا النمط أسبوعاً كاملاً</div>`;
+  } else {
+    projectionHtml = `<div class="message-box" style="border-right-color: var(--accent-cyan); background: rgba(6,182,212,0.1);">
+      ⚖️ معدلك اليومي قريب من هدفك — لا تغيّر يُذكر متوقع بالوزن</div>`;
+  }
+
+  container.innerHTML = `
+    <div style="display:grid; grid-template-columns: repeat(7, 1fr); gap:4px; margin-bottom:12px;">
+      ${days.map(d => {
+        const dayLabel = d.date.slice(5);
+        const hasData = d.consumed > 0 || d.burned > 0;
+        const barColor = d.diff > 20 ? 'var(--accent-coral)' : (d.diff < -20 ? 'var(--accent-emerald)' : 'var(--accent-cyan)');
+        return `<div style="text-align:center;">
+          <div style="font-size:9px; color:var(--text-muted); margin-bottom:2px;">${dayLabel}</div>
+          <div style="width:100%; height:6px; background:${barColor}; border-radius:3px; opacity:${hasData ? 1 : 0.2};"></div>
+        </div>`;
+      }).join('')}
+    </div>
+    ${projectionHtml}
+    <p style="font-size:10px; color:var(--text-muted); margin-top:8px;">* التوقع مبني على معدل ${daysWithData} من 7 أيام مسجّلة فعلياً (الأيام غير المسجّلة لا تُحتسب كعجز) — كلما سجّلت أكثر كان التقدير أدق</p>
+  `;
+}
+
 
 function initChart() {
   const ctx = document.getElementById('dashboardChart');

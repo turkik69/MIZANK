@@ -513,6 +513,7 @@ body {
         <div class="pill" onclick="selectSuggestedCategory('fastfood', this)">🍔 المطاعم والوجبات السريعة</div>
         <div class="pill" onclick="selectSuggestedCategory('bakery', this)">🥖 المخبوزات وأنواع الخبز</div>
         <div class="pill" onclick="selectSuggestedCategory('vegetables', this)">🥦 الخضروات</div>
+        <div class="pill" onclick="selectSuggestedCategory('snacks', this)">🥜 السناكات</div>
         <div class="pill" onclick="selectSuggestedCategory('fruits', this)">🍎 الفواكه الطازجة والتمر</div>
         <div class="pill" onclick="selectSuggestedCategory('sweets', this)">🍰 الكيك والحلويات</div>
         <div class="pill" onclick="selectSuggestedCategory('drinks', this)">☕ المشروبات والعصائر</div>
@@ -980,7 +981,8 @@ const suggestedMealsData = {
     { name: '🫓 قروص وعسل عماني', cal: 320, protein: 8, carbs: 54, fat: 6, desc: 'أقراص خبز القروص الدافئة مع العسل العماني الطبيعي' },
     { name: '🫓 خبز رقاق عماني بالبيض والجبن الخفيف', cal: 310, protein: 18, carbs: 32, fat: 10, desc: '2 شريحة خبز رقاق + بيضة + جبن قليل الدسم' },
     { name: '🍳 بلاليط بالبيض على الطريقة الخليجية', cal: 340, protein: 14, carbs: 45, fat: 9, desc: 'شعيرية محلاة خفيفة مع البيض المقلي والهيل' },
-    { name: '🥟 مطبق عماني', cal: 380, protein: 12, carbs: 42, fat: 18, desc: 'معجنات عمانية محشوة باللحم أو البيض ومقلية قلياً خفيفاً' }
+    { name: '🥟 مطبق عماني', cal: 380, protein: 12, carbs: 42, fat: 18, desc: 'معجنات عمانية محشوة باللحم أو البيض ومقلية قلياً خفيفاً' },
+    { name: '🥪 ساندويتش توست أبيض بالبيض المقلي واللبنة الكريمية', cal: 320, protein: 14, carbs: 32, fat: 15, desc: 'شريحتان توست أبيض + بيضة مقلية + ملعقتان لبنة كريمية دسمة' }
   ],
   lunch: [
     { name: '🍚 أرز أبيض وصالونة دجاج عمانية', cal: 460, protein: 38, carbs: 48, fat: 10, desc: '150غ أرز أبيض مع مرق صالونة الدجاج بالخضار والليمون اليابس' },
@@ -1051,6 +1053,16 @@ const suggestedMealsData = {
     { name: '🍆 خضار مشكلة مشوية (150غ)', cal: 80, protein: 3, carbs: 15, fat: 1.5, desc: 'تشكيلة خضروات مشوية بالفرن أو الشواية' },
     { name: '🥬 ملفوف مطبوخ (100غ)', cal: 25, protein: 1.3, carbs: 5.8, fat: 0.1, desc: 'خفيف وسهل الهضم، يناسب الحساء والسلطات' }
   ],
+  snacks: [
+    { name: '🫒 زيتون أخضر (10 حبات ~30غ)', cal: 40, protein: 0.3, carbs: 1, fat: 4.5, desc: 'مصدر دهون صحية أحادية غير مشبعة' },
+    { name: '🥜 كاجو (حفنة 28غ)', cal: 157, protein: 5.2, carbs: 8.6, fat: 12, desc: 'غني بالمغنيسيوم والدهون الصحية' },
+    { name: '🥜 فستق حلبي (حفنة 28غ)', cal: 159, protein: 5.7, carbs: 7.7, fat: 12.8, desc: 'من أغنى المكسرات بالبروتين والألياف' },
+    { name: '🥜 لوز (حفنة 28غ)', cal: 164, protein: 6, carbs: 6, fat: 14, desc: 'غني بفيتامين E ومضادات الأكسدة' },
+    { name: '🌰 جوز/عين الجمل (حفنة 28غ)', cal: 185, protein: 4.3, carbs: 3.9, fat: 18.5, desc: 'من أفضل مصادر أوميغا-3 النباتية' },
+    { name: '🍇 زبيب (حفنة صغيرة 40غ)', cal: 120, protein: 1.3, carbs: 31, fat: 0.2, desc: 'طاقة سريعة من السكريات الطبيعية، يُنصح بكمية معتدلة' },
+    { name: '🌴 تين مجفف (3-4 حبات 40غ)', cal: 110, protein: 1.4, carbs: 28, fat: 0.5, desc: 'غني بالألياف والكالسيوم' },
+    { name: '🥜 مكسرات مشكلة نيئة (حفنة 30غ)', cal: 175, protein: 5.5, carbs: 6, fat: 15, desc: 'خليط لوز وكاجو وجوز وفستق بدون ملح مضاف' }
+  ],
   fruits: [
     { name: '🍌 موزة متوسطة الحجم (100غ)', cal: 105, protein: 1.3, carbs: 27, fat: 0.3, desc: 'مصدر رائع للطاقة البطيئة والبيتاسيوم' },
     { name: '🍇 عنب طازج (كوب 150غ)', cal: 104, protein: 1.1, carbs: 27, fat: 0.2, desc: 'غني بمضادات الأكسدة والسكريات الطبيعية' },
@@ -1059,7 +1071,8 @@ const suggestedMealsData = {
     { name: '🌴 رطب طازج (5 حبات رطب)', cal: 90, protein: 1, carbs: 21, fat: 0, desc: 'رطب عماني طازج ولذيذ غني بالمعادن' },
     { name: '🍊 برتقالة طازجة متوسطة', cal: 62, protein: 1.2, carbs: 15, fat: 0.2, desc: 'غنية بفيتامين C والألياف المنعشة' },
     { name: '🥭 مانجو طازجة (نصف ثمرة 150غ)', cal: 99, protein: 1.4, carbs: 25, fat: 0.6, desc: 'فاكهة استوائية غنية بفيتامين A و C' },
-    { name: '🔴 رمان طازج (نصف كوب حبات رمان)', cal: 72, protein: 1.5, carbs: 16, fat: 1, desc: 'مفيد لصحة القلب والدورة الدموية' }
+    { name: '🔴 رمان طازج (نصف كوب حبات رمان)', cal: 72, protein: 1.5, carbs: 16, fat: 1, desc: 'مفيد لصحة القلب والدورة الدموية' },
+    { name: '🍉 بطيخ أحمر (كوب مكعبات 150غ)', cal: 45, protein: 0.9, carbs: 11, fat: 0.2, desc: 'منعش وقليل السعرات جداً، غني بالماء والليكوبين' }
   ],
   sweets: [
     { name: '🍰 كيك الشوكولاتة الداكنة (شريحة متوسطة)', cal: 280, protein: 5, carbs: 38, fat: 14, desc: 'شريحة كيك غنية بالشوكولاتة للتحلية' },

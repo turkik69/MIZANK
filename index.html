@@ -2019,7 +2019,7 @@ async function handleBarcodeImageUpload(event) {
   if (!file) return;
 
   const preview = document.getElementById('barcode-result-preview');
-  preview.innerHTML = '<div class="message-box" style="margin-top:10px;">🔍 جاري فحص الباركود أو صورة المنتج...</div>';
+  preview.innerHTML = '<div class="message-box" style="margin-top:10px;">🔍 جاري فحص الباركود...</div>';
 
   if (!html5QrCode) {
     html5QrCode = new Html5Qrcode("barcode-reader");
@@ -2031,50 +2031,7 @@ async function handleBarcodeImageUpload(event) {
     document.getElementById('barcode-input').value = decodedText;
     lookupBarcode(decodedText);
   } catch (err) {
-    try {
-      preview.innerHTML = '<div class="message-box info" style="margin-top:10px;">🤖 جاري تحليل غلاف المنتج والمعلومات بالذكاء الاصطناعي...</div>';
-      const base64Data = await compressAndResizeImage(file, 1024);
-
-      const payload = {
-        contents: [
-          {
-            role: "user",
-            parts: [
-              { text: "اقرأ صورة غلاف هذا المنتج أو الباركود وقدر اسمه والسعرات والبروتين والكربوهيدرات والدهون باللغة العربية." },
-              { inlineData: { mimeType: "image/jpeg", data: base64Data } }
-            ]
-          }
-        ],
-        generationConfig: {
-          responseMimeType: "application/json",
-          responseSchema: {
-            type: "OBJECT",
-            properties: {
-              name: { type: "STRING" },
-              calories: { type: "NUMBER" },
-              protein: { type: "NUMBER" },
-              carbs: { type: "NUMBER" },
-              fat: { type: "NUMBER" }
-            },
-            required: ["name", "calories", "protein", "carbs", "fat"]
-          }
-        }
-      };
-
-      const data = await fetchGeminiWithRetry(payload);
-      const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
-      const result = JSON.parse(text);
-
-      preview.innerHTML = `
-        <div class="message-box success" style="margin-top:10px;">
-          <strong>📦 المنتج المكتشف:</strong> ${result.name}<br>
-          🔥 ${result.calories} سعرة | 🥩 بروتين: ${result.protein}g | 🌾 كربوهيدرات: ${result.carbs}g | 🫒 دهون: ${result.fat}g
-        </div>
-        <button class="btn btn-cyan" onclick="confirmAiMeal('${result.name.replace(/'/g, "\\'")}', ${result.calories}, ${result.protein}, ${result.carbs}, ${result.fat})">✅ إضافة الوجبة للسجل</button>
-      `;
-    } catch (aiErr) {
-      preview.innerHTML = `<div class="message-box warning" style="margin-top:10px;">لم يتم التعرف على الباركود بشكل واضح. يمكنك كتابة اسم الوجبة أو إدخال الباركود يدوياً.</div>`;
-    }
+    preview.innerHTML = `<div class="message-box warning" style="margin-top:10px;">لم يتم التعرف على الباركود بوضوح في الصورة. جرّب صورة أقرب وأوضح للباركود، أو ابحث عن الصنف مباشرة من قائمة الأطعمة، أو أدخل بياناته يدوياً من "إدخال سريع".</div>`;
   }
 
   event.target.value = '';

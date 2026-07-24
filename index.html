@@ -850,12 +850,17 @@ body {
     <div class="glass-card">
       <h3 style="color: var(--accent-emerald); margin-bottom: 12px; font-size:15px; font-weight:800;">🔑 مفتاح Google Gemini API</h3>
       <div class="form-group">
-        <label class="form-label">مفتاح API المخصص (اختياري)</label>
+        <label class="form-label">مفتاح API (مطلوب لتفعيل المساعد وتحليل الوجبات)</label>
         <input type="password" id="gemini-key-input" class="form-input" placeholder="AIzaSy...">
-        <p style="font-size:11px; color:var(--text-muted); margin-top:5px;">التطبيق يملك مفتاح مدمج يعمل تلقائياً، يمكنك وضع مفتاحك الخارجي هنا إن أردت.</p>
+        <p style="font-size:11px; color:var(--text-muted); margin-top:5px;">احصل على مفتاح مجاني من aistudio.google.com/apikey — يُحفظ بمتصفحك فقط.</p>
+      </div>
+      <div class="form-group">
+        <label class="form-label">نموذج Gemini (عدّله هنا لو توقف التحليل مستقبلاً)</label>
+        <input type="text" id="gemini-model-input" class="form-input" placeholder="gemini-3.5-flash">
+        <p style="font-size:11px; color:var(--text-muted); margin-top:5px;">جوجل تُحدّث أسماء النماذج بين فترة وأخرى — لو ظهرت رسالة "النموذج غير متاح"، حدّث الاسم هنا بدون الحاجة لتعديل الكود.</p>
       </div>
       <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
-        <button class="btn btn-primary" onclick="saveApiSettings()">💾 حفظ المفتاح</button>
+        <button class="btn btn-primary" onclick="saveApiSettings()">💾 حفظ الإعدادات</button>
         <button class="btn btn-secondary" onclick="clearCustomApiKey()">🔄 استخدام الافتراضي</button>
       </div>
     </div>
@@ -960,11 +965,13 @@ async function fetchGeminiWithRetry(payload) {
   const customKey = localStorage.getItem('healthAppGeminiKey');
   const keysToTry = (customKey && customKey.trim() !== "") ? [customKey.trim(), apiKey] : [apiKey];
   const delays = [1000, 2000, 4000, 8000, 16000];
+  const model = localStorage.getItem('healthAppGeminiModel') || 'gemini-3.5-flash';
 
   let lastError = null;
 
   for (const currentKey of keysToTry) {
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${currentKey}`;
+    if (!currentKey) continue;
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${currentKey}`;
 
     for (let attempt = 0; attempt <= delays.length; attempt++) {
       try {
@@ -990,7 +997,10 @@ async function fetchGeminiWithRetry(payload) {
     }
   }
 
-  throw lastError || new Error("تعذر الاتصال بخدمة الذكاء الاصطناعي حالياً.");
+  if (!lastError) {
+    throw new Error('أضف مفتاح Google Gemini API من الإعدادات ⚙️ أولاً لتفعيل هذه الميزة.');
+  }
+  throw lastError;
 }
 
 // ============ CATEGORIZED SUGGESTED MEALS (EXPANDED WITH LOCAL DISHES, TOASTS, FRUITS, SWEETS & JUICES) ============
@@ -2786,7 +2796,12 @@ function saveApiSettings() {
   const geminiKey = document.getElementById('gemini-key-input').value.trim();
   if (geminiKey) localStorage.setItem('healthAppGeminiKey', geminiKey);
   else localStorage.removeItem('healthAppGeminiKey');
-  showToast('تم حفظ المفتاح بنجاح', 'success');
+
+  const geminiModel = document.getElementById('gemini-model-input').value.trim();
+  if (geminiModel) localStorage.setItem('healthAppGeminiModel', geminiModel);
+  else localStorage.removeItem('healthAppGeminiModel');
+
+  showToast('تم حفظ الإعدادات بنجاح', 'success');
 }
 
 function clearCustomApiKey() {
@@ -2797,6 +2812,7 @@ function clearCustomApiKey() {
 
 function loadApiSettingsUI() {
   document.getElementById('gemini-key-input').value = localStorage.getItem('healthAppGeminiKey') || '';
+  document.getElementById('gemini-model-input').value = localStorage.getItem('healthAppGeminiModel') || 'gemini-3.5-flash';
 }
 
 function logout() {

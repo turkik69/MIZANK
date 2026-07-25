@@ -538,6 +538,7 @@ body {
         <div class="pill" onclick="selectSuggestedCategory('bakery', this)">🥖 المخبوزات وأنواع الخبز</div>
         <div class="pill" onclick="selectSuggestedCategory('vegetables', this)">🥦 الخضروات</div>
         <div class="pill" onclick="selectSuggestedCategory('snacks', this)">🥜 السناكات</div>
+        <div class="pill" onclick="selectSuggestedCategory('custom', this)">🌟 وجباتي الخاصة</div>
         <div class="pill" onclick="selectSuggestedCategory('fruits', this)">🍎 الفواكه الطازجة والتمر</div>
         <div class="pill" onclick="selectSuggestedCategory('sweets', this)">🍰 الكيك والحلويات</div>
         <div class="pill" onclick="selectSuggestedCategory('drinks', this)">☕ المشروبات والعصائر</div>
@@ -1193,6 +1194,29 @@ function renderSuggestedMeals() {
   const container = document.getElementById('suggested-meals-container');
   if (!container) return;
 
+  if (currentSuggestedCategory === 'custom') {
+    const list = appState.customMeals || [];
+    if (list.length === 0) {
+      container.innerHTML = '<div class="message-box">لسا ما أضفت أي وجبة مخصصة — حلّل أي وجبة بالكتابة أو الصوت أو الصورة، وستُحفظ هنا تلقائياً بعد اعتمادها ⭐</div>';
+      return;
+    }
+    container.innerHTML = list.map((item, idx) => `
+      <div class="food-item">
+        <div class="food-info">
+          <div style="font-weight:800; font-size:14px; color:#fff;">${item.name}</div>
+          <div style="font-size:11px; color:var(--text-secondary);">${item.desc}</div>
+          <div style="font-size:11px; color:var(--accent-emerald); margin-top:2px;">🔥 ${item.cal} سعرة | 🥩 ${item.protein}g بروتين | 🌾 ${item.carbs}g كربوهيدرات</div>
+          <div style="font-size:10px; color:var(--text-secondary); margin-top:1px;">🍬 ${item.sugar ?? 0}g سكر | 🌿 ${item.fiber ?? 0}g ألياف</div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:6px;">
+          <button class="icon-btn" style="background:var(--accent-emerald); color:#042f2e; font-weight:800; border:none;" onclick="addPresetCombo('${item.name.replace(/'/g, "\\'")}', ${item.cal}, ${item.protein}, ${item.carbs}, ${item.fat}, ${item.sugar ?? 0}, ${item.fiber ?? 0})">➕ إضافة</button>
+          <button class="icon-btn" style="background:var(--accent-coral); color:#fff; font-weight:800; border:none;" onclick="removeCustomMeal(${idx})">🗑️ حذف</button>
+        </div>
+      </div>
+    `).join('');
+    return;
+  }
+
   const list = suggestedMealsData[currentSuggestedCategory] || [];
   container.innerHTML = list.map(item => `
     <div class="food-item">
@@ -1205,6 +1229,14 @@ function renderSuggestedMeals() {
       <button class="icon-btn" style="background:var(--accent-emerald); color:#042f2e; font-weight:800; border:none;" onclick="addPresetCombo('${item.name.replace(/'/g, "\\'")}', ${item.cal}, ${item.protein}, ${item.carbs}, ${item.fat}, ${item.sugar ?? 0}, ${item.fiber ?? 0})">➕ إضافة للسجل</button>
     </div>
   `).join('');
+}
+
+function removeCustomMeal(idx) {
+  if (!appState.customMeals) return;
+  appState.customMeals.splice(idx, 1);
+  saveCurrentUserData();
+  renderSuggestedMeals();
+  showToast('تم حذف الوجبة من قائمتك الخاصة', 'info');
 }
 
 function selectSuggestedCategory(cat, el) {
@@ -1367,6 +1399,7 @@ function completeSetup() {
 
   if (!appState.meals) appState.meals = [];
   if (!appState.workouts) appState.workouts = [];
+  if (!appState.customMeals) appState.customMeals = [];
   if (!appState.weights) appState.weights = [];
   if (appState.weights.length === 0) appState.weights.push({ date: todayStr(), weight });
 
@@ -1841,7 +1874,7 @@ async function handleMealText() {
         <strong>🍽️ التقدير المكتشف:</strong> ${result.name}<br>
         🔥 ${result.calories} سعرة | 🥩 بروتين: ${result.protein}g | 🌾 كربوهيدرات: ${result.carbs}g | 🫒 دهون: ${result.fat}g
       </div>
-      <button class="btn btn-primary" onclick="confirmAiMeal('${result.name.replace(/'/g, "\\'")}', ${result.calories}, ${result.protein}, ${result.carbs}, ${result.fat})">✅ اعتماد وإضافة للسجل</button>
+      <button class="btn btn-primary" onclick="confirmAiMeal('${result.name.replace(/'/g, "\\'")}', ${result.calories}, ${result.protein}, ${result.carbs}, ${result.fat}, ${result.sugar}, ${result.fiber})">✅ اعتماد وإضافة للسجل</button>
     `;
   } catch (e) {
     previewDiv.innerHTML = `<div class="message-box error" style="margin-top:10px;">تعذر التحليل: ${e.message}</div>`;
@@ -1954,7 +1987,7 @@ function toggleVoiceRecognition() {
           <strong>🍽️ التقدير من الصوت:</strong> ${result.name}<br>
           🔥 ${result.calories} سعرة | 🥩 بروتين: ${result.protein}g | 🌾 كربوهيدرات: ${result.carbs}g | 🫒 دهون: ${result.fat}g
         </div>
-        <button class="btn btn-primary" onclick="confirmAiMeal('${result.name.replace(/'/g, "\\'")}', ${result.calories}, ${result.protein}, ${result.carbs}, ${result.fat})">✅ اعتماد وإضافة للسجل</button>
+        <button class="btn btn-primary" onclick="confirmAiMeal('${result.name.replace(/'/g, "\\'")}', ${result.calories}, ${result.protein}, ${result.carbs}, ${result.fat}, ${result.sugar}, ${result.fiber})">✅ اعتماد وإضافة للسجل</button>
       `;
     } catch (e) {
       document.getElementById('voice-transcript-preview').innerHTML = `<div class="message-box error" style="margin-top:10px;">تعذر تحليل الصوت: ${e.message}</div>`;
@@ -2094,13 +2127,15 @@ async function lookupBarcode(barcode) {
     const protein = Math.round(nutriments.proteins_100g || 0);
     const carbs = Math.round(nutriments.carbohydrates_100g || 0);
     const fat = Math.round(nutriments.fat_100g || 0);
+    const sugar = Math.round(nutriments.sugars_100g || 0);
+    const fiber = Math.round(nutriments.fiber_100g || 0);
 
     preview.innerHTML = `
       <div class="message-box success" style="margin-top:10px;">
         <strong>📦 المنتج:</strong> ${name}<br>
         🔥 ${calories} سعرة /100g | 🥩 بروتين: ${protein}g | 🌾 كربوهيدرات: ${carbs}g | 🫒 دهون: ${fat}g
       </div>
-      <button class="btn btn-cyan" onclick="confirmAiMeal('${name.replace(/'/g, "\\'")}', ${calories}, ${protein}, ${carbs}, ${fat})">✅ إضافة الوجبة للسجل</button>
+      <button class="btn btn-cyan" onclick="confirmAiMeal('${name.replace(/'/g, "\\'")}', ${calories}, ${protein}, ${carbs}, ${fat}, ${sugar}, ${fiber})">✅ إضافة الوجبة للسجل</button>
     `;
   } catch (e) {
     preview.innerHTML = `<div class="message-box error" style="margin-top:10px;">فشل الاتصال: ${e.message}</div>`;
@@ -2426,7 +2461,7 @@ async function handleMealPhoto(event) {
         {
           role: "user",
           parts: [
-            { text: "حلل صورة طعام الوجبة وقدر اسمها والسعرات والماكروز باللغة العربية." },
+            { text: "حلل صورة طعام الوجبة وقدر اسمها والسعرات والماكروز (بما فيها السكر والألياف) باللغة العربية." },
             { inlineData: { mimeType: "image/jpeg", data: base64Data } }
           ]
         }
@@ -2440,9 +2475,11 @@ async function handleMealPhoto(event) {
             calories: { type: "NUMBER" },
             protein: { type: "NUMBER" },
             carbs: { type: "NUMBER" },
-            fat: { type: "NUMBER" }
+            fat: { type: "NUMBER" },
+            sugar: { type: "NUMBER" },
+            fiber: { type: "NUMBER" }
           },
-          required: ["name", "calories", "protein", "carbs", "fat"]
+          required: ["name", "calories", "protein", "carbs", "fat", "sugar", "fiber"]
         }
       }
     };
@@ -2456,7 +2493,7 @@ async function handleMealPhoto(event) {
         <strong>🍽️ الوجبة:</strong> ${result.name}<br>
         🔥 ${result.calories} سعرة | 🥩 بروتين: ${result.protein}g | 🌾 كربوهيدرات: ${result.carbs}g | 🫒 دهون: ${result.fat}g
       </div>
-      <button class="btn btn-primary" onclick="confirmAiMeal('${result.name.replace(/'/g, "\\'")}', ${result.calories}, ${result.protein}, ${result.carbs}, ${result.fat})">✅ اعتماد وإضافة للسجل</button>
+      <button class="btn btn-primary" onclick="confirmAiMeal('${result.name.replace(/'/g, "\\'")}', ${result.calories}, ${result.protein}, ${result.carbs}, ${result.fat}, ${result.sugar}, ${result.fiber})">✅ اعتماد وإضافة للسجل</button>
     `;
   } catch (e) {
     previewDiv.innerHTML = `<div class="message-box error" style="margin-top:10px;">تعذر التحليل: ${e.message}</div>`;
@@ -2468,7 +2505,7 @@ async function analyzeMealTextGemini(descriptionText) {
     contents: [
       {
         role: "user",
-        parts: [{ text: `قدر قيم السعرات والماكروز للوجبة التالية: "${descriptionText}".` }]
+        parts: [{ text: `قدر قيم السعرات والماكروز (بما فيها السكر والألياف) للوجبة التالية: "${descriptionText}".` }]
       }
     ],
     generationConfig: {
@@ -2480,9 +2517,11 @@ async function analyzeMealTextGemini(descriptionText) {
           calories: { type: "NUMBER" },
           protein: { type: "NUMBER" },
           carbs: { type: "NUMBER" },
-          fat: { type: "NUMBER" }
+          fat: { type: "NUMBER" },
+          sugar: { type: "NUMBER" },
+          fiber: { type: "NUMBER" }
         },
-        required: ["name", "calories", "protein", "carbs", "fat"]
+        required: ["name", "calories", "protein", "carbs", "fat", "sugar", "fiber"]
       }
     }
   };
@@ -2493,11 +2532,22 @@ async function analyzeMealTextGemini(descriptionText) {
   return JSON.parse(text);
 }
 
-function confirmAiMeal(name, cal, p, c, f) {
+function confirmAiMeal(name, cal, p, c, f, sugar, fiber) {
+  sugar = sugar || 0;
+  fiber = fiber || 0;
+
   appState.meals.push({
-    id: Date.now(), date: todayStr(), name, cal, protein: p, carbs: c, fat: f,
+    id: Date.now(), date: todayStr(), name, cal, protein: p, carbs: c, fat: f, sugar, fiber,
     time: new Date().toLocaleTimeString('ar', { hour: '2-digit', minute: '2-digit' })
   });
+
+  // احفظ الوجبة أيضاً في "وجباتي الخاصة" لتصبح متاحة للاختيار السريع لاحقاً بدون إعادة تحليلها
+  if (!appState.customMeals) appState.customMeals = [];
+  const alreadyExists = appState.customMeals.some(m => m.name === name);
+  if (!alreadyExists) {
+    appState.customMeals.push({ name, cal, protein: p, carbs: c, fat: f, sugar, fiber, desc: 'وجبة أضفتها وحلّلتها بنفسك' });
+  }
+
   saveCurrentUserData();
   updateDashboard();
   updateMealsList();
@@ -2506,7 +2556,7 @@ function confirmAiMeal(name, cal, p, c, f) {
   document.getElementById('barcode-result-preview').innerHTML = '';
   document.getElementById('meal-text-preview').innerHTML = '';
   document.getElementById('meal-text-input').value = '';
-  showToast('تم تسجيل الوجبة بنجاح 🥗', 'success');
+  showToast('تم تسجيل الوجبة وحفظها بقوائمك الخاصة 🥗⭐', 'success');
 }
 
 function updateMealsList() {
@@ -2597,6 +2647,7 @@ function addWorkoutLog() {
   }
 
   if (!appState.workouts) appState.workouts = [];
+  if (!appState.customMeals) appState.customMeals = [];
 
   appState.workouts.push({
     id: Date.now(),
@@ -2615,6 +2666,7 @@ function addWorkoutLog() {
 
 function addPresetWorkoutLog(name, durationMins, cal, details) {
   if (!appState.workouts) appState.workouts = [];
+  if (!appState.customMeals) appState.customMeals = [];
 
   appState.workouts.push({
     id: Date.now(),

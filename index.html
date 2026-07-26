@@ -1367,6 +1367,7 @@ window.addEventListener('load', async () => {
       appState = Object.assign({ meals: [], workouts: [], weights: [], water: 0, waterDate: null, chat: [], streak: 1, waterIntervalHours: 2, lastWaterNotifTime: 0, lastMealNotifTime: 0, fasting: { active: false, startTime: null, targetHours: 16, logs: [] } }, db[savedUsername]);
       document.getElementById('bottom-nav').style.display = 'flex';
       showScreen('dashboard-screen');
+      updateLoginStreak();
       updateDashboard();
       initChart();
       initFastingTimer();
@@ -1392,6 +1393,7 @@ function handleLogin() {
     appState = Object.assign({ meals: [], workouts: [], weights: [], water: 0, waterDate: null, chat: [], streak: 1, waterIntervalHours: 2, lastWaterNotifTime: 0, lastMealNotifTime: 0, fasting: { active: false, startTime: null, targetHours: 16, logs: [] } }, db[username]);
     document.getElementById('bottom-nav').style.display = 'flex';
     showScreen('dashboard-screen');
+    updateLoginStreak();
     updateDashboard();
     initChart();
     initFastingTimer();
@@ -1443,6 +1445,7 @@ function completeSetup() {
 
   document.getElementById('bottom-nav').style.display = 'flex';
   showScreen('dashboard-screen');
+  updateLoginStreak();
   updateDashboard();
   initChart();
   initFastingTimer();
@@ -2265,6 +2268,34 @@ function checkAndSendDueNotifications() {
       saveCurrentUserData();
     }
   }
+}
+
+// ============ سلسلة الالتزام (Streak) — الحساب الفعلي كان ناقصاً بالكامل ============
+// كانت appState.streak تُعرض فقط بقيمتها الافتراضية (1) بدون أي منطق يزيدها فعلياً.
+// هذي الدالة تقارن تاريخ آخر استخدام باليوم الحالي وتحدّث السلسلة بشكل صحيح.
+function updateLoginStreak() {
+  const today = todayStr();
+
+  if (appState.lastActiveDate === today) {
+    return; // محسوبة أصلاً اليوم، ما نكرر
+  }
+
+  if (!appState.lastActiveDate) {
+    appState.streak = 1; // أول استخدام على الإطلاق
+  } else {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    const yesterdayStr = yesterday.toISOString().split('T')[0];
+
+    if (appState.lastActiveDate === yesterdayStr) {
+      appState.streak = (appState.streak || 0) + 1; // يوم متتالٍ — زِد السلسلة
+    } else {
+      appState.streak = 1; // فيه فجوة — ابدأ من جديد
+    }
+  }
+
+  appState.lastActiveDate = today;
+  saveCurrentUserData();
 }
 
 function startNotificationScheduler() {

@@ -2225,42 +2225,59 @@ function sendTestNotification() {
 
 let notificationSchedulerInterval = null;
 
+// الفحص الفعلي: هل فيه تذكير "مستحق" الآن؟ (ماء أو وجبة)
+// مفصولة بدالة مستقلة حتى نقدر نستدعيها فوراً عند كل فتح/عودة للتطبيق،
+// بدل ما ننتظر أول دورة للمؤقّت (60 ثانية) — وهذا بالضبط سبب فوات بعض التذكيرات
+// لما يكون التطبيق مقفول أو بالخلفية، ثم يرجع المستخدم يفتحه بعد فوات الوقت.
+function checkAndSendDueNotifications() {
+  if (!appState.notificationsEnabled) return;
+
+  const now = Date.now();
+  const currentHour = new Date().getHours();
+  const intervalMs = (appState.waterIntervalHours || 2) * 60 * 60 * 1000;
+
+  if (!appState.lastWaterNotifTime || (now - appState.lastWaterNotifTime >= intervalMs)) {
+    if (appState.water < (appState.profile?.water || 8)) {
+      triggerNotification("💧 تذكير شرب الماء", "حان وقت شرب كوب ماء جديد لترطيب جسمك والحفاظ على نشاطك!");
+      appState.lastWaterNotifTime = now;
+      saveCurrentUserData();
+    }
+  }
+
+  const mealIntervalMs = 4 * 60 * 60 * 1000;
+  if (!appState.lastMealNotifTime || (now - appState.lastMealNotifTime >= mealIntervalMs)) {
+    if (currentHour === 9) {
+      triggerNotification("🍳 وقت وجبة الإفطار", "لا تنسَ تسجيل وجبة الإفطار لضبط جدول السعرات!");
+      appState.lastMealNotifTime = now;
+      saveCurrentUserData();
+    } else if (currentHour === 14) {
+      triggerNotification("🍗 وقت الغداء الصحي", "تذكير بتسجيل وجبة الغداء بالصوت أو الصورة!");
+      appState.lastMealNotifTime = now;
+      saveCurrentUserData();
+    } else if (currentHour === 20) {
+      triggerNotification("🥗 وقت العشاء والخِتام", "سجل وجبة العشاء الأخيرة وقراءة الوزن للرسم البياني!");
+      appState.lastMealNotifTime = now;
+      saveCurrentUserData();
+    }
+  }
+}
+
 function startNotificationScheduler() {
   if (notificationSchedulerInterval) clearInterval(notificationSchedulerInterval);
 
-  notificationSchedulerInterval = setInterval(() => {
-    if (!appState.notificationsEnabled) return;
+  // فحص فوري بمجرد فتح/دخول التطبيق — يلحق أي تذكير كان مستحقاً أثناء إغلاقه
+  checkAndSendDueNotifications();
 
-    const now = Date.now();
-    const currentHour = new Date().getHours();
-    const intervalMs = (appState.waterIntervalHours || 2) * 60 * 60 * 1000;
-
-    if (!appState.lastWaterNotifTime || (now - appState.lastWaterNotifTime >= intervalMs)) {
-      if (appState.water < (appState.profile?.water || 8)) {
-        triggerNotification("💧 تذكير شرب الماء", "حان وقت شرب كوب ماء جديد لترطيب جسمك والحفاظ على نشاطك!");
-        appState.lastWaterNotifTime = now;
-        saveCurrentUserData();
-      }
-    }
-
-    const mealIntervalMs = 4 * 60 * 60 * 1000;
-    if (!appState.lastMealNotifTime || (now - appState.lastMealNotifTime >= mealIntervalMs)) {
-      if (currentHour === 9) {
-        triggerNotification("🍳 وقت وجبة الإفطار", "لا تنسَ تسجيل وجبة الإفطار لضبط جدول السعرات!");
-        appState.lastMealNotifTime = now;
-        saveCurrentUserData();
-      } else if (currentHour === 14) {
-        triggerNotification("🍗 وقت الغداء الصحي", "تذكير بتسجيل وجبة الغداء بالصوت أو الصورة!");
-        appState.lastMealNotifTime = now;
-        saveCurrentUserData();
-      } else if (currentHour === 20) {
-        triggerNotification("🥗 وقت العشاء والخِتام", "سجل وجبة العشاء الأخيرة وقراءة الوزن للرسم البياني!");
-        appState.lastMealNotifTime = now;
-        saveCurrentUserData();
-      }
-    }
-  }, 60000);
+  notificationSchedulerInterval = setInterval(checkAndSendDueNotifications, 60000);
 }
+
+// لما يرجع المستخدم للتطبيق بعد ما كان بالخلفية (تبديل تطبيقات، قفل الشاشة، إلخ)،
+// نفحص فوراً بدل ما ننتظر الدورة التالية للمؤقّت — المتصفح يوقف المؤقتات وقت الخلفية غالباً
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible' && appState.notificationsEnabled) {
+    checkAndSendDueNotifications();
+  }
+});
 
 // ============ INTERMITTENT FASTING TRACKER ============
 function changeFastingProtocol() {

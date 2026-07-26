@@ -719,6 +719,7 @@ body {
           <option value="cardio_walk">🚶‍♂️ مشي سريع</option>
           <option value="strength">🏋️‍♂️ تمارين حديد ومقاومة</option>
           <option value="hiit">🔥 تمارين متناوبة الشدة (HIIT)</option>
+          <option value="private_activity">🌙 رياضة خاصة</option>
         </select>
       </div>
 
@@ -2659,7 +2660,7 @@ function updateWorkoutCalRate() {
     const duration = parseFloat(document.getElementById('workout-duration').value) || 15;
     const rates = {
       jump_rope: 750, abs_crunches: 400, abs_leg_raises: 420, abs_bicycle: 450, abs_plank: 350,
-      cardio_run: 600, cardio_walk: 280, strength: 400, hiit: 700
+      cardio_run: 600, cardio_walk: 280, strength: 400, hiit: 700, private_activity: 240
     };
     const burned = Math.round((rates[type] || 400) * (duration / 60));
     document.getElementById('workout-calories').value = burned;

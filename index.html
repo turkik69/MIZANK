@@ -454,6 +454,13 @@ body {
       <div id="calorie-balance-display"></div>
     </div>
 
+    <!-- Smart Diet Insights Card -->
+    <div class="glass-card">
+      <h3 style="font-size:14px; font-weight:800; color:#fff; margin-bottom:4px;">🧭 توصياتك الذكية</h3>
+      <p style="font-size:11px; color:var(--text-secondary); margin-bottom:12px;">مبنية على وجباتك الفعلية آخر أيامك — مو تخمين عام</p>
+      <div id="smart-insights-display"></div>
+    </div>
+
     <!-- Achievement Badges Card -->
     <div class="glass-card">
       <h3 style="font-size:14px; font-weight:800; color:#fff; margin-bottom:12px;">🏅 شارات الإنجاز</h3>
@@ -1123,7 +1130,9 @@ const suggestedMealsData = {
     { name: '🥖 خبز فرنسي (باغيت، شريحة)', cal: 140, protein: 4.5, carbs: 27, fat: 1, sugar: 0.8, fiber: 3.0, desc: 'خبز أوروبي مقرمش من الخارج طري من الداخل' },
     { name: '🌽 خبز الذرة', cal: 190, protein: 4, carbs: 33, fat: 6, sugar: 1.0, fiber: 3.6, desc: 'خبز طري بنكهة الذرة الحلوة' },
     { name: '🫓 مناقيش زعتر', cal: 280, protein: 6, carbs: 40, fat: 11, sugar: 4.8, fiber: 3.2, desc: 'عجينة مخبوزة مغطاة بالزعتر وزيت الزيتون' },
-    { name: '🫓 خبز براتا سادة', cal: 280, protein: 5.5, carbs: 32, fat: 14, sugar: 1, fiber: 1.5, desc: 'خبز طبقي مقلي بالسمن/الزبدة، رائج جداً في عُمان (~70غ)' }
+    { name: '🫓 خبز براتا سادة', cal: 280, protein: 5.5, carbs: 32, fat: 14, sugar: 1, fiber: 1.5, desc: 'خبز طبقي مقلي بالسمن/الزبدة، رائج جداً في عُمان (~70غ)' },
+    { name: '🍩 مندازي عماني-زنجباري (2 قطعة)', cal: 210, protein: 3.5, carbs: 28, fat: 9, sugar: 8.0, fiber: 0.8, desc: 'خبز مقلي حلو المذاق بالهيل، إرث الروابط التاريخية بين عُمان وزنجبار' },
+    { name: '🫓 خبز لولاه عماني (2-3 قطع)', cal: 230, protein: 4.5, carbs: 32, fat: 10, sugar: 9.0, fiber: 1.0, desc: 'خبز مقلي طري يُحلّى بالسكر ودبس التمر — نسخة عمانية من خبز البوري الهندي' }
   ],
   vegetables: [
     { name: '🥒 خيار طازج (100غ)', cal: 15, protein: 0.7, carbs: 3.6, fat: 0.1, sugar: 1.4, fiber: 1.3, desc: 'خفيف جداً بالسعرات وغني بالماء' },
@@ -1210,7 +1219,7 @@ const suggestedMealsData = {
     { name: '☕ فرابتشينو مثلج', cal: 370, protein: 5, carbs: 55, fat: 15, sugar: 50, fiber: 0.5, desc: 'مشروب قهوة مثلج مخفوق بالكريمة — من أغنى مشروبات القهوة بالسعرات' },
     { name: '☕ إسبريسو (شوت مفرد)', cal: 5, protein: 0.3, carbs: 1, fat: 0, sugar: 0.0, fiber: 0.0, desc: 'قهوة مركّزة صافية بدون حليب أو سكر — شبه خالية من السعرات' },
     { name: '🥛 شاي كرك / شاي حليب قليل الدسم', cal: 65, protein: 3, carbs: 8, fat: 2, sugar: 4.0, fiber: 0.0, desc: 'كوب شاي بالحليب والبهارات (بدون سكر مضاف)' },
-    { name: '🥛 شاي كرك بالحليب المكثف', cal: 130, protein: 2.5, carbs: 22, fat: 4, sugar: 11.0, fiber: 0.0, desc: 'شاي كرك غني ومحلى بالحليب المكثف على الطريقة الخليجية التقليدية' },
+    { name: '🥛 شاي كرك بالحليب المكثف', cal: 130, protein: 2.5, carbs: 22, fat: 4, sugar: 19.0, fiber: 0.0, desc: 'شاي كرك غني ومحلى بالحليب المكثف على الطريقة الخليجية التقليدية' },
     { name: '🍃 شاي أخضر بالزنجبيل والليمون', cal: 2, protein: 0, carbs: 0, fat: 0, sugar: 0.0, fiber: 0.0, desc: 'مشروب ينشط الأيض ويسرع حرق الدهون' },
     { name: '☕ شاي أحمر بالنعناع أو الهيل', cal: 5, protein: 0, carbs: 1, fat: 0, sugar: 0.0, fiber: 0.0, desc: 'شاي أحمر خفيف بدون سكر' },
     { name: '🍊 عصير برتقال طازج (كوب 250مل)', cal: 110, protein: 2, carbs: 26, fat: 0.5, sugar: 23.4, fiber: 0.0, desc: 'عصير برتقال طبيعي 100% بدون سكر مضاف' },
@@ -1515,6 +1524,7 @@ function updateDashboard() {
   document.getElementById('dashboard-fiber').textContent = Math.round(fiber * 10) / 10;
 
   renderCalorieBalance(consumedCals, netCals);
+  renderSmartInsights();
   renderBadges();
   renderBodyShape();
   renderWeeklyReport();
@@ -1656,7 +1666,9 @@ function getDaySummary(date) {
     mealsCount: dayMeals.length,
     protein: dayMeals.reduce((s, m) => s + m.protein, 0),
     carbs: dayMeals.reduce((s, m) => s + m.carbs, 0),
-    fat: dayMeals.reduce((s, m) => s + m.fat, 0)
+    fat: dayMeals.reduce((s, m) => s + m.fat, 0),
+    sugar: dayMeals.reduce((s, m) => s + (m.sugar || 0), 0),
+    fiber: dayMeals.reduce((s, m) => s + (m.fiber || 0), 0)
   };
 }
 
@@ -1760,6 +1772,76 @@ function getWeekAverages(weeksAgo) {
 }
 
 // ============ شارات الإنجاز ============
+// ============ التوصيات الذكية — مبنية على الوجبات الفعلية المسجّلة، لا تخمين عام ============
+function getSmartDietInsights() {
+  const p = appState.profile;
+  if (!p) return null;
+
+  const days = getLast7DaysSummaries();
+  const activeDays = days.filter(d => d.consumed > 0);
+  if (activeDays.length < 2) return null; // بيانات غير كافية بعد لتحليل موثوق
+
+  const avg = (key) => activeDays.reduce((s, d) => s + d[key], 0) / activeDays.length;
+  const avgCal = avg('consumed');
+  const avgProtein = avg('protein');
+  const avgSugar = avg('sugar');
+  const avgFiber = avg('fiber');
+  const avgDiff = avg('diff');
+
+  const insights = [];
+  const proteinTarget = p.protein || (p.currentWeight * 1.6);
+
+  if (avgProtein < proteinTarget * 0.7) {
+    insights.push({ type: 'increase', icon: '🥩', title: 'زِد البروتين',
+      text: `متوسطك اليومي ${Math.round(avgProtein)}غ فقط من ${Math.round(proteinTarget)}غ المستهدف — أضف صدر دجاج، بيض، أو زبادي يومياً` });
+  }
+
+  if (avgSugar > 50) {
+    insights.push({ type: 'decrease', icon: '🍬', title: 'قلّل السكريات',
+      text: `متوسطك اليومي ${Math.round(avgSugar)}غ سكر (الحد المرجعي 50غ) — راقب الحلويات والمشروبات الغازية والعصائر` });
+  }
+
+  if (avgFiber < 18) {
+    insights.push({ type: 'increase', icon: '🌿', title: 'زِد الألياف',
+      text: `متوسطك اليومي ${Math.round(avgFiber)}غ فقط من 25غ المرجعي — أضف خضروات وبقوليات وفواكه كاملة أكثر` });
+  }
+
+  if (avgDiff > 150) {
+    insights.push({ type: 'decrease', icon: '🔥', title: 'راقب فائض السعرات',
+      text: `متوسطك اليومي يتجاوز هدفك بـ${Math.round(avgDiff)} سعرة — قلّل حصص الوجبات السريعة أو المقليات` });
+  } else if (avgDiff < -150) {
+    insights.push({ type: 'increase', icon: '🍽️', title: 'سعراتك أقل من هدفك',
+      text: `متوسطك اليومي أقل من هدفك بـ${Math.round(Math.abs(avgDiff))} سعرة — تأكد إنك تاكل كفاية لتصل هدفك بأمان` });
+  }
+
+  if (insights.length === 0) {
+    insights.push({ type: 'good', icon: '✅', title: 'أنت على المسار الصحيح!',
+      text: 'مؤشراتك الأساسية (السعرات، البروتين، السكر، الألياف) متوازنة بآخر أيامك — استمر بنفس النمط' });
+  }
+
+  return insights.slice(0, 4);
+}
+
+function renderSmartInsights() {
+  const container = document.getElementById('smart-insights-display');
+  if (!container) return;
+
+  const insights = getSmartDietInsights();
+  if (!insights) {
+    container.innerHTML = '<div class="message-box">سجّل وجباتك يومين على الأقل لتظهر توصيات مبنية على نمطك الفعلي</div>';
+    return;
+  }
+
+  const colorMap = { increase: 'var(--accent-emerald)', decrease: 'var(--accent-coral)', good: 'var(--accent-cyan)' };
+
+  container.innerHTML = insights.map(ins => `
+    <div class="message-box" style="border-right-color:${colorMap[ins.type]}; margin-bottom:8px;">
+      <strong>${ins.icon} ${ins.title}</strong><br>
+      <span style="font-size:12px; color:var(--text-secondary);">${ins.text}</span>
+    </div>
+  `).join('');
+}
+
 function getEarnedBadges() {
   const badges = [];
   const p = appState.profile;

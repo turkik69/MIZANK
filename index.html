@@ -468,6 +468,13 @@ body {
       <div id="yesterday-comparison-display"></div>
     </div>
 
+    <!-- Goal Timeline Projection -->
+    <div class="glass-card">
+      <h3 style="font-size:14px; font-weight:800; color:#fff; margin-bottom:4px;">🎯 متى تصل هدفك؟</h3>
+      <p style="font-size:11px; color:var(--text-secondary); margin-bottom:12px;">تقدير مبني على أدائك الفعلي بالسعرات، ليس افتراضاً نظرياً</p>
+      <div id="goal-projection-display"></div>
+    </div>
+
     <!-- Achievement Badges Card -->
     <div class="glass-card">
       <h3 style="font-size:14px; font-weight:800; color:#fff; margin-bottom:12px;">🏅 شارات الإنجاز</h3>
@@ -1544,6 +1551,7 @@ function updateDashboard() {
   renderCalorieBalance(consumedCals, netCals);
   renderSmartInsights();
   renderYesterdayComparison();
+  renderGoalProjection();
   renderBadges();
   renderBodyShape();
   renderWeeklyReport();
@@ -1916,6 +1924,104 @@ function renderYesterdayComparison() {
     <div class="message-box" style="border-right-color:var(--accent-purple);">
       <strong>نصيحة لبكرة:</strong> ${tip}
     </div>
+  `;
+}
+
+// ============ متى تصل هدفك؟ — مبني على أدائك الفعلي بالسعرات، مو افتراض نظري ============
+function getGoalProjection() {
+  const p = appState.profile;
+  if (!p || !p.targetWeight) return null;
+
+  const currentWeight = appState.weights.length > 0
+    ? appState.weights[appState.weights.length - 1].weight
+    : p.currentWeight;
+
+  const targetWeight = p.targetWeight;
+  const weightDiff = currentWeight - targetWeight; // موجب = يحتاج ينزل، سالب = يحتاج يزيد
+
+  if (Math.abs(weightDiff) < 0.3) {
+    return { status: 'reached', currentWeight, targetWeight };
+  }
+
+  const isLosingGoal = weightDiff > 0;
+  const weekAvg = getWeekAverages(0);
+
+  if (!weekAvg || weekAvg.daysWithData < 2) {
+    return { status: 'insufficient_data' };
+  }
+
+  const avgDiff = weekAvg.avgDiff; // موجب = فائض سعرات فعلي، سالب = عجز فعلي
+  const isOnTrack = isLosingGoal ? (avgDiff < -20) : (avgDiff > 20);
+
+  if (!isOnTrack) {
+    return { status: 'off_track', isLosingGoal };
+  }
+
+  const totalCaloriesNeeded = Math.abs(weightDiff) * 7700;
+  const dailyRate = Math.abs(avgDiff);
+  const daysNeeded = Math.ceil(totalCaloriesNeeded / dailyRate);
+  const weeksNeeded = Math.round(daysNeeded / 7 * 10) / 10;
+
+  const targetDate = new Date();
+  targetDate.setDate(targetDate.getDate() + daysNeeded);
+
+  return {
+    status: 'on_track', isLosingGoal, currentWeight, targetWeight,
+    weightDiff: Math.abs(weightDiff), daysNeeded, weeksNeeded, targetDate,
+    dailyRateGrams: (dailyRate / 7.7).toFixed(0)
+  };
+}
+
+function renderGoalProjection() {
+  const container = document.getElementById('goal-projection-display');
+  if (!container) return;
+
+  const proj = getGoalProjection();
+
+  if (!proj) {
+    container.innerHTML = '<div class="message-box">حدّد وزنك المستهدف من صفحة تعديل البيانات لتظهر هذي البطاقة</div>';
+    return;
+  }
+
+  if (proj.status === 'reached') {
+    container.innerHTML = `<div class="message-box" style="border-right-color:var(--accent-emerald);">🎉 وصلت لوزنك المستهدف! (${proj.currentWeight} كغ)</div>`;
+    return;
+  }
+
+  if (proj.status === 'insufficient_data') {
+    container.innerHTML = '<div class="message-box">سجّل وجباتك يومين على الأقل هذا الأسبوع لحساب تقدير واقعي لهدفك</div>';
+    return;
+  }
+
+  if (proj.status === 'off_track') {
+    const direction = proj.isLosingGoal ? 'نزول' : 'زيادة';
+    container.innerHTML = `
+      <div class="message-box" style="border-right-color:var(--accent-coral);">
+        ⚠️ نمطك الحالي بالسعرات ما يدعم هدف ${direction} الوزن — راجع بطاقة "توصياتك الذكية" أعلاه لمعرفة التعديل المطلوب
+      </div>`;
+    return;
+  }
+
+  const dateStr = proj.targetDate.toLocaleDateString('ar', { day: 'numeric', month: 'long', year: 'numeric' });
+  const directionLabel = proj.isLosingGoal ? 'نزول' : 'زيادة';
+
+  container.innerHTML = `
+    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:12px;">
+      <div class="macro-item">
+        <div style="font-size:11px; color:var(--text-secondary);">المتبقي لهدفك</div>
+        <div style="font-size:20px; font-weight:900; color:#fff;">${proj.weightDiff.toFixed(1)}</div>
+        <div style="font-size:10px; color:var(--text-muted);">كغ (${directionLabel})</div>
+      </div>
+      <div class="macro-item">
+        <div style="font-size:11px; color:var(--text-secondary);">المدة المتوقعة</div>
+        <div style="font-size:20px; font-weight:900; color:var(--accent-emerald);">${proj.weeksNeeded}</div>
+        <div style="font-size:10px; color:var(--text-muted);">أسبوع (${proj.daysNeeded} يوم)</div>
+      </div>
+    </div>
+    <div class="message-box" style="border-right-color:var(--accent-cyan);">
+      📅 بمعدلك الحالي (${proj.dailyRateGrams} غ/يوم)، متوقع توصل هدفك حوالي <strong>${dateStr}</strong>
+    </div>
+    <p style="font-size:10px; color:var(--text-muted); margin-top:8px;">* تقدير مبني على أدائك الفعلي بالأسبوع الأخير، وليس رقماً نهائياً — يتحدّث كل ما يتغير نمطك</p>
   `;
 }
 

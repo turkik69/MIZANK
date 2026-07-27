@@ -457,8 +457,15 @@ body {
     <!-- Smart Diet Insights Card -->
     <div class="glass-card">
       <h3 style="font-size:14px; font-weight:800; color:#fff; margin-bottom:4px;">🧭 توصياتك الذكية</h3>
-      <p style="font-size:11px; color:var(--text-secondary); margin-bottom:12px;">مبنية على وجباتك الفعلية آخر أيامك — مو تخمين عام</p>
+      <p style="font-size:11px; color:var(--text-secondary); margin-bottom:12px;">لحظية ليومك الحالي — تتحدث فوراً مع كل وجبة تسجّلها</p>
       <div id="smart-insights-display"></div>
+    </div>
+
+    <!-- Yesterday vs Today Comparison -->
+    <div class="glass-card">
+      <h3 style="font-size:14px; font-weight:800; color:#fff; margin-bottom:4px;">📊 أمس مقابل اليوم</h3>
+      <p style="font-size:11px; color:var(--text-secondary); margin-bottom:12px;">مقارنة سريعة، مع نصيحة تصحيحية ليوم بكرة</p>
+      <div id="yesterday-comparison-display"></div>
     </div>
 
     <!-- Achievement Badges Card -->
@@ -1536,6 +1543,7 @@ function updateDashboard() {
 
   renderCalorieBalance(consumedCals, netCals);
   renderSmartInsights();
+  renderYesterdayComparison();
   renderBadges();
   renderBodyShape();
   renderWeeklyReport();
@@ -1784,50 +1792,57 @@ function getWeekAverages(weeksAgo) {
 
 // ============ شارات الإنجاز ============
 // ============ التوصيات الذكية — مبنية على الوجبات الفعلية المسجّلة، لا تخمين عام ============
+// ============ التوصيات الذكية — لحظية ليومك الحالي فقط، تتحدث فوراً مع كل وجبة تُسجَّل ============
 function getSmartDietInsights() {
   const p = appState.profile;
   if (!p) return null;
 
-  const days = getLast7DaysSummaries();
-  const activeDays = days.filter(d => d.consumed > 0);
-  if (activeDays.length < 2) return null; // بيانات غير كافية بعد لتحليل موثوق
+  const todaysMeals = getTodaysMeals();
+  if (todaysMeals.length === 0) return null; // لسا ما سجّلت شي اليوم
 
-  const avg = (key) => activeDays.reduce((s, d) => s + d[key], 0) / activeDays.length;
-  const avgCal = avg('consumed');
-  const avgProtein = avg('protein');
-  const avgSugar = avg('sugar');
-  const avgFiber = avg('fiber');
-  const avgDiff = avg('diff');
+  const todaysWorkouts = getTodaysWorkouts();
+  const consumed = todaysMeals.reduce((s, m) => s + m.cal, 0);
+  const burned = todaysWorkouts.reduce((s, w) => s + w.cal, 0);
+  const net = consumed - burned;
+  const protein = todaysMeals.reduce((s, m) => s + m.protein, 0);
+  const sugar = todaysMeals.reduce((s, m) => s + (m.sugar || 0), 0);
+  const fiber = todaysMeals.reduce((s, m) => s + (m.fiber || 0), 0);
 
-  const insights = [];
+  const hour = new Date().getHours();
   const proteinTarget = p.protein || (p.currentWeight * 1.6);
+  const insights = [];
 
-  if (avgProtein < proteinTarget * 0.7) {
-    insights.push({ type: 'increase', icon: '🥩', title: 'زِد البروتين',
-      text: `متوسطك اليومي ${Math.round(avgProtein)}غ فقط من ${Math.round(proteinTarget)}غ المستهدف — أضف صدر دجاج، بيض، أو زبادي يومياً` });
+  // البروتين — نراعي وقت اليوم؛ ما نزعجه بهذا التنبيه قبل بعد الظهر
+  if (hour >= 14 && protein < proteinTarget * 0.5) {
+    insights.push({ type: 'increase', icon: '🥩', title: 'زِد البروتين اليوم',
+      text: `عندك ${Math.round(protein)}غ من ${Math.round(proteinTarget)}غ المستهدف لليوم — حاول تضيف مصدر بروتين بوجبتك الجاية` });
   }
 
-  if (avgSugar > 50) {
-    insights.push({ type: 'decrease', icon: '🍬', title: 'قلّل السكريات',
-      text: `متوسطك اليومي ${Math.round(avgSugar)}غ سكر (الحد المرجعي 50غ) — راقب الحلويات والمشروبات الغازية والعصائر` });
+  // السكر — تحذير فوري لو تجاوز الحد، وتنبيه مبكر لو اقترب منه
+  if (sugar > 50) {
+    insights.push({ type: 'decrease', icon: '🍬', title: 'سكرك اليوم تجاوز الحد',
+      text: `وصلت ${Math.round(sugar)}غ سكر (الحد المرجعي 50غ) — تجنب الحلويات والمشروبات المحلاة لباقي اليوم` });
+  } else if (sugar > 35 && hour < 20) {
+    insights.push({ type: 'decrease', icon: '🍬', title: 'راقب السكر',
+      text: `عندك ${Math.round(sugar)}غ سكر لحد الآن، قريب من الحد المرجعي (50غ) — انتبه لباقي وجباتك اليوم` });
   }
 
-  if (avgFiber < 18) {
+  // الألياف — ما نحكم عليها إلا بعد ما يمر جزء كافٍ من اليوم
+  if (hour >= 16 && fiber < 10) {
     insights.push({ type: 'increase', icon: '🌿', title: 'زِد الألياف',
-      text: `متوسطك اليومي ${Math.round(avgFiber)}غ فقط من 25غ المرجعي — أضف خضروات وبقوليات وفواكه كاملة أكثر` });
+      text: `عندك ${Math.round(fiber)}غ ألياف فقط لحد الآن — أضف خضروات أو فواكه أو بقوليات بوجبتك القادمة` });
   }
 
-  if (avgDiff > 150) {
-    insights.push({ type: 'decrease', icon: '🔥', title: 'راقب فائض السعرات',
-      text: `متوسطك اليومي يتجاوز هدفك بـ${Math.round(avgDiff)} سعرة — قلّل حصص الوجبات السريعة أو المقليات` });
-  } else if (avgDiff < -150) {
-    insights.push({ type: 'increase', icon: '🍽️', title: 'سعراتك أقل من هدفك',
-      text: `متوسطك اليومي أقل من هدفك بـ${Math.round(Math.abs(avgDiff))} سعرة — تأكد إنك تاكل كفاية لتصل هدفك بأمان` });
+  // السعرات الصافية (المستهلك ناقص المحروق) مقابل الهدف اليومي
+  const dailyTarget = p.dailyCalories;
+  if (net > dailyTarget + 100) {
+    insights.push({ type: 'decrease', icon: '🔥', title: 'تجاوزت هدف السعرات',
+      text: `صافي سعراتك اليوم ${Math.round(net)} من هدف ${Math.round(dailyTarget)} — خفّف باقي اليوم أو زِد نشاطك` });
   }
 
   if (insights.length === 0) {
-    insights.push({ type: 'good', icon: '✅', title: 'أنت على المسار الصحيح!',
-      text: 'مؤشراتك الأساسية (السعرات، البروتين، السكر، الألياف) متوازنة بآخر أيامك — استمر بنفس النمط' });
+    insights.push({ type: 'good', icon: '✅', title: 'ماشي تمام لحد الآن!',
+      text: 'مؤشراتك اليوم (السعرات، البروتين، السكر، الألياف) متوازنة — استمر بنفس النمط' });
   }
 
   return insights.slice(0, 4);
@@ -1839,7 +1854,7 @@ function renderSmartInsights() {
 
   const insights = getSmartDietInsights();
   if (!insights) {
-    container.innerHTML = '<div class="message-box">سجّل وجباتك يومين على الأقل لتظهر توصيات مبنية على نمطك الفعلي</div>';
+    container.innerHTML = '<div class="message-box">سجّل أول وجبة اليوم لتبدأ التوصيات اللحظية بالظهور</div>';
     return;
   }
 
@@ -1852,6 +1867,58 @@ function renderSmartInsights() {
     </div>
   `).join('');
 }
+
+// ============ مقارنة أمس واليوم + نصيحة تصحيحية لبكرة ============
+function renderYesterdayComparison() {
+  const container = document.getElementById('yesterday-comparison-display');
+  const p = appState.profile;
+  if (!container || !p) return;
+
+  const y = new Date();
+  y.setDate(y.getDate() - 1);
+  const yesterdayStr = y.toISOString().split('T')[0];
+
+  const yesterday = getDaySummary(yesterdayStr);
+  const today = getDaySummary(todayStr());
+
+  if (yesterday.consumed === 0) {
+    container.innerHTML = '<div class="message-box">تحتاج بيانات أمس لعرض المقارنة — راح تظهر تلقائياً بكرة</div>';
+    return;
+  }
+
+  const proteinTarget = p.protein || (p.currentWeight * 1.6);
+  let tip;
+  if (yesterday.sugar > 50 || today.sugar > 40) {
+    tip = '🍬 قلّل السكريات غداً — جرب استبدال الحلويات بفواكه طازجة';
+  } else if (yesterday.protein < proteinTarget * 0.6) {
+    tip = '🥩 ركّز على البروتين من أول وجبة غداً — يساعدك تحس بالشبع لفترة أطول';
+  } else if (yesterday.diff > 150) {
+    tip = '🔥 حاول تلتزم غداً بحصص أهدأ، خصوصاً بوجبة العشاء';
+  } else if (yesterday.fiber < 15) {
+    tip = '🌿 أضف خضروات أو بقوليات أكثر غداً لرفع الألياف';
+  } else {
+    tip = '✅ أداؤك أمس كان متوازناً — استمر بنفس النمط غداً!';
+  }
+
+  container.innerHTML = `
+    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:12px;">
+      <div class="macro-item">
+        <div style="font-size:11px; color:var(--text-secondary);">أمس (كامل)</div>
+        <div style="font-size:18px; font-weight:900; color:var(--text-secondary);">${Math.round(yesterday.consumed)}</div>
+        <div style="font-size:10px; color:var(--text-muted);">سعرة | ${Math.round(yesterday.protein)}غ بروتين | ${Math.round(yesterday.sugar)}غ سكر</div>
+      </div>
+      <div class="macro-item">
+        <div style="font-size:11px; color:var(--text-secondary);">اليوم (لحد الآن)</div>
+        <div style="font-size:18px; font-weight:900; color:#fff;">${Math.round(today.consumed)}</div>
+        <div style="font-size:10px; color:var(--text-muted);">سعرة | ${Math.round(today.protein)}غ بروتين | ${Math.round(today.sugar)}غ سكر</div>
+      </div>
+    </div>
+    <div class="message-box" style="border-right-color:var(--accent-purple);">
+      <strong>نصيحة لبكرة:</strong> ${tip}
+    </div>
+  `;
+}
+
 
 function getEarnedBadges() {
   const badges = [];

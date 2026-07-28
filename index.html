@@ -475,6 +475,36 @@ body {
       <div id="goal-projection-display"></div>
     </div>
 
+    <!-- Metabolism Support Guidance -->
+    <div class="glass-card">
+      <h3 style="font-size:14px; font-weight:800; color:#fff; margin-bottom:4px;">⚡ دعم عملية الحرق الأيضي</h3>
+      <p style="font-size:11px; color:var(--text-secondary); margin-bottom:12px;">لا يوجد "طعام يحرق الدهون" سحرياً — هذي عادات مثبتة علمياً تدعم معدل حرقك فعلياً</p>
+      <div id="metabolism-tip-display" style="margin-bottom:10px;"></div>
+      <div style="display:flex; flex-direction:column; gap:8px;">
+        <div class="message-box" style="border-right-color: var(--accent-emerald);">
+          <strong>🥩 بروتين كافٍ بكل وجبة</strong><br>
+          <span style="font-size:12px; color:var(--text-secondary);">هضم البروتين وحده يستهلك 20-30% من سعراته (مقابل 5-10% للكارب) — أعلى "تأثير حراري" بين كل العناصر الغذائية</span>
+        </div>
+        <div class="message-box" style="border-right-color: var(--accent-cyan);">
+          <strong>🏋️ تمارين المقاومة، لا الكارديو فقط</strong><br>
+          <span style="font-size:12px; color:var(--text-secondary);">العضلات تحرق سعرات أكثر من الدهون حتى وأنت مرتاح — بناء كتلة عضلية يرفع معدل حرقك الأساسي بشكل مستمر</span>
+        </div>
+        <div class="message-box" style="border-right-color: var(--accent-amber);">
+          <strong>🚶 الحركة اليومية خارج التمرين (NEAT)</strong><br>
+          <span style="font-size:12px; color:var(--text-secondary);">المشي، الوقوف، حتى الحركة العشوائية اليومية تجمع سعرات محروقة أكثر مما يُقدَّر عادة — لا تعتمد على جلسة التمرين فقط</span>
+        </div>
+        <div class="message-box" style="border-right-color: var(--accent-purple);">
+          <strong>⚠️ لا تقلل سعراتك بشكل قاسٍ</strong><br>
+          <span style="font-size:12px; color:var(--text-secondary);">عجز كبير جداً لفترة طويلة يخلي الجسم "يبطّئ" حرقه دفاعياً (Adaptive Thermogenesis) — عجز معتدل ومستمر أفضل من عجز قاسٍ متقطع</span>
+        </div>
+        <div class="message-box" style="border-right-color: var(--accent-coral);">
+          <strong>😴 النوم الكافي</strong><br>
+          <span style="font-size:12px; color:var(--text-secondary);">قلة النوم تربك هرمونات الجوع (الجريلين واللبتين) وترتبط بضعف التحكم الأيضي — 7-9 ساعات هدف واقعي لمعظم البالغين</span>
+        </div>
+      </div>
+      <p style="font-size:10px; color:var(--text-muted); margin-top:10px;">* الفروقات الفردية بمعدل الحرق تُعزى غالباً للكتلة العضلية والنشاط اليومي، مو "أطعمة سحرية" — أي مصدر يوعدك بحرق سريع من طعام واحد غير دقيق علمياً</p>
+    </div>
+
     <!-- Achievement Badges Card -->
     <div class="glass-card">
       <h3 style="font-size:14px; font-weight:800; color:#fff; margin-bottom:12px;">🏅 شارات الإنجاز</h3>
@@ -1603,6 +1633,7 @@ function updateDashboard() {
   renderSmartInsights();
   renderYesterdayComparison();
   renderGoalProjection();
+  renderMetabolismTip();
   renderBadges();
   renderBodyShape();
   renderWeeklyReport();
@@ -2076,6 +2107,31 @@ function renderGoalProjection() {
   `;
 }
 
+// ============ نصيحة شخصية مرتبطة بالحرق الأيضي — تعتمد على بروتين ونشاط اليوم الفعليين ============
+function renderMetabolismTip() {
+  const container = document.getElementById('metabolism-tip-display');
+  const p = appState.profile;
+  if (!container || !p) return;
+
+  const todaysMeals = getTodaysMeals();
+  const todaysWorkouts = getTodaysWorkouts();
+  const protein = todaysMeals.reduce((s, m) => s + m.protein, 0);
+  const proteinTarget = p.protein || (p.currentWeight * 1.6);
+  const hasResistanceToday = todaysWorkouts.some(w =>
+    /مقاومة|حديد|HIIT|جولات|عدات/.test(w.name || w.type || '')
+  );
+
+  let tip;
+  if (todaysMeals.length === 0) {
+    tip = { color: 'var(--accent-cyan)', text: '📋 لسا ما سجّلت وجبات اليوم — بروتينك بأول وجبة يبدأ يفعّل التأثير الحراري لهضم الطعام مبكراً' };
+  } else if (protein >= proteinTarget * 0.8) {
+    tip = { color: 'var(--accent-emerald)', text: `✅ بروتينك اليوم ممتاز (${Math.round(protein)}غ من ${Math.round(proteinTarget)}غ) — تستفيد فعلياً من التأثير الحراري الأعلى للبروتين` };
+  } else {
+    tip = { color: 'var(--accent-amber)', text: `📈 بروتينك اليوم ${Math.round(protein)}غ من ${Math.round(proteinTarget)}غ المستهدف — أضف مصدر بروتين بوجبتك الجاية للاستفادة الكاملة من تأثيره الحراري` };
+  }
+
+  container.innerHTML = `<div class="message-box" style="border-right-color:${tip.color};">${tip.text}</div>`;
+}
 
 function getEarnedBadges() {
   const badges = [];

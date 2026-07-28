@@ -275,6 +275,44 @@ body {
   .dashboard-grid { grid-template-columns: repeat(2, 1fr); }
   .screen { padding: 10px; }
 }
+
+/* ============ حركات الشخصية الكرتونية المصغّرة لكل نوع تمرين ============ */
+@keyframes mascotBounceFast {
+  0%, 100% { transform: translateY(0) rotate(-6deg); }
+  50% { transform: translateY(-14px) rotate(6deg); }
+}
+@keyframes mascotBounceSlow {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+@keyframes mascotLift {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-10px) scale(1.12); }
+}
+@keyframes mascotCrunch {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  50% { transform: scale(0.82) rotate(-10deg); }
+}
+@keyframes mascotLegRaise {
+  0%, 100% { transform: rotate(0deg) translateY(0); }
+  50% { transform: rotate(18deg) translateY(-5px); }
+}
+@keyframes mascotPedal {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+@keyframes mascotSway {
+  0%, 100% { transform: translateX(0) rotate(0deg); }
+  50% { transform: translateX(4px) rotate(4deg); }
+}
+
+.mascot-bounce-fast { display: inline-block; animation: mascotBounceFast 0.5s ease-in-out infinite; }
+.mascot-bounce-slow { display: inline-block; animation: mascotBounceSlow 1s ease-in-out infinite; }
+.mascot-lift { display: inline-block; animation: mascotLift 1.2s ease-in-out infinite; }
+.mascot-crunch { display: inline-block; animation: mascotCrunch 0.9s ease-in-out infinite; }
+.mascot-leg-raise { display: inline-block; animation: mascotLegRaise 1s ease-in-out infinite; }
+.mascot-pedal { display: inline-block; animation: mascotPedal 1.5s linear infinite; }
+.mascot-sway { display: inline-block; animation: mascotSway 2s ease-in-out infinite; }
 </style>
 </head>
 <body>
@@ -757,21 +795,26 @@ body {
     <div class="glass-card">
       <h3 style="color: var(--accent-emerald); margin-bottom: 12px; font-size:15px; font-weight:800;">➕ إضافة نشاط أو تمرين مخصص</h3>
       
-      <div class="form-group">
-        <label class="form-label">نوع التمرين</label>
-        <select id="workout-type" class="form-select" onchange="updateWorkoutCalRate()">
-          <option value="jump_rope">🪢 نط الحبل (Jump Rope)</option>
-          <option value="abs_crunches">🧘‍♂️ تمارين المعدة العلوية (Crunches)</option>
-          <option value="abs_leg_raises">🦵 رفع الأرجل للبطن السفلي (Leg Raises)</option>
-          <option value="abs_bicycle">🚲 تمرين الدراجة للمعدة (Bicycle Crunches)</option>
-          <option value="abs_plank">🪵 تمرين البلانك للثبات (Plank)</option>
+      <div class="form-group" style="display:flex; align-items:flex-end; gap:12px;">
+        <div style="flex:1;">
+          <label class="form-label">نوع التمرين</label>
+          <select id="workout-type" class="form-select" onchange="updateWorkoutCalRate(); updateWorkoutMascot();">
+            <option value="jump_rope">🪢 نط الحبل (Jump Rope)</option>
+            <option value="abs_crunches">🧘‍♂️ تمارين المعدة العلوية (Crunches)</option>
+            <option value="abs_leg_raises">🦵 رفع الأرجل للبطن السفلي (Leg Raises)</option>
+            <option value="abs_bicycle">🚲 تمرين الدراجة للمعدة (Bicycle Crunches)</option>
+            <option value="abs_plank">🪵 تمرين البلانك للثبات (Plank)</option>
 
-          <option value="cardio_run">🏃‍♂️ جري متوسط (Cardio)</option>
-          <option value="cardio_walk">🚶‍♂️ مشي سريع</option>
-          <option value="strength">🏋️‍♂️ تمارين حديد ومقاومة</option>
-          <option value="hiit">🔥 تمارين متناوبة الشدة (HIIT)</option>
-          <option value="private_activity">🌙 رياضة خاصة</option>
-        </select>
+            <option value="cardio_run">🏃‍♂️ جري متوسط (Cardio)</option>
+            <option value="cardio_walk">🚶‍♂️ مشي سريع</option>
+            <option value="strength">🏋️‍♂️ تمارين حديد ومقاومة</option>
+            <option value="hiit">🔥 تمارين متناوبة الشدة (HIIT)</option>
+            <option value="private_activity">🌙 رياضة خاصة</option>
+          </select>
+        </div>
+        <div id="workout-mascot-wrap" style="width:64px; height:64px; flex-shrink:0; display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,0.05); border-radius:16px; border:1px solid var(--border-glass);">
+          <span id="workout-mascot" class="mascot-bounce-fast" style="font-size:34px;">🪢</span>
+        </div>
       </div>
 
       <div class="pill-container" style="margin-bottom:12px;">
@@ -1580,7 +1623,7 @@ function switchScreen(screenName, navElement) {
   if (screenName === 'meals') { updateMealsList(); renderSuggestedMeals(); }
   if (screenName === 'fasting') renderFastingHistory();
   if (screenName === 'community') fetchLeaderboard();
-  if (screenName === 'workouts') updateWorkoutsList();
+  if (screenName === 'workouts') { updateWorkoutsList(); updateWorkoutMascot(); }
   if (screenName === 'water') updateWaterScreen();
   if (screenName === 'chat') renderChatHistory();
   if (screenName === 'settings') { updateProfileUI(); loadApiSettingsUI(); }
@@ -3049,6 +3092,30 @@ function deleteMeal(id) {
 
 // ============ EXPANDED WORKOUTS (REPS, JUMP ROPE, ABS) ============
 let workoutLogMode = 'time';
+
+// ============ الشخصية الكرتونية المتحركة حسب نوع التمرين المختار ============
+const workoutMascots = {
+  jump_rope: { emoji: '🪢', anim: 'mascot-bounce-fast' },
+  abs_crunches: { emoji: '🧘‍♂️', anim: 'mascot-crunch' },
+  abs_leg_raises: { emoji: '🦵', anim: 'mascot-leg-raise' },
+  abs_bicycle: { emoji: '🚴', anim: 'mascot-pedal' },
+  abs_plank: { emoji: '🪵', anim: 'mascot-sway' },
+  cardio_run: { emoji: '🏃‍♂️', anim: 'mascot-bounce-fast' },
+  cardio_walk: { emoji: '🚶‍♂️', anim: 'mascot-bounce-slow' },
+  strength: { emoji: '🏋️‍♂️', anim: 'mascot-lift' },
+  hiit: { emoji: '🤾', anim: 'mascot-bounce-fast' },
+  private_activity: { emoji: '🌙', anim: 'mascot-sway' }
+};
+
+function updateWorkoutMascot() {
+  const typeEl = document.getElementById('workout-type');
+  const mascotEl = document.getElementById('workout-mascot');
+  if (!typeEl || !mascotEl) return;
+
+  const config = workoutMascots[typeEl.value] || workoutMascots.strength;
+  mascotEl.textContent = config.emoji;
+  mascotEl.className = config.anim;
+}
 
 function setWorkoutLogMode(mode) {
   workoutLogMode = mode;

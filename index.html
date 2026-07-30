@@ -693,7 +693,13 @@ body {
       </div>
 
       <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
-        <button id="fasting-start-btn" class="btn btn-primary" onclick="startFasting()">🚀 ابدأ الصيام الان</button>
+        <div>
+          <button id="fasting-start-btn" class="btn btn-primary" style="width:100%;" onclick="startFasting()">🚀 ابدأ الصيام الان</button>
+          <div id="fasting-completion-time" style="display:none; flex-direction:column; align-items:center; justify-content:center; background:rgba(255,255,255,0.05); border-radius:12px; padding:8px; height:100%;">
+            <span style="font-size:10px; color:var(--text-secondary);">🏁 تكتمل الساعات عند</span>
+            <span id="fasting-completion-clock" style="font-size:16px; font-weight:900; color:var(--accent-emerald);">--:--</span>
+          </div>
+        </div>
         <button id="fasting-stop-btn" class="btn btn-coral" style="display:none;" onclick="stopFasting()">🛑 إنهاء الصيام</button>
       </div>
     </div>
@@ -2748,6 +2754,7 @@ function initFastingTimer() {
 function updateFastingUI() {
   const startBtn = document.getElementById('fasting-start-btn');
   const stopBtn = document.getElementById('fasting-stop-btn');
+  const completionWrap = document.getElementById('fasting-completion-time');
   const timerDisplay = document.getElementById('fasting-timer-display');
   const statusLabel = document.getElementById('fasting-status-label');
   const circleBar = document.getElementById('fasting-progress-circle');
@@ -2755,6 +2762,7 @@ function updateFastingUI() {
   if (!appState.fasting.active) {
     if (startBtn) startBtn.style.display = 'block';
     if (stopBtn) stopBtn.style.display = 'none';
+    if (completionWrap) completionWrap.style.display = 'none';
     if (timerDisplay) timerDisplay.textContent = '00:00:00';
     if (statusLabel) statusLabel.textContent = 'جاهز لبدء الصيام';
     if (circleBar) circleBar.style.strokeDashoffset = '565';
@@ -2765,10 +2773,17 @@ function updateFastingUI() {
 
   if (startBtn) startBtn.style.display = 'none';
   if (stopBtn) stopBtn.style.display = 'block';
+  if (completionWrap) completionWrap.style.display = 'flex';
 
   const elapsedMs = Date.now() - appState.fasting.startTime;
   const targetMs = appState.fasting.targetHours * 60 * 60 * 1000;
   const remainingMs = Math.max(0, targetMs - elapsedMs);
+
+  const completionDate = new Date(appState.fasting.startTime + targetMs);
+  const completionClock = document.getElementById('fasting-completion-clock');
+  if (completionClock) {
+    completionClock.textContent = completionDate.toLocaleTimeString('ar', { hour: '2-digit', minute: '2-digit' });
+  }
 
   const formatHMS = (ms) => {
     const s = Math.floor((ms / 1000) % 60);

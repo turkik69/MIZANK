@@ -1581,7 +1581,16 @@ function completeSetup() {
   if (!appState.workouts) appState.workouts = [];
   if (!appState.customMeals) appState.customMeals = [];
   if (!appState.weights) appState.weights = [];
-  if (appState.weights.length === 0) appState.weights.push({ date: todayStr(), weight });
+
+  // نحرص إن وزن اليوم بسجل الأوزان يطابق دائماً آخر وزن تم إدخاله من صفحة تعديل البيانات،
+  // وليس فقط بأول إعداد للحساب — هذا هو السبب الفعلي لعدم تحدّث BMI عند تعديل الوزن لاحقاً
+  const todayWeightEntry = appState.weights.find(w => w.date === todayStr());
+  if (todayWeightEntry) {
+    todayWeightEntry.weight = weight;
+  } else {
+    appState.weights.push({ date: todayStr(), weight });
+    appState.weights.sort((a, b) => new Date(a.date) - new Date(b.date));
+  }
 
   document.getElementById('bottom-nav').style.display = 'flex';
   showScreen('dashboard-screen');

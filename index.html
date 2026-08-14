@@ -1453,7 +1453,7 @@ let appState = {
   waterIntervalHours: 2,
   lastWaterNotifTime: 0,
   lastMealNotifTime: 0,
-  fasting: { active: false, startTime: null, targetHours: 16, logs: [] }
+  fasting: { active: false, startTime: null, targetHours: 16, logs: [], lastEndTime: null }
 };
 let dashboardChartInstance = null;
 let fastingTimerInterval = null;
@@ -1506,7 +1506,7 @@ window.addEventListener('load', async () => {
     const db = loadUsersDB();
     if (db[savedUsername] && db[savedUsername].profile) {
       currentUsername = savedUsername;
-      appState = Object.assign({ meals: [], workouts: [], weights: [], water: 0, waterDate: null, chat: [], streak: 1, waterIntervalHours: 2, lastWaterNotifTime: 0, lastMealNotifTime: 0, fasting: { active: false, startTime: null, targetHours: 16, logs: [] } }, db[savedUsername]);
+      appState = Object.assign({ meals: [], workouts: [], weights: [], water: 0, waterDate: null, chat: [], streak: 1, waterIntervalHours: 2, lastWaterNotifTime: 0, lastMealNotifTime: 0, fasting: { active: false, startTime: null, targetHours: 16, logs: [], lastEndTime: null } }, db[savedUsername]);
       document.getElementById('bottom-nav').style.display = 'flex';
       showScreen('dashboard-screen');
       updateLoginStreak();
@@ -1532,7 +1532,7 @@ function handleLogin() {
 
   const db = loadUsersDB();
   if (db[username] && db[username].profile) {
-    appState = Object.assign({ meals: [], workouts: [], weights: [], water: 0, waterDate: null, chat: [], streak: 1, waterIntervalHours: 2, lastWaterNotifTime: 0, lastMealNotifTime: 0, fasting: { active: false, startTime: null, targetHours: 16, logs: [] } }, db[username]);
+    appState = Object.assign({ meals: [], workouts: [], weights: [], water: 0, waterDate: null, chat: [], streak: 1, waterIntervalHours: 2, lastWaterNotifTime: 0, lastMealNotifTime: 0, fasting: { active: false, startTime: null, targetHours: 16, logs: [], lastEndTime: null } }, db[username]);
     document.getElementById('bottom-nav').style.display = 'flex';
     showScreen('dashboard-screen');
     updateLoginStreak();
@@ -1543,7 +1543,7 @@ function handleLogin() {
     fetchLeaderboard();
     startNotificationScheduler();
   } else {
-    appState = db[username] || { profile: null, meals: [], workouts: [], weights: [], water: 0, chat: [], streak: 1, waterIntervalHours: 2, lastWaterNotifTime: 0, lastMealNotifTime: 0, fasting: { active: false, startTime: null, targetHours: 16, logs: [] } };
+    appState = db[username] || { profile: null, meals: [], workouts: [], weights: [], water: 0, chat: [], streak: 1, waterIntervalHours: 2, lastWaterNotifTime: 0, lastMealNotifTime: 0, fasting: { active: false, startTime: null, targetHours: 16, logs: [], lastEndTime: null } };
     showScreen('setup-screen');
   }
 }
@@ -2734,6 +2734,13 @@ function changeFastingProtocol() {
 }
 
 function startFasting() {
+  // لو فيه وقت انتهاء صيام سابق مسجّل، نحسب كم ساعة قضاها فاطراً قبل ما يبدأ هذا الصيام الجديد
+  if (appState.fasting.lastEndTime) {
+    const eatingWindowMs = Date.now() - appState.fasting.lastEndTime;
+    const eatingHours = (eatingWindowMs / (1000 * 60 * 60)).toFixed(1);
+    triggerNotification("🍽️ انتهت فترة الإفطار", `كنت فاطراً لمدة ${eatingHours} ساعة قبل بدء هذا الصيام.`);
+  }
+
   appState.fasting.active = true;
   appState.fasting.startTime = Date.now();
   saveCurrentUserData();
@@ -2755,6 +2762,7 @@ function stopFasting() {
 
   appState.fasting.active = false;
   appState.fasting.startTime = null;
+  appState.fasting.lastEndTime = Date.now(); // نسجّل بداية فترة الإفطار حتى نحسبها عند بدء الصيام الجاي
   saveCurrentUserData();
   initFastingTimer();
   renderFastingHistory();

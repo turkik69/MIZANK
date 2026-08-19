@@ -692,6 +692,13 @@ body {
         <div>🏁 المتبقي: <span id="fasting-remaining" style="color:#fff; font-weight:800;">00:00</span></div>
       </div>
 
+      <button id="fasting-edit-start-toggle" style="display:none; background:none; border:none; color:var(--accent-cyan); font-size:11px; text-decoration:underline; cursor:pointer; margin:0 auto 12px; display:block;" onclick="toggleFastingStartEdit()">✏️ نسيت تفعّل الصيام بوقته الصحيح؟ عدّله من هنا</button>
+      <div id="fasting-edit-start-wrap" style="display:none; margin-bottom:15px; background:rgba(255,255,255,0.05); border-radius:12px; padding:12px;">
+        <label class="form-label" style="font-size:11px;">وقت بداية الصيام الفعلي</label>
+        <input type="datetime-local" id="fasting-edit-start-input" class="form-input" style="font-size:14px;">
+        <button class="btn btn-secondary" style="margin-top:8px; width:100%;" onclick="saveEditedFastingStart()">✅ حفظ الوقت الصحيح</button>
+      </div>
+
       <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
         <div>
           <button id="fasting-start-btn" class="btn btn-primary" style="width:100%;" onclick="startFasting()">🚀 ابدأ الصيام الان</button>
@@ -2770,6 +2777,40 @@ function stopFasting() {
   triggerNotification("🎉 مبارك أكتمال الصيام!", `أتممت ${elapsedHours} ساعة صيام بنجاح.`);
 }
 
+// ============ تعديل وقت بداية الصيام يدوياً — لمن نسي يفعّل المؤقت بوقته الصحيح ============
+function toDatetimeLocalString(date) {
+  const pad = (n) => String(n).padStart(2, '0');
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
+}
+
+function toggleFastingStartEdit() {
+  const wrap = document.getElementById('fasting-edit-start-wrap');
+  if (!wrap) return;
+  const isVisible = wrap.style.display === 'block';
+  wrap.style.display = isVisible ? 'none' : 'block';
+  if (!isVisible && appState.fasting.startTime) {
+    document.getElementById('fasting-edit-start-input').value = toDatetimeLocalString(new Date(appState.fasting.startTime));
+  }
+}
+
+function saveEditedFastingStart() {
+  const input = document.getElementById('fasting-edit-start-input');
+  const newDateStr = input.value;
+  if (!newDateStr) { showToast('اختر وقتاً صحيحاً أولاً', 'warning'); return; }
+
+  const newStartTime = new Date(newDateStr).getTime();
+  if (newStartTime > Date.now()) {
+    showToast('لا يمكن أن يكون وقت البداية بالمستقبل', 'warning');
+    return;
+  }
+
+  appState.fasting.startTime = newStartTime;
+  saveCurrentUserData();
+  document.getElementById('fasting-edit-start-wrap').style.display = 'none';
+  updateFastingUI();
+  showToast('تم تعديل وقت بداية الصيام ✅', 'success');
+}
+
 function initFastingTimer() {
   if (fastingTimerInterval) clearInterval(fastingTimerInterval);
 
@@ -2786,11 +2827,15 @@ function updateFastingUI() {
   const timerDisplay = document.getElementById('fasting-timer-display');
   const statusLabel = document.getElementById('fasting-status-label');
   const circleBar = document.getElementById('fasting-progress-circle');
+  const editToggle = document.getElementById('fasting-edit-start-toggle');
+  const editWrap = document.getElementById('fasting-edit-start-wrap');
 
   if (!appState.fasting.active) {
     if (startBtn) startBtn.style.display = 'block';
     if (stopBtn) stopBtn.style.display = 'none';
     if (completionWrap) completionWrap.style.display = 'none';
+    if (editToggle) editToggle.style.display = 'none';
+    if (editWrap) editWrap.style.display = 'none';
     if (timerDisplay) timerDisplay.textContent = '00:00:00';
     if (statusLabel) statusLabel.textContent = 'جاهز لبدء الصيام';
     if (circleBar) circleBar.style.strokeDashoffset = '565';
@@ -2802,6 +2847,7 @@ function updateFastingUI() {
   if (startBtn) startBtn.style.display = 'none';
   if (stopBtn) stopBtn.style.display = 'block';
   if (completionWrap) completionWrap.style.display = 'flex';
+  if (editToggle) editToggle.style.display = 'block';
 
   const elapsedMs = Date.now() - appState.fasting.startTime;
   const targetMs = appState.fasting.targetHours * 60 * 60 * 1000;

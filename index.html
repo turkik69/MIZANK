@@ -388,6 +388,14 @@ body {
       <button class="icon-btn" onclick="shareProgressModal()">✨ مشاركة التقدم</button>
     </div>
 
+    <div id="backup-reminder-banner" style="display:none; align-items:center; justify-content:space-between; gap:10px; background:rgba(245,158,11,0.15); border:1px solid var(--accent-amber); border-radius:12px; padding:12px 16px; margin-bottom:16px;">
+      <span style="font-size:12px; color:#fff;">💾 يوم جديد بدأ — خذ نسخة احتياطية من بياناتك؟</span>
+      <div style="display:flex; gap:8px; flex-shrink:0;">
+        <button class="icon-btn" style="background:var(--accent-amber); color:#1a1200; font-weight:800; border:none; padding:6px 12px; font-size:11px;" onclick="exportBackup()">خذها الآن</button>
+        <button class="icon-btn" style="background:rgba(255,255,255,0.1); color:#fff; border:none; padding:6px 10px; font-size:11px;" onclick="dismissBackupReminder()">لاحقاً</button>
+      </div>
+    </div>
+
     <!-- Metric Cards -->
     <div class="dashboard-grid">
       <div class="metric-card">
@@ -931,6 +939,17 @@ body {
         <button class="btn btn-primary" onclick="saveApiSettings()">💾 حفظ الإعدادات</button>
         <button class="btn btn-secondary" onclick="clearCustomApiKey()">🔄 استخدام الافتراضي</button>
       </div>
+    </div>
+
+    <div class="glass-card">
+      <h3 style="color: var(--accent-emerald); margin-bottom: 4px; font-size:15px; font-weight:800;">💾 النسخة الاحتياطية</h3>
+      <p style="font-size:11px; color:var(--text-muted); margin-bottom:12px;">بياناتك محفوظة بمتصفحك فقط — خذ نسخة احتياطية بشكل دوري لتحفظها بمكان آمن (الملفات، iCloud، إلخ) تحسباً لأي مشكلة</p>
+      <div id="backup-status-display" style="margin-bottom:12px;"></div>
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+        <button class="btn btn-primary" onclick="exportBackup()">📤 تصدير نسخة احتياطية</button>
+        <button class="btn btn-secondary" onclick="triggerImportBackup()">📥 استعادة من نسخة</button>
+      </div>
+      <input type="file" id="backup-import-input" accept="application/json" style="display:none;" onchange="handleImportBackup(event)">
     </div>
 
     <div class="glass-card">
@@ -1518,6 +1537,7 @@ window.addEventListener('load', async () => {
       document.getElementById('bottom-nav').style.display = 'flex';
       showScreen('dashboard-screen');
       updateLoginStreak();
+      checkAndShowBackupReminder();
       updateDashboard();
       initChart();
       initFastingTimer();
@@ -1544,6 +1564,7 @@ function handleLogin() {
     document.getElementById('bottom-nav').style.display = 'flex';
     showScreen('dashboard-screen');
     updateLoginStreak();
+    checkAndShowBackupReminder();
     updateDashboard();
     initChart();
     initFastingTimer();
@@ -1605,6 +1626,7 @@ function completeSetup() {
   document.getElementById('bottom-nav').style.display = 'flex';
   showScreen('dashboard-screen');
   updateLoginStreak();
+  checkAndShowBackupReminder();
   updateDashboard();
   initChart();
   initFastingTimer();
@@ -1627,7 +1649,7 @@ function switchScreen(screenName, navElement) {
   if (screenName === 'workouts') updateWorkoutsList();
   if (screenName === 'water') updateWaterScreen();
   if (screenName === 'chat') renderChatHistory();
-  if (screenName === 'settings') { updateProfileUI(); loadApiSettingsUI(); }
+  if (screenName === 'settings') { updateProfileUI(); loadApiSettingsUI(); renderBackupStatus(); }
 }
 
 function showScreen(screenId) {
@@ -3457,6 +3479,96 @@ function clearCustomApiKey() {
 function loadApiSettingsUI() {
   document.getElementById('gemini-key-input').value = localStorage.getItem('healthAppGeminiKey') || '';
   document.getElementById('gemini-model-input').value = localStorage.getItem('healthAppGeminiModel') || 'gemini-3.5-flash';
+}
+
+// ============ النسخة الاحتياطية — تصدير/استيراد ملف JSON كامل، وتذكير عند دخول يوم جديد ============
+function exportBackup() {
+  const backupPayload = {
+    version: 1,
+    exportDate: new Date().toISOString(),
+    username: currentUsername,
+    data: appState
+  };
+
+  const blob = new Blob([JSON.stringify(backupPayload, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `نسخة_احتياطية_${currentUsername}_${todayStr()}.json`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+
+  appState.lastBackupDate = todayStr();
+  saveCurrentUserData();
+  renderBackupStatus();
+  hideBackupReminderBanner();
+  showToast('تم تصدير نسخة احتياطية بنجاح 💾', 'success');
+}
+
+function triggerImportBackup() {
+  document.getElementById('backup-import-input').click();
+}
+
+function handleImportBackup(event) {
+  const file = event.target.files?.[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    try {
+      const backup = JSON.parse(e.target.result);
+      if (!backup || !backup.data) throw new Error('ملف غير صالح');
+
+      const confirmed = confirm('استعادة هذي النسخة الاحتياطية سيستبدل كل بياناتك الحالية بالكامل. متابعة؟');
+      if (!confirmed) return;
+
+      appState = backup.data;
+      saveCurrentUserData();
+      updateDashboard();
+      renderBackupStatus();
+      showToast('تم استعادة النسخة الاحتياطية بنجاح ✅', 'success');
+    } catch (err) {
+      showToast('تعذر استيراد الملف — تأكد إنه نسخة احتياطية صحيحة من نفس التطبيق', 'warning');
+    }
+  };
+  reader.readAsText(file);
+  event.target.value = '';
+}
+
+function renderBackupStatus() {
+  const container = document.getElementById('backup-status-display');
+  if (!container) return;
+
+  if (!appState.lastBackupDate) {
+    container.innerHTML = '<div class="message-box" style="border-right-color: var(--accent-amber);">⚠️ ما أخذت أي نسخة احتياطية بعد</div>';
+    return;
+  }
+
+  const daysSince = Math.floor((new Date(todayStr()) - new Date(appState.lastBackupDate)) / (1000 * 60 * 60 * 24));
+  const label = daysSince === 0 ? 'اليوم' : daysSince === 1 ? 'قبل يوم' : `قبل ${daysSince} أيام`;
+  const color = daysSince >= 7 ? 'var(--accent-coral)' : 'var(--accent-emerald)';
+  container.innerHTML = `<div class="message-box" style="border-right-color: ${color};">آخر نسخة احتياطية: ${label} (${appState.lastBackupDate})</div>`;
+}
+
+// يظهر تذكير لطيف بأعلى لوحة التحكم عند دخول يوم جديد لم تُؤخذ فيه نسخة احتياطية بعد
+function checkAndShowBackupReminder() {
+  const today = todayStr();
+  if (appState.lastBackupDate === today) return; // أخذ نسخة اليوم أصلاً
+
+  const banner = document.getElementById('backup-reminder-banner');
+  if (!banner) return;
+  banner.style.display = 'flex';
+}
+
+function hideBackupReminderBanner() {
+  const banner = document.getElementById('backup-reminder-banner');
+  if (banner) banner.style.display = 'none';
+}
+
+function dismissBackupReminder() {
+  hideBackupReminderBanner();
 }
 
 function logout() {

@@ -793,6 +793,15 @@ body {
           <option value="strength">🏋️‍♂️ تمارين حديد ومقاومة</option>
           <option value="hiit">🔥 تمارين متناوبة الشدة (HIIT)</option>
           <option value="ems">⚡ جلسة EMS (تحفيز كهربائي)</option>
+          <option value="walk_normal">🚶 مشي عادي (خارجي)</option>
+          <option value="treadmill_walk">🎽 مشي على آلة المشي</option>
+          <option value="treadmill_run">🏃 جري على آلة المشي</option>
+          <option value="pushups">💪 تمارين الضغط (Push-ups)</option>
+          <option value="squats">🦵 تمارين القرفصاء (Squats)</option>
+          <option value="lunges">🚶‍♀️ تمارين الطعنات (Lunges)</option>
+          <option value="glute_bridge">🍑 تمرين الجسر (Glute Bridge)</option>
+          <option value="mountain_climbers">⛰️ تمرين متسلق الجبل (Mountain Climbers)</option>
+          <option value="jumping_jacks">⭐ تمرين القفز والفتح (Jumping Jacks)</option>
           <option value="private_activity">🌙 رياضة خاصة</option>
         </select>
       </div>
@@ -3202,7 +3211,9 @@ function updateWorkoutCalRate() {
     const duration = parseFloat(document.getElementById('workout-duration').value) || 15;
     const rates = {
       jump_rope: 750, abs_crunches: 400, abs_leg_raises: 420, abs_bicycle: 450, abs_plank: 350,
-      cardio_run: 600, cardio_walk: 280, strength: 400, hiit: 700, private_activity: 240, ems: 600
+      cardio_run: 600, cardio_walk: 280, strength: 400, hiit: 700, private_activity: 240, ems: 600,
+      walk_normal: 200, treadmill_walk: 220, treadmill_run: 580,
+      pushups: 450, squats: 450, lunges: 430, glute_bridge: 300, mountain_climbers: 600, jumping_jacks: 500
     };
     const burned = Math.round((rates[type] || 400) * (duration / 60));
     document.getElementById('workout-calories').value = burned;

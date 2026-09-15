@@ -584,31 +584,6 @@ body {
       <div id="meal-text-preview"></div>
     </div>
 
-    <!-- CATEGORIZED MEALS & DRINKS & FRUITS -->
-    <div class="glass-card" style="border-color: var(--accent-amber);">
-      <h3 style="color: var(--accent-amber); margin-bottom: 8px; font-size:15px; font-weight:800;">💡 قائمتك المحلية: توست، صالونات، فواكه، حلويات ومشروبات</h3>
-      <p style="font-size:12px; color:var(--text-secondary); margin-bottom:12px;">اختر التصنيف واضغط لإضافة الوجبة فوراً لمفكرتك اليومية:</p>
-
-      <input type="text" id="meals-search-input" class="form-input" placeholder="🔍 ابحث عن أي وجبة بكل التصنيفات..." style="margin-bottom:12px;" oninput="handleMealsSearch()">
-
-      <div class="pill-container" id="meals-pill-container">
-        <div class="pill active" onclick="selectSuggestedCategory('breakfast', this)">🍳 الإفطار والتوست</div>
-        <div class="pill" onclick="selectSuggestedCategory('lunch', this)">🍗 الغداء (كبسات وصالونات)</div>
-        <div class="pill" onclick="selectSuggestedCategory('dinner', this)">🥗 العشاء والخفيف</div>
-        <div class="pill" onclick="selectSuggestedCategory('grills', this)">🍢 المشاكيك والفرن</div>
-        <div class="pill" onclick="selectSuggestedCategory('fastfood', this)">🍔 المطاعم والوجبات السريعة</div>
-        <div class="pill" onclick="selectSuggestedCategory('bakery', this)">🥖 المخبوزات وأنواع الخبز</div>
-        <div class="pill" onclick="selectSuggestedCategory('vegetables', this)">🥦 الخضروات</div>
-        <div class="pill" onclick="selectSuggestedCategory('snacks', this)">🥜 السناكات</div>
-        <div class="pill" onclick="selectSuggestedCategory('custom', this)">🌟 وجباتي الخاصة</div>
-        <div class="pill" onclick="selectSuggestedCategory('fruits', this)">🍎 الفواكه الطازجة والتمر</div>
-        <div class="pill" onclick="selectSuggestedCategory('sweets', this)">🍰 الكيك والحلويات</div>
-        <div class="pill" onclick="selectSuggestedCategory('drinks', this)">☕ المشروبات والعصائر</div>
-      </div>
-
-      <div id="suggested-meals-container"></div>
-    </div>
-
     <!-- Voice Input Card -->
     <div class="glass-card" style="border-color: var(--accent-emerald);">
       <h3 style="color: var(--accent-emerald); margin-bottom: 4px; font-size:15px; font-weight:800;">🎙️ تسجيل الوجبة بالتحدث الصوتي</h3>
@@ -650,6 +625,31 @@ body {
       <input type="file" id="meal-photo-input" accept="image/*" capture="environment" style="display:none;" onchange="handleMealPhoto(event)">
       <button class="btn btn-secondary" onclick="document.getElementById('meal-photo-input').click()">📷 التقاط صورة الوجبة</button>
       <div id="meal-photo-preview"></div>
+    </div>
+
+    <!-- CATEGORIZED MEALS & DRINKS & FRUITS -->
+    <div class="glass-card" style="border-color: var(--accent-amber);">
+      <h3 style="color: var(--accent-amber); margin-bottom: 8px; font-size:15px; font-weight:800;">💡 قائمتك المحلية: توست، صالونات، فواكه، حلويات ومشروبات</h3>
+      <p style="font-size:12px; color:var(--text-secondary); margin-bottom:12px;">اختر التصنيف واضغط لإضافة الوجبة فوراً لمفكرتك اليومية:</p>
+
+      <input type="text" id="meals-search-input" class="form-input" placeholder="🔍 ابحث عن أي وجبة بكل التصنيفات..." style="margin-bottom:12px;" oninput="handleMealsSearch()">
+
+      <div class="pill-container" id="meals-pill-container">
+        <div class="pill active" onclick="selectSuggestedCategory('breakfast', this)">🍳 الإفطار والتوست</div>
+        <div class="pill" onclick="selectSuggestedCategory('lunch', this)">🍗 الغداء (كبسات وصالونات)</div>
+        <div class="pill" onclick="selectSuggestedCategory('dinner', this)">🥗 العشاء والخفيف</div>
+        <div class="pill" onclick="selectSuggestedCategory('grills', this)">🍢 المشاكيك والفرن</div>
+        <div class="pill" onclick="selectSuggestedCategory('fastfood', this)">🍔 المطاعم والوجبات السريعة</div>
+        <div class="pill" onclick="selectSuggestedCategory('bakery', this)">🥖 المخبوزات وأنواع الخبز</div>
+        <div class="pill" onclick="selectSuggestedCategory('vegetables', this)">🥦 الخضروات</div>
+        <div class="pill" onclick="selectSuggestedCategory('snacks', this)">🥜 السناكات</div>
+        <div class="pill" onclick="selectSuggestedCategory('custom', this)">🌟 وجباتي الخاصة</div>
+        <div class="pill" onclick="selectSuggestedCategory('fruits', this)">🍎 الفواكه الطازجة والتمر</div>
+        <div class="pill" onclick="selectSuggestedCategory('sweets', this)">🍰 الكيك والحلويات</div>
+        <div class="pill" onclick="selectSuggestedCategory('drinks', this)">☕ المشروبات والعصائر</div>
+      </div>
+
+      <div id="suggested-meals-container"></div>
     </div>
 
     <!-- Today's Meals -->
@@ -3089,7 +3089,7 @@ async function handleMealPhoto(event) {
   if (!file) return;
 
   const previewDiv = document.getElementById('meal-photo-preview');
-  previewDiv.innerHTML = '<div class="message-box" style="margin-top:10px;">🔍 جاري تحليل الصورة بالذكاء الاصطناعي...</div>';
+  previewDiv.innerHTML = '<div class="message-box" style="margin-top:10px;">🔍 جاري تحليل الصورة وتقدير الكمية بصرياً...</div>';
 
   try {
     const base64Data = await compressAndResizeImage(file, 1024);
@@ -3099,7 +3099,7 @@ async function handleMealPhoto(event) {
         {
           role: "user",
           parts: [
-            { text: "حلل صورة طعام الوجبة وقدر اسمها والسعرات والماكروز (بما فيها السكر والألياف) باللغة العربية." },
+            { text: "أنت خبير تغذية يقدّر حجم حصص الطعام بصرياً بدون ميزان. حلل صورة الوجبة وقدّر: اسمها، وزنها التقريبي بالجرام (استناداً لحجم الطبق والمقارنات البصرية المعتادة كحجم كف اليد أو الأدوات الظاهرة بالصورة)، ثم احسب السعرات والماكروز (بروتين وكربوهيدرات ودهون وسكر وألياف) بناءً على هذا الوزن التقديري، كل هذا باللغة العربية." },
             { inlineData: { mimeType: "image/jpeg", data: base64Data } }
           ]
         }
@@ -3110,6 +3110,7 @@ async function handleMealPhoto(event) {
           type: "OBJECT",
           properties: {
             name: { type: "STRING" },
+            estimatedWeight: { type: "NUMBER" },
             calories: { type: "NUMBER" },
             protein: { type: "NUMBER" },
             carbs: { type: "NUMBER" },
@@ -3117,7 +3118,7 @@ async function handleMealPhoto(event) {
             sugar: { type: "NUMBER" },
             fiber: { type: "NUMBER" }
           },
-          required: ["name", "calories", "protein", "carbs", "fat", "sugar", "fiber"]
+          required: ["name", "estimatedWeight", "calories", "protein", "carbs", "fat", "sugar", "fiber"]
         }
       }
     };
@@ -3126,16 +3127,62 @@ async function handleMealPhoto(event) {
     const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
     const result = JSON.parse(text);
 
-    previewDiv.innerHTML = `
-      <div class="message-box success" style="margin-top:10px;">
-        <strong>🍽️ الوجبة:</strong> ${result.name}<br>
-        🔥 ${result.calories} سعرة | 🥩 بروتين: ${result.protein}g | 🌾 كربوهيدرات: ${result.carbs}g | 🫒 دهون: ${result.fat}g
-      </div>
-      <button class="btn btn-primary" onclick="confirmAiMeal('${result.name.replace(/'/g, "\\'")}', ${result.calories}, ${result.protein}, ${result.carbs}, ${result.fat}, ${result.sugar}, ${result.fiber})">✅ اعتماد وإضافة للسجل</button>
-    `;
+    lastPhotoAnalysisResult = result;
+    renderPhotoAnalysisResult(result);
   } catch (e) {
     previewDiv.innerHTML = `<div class="message-box error" style="margin-top:10px;">تعذر التحليل: ${e.message}</div>`;
   }
+}
+
+function renderPhotoAnalysisResult(result) {
+  const previewDiv = document.getElementById('meal-photo-preview');
+  previewDiv.innerHTML = `
+    <div class="message-box success" style="margin-top:10px;">
+      <strong>🍽️ الوجبة:</strong> ${result.name}<br>
+      ⚖️ الوزن التقديري: <strong>${result.estimatedWeight}</strong> غرام (تقدير بصري تقريبي، وليس وزناً دقيقاً)
+    </div>
+    <div style="display:flex; align-items:center; gap:8px; margin-top:10px;">
+      <label style="font-size:12px; color:var(--text-secondary); white-space:nowrap;">عدّل الوزن لو حسّيت التقدير مو دقيق (غرام):</label>
+      <input type="number" id="photo-weight-input" value="${result.estimatedWeight}" min="1" step="5"
+        style="width:80px; padding:6px; border-radius:8px; border:1px solid var(--border-glass); background:rgba(255,255,255,0.05); color:#fff; text-align:center;"
+        oninput="updatePhotoAnalysisPreview()">
+    </div>
+    <div id="photo-nutrition-preview" style="font-size:12px; color:var(--accent-emerald); margin-top:8px;">
+      🔥 ${result.calories} سعرة | 🥩 ${result.protein}g بروتين | 🌾 ${result.carbs}g كارب | 🍬 ${result.sugar}g سكر | 🌿 ${result.fiber}g ألياف
+    </div>
+    <button class="btn btn-primary" style="margin-top:10px; width:100%;" onclick="confirmPhotoMeal()">✅ اعتماد وإضافة للسجل</button>
+  `;
+}
+
+function updatePhotoAnalysisPreview() {
+  if (!lastPhotoAnalysisResult) return;
+  const newWeight = parseFloat(document.getElementById('photo-weight-input').value) || lastPhotoAnalysisResult.estimatedWeight;
+  const ratio = newWeight / lastPhotoAnalysisResult.estimatedWeight;
+  const r = lastPhotoAnalysisResult;
+
+  document.getElementById('photo-nutrition-preview').innerHTML =
+    `🔥 ${Math.round(r.calories * ratio)} سعرة | 🥩 ${(r.protein * ratio).toFixed(1)}g بروتين | 🌾 ${(r.carbs * ratio).toFixed(1)}g كارب | 🍬 ${(r.sugar * ratio).toFixed(1)}g سكر | 🌿 ${(r.fiber * ratio).toFixed(1)}g ألياف`;
+}
+
+function confirmPhotoMeal() {
+  if (!lastPhotoAnalysisResult) return;
+  const newWeight = parseFloat(document.getElementById('photo-weight-input').value) || lastPhotoAnalysisResult.estimatedWeight;
+  const ratio = newWeight / lastPhotoAnalysisResult.estimatedWeight;
+  const r = lastPhotoAnalysisResult;
+
+  confirmAiMeal(
+    `${r.name} (~${Math.round(newWeight)}غ)`,
+    Math.round(r.calories * ratio),
+    Math.round(r.protein * ratio * 10) / 10,
+    Math.round(r.carbs * ratio * 10) / 10,
+    Math.round(r.fat * ratio * 10) / 10,
+    Math.round(r.sugar * ratio * 10) / 10,
+    Math.round(r.fiber * ratio * 10) / 10
+  );
+
+  document.getElementById('meal-photo-preview').innerHTML = '';
+  document.getElementById('meal-photo-input').value = '';
+  lastPhotoAnalysisResult = null;
 }
 
 async function analyzeMealTextGemini(descriptionText) {
@@ -3228,6 +3275,7 @@ function deleteMeal(id) {
 
 // ============ EXPANDED WORKOUTS (REPS, JUMP ROPE, ABS) ============
 let workoutLogMode = 'time';
+let lastPhotoAnalysisResult = null;
 
 function setWorkoutLogMode(mode) {
   workoutLogMode = mode;

@@ -954,7 +954,7 @@ body {
 
     <div class="glass-card">
       <h3 style="color: var(--accent-emerald); margin-bottom: 4px; font-size:15px; font-weight:800;">💾 النسخة الاحتياطية</h3>
-      <p style="font-size:11px; color:var(--text-muted); margin-bottom:12px;">بياناتك محفوظة بمتصفحك فقط — خذ نسخة احتياطية بشكل دوري لتحفظها بمكان آمن (الملفات، iCloud، إلخ) تحسباً لأي مشكلة</p>
+      <p style="font-size:11px; color:var(--text-muted); margin-bottom:12px;">بياناتك محفوظة بمتصفح هذا الجهاز فقط. التصدير يشمل جميع حسابات ميزانك في هذا المتصفح؛ تأكد من حفظ الملف في تطبيق الملفات أو iCloud. الاستعادة تُضيف حساباً منفصلاً ولا تمس السجلات الحالية.</p>
       <div id="backup-status-display" style="margin-bottom:12px;"></div>
       <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
         <button class="btn btn-primary" onclick="exportBackup()">📤 تصدير نسخة احتياطية</button>
@@ -1547,15 +1547,28 @@ function showModal(title, contentHtml) {
 function closeModal() { document.getElementById('app-modal').classList.remove('active'); }
 
 function loadUsersDB() {
-  try { return JSON.parse(localStorage.getItem('healthAppUsers') || '{}'); }
-  catch (e) { return {}; }
+  try {
+    const users = JSON.parse(localStorage.getItem('healthAppUsers') || '{}');
+    if (!users || typeof users !== 'object' || Array.isArray(users)) throw new Error('Invalid users data');
+    return users;
+  } catch (e) {
+    // Never replace unreadable data with an empty database.
+    showToast('تعذر قراءة البيانات المحفوظة. لم تُمسح؛ احتفظ ببيانات هذا المتصفح ولا تعِد ضبطه.', 'warning');
+    return null;
+  }
 }
 function saveCurrentUserData() {
-  if (!currentUsername) return;
+  if (!currentUsername) return false;
   const db = loadUsersDB();
+  if (!db) return false;
   db[currentUsername] = appState;
-  localStorage.setItem('healthAppUsers', JSON.stringify(db));
+  try { localStorage.setItem('healthAppUsers', JSON.stringify(db)); }
+  catch (e) {
+    showToast('تعذر حفظ التغيير: مساحة المتصفح غير كافية. صدّر نسخة احتياطية قبل المتابعة.', 'warning');
+    return false;
+  }
   syncLeaderboardToFirestore();
+  return true;
 }
 
 function todayStr() { return new Date().toISOString().split('T')[0]; }
@@ -1576,6 +1589,7 @@ window.addEventListener('load', async () => {
   const savedUsername = localStorage.getItem('healthAppCurrentUser');
   if (savedUsername) {
     const db = loadUsersDB();
+    if (!db) { showScreen('login-screen'); return; }
     if (db[savedUsername] && db[savedUsername].profile) {
       currentUsername = savedUsername;
       appState = Object.assign({ meals: [], workouts: [], weights: [], water: 0, waterDate: null, chat: [], streak: 1, waterIntervalHours: 2, lastWaterNotifTime: 0, lastMealNotifTime: 0, fasting: { active: false, startTime: null, targetHours: 16, logs: [], lastEndTime: null } }, db[savedUsername]);
@@ -1604,6 +1618,7 @@ function handleLogin() {
   localStorage.setItem('healthAppCurrentUser', username);
 
   const db = loadUsersDB();
+  if (!db) return;
   if (db[username] && db[username].profile) {
     appState = Object.assign({ meals: [], workouts: [], weights: [], water: 0, waterDate: null, chat: [], streak: 1, waterIntervalHours: 2, lastWaterNotifTime: 0, lastMealNotifTime: 0, fasting: { active: false, startTime: null, targetHours: 16, logs: [], lastEndTime: null } }, db[username]);
     document.getElementById('bottom-nav').style.display = 'flex';
@@ -3577,29 +3592,41 @@ function loadApiSettingsUI() {
 }
 
 // ============ النسخة الاحتياطية — تصدير/استيراد ملف JSON كامل، وتذكير عند دخول يوم جديد ============
-function exportBackup() {
+async function exportBackup() {
+  const users = loadUsersDB();
+  if (!users) return;
+  // Include the latest in-memory state without writing or changing existing records.
+  if (currentUsername) users[currentUsername] = appState;
   const backupPayload = {
-    version: 1,
+    version: 2,
     exportDate: new Date().toISOString(),
-    username: currentUsername,
-    data: appState
+    users
   };
 
-  const blob = new Blob([JSON.stringify(backupPayload, null, 2)], { type: 'application/json' });
+  const fileName = `ميزانك_كل_الحسابات_${todayStr()}.json`;
+  const file = new File([JSON.stringify(backupPayload, null, 2)], fileName, { type: 'application/json' });
+  if (navigator.canShare?.({ files: [file] })) {
+    try {
+      await navigator.share({ files: [file], title: 'نسخة ميزانك الاحتياطية' });
+      showToast('اختر حفظ الملف في «الملفات» أو iCloud وتحقق من وجوده.', 'info');
+    } catch (e) {
+      if (e.name !== 'AbortError') showToast('تعذر مشاركة النسخة. أعد المحاولة أو استخدم متصفحاً آخر.', 'warning');
+    }
+    return;
+  }
+
+  const blob = file;
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `نسخة_احتياطية_${currentUsername}_${todayStr()}.json`;
+  a.download = fileName;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
-  URL.revokeObjectURL(url);
+  setTimeout(() => URL.revokeObjectURL(url), 60000);
 
-  appState.lastBackupDate = todayStr();
-  saveCurrentUserData();
-  renderBackupStatus();
-  hideBackupReminderBanner();
-  showToast('تم تصدير نسخة احتياطية بنجاح 💾', 'success');
+  // A browser click does not prove the file was saved, especially on iPhone.
+  showToast('تم تجهيز ملف النسخة. تأكد من حفظه في «الملفات» أو iCloud.', 'info');
 }
 
 function triggerImportBackup() {
@@ -3609,27 +3636,46 @@ function triggerImportBackup() {
 function handleImportBackup(event) {
   const file = event.target.files?.[0];
   if (!file) return;
+  event.target.value = '';
 
   const reader = new FileReader();
   reader.onload = (e) => {
     try {
       const backup = JSON.parse(e.target.result);
-      if (!backup || !backup.data) throw new Error('ملف غير صالح');
+      const imported = backup?.version === 2 && backup.users && typeof backup.users === 'object' && !Array.isArray(backup.users)
+        ? backup.users
+        : backup?.version === 1 && typeof backup.username === 'string' && backup.data
+          ? { [backup.username]: backup.data } : null;
+      const entries = imported && Object.entries(imported);
+      if (!entries?.length || entries.length > 100) throw new Error('Invalid backup');
+      for (const [name, data] of entries) {
+        if (!name || name.length > 100 || ['__proto__', 'constructor', 'prototype'].includes(name)
+            || !data || typeof data !== 'object' || Array.isArray(data)
+            || !data.profile || !Array.isArray(data.meals) || !Array.isArray(data.workouts)
+            || !Array.isArray(data.weights)) throw new Error('Invalid account');
+      }
 
-      const confirmed = confirm('استعادة هذي النسخة الاحتياطية سيستبدل كل بياناتك الحالية بالكامل. متابعة؟');
-      if (!confirmed) return;
-
-      appState = backup.data;
-      saveCurrentUserData();
-      updateDashboard();
-      renderBackupStatus();
-      showToast('تم استعادة النسخة الاحتياطية بنجاح ✅', 'success');
+      const db = loadUsersDB();
+      if (!db) return;
+      const restoredNames = [];
+      for (const [name, data] of entries) {
+        let restoredName = name;
+        let suffix = 1;
+        while (Object.prototype.hasOwnProperty.call(db, restoredName)) {
+          restoredName = `${name} (مستورد ${suffix++})`;
+        }
+        db[restoredName] = data;
+        restoredNames.push(restoredName);
+      }
+      // One atomic write: current account stays untouched even if quota is exceeded.
+      localStorage.setItem('healthAppUsers', JSON.stringify(db));
+      showToast(`استُعيد ${restoredNames.length} حساب منفصل. افتح الحساب المستورد من صفحة الدخول.`, 'success');
     } catch (err) {
-      showToast('تعذر استيراد الملف — تأكد إنه نسخة احتياطية صحيحة من نفس التطبيق', 'warning');
+      showToast('تعذرت الاستعادة. تأكد من صحة الملف ومساحة المتصفح؛ بياناتك الحالية لم تتغير.', 'warning');
     }
   };
+  reader.onerror = () => showToast('تعذر فتح ملف النسخة الاحتياطية؛ بياناتك الحالية لم تتغير.', 'warning');
   reader.readAsText(file);
-  event.target.value = '';
 }
 
 function renderBackupStatus() {

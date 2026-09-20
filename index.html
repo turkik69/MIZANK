@@ -521,7 +521,7 @@ body { background: radial-gradient(circle at 85% -5%,rgba(74,215,188,.11),transp
 
     <!-- Calorie Balance Card -->
     <div class="glass-card">
-      <h3 style="font-size:14px; font-weight:800; color:#fff; margin-bottom:12px;">⚖️ السعرات والفائض/العجز اليومي</h3>
+      <h3 style="font-size:14px; font-weight:800; color:#fff; margin-bottom:12px;">⚖️ سجل السعرات اليومية</h3>
       <div id="calorie-balance-display"></div>
     </div>
 
@@ -3549,7 +3549,7 @@ function updateProfileUI() {
     <div class="message-box">
       <strong>الاسم:</strong> ${escapeHtml(p.name)}<br>
       <strong>العمر:</strong> ${p.age} سنة | <strong>الجنس:</strong> ${p.gender === 'male' ? 'ذكر' : 'أنثى'}<br>
-      <strong>الطول:</strong> ${p.height}سم | <strong>الوزن الحالي:</strong> ${p.currentWeight}كغ<br>
+      <strong>الطول:</strong> ${p.height}سم | <strong>الوزن الحالي:</strong> ${appState.weights?.at(-1)?.weight ?? p.currentWeight}كغ<br>
       <strong>السعرات المستهدفة:</strong> ${p.dailyCalories} سعرة حرارية
     </div>
   `;

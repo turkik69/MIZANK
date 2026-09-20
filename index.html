@@ -449,7 +449,7 @@ body { background: radial-gradient(circle at 85% -5%,rgba(74,215,188,.11),transp
 
     <div class="daily-hero glass-card">
       <div class="daily-hero-title"><span>خطوتك اليوم</span><span id="daily-goal-percent">0%</span></div>
-      <div class="daily-hero-number"><strong id="daily-remaining">0</strong><span>سعرة متبقية من هدفك</span></div>
+      <div class="daily-hero-number"><strong id="daily-remaining">0</strong><span id="daily-remaining-label">سعرة متبقية من هدفك</span></div>
       <div class="progress-track"><div id="daily-calorie-progress" class="progress-fill"></div></div>
       <div class="quick-actions">
         <button onclick="switchScreen('meals')"><span class="quick-icon">＋</span> أضف وجبة</button>
@@ -1799,12 +1799,14 @@ function updateDashboard() {
 
   document.getElementById('user-welcome').textContent = `مرحباً ${p.name || currentUsername} 👋`;
   document.getElementById('dashboard-date').textContent = new Intl.DateTimeFormat('ar-OM', { weekday: 'long', day: 'numeric', month: 'long' }).format(new Date());
-  const remaining = Math.max(0, Math.round((Number(p.dailyCalories) || 0) - consumedCals));
+  const remaining = Math.round((Number(p.dailyCalories) || 0) - consumedCals);
   const percent = p.dailyCalories > 0 ? Math.min(100, Math.round(consumedCals / p.dailyCalories * 100)) : 0;
-  document.getElementById('daily-remaining').textContent = remaining;
+  document.getElementById('daily-remaining').textContent = Math.abs(remaining);
+  document.getElementById('daily-remaining-label').textContent = remaining < 0 ? 'سعرة فوق هدفك' : 'سعرة متبقية من هدفك';
   document.getElementById('daily-goal-percent').textContent = `${percent}% من الهدف`;
   document.getElementById('daily-calorie-progress').style.width = `${percent}%`;
-  document.getElementById('streak-days').textContent = `${appState.streak || 1} أيام`;
+  const streak = appState.streak || 1;
+  document.getElementById('streak-days').textContent = streak === 1 ? 'يوم واحد' : streak === 2 ? 'يومان' : `${streak} أيام`;
   document.getElementById('dashboard-calories').textContent = p.dailyCalories;
   document.getElementById('dashboard-consumed').textContent = consumedCals;
   document.getElementById('dashboard-weight').textContent = currentWeight.toFixed(1);
@@ -1821,7 +1823,7 @@ function updateDashboard() {
   document.getElementById('dashboard-sugar').textContent = Math.round(sugar * 10) / 10;
   document.getElementById('dashboard-fiber').textContent = Math.round(fiber * 10) / 10;
 
-  renderCalorieBalance(consumedCals, netCals);
+  renderCalorieBalance(consumedCals);
   renderSmartInsights();
   renderYesterdayComparison();
   renderGoalProjection();
@@ -1833,43 +1835,24 @@ function updateDashboard() {
   renderDailyArchive();
 }
 
-// ============ توازن السعرات اليومي (فائض/عجز) وتقدير التغير في الوزن ============
-function renderCalorieBalance(consumedCals, netCals) {
+// Recorded intake is a partial daily log, not a measured energy deficit or weight prediction.
+function renderCalorieBalance(consumedCals) {
   const container = document.getElementById('calorie-balance-display');
-  const p = appState.profile;
-  if (!container || !p) return;
-
-  const diff = netCals - p.dailyCalories; // موجب = فائض (أكل أكثر من المسموح)، سالب = عجز
-  const gramsChange = Math.abs(diff) / 7.7; // تقريب شائع: 7700 سعرة ≈ 1 كغ دهون
-
-  let statusHtml;
-  if (diff > 20) {
-    statusHtml = `<div class="message-box" style="border-right-color: var(--accent-coral); background: rgba(244,63,94,0.1);">
-      📈 فائض ${Math.round(diff)} سعرة اليوم — قد يزيد هذا وزنك بحوالي <strong>${gramsChange.toFixed(0)} غرام</strong> لو استمر هذا النمط يومياً</div>`;
-  } else if (diff < -20) {
-    statusHtml = `<div class="message-box" style="border-right-color: var(--accent-emerald); background: rgba(16,185,129,0.1);">
-      📉 عجز ${Math.round(Math.abs(diff))} سعرة اليوم — قد تفقد بحوالي <strong>${gramsChange.toFixed(0)} غرام</strong> لو استمر هذا النمط يومياً</div>`;
-  } else {
-    statusHtml = `<div class="message-box" style="border-right-color: var(--accent-cyan); background: rgba(6,182,212,0.1);">
-      ⚖️ سعراتك اليوم قريبة جداً من هدفك — لا تغيير يُذكر متوقع بالوزن</div>`;
-  }
-
+  const goal = Number(appState.profile?.dailyCalories) || 0;
+  if (!container || !goal) return;
+  const difference = Math.round(goal - consumedCals);
+  const status = consumedCals === 0
+    ? 'لم تُسجل وجبات بعد. أضف وجبة لعرض مقارنة تناولك بهدفك.'
+    : difference >= 0
+      ? `المتبقي وفق الوجبات المسجلة حتى الآن: ${difference} سعرة.`
+      : `الوجبات المسجلة أعلى من هدف تناولك بمقدار ${Math.abs(difference)} سعرة.`;
   container.innerHTML = `
-    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:12px;">
-      <div class="macro-item">
-        <div style="font-size:11px; color:var(--text-secondary);">المستهلك اليوم</div>
-        <div style="font-size:20px; font-weight:900; color:#fff;">${consumedCals}</div>
-        <div style="font-size:10px; color:var(--text-muted);">سعرة</div>
-      </div>
-      <div class="macro-item">
-        <div style="font-size:11px; color:var(--text-secondary);">${diff >= 0 ? 'الفائض' : 'العجز'}</div>
-        <div style="font-size:20px; font-weight:900; color:${diff >= 0 ? 'var(--accent-coral)' : 'var(--accent-emerald)'};">${Math.abs(Math.round(diff))}</div>
-        <div style="font-size:10px; color:var(--text-muted);">سعرة</div>
-      </div>
+    <div class="macro-grid" style="grid-template-columns:repeat(2,1fr);margin-bottom:12px">
+      <div class="macro-item"><div style="font-size:11px;color:var(--text-secondary)">المسجل</div><strong style="font-size:21px">${Math.round(consumedCals)}</strong></div>
+      <div class="macro-item"><div style="font-size:11px;color:var(--text-secondary)">الهدف اليومي</div><strong style="font-size:21px">${goal}</strong></div>
     </div>
-    ${statusHtml}
-    <p style="font-size:10px; color:var(--text-muted); margin-top:8px;">* تقدير تقريبي وليس دقيقاً طبياً — التغير الفعلي بالوزن يتأثر بعوامل أخرى كالماء والنشاط.</p>
-  `;
+    <div class="message-box">${status}</div>
+    <p style="font-size:11px;color:var(--text-muted);margin-top:8px">هذه مقارنة لسجل الطعام الذي أدخلته، وليست قياساً للعجز الفعلي أو تغير الوزن.</p>`;
 }
 
 // ============ مؤشر كتلة الجسم (BMI) ونمط توزيع الدهون التوضيحي ============

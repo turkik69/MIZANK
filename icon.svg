@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="ميزانك">
+  <rect width="512" height="512" rx="110" fill="#0d2330"/>
+  <rect x="70" y="80" width="372" height="352" rx="90" fill="#1b3540" stroke="#4ad7bc" stroke-width="15"/>
+  <path d="M174 177h164" stroke="#4ad7bc" stroke-width="20" stroke-linecap="round"/>
+  <circle cx="256" cy="177" r="19" fill="#4ad7bc"/>
+  <path d="M132 348a124 124 0 0 1 248 0" fill="none" stroke="#9fc8ef" stroke-width="23" stroke-linecap="round"/>
+  <path d="m256 348 49-69" stroke="#f3bc75" stroke-width="19" stroke-linecap="round"/>
+  <circle cx="256" cy="348" r="20" fill="#f3bc75"/>
+</svg>

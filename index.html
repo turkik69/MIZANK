@@ -4,20 +4,16 @@
 <meta charset="UTF-8">
 <!-- تثبيت الشاشة وحظر الزووم تماماً -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<meta name="theme-color" content="#10b981">
+<meta name="theme-color" content="#0d2330">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="مستشار صحتك">
+<meta name="apple-mobile-web-app-title" content="ميزانك">
 
-<!-- PWA Manifest مع أيقونة الميزان المخصصة للتثبيت على سطح المكتب -->
-<link rel="manifest" href="data:application/manifest+json;charset=utf-8,%7B%22name%22%3A%22%D9%85%D8%B3%D8%AA%D8%B4%D8%A7%D8%B1%20%D8%B5%D8%AD%D8%AA%D9%83%20%D8%A7%D9%84%D8%B0%D9%83%D9%8A%22%2C%22short_name%22%3A%22%D8%B5%D8%AD%D8%AA%D9%83%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23070a16%22%2C%22theme_color%22%3A%22%2310b981%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage%2Fsvg%2Bxml%3Butf8%2C%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%20512%20512%27%3E%3Crect%20width%3D%27512%27%20height%3D%27512%27%20rx%3D%27120%27%20fill%3D%27%2523070a16%27%2F%3E%3Crect%20x%3D%2770%27%20y%3D%2770%27%20width%3D%27372%27%20height%3D%27372%27%20rx%3D%2770%27%20fill%3D%27%2523111827%27%20stroke%3D%27%252310b981%27%20stroke-width%3D%2722%27%2F%3E%3Crect%20x%3D%27150%27%20y%3D%27115%27%20width%3D%27212%27%20height%3D%2780%27%20rx%3D%2720%27%20fill%3D%27%2523042f2e%27%20stroke%3D%27%252310b981%27%20stroke-width%3D%2710%27%2F%3E%3Ccircle%20cx%3D%27180%27%20cy%3D%27155%27%20r%3D%278%27%20fill%3D%27%252310b981%27%2F%3E%3Cpath%20d%3D%27M210%20155h90%27%20stroke%3D%27%252310b981%27%20stroke-width%3D%2714%27%20stroke-linecap%3D%27round%27%20stroke-dasharray%3D%2715%2010%27%2F%3E%3Cpath%20d%3D%27M150%20360%20a130%20130%200%200%201%20212%200%27%20fill%3D%27none%27%20stroke%3D%27%252306b6d4%27%20stroke-width%3D%2724%27%20stroke-linecap%3D%27round%27%2F%3E%3Cpath%20d%3D%27M256%20360%20l45%20-70%27%20stroke%3D%27%2523f43f5e%27%20stroke-width%3D%2716%27%20stroke-linecap%3D%27round%27%2F%3E%3Ccircle%20cx%3D%27256%27%20cy%3D%27360%27%20r%3D%2722%27%20fill%3D%27%2523f43f5e%27%20%2F%3E%3C%2Fsvg%3E%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%22%2C%22purpose%22%3A%22any%20maskable%22%7D%5D%7D">
-
-<!-- أيقونات الميزان للمتصفح وأجهزة iOS -->
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='120' fill='%23070a16'/><rect x='70' y='70' width='372' height='372' rx='70' fill='%23111827' stroke='%2310b981' stroke-width='22'/><rect x='150' y='115' width='212' height='80' rx='20' fill='%23042f2e' stroke='%2310b981' stroke-width='10'/><circle cx='180' cy='155' r='8' fill='%2310b981'/><path d='M210 155h90' stroke='%2310b981' stroke-width='14' stroke-linecap='round' stroke-dasharray='15 10'/><path d='M150 360 a130 130 0 0 1 212 0' fill='none' stroke='%2306b6d4' stroke-width='24' stroke-linecap='round'/><path d='M256 360 l45 -70' stroke='%23f43f5e' stroke-width='16' stroke-linecap='round'/><circle cx='256' cy='360' r='22' fill='%23f43f5e'/></svg>">
-<link rel="apple-touch-icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='120' fill='%23070a16'/><rect x='70' y='70' width='372' height='372' rx='70' fill='%23111827' stroke='%2310b981' stroke-width='22'/><rect x='150' y='115' width='212' height='80' rx='20' fill='%23042f2e' stroke='%2310b981' stroke-width='10'/><circle cx='180' cy='155' r='8' fill='%2310b981'/><path d='M210 155h90' stroke='%2310b981' stroke-width='14' stroke-linecap='round' stroke-dasharray='15 10'/><path d='M150 360 a130 130 0 0 1 212 0' fill='none' stroke='%2306b6d4' stroke-width='24' stroke-linecap='round'/><path d='M256 360 l45 -70' stroke='%23f43f5e' stroke-width='16' stroke-linecap='round'/><circle cx='256' cy='360' r='22' fill='%23f43f5e'/></svg>">
-
-<title>مستشار صحتك الذكي المتطور</title>
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" type="image/svg+xml" href="./icon.svg">
+<link rel="apple-touch-icon" href="./icon-192.png">
+<title>ميزانك | صحتك كل يوم</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@500;700;800&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
@@ -27,38 +23,6 @@
 
 <!-- Html5Qrcode Barcode Scanner CDN -->
 <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
-
-<!-- Firebase Module Script -->
-<script type="module">
-  import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js';
-  import { getAuth, signInWithCustomToken, signInAnonymously } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js';
-  import { getFirestore, collection, doc, setDoc, getDocs } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js';
-
-  window.initFirebaseServices = async function() {
-    try {
-      if (typeof __firebase_config === 'undefined') return null;
-      const firebaseConfig = JSON.parse(__firebase_config);
-      const app = initializeApp(firebaseConfig);
-      const auth = getAuth(app);
-      const db = getFirestore(app);
-      const appId = typeof __app_id !== 'undefined' ? __app_id : 'health-app-default';
-
-      if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-        await signInWithCustomToken(auth, __initial_auth_token);
-      } else {
-        await signInAnonymously(auth);
-      }
-
-      window.firebaseDb = db;
-      window.firebaseAuth = auth;
-      window.firebaseAppId = appId;
-      return { db, auth, appId };
-    } catch (e) {
-      console.warn("Firebase Init fallback:", e);
-      return null;
-    }
-  };
-</script>
 
 <style>
 /* ================= GLOBAL STYLES & RESET ================= */
@@ -276,6 +240,77 @@ body {
   .screen { padding: 10px; }
 }
 
+
+/* ميزانك 2 — mobile design system */
+:root {
+  --bg-main: #0d1a25; --bg-card: #172b38; --bg-card-hover: #203745;
+  --border-glass: rgba(176,218,221,.14);
+  --accent-emerald: #4ad7bc; --accent-emerald-glow: rgba(74,215,188,.18);
+  --accent-coral: #f29e92; --accent-coral-glow: rgba(242,158,146,.17);
+  --accent-cyan: #9fc8ef; --accent-cyan-glow: rgba(159,200,239,.2);
+  --accent-amber: #f3bc75; --accent-purple: #c9b7f1;
+  --text-primary: #f4f8f7; --text-secondary: #b8cad0; --text-muted: #9eafb9;
+  --shadow-main: 0 12px 32px rgba(2,11,17,.18);
+}
+body { background: radial-gradient(circle at 85% -5%,rgba(74,215,188,.11),transparent 34%),linear-gradient(180deg,#0c1b26,#101e2c 55%,#0c1925); }
+.main-container { padding-top: calc(12px + env(safe-area-inset-top)); padding-bottom: calc(105px + env(safe-area-inset-bottom)); }
+.screen { max-width: 720px; padding: 16px 16px 24px; }
+.glass-card, .metric-card { background: var(--bg-card); backdrop-filter: none; border: 1px solid var(--border-glass); border-radius: 20px; box-shadow: var(--shadow-main); }
+.glass-card { padding: 19px; margin-bottom: 14px; }
+.screen-header { background: transparent; border: 0; box-shadow: none; padding: 7px 2px 17px; margin-bottom: 0; }
+.screen-title { font-family: 'Tajawal',system-ui; font-size: 25px; letter-spacing: -.4px; line-height: 1.25; }
+.screen-subtitle { font-size: 13px; margin-top: 5px; line-height: 1.5; }
+.eyebrow { color: var(--accent-emerald); font-weight: 800; font-size: 12px; letter-spacing: .2px; margin-bottom: 6px; }
+.brand-title { font: 900 38px/1.3 'Tajawal',system-ui; letter-spacing: -1px; margin-bottom: 4px; }
+.brand-title span { color: var(--accent-emerald); }
+.form-input, .form-select, textarea { background: #10232f; border-color: rgba(183,216,221,.22); border-radius: 14px; min-height: 51px; }
+.form-label { color: #d2e2e4; font-size: 13px; }
+.form-input:focus, .form-select:focus, textarea:focus { background: #112935; }
+.btn { min-height: 49px; border-radius: 14px; font-size: 15px; box-shadow: none; }
+.btn-primary { background: #4ad7bc; color: #09252b; }
+.btn-secondary { background: #203745; }
+.btn-coral { background: #9f4547; }
+.btn-cyan { background: #386b8f; }
+.btn-purple { background: #68539a; }
+.icon-btn, .delete-btn { min-height: 42px; }
+.dashboard-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; }
+.metric-card { min-height: 112px; padding: 15px; }
+.metric-value { font-size: 26px; line-height: 1.2; margin-top: 9px; }
+.macro-item, .food-item { background: #102431; border-color: rgba(176,218,221,.12); }
+.daily-hero { background: linear-gradient(145deg,#153c3c,#163039 70%,#203647); border-color: rgba(113,231,202,.3); padding: 21px; }
+.daily-hero-title { display:flex; justify-content:space-between; font-weight:800; color:#d8f5e9; font-size:14px; }
+.daily-hero-number { display:flex; align-items:baseline; gap:9px; margin: 15px 0 16px; }
+.daily-hero-number strong { font-size:45px; line-height:1; letter-spacing:-2px; color:#fff; font-weight:900; }
+.daily-hero-number span { font-size:13px; color:#b9d9d7; }
+.progress-track { height:9px; background:#426465; border-radius:20px; overflow:hidden; }
+.progress-fill { height:100%; background:#70e9bc; border-radius:20px; width:0; transition:width .4s ease; }
+.quick-actions { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:20px; }
+.quick-actions button { border:1px solid rgba(199,238,229,.18); border-radius:13px; background:rgba(7,36,39,.55); color:#effdf5; min-height:58px; font:700 12px 'Tajawal'; cursor:pointer; }
+.quick-icon { display:block; font-size:21px; margin-bottom:3px; color:#82eccd; }
+.avatar-btn { width:42px;height:42px;border-radius:14px;flex-shrink:0;border:1px solid rgba(74,215,188,.35);background:#1b3b40;color:#8debd7;font-size:24px;cursor:pointer; }
+.bottom-nav { bottom:calc(9px + env(safe-area-inset-bottom)); height:68px; width:calc(100% - 24px); max-width:650px; background:rgba(22,42,53,.98); border-color:rgba(176,218,221,.2); border-radius:21px; padding:5px; box-shadow:0 16px 36px rgba(0,0,0,.32); }
+.nav-item { appearance:none; border:0; background:transparent; flex:1; min-width:0; min-height:56px; color:#adbdc8; font:700 11px 'Tajawal'; gap:4px; padding:7px 3px; }
+.nav-item.active { color:#092a2d; background:#69dec3; border-radius:15px; }
+.nav-icon { width:22px; height:22px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
+.nav-label { font-size:11px; line-height:1; }
+.dashboard-details { margin-top:15px; }
+.dashboard-details summary { list-style:none; display:flex;justify-content:space-between;align-items:center;background:#1b3540;border:1px solid var(--border-glass);padding:17px;border-radius:16px;font-weight:800;cursor:pointer; }
+.dashboard-details summary::-webkit-details-marker {display:none}
+.dashboard-details summary span {font-size:11px;color:var(--text-secondary);font-weight:500;}
+.dashboard-details[open] summary {margin-bottom:14px;}
+.more-list { display:grid;gap:10px;margin-bottom:18px; }
+.more-list button { display:flex;align-items:center;gap:13px;text-align:right;width:100%;padding:15px;background:var(--bg-card);color:#fff;border:1px solid var(--border-glass);border-radius:17px;cursor:pointer;font-family:'Tajawal'; }
+.more-list button>span:nth-child(2) {display:flex;flex-direction:column;gap:4px;flex:1;}
+.more-list strong {font-size:15px}.more-list small {color:var(--text-secondary);font-size:12px}.more-list b {font-size:22px;color:var(--text-secondary)}
+.more-icon {width:44px;height:44px;border-radius:14px;display:grid;place-items:center;font-size:23px;}
+.more-icon.water {background:#203e5b;color:#9fc8ef}.more-icon.ai {background:#383653;color:#d0bdfa}.more-icon.settings {background:#3c3d32;color:#f3bc75}
+.privacy-card p,.privacy-note {color:var(--text-secondary);font-size:12px;line-height:1.7;margin-top:8px}
+.local-profiles {display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:18px}
+.local-profiles button {border:1px solid rgba(74,215,188,.3);color:#dcf9f3;background:#1c3c40;border-radius:12px;padding:9px 14px;font:700 13px 'Tajawal';cursor:pointer}
+.text-action {border:0;background:none;color:var(--accent-emerald);font:800 13px 'Tajawal';padding:12px;cursor:pointer}
+#login-screen .glass-card {background:linear-gradient(165deg,#1b3540,#172b38);padding:32px 23px!important;}
+@media(max-width:390px){ .screen{padding:12px}.quick-actions button{font-size:11px}.macro-item{padding:8px}.daily-hero-number strong{font-size:39px} }
+
 </style>
 </head>
 <body>
@@ -301,23 +336,29 @@ body {
       <div class="glass-card" style="padding: 40px 25px;">
         <div style="width: 80px; height: 80px; margin: 0 auto 15px; border-radius: 24px; background: rgba(16, 185, 129, 0.1); border: 2px solid var(--accent-emerald); display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 30px var(--accent-emerald-glow);">
           <svg width="48" height="48" viewBox="0 0 512 512">
-            <rect x="70" y="70" width="372" height="372" rx="70" fill="#111827" stroke="#10b981" stroke-width="22"/>
-            <rect x="150" y="115" width="212" height="80" rx="20" fill="#042f2e" stroke="#10b981" stroke-width="10"/>
+            <rect x="70" y="70" width="372" height="372" rx="70" fill="#1b3540" stroke="#4ad7bc" stroke-width="22"/>
+            <rect x="150" y="115" width="212" height="80" rx="20" fill="#0d2330" stroke="#4ad7bc" stroke-width="10"/>
             <circle cx="180" cy="155" r="8" fill="#10b981"/>
-            <path d="M210 155h90" stroke="#10b981" stroke-width="14" stroke-linecap="round" stroke-dasharray="15 10"/>
-            <path d="M150 360 a130 130 0 0 1 212 0" fill="none" stroke="#06b6d4" stroke-width="24" stroke-linecap="round"/>
-            <path d="M256 360 l45 -70" stroke="#f43f5e" stroke-width="16" stroke-linecap="round"/>
-            <circle cx="256" cy="360" r="22" fill="#f43f5e"/>
+            <path d="M210 155h90" stroke="#4ad7bc" stroke-width="14" stroke-linecap="round" stroke-dasharray="15 10"/>
+            <path d="M150 360 a130 130 0 0 1 212 0" fill="none" stroke="#9fc8ef" stroke-width="24" stroke-linecap="round"/>
+            <path d="M256 360 l45 -70" stroke="#f5aa76" stroke-width="16" stroke-linecap="round"/>
+            <circle cx="256" cy="360" r="22" fill="#f5aa76"/>
           </svg>
         </div>
-        <h1 style="font-size: 26px; font-weight: 900; font-family: 'El Messiri', serif; margin-bottom: 6px;">مستشارك الصحي الذكي</h1>
-        <p style="color: var(--text-secondary); font-size: 13px; margin-bottom: 25px;">رحلتك الشاملة للصحة والتغذية والصيام والرياضة</p>
+        <div class="eyebrow">رفيقك الصحي الشخصي</div>
+        <h1 class="brand-title">ميزانك<span>.</span></h1>
+        <p style="color: var(--text-secondary); font-size: 13px; margin-bottom: 25px;">سجل يومك، افهم تقدمك، وواصل بخطوات تناسبك.</p>
         
         <div class="form-group">
-          <label class="form-label">اسم المستخدم أو اللقب</label>
+          <label class="form-label">اسم ملفك على هذا الهاتف</label>
           <input type="text" id="username" class="form-input" placeholder="مثال: الكابتن أحمد" onkeypress="if(event.key==='Enter') handleLogin()">
         </div>
-        <button class="btn btn-primary" onclick="handleLogin()">⚡ دخول واكتشاف التطبيق</button>
+        <button class="btn btn-primary" onclick="handleLogin()">افتح ملفي</button>
+        <button class="text-action" onclick="startNewProfile()">إنشاء ملف جديد على هذا الهاتف</button>
+        <div id="local-profiles" class="local-profiles"></div>
+        <p class="privacy-note">بياناتك تبقى على هذا الجهاز. لا يلزم حساب أو كلمة مرور.</p>
+        <button class="text-action" onclick="triggerImportBackup()">لدي نسخة سابقة — استعادتها</button>
+        <input type="file" id="login-backup-import-input" accept="application/json,.json" hidden onchange="handleImportBackup(event)">
       </div>
     </div>
   </div>
@@ -374,6 +415,16 @@ body {
         </select>
       </div>
 
+      <div class="form-group">
+        <label class="form-label">مستوى نشاطك المعتاد</label>
+        <select id="setup-activity" class="form-select">
+          <option value="1.2">قليل الحركة</option>
+          <option value="1.375" selected>حركة خفيفة</option>
+          <option value="1.55">نشاط متوسط</option>
+          <option value="1.725">نشاط عالٍ</option>
+        </select>
+      </div>
+
       <button class="btn btn-primary" style="margin-top:15px;" onclick="completeSetup()">✅ انطلاق وتحديد الأهداف</button>
     </div>
   </div>
@@ -383,9 +434,9 @@ body {
     <div class="screen-header">
       <div>
         <div class="screen-title" id="user-welcome">مرحباً بك 👋</div>
-        <div class="screen-subtitle">مؤشراتك اليومية ورحلة التزامك</div>
+        <div class="screen-subtitle" id="dashboard-date">نظرة واضحة على يومك</div>
       </div>
-      <button class="icon-btn" onclick="shareProgressModal()">✨ مشاركة التقدم</button>
+      <button class="avatar-btn" aria-label="افتح ملفي" onclick="switchScreen('settings')">◉</button>
     </div>
 
     <div id="backup-reminder-banner" style="display:none; align-items:center; justify-content:space-between; gap:10px; background:rgba(245,158,11,0.15); border:1px solid var(--accent-amber); border-radius:12px; padding:12px 16px; margin-bottom:16px;">
@@ -393,6 +444,17 @@ body {
       <div style="display:flex; gap:8px; flex-shrink:0;">
         <button class="icon-btn" style="background:var(--accent-amber); color:#1a1200; font-weight:800; border:none; padding:6px 12px; font-size:11px;" onclick="exportBackup()">خذها الآن</button>
         <button class="icon-btn" style="background:rgba(255,255,255,0.1); color:#fff; border:none; padding:6px 10px; font-size:11px;" onclick="dismissBackupReminder()">لاحقاً</button>
+      </div>
+    </div>
+
+    <div class="daily-hero glass-card">
+      <div class="daily-hero-title"><span>خطوتك اليوم</span><span id="daily-goal-percent">0%</span></div>
+      <div class="daily-hero-number"><strong id="daily-remaining">0</strong><span>سعرة متبقية من هدفك</span></div>
+      <div class="progress-track"><div id="daily-calorie-progress" class="progress-fill"></div></div>
+      <div class="quick-actions">
+        <button onclick="switchScreen('meals')"><span class="quick-icon">＋</span> أضف وجبة</button>
+        <button onclick="switchScreen('water')"><span class="quick-icon">◉</span> سجل الماء</button>
+        <button onclick="switchScreen('workouts')"><span class="quick-icon">↗</span> أضف نشاطاً</button>
       </div>
     </div>
 
@@ -470,6 +532,7 @@ body {
       <div id="smart-insights-display"></div>
     </div>
 
+    <details class="dashboard-details"><summary>التقارير والتقدم <span>الوزن، المقارنات والأرشيف</span></summary>
     <!-- Yesterday vs Today Comparison -->
     <div class="glass-card">
       <h3 style="font-size:14px; font-weight:800; color:#fff; margin-bottom:4px;">📊 أمس مقابل اليوم</h3>
@@ -552,14 +615,15 @@ body {
       <p style="font-size:11px; color:var(--text-secondary); margin-bottom:12px;">سجلاتك محفوظة دائماً ولا تُحذف — كل يوم يُقفل تلقائياً ويُؤرشف عند دخول يوم جديد</p>
       <div id="daily-archive-display"></div>
     </div>
+    </details>
   </div>
 
   <!-- MEALS SCREEN -->
   <div id="meals-screen" class="screen">
     <div class="screen-header">
       <div>
-        <div class="screen-title">سجل الوجبات والتغذية 🍽️</div>
-        <div class="screen-subtitle">توست + كبسات وصالونات + فواكه ومشروبات وحلويات</div>
+        <div class="screen-title">وجباتي</div>
+        <div class="screen-subtitle">اكتب وجبتك أو صوّرها أو اختر من قائمتك</div>
       </div>
     </div>
 
@@ -727,29 +791,12 @@ body {
     </div>
   </div>
 
-  <!-- COMMUNITY SCREEN -->
-  <div id="community-screen" class="screen">
-    <div class="screen-header">
-      <div>
-        <div class="screen-title">مجتمع المستشارين والترتيب 🏆</div>
-        <div class="screen-subtitle">تنافس مع أصدقائك وحافظ على ترتيبك التنافسي</div>
-      </div>
-    </div>
-
-    <div class="glass-card">
-      <h3 style="color: var(--accent-amber); margin-bottom: 12px; font-size:15px; font-weight:800;">🌟 قائمة المتصدرين (Leaderboard)</h3>
-      <div id="leaderboard-list">
-        <div class="message-box">جاري تحميل قائمة المتصدرين...</div>
-      </div>
-    </div>
-  </div>
-
   <!-- WORKOUTS SCREEN -->
   <div id="workouts-screen" class="screen">
     <div class="screen-header">
       <div>
-        <div class="screen-title">سجل التمارين واللياقة 🏋️‍♂️</div>
-        <div class="screen-subtitle">نط الحبل، تمارين المعدة والبطن، والعدات</div>
+        <div class="screen-title">حركتي ونشاطي</div>
+        <div class="screen-subtitle">سجل التمرين وتابع تقدمك بهدوء</div>
       </div>
     </div>
 
@@ -915,7 +962,7 @@ body {
 
     <div class="glass-card" style="border-color: var(--accent-purple);">
       <h3 style="color: var(--accent-purple); margin-bottom: 8px; font-size:15px; font-weight:800;">🔔 نظام التذكيرات والإشعارات الذكية</h3>
-      <p style="font-size:12px; color:var(--text-secondary); margin-bottom:14px;">تفعيل التنبيهات الدورية لشرب الماء، إدخال الوجبات، وتنبيهات الصيام</p>
+      <p style="font-size:12px; color:var(--text-secondary); margin-bottom:14px;">تذكيرات الماء والوجبات تعمل أثناء فتح التطبيق فقط. لا تصل تنبيهات عند إغلاقه.</p>
       
       <div class="form-group">
         <label class="form-label">تكرار تذكير شرب الماء</label>
@@ -939,7 +986,7 @@ body {
       <div class="form-group">
         <label class="form-label">مفتاح API (مطلوب لتفعيل المساعد وتحليل الوجبات)</label>
         <input type="password" id="gemini-key-input" class="form-input" placeholder="AIzaSy... أو AQ...">
-        <p style="font-size:11px; color:var(--text-muted); margin-top:5px;">احصل على مفتاح مجاني من aistudio.google.com/apikey — يُحفظ بمتصفحك فقط. ملاحظة: جوجل أصدرت مؤخراً مفاتيح تبدأ بـ AQ. بدل AIza، وكلاهما يعمل بشكل صحيح مع التطبيق.</p>
+        <p style="font-size:11px; color:var(--text-muted); margin-top:5px;">أضف مفتاحك من Google AI Studio. يُحفظ على هذا الجهاز فقط، ويُستخدم عند اختيارك تحليل وجبة أو مراسلة المساعد. لا يظهر في النسخة الاحتياطية.</p>
       </div>
       <div class="form-group">
         <label class="form-label">نموذج Gemini (عدّله هنا لو توقف التحليل مستقبلاً)</label>
@@ -948,19 +995,19 @@ body {
       </div>
       <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
         <button class="btn btn-primary" onclick="saveApiSettings()">💾 حفظ الإعدادات</button>
-        <button class="btn btn-secondary" onclick="clearCustomApiKey()">🔄 استخدام الافتراضي</button>
+        <button class="btn btn-secondary" onclick="clearCustomApiKey()">حذف المفتاح من الهاتف</button>
       </div>
     </div>
 
     <div class="glass-card">
-      <h3 style="color: var(--accent-emerald); margin-bottom: 4px; font-size:15px; font-weight:800;">💾 النسخة الاحتياطية</h3>
-      <p style="font-size:11px; color:var(--text-muted); margin-bottom:12px;">بياناتك محفوظة بمتصفحك فقط — خذ نسخة احتياطية بشكل دوري لتحفظها بمكان آمن (الملفات، iCloud، إلخ) تحسباً لأي مشكلة</p>
+      <h3 style="color: var(--accent-emerald); margin-bottom: 4px; font-size:15px; font-weight:800;">💾 نسختي الاحتياطية</h3>
+      <p style="font-size:11px; color:var(--text-muted); margin-bottom:12px;">بياناتك محفوظة بمتصفح هذا الجهاز فقط. التصدير يشمل جميع حسابات ميزانك في هذا المتصفح؛ تأكد من حفظ الملف في تطبيق الملفات أو iCloud. الاستعادة تُضيف حساباً منفصلاً ولا تمس السجلات الحالية.</p>
       <div id="backup-status-display" style="margin-bottom:12px;"></div>
       <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
         <button class="btn btn-primary" onclick="exportBackup()">📤 تصدير نسخة احتياطية</button>
         <button class="btn btn-secondary" onclick="triggerImportBackup()">📥 استعادة من نسخة</button>
       </div>
-      <input type="file" id="backup-import-input" accept="application/json" style="display:none;" onchange="handleImportBackup(event)">
+      <input type="file" id="backup-import-input" accept="application/json,.json" style="display:none;" onchange="handleImportBackup(event)">
     </div>
 
     <div class="glass-card">
@@ -968,48 +1015,29 @@ body {
       <div id="profile-info"></div>
       <div style="display:flex; flex-direction:column; gap:10px; margin-top:15px;">
         <button class="btn btn-secondary" onclick="editProfile()">✏️ تعديل بيانات الحساب</button>
-        <button class="btn btn-coral" onclick="logout()">🚪 تسجيل الخروج</button>
-        <button class="btn btn-secondary" style="color:var(--accent-coral);" onclick="clearAllData()">🗑️ إعادة ضبط السجلات</button>
+        <button class="btn btn-coral" onclick="logout()">تبديل الملف على هذا الهاتف</button>
+
       </div>
     </div>
   </div>
 
+  <div id="more-screen" class="screen">
+    <div class="screen-header"><div><div class="eyebrow">كل أدواتك في مكان واحد</div><div class="screen-title">المزيد</div><div class="screen-subtitle">ماء، مساعد، إعدادات وبياناتك</div></div></div>
+    <div class="more-list">
+      <button onclick="switchScreen('water')"><span class="more-icon water">◉</span><span><strong>الماء والترطيب</strong><small>تابع أكوابك اليومية</small></span><b>‹</b></button>
+      <button onclick="switchScreen('chat')"><span class="more-icon ai">✧</span><span><strong>المساعد الذكي</strong><small>اسأل عن يومك ووجباتك</small></span><b>‹</b></button>
+      <button onclick="switchScreen('settings')"><span class="more-icon settings">⚙</span><span><strong>ملفي والإعدادات</strong><small>الأهداف والنسخة الاحتياطية</small></span><b>‹</b></button>
+    </div>
+    <div class="glass-card privacy-card"><strong>بياناتك ملكك</strong><p>تبقى السجلات على هاتفك. التحليل الذكي يرسل فقط ما تختار تحليله إلى خدمة Gemini عند تفعيل المفتاح.</p></div>
+  </div>
 </div>
 
-<!-- FLOATING GLASS BOTTOM NAV -->
 <div class="bottom-nav" id="bottom-nav" style="display: none;">
-  <div class="nav-item active" onclick="switchScreen('dashboard', this)">
-    <svg class="nav-icon" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
-    <div class="nav-label">الرئيسية</div>
-  </div>
-  <div class="nav-item" onclick="switchScreen('meals', this)">
-    <svg class="nav-icon" viewBox="0 0 24 24"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-    <div class="nav-label">الوجبات</div>
-  </div>
-  <div class="nav-item" onclick="switchScreen('fasting', this)">
-    <svg class="nav-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-    <div class="nav-label">الصيام</div>
-  </div>
-  <div class="nav-item" onclick="switchScreen('community', this)">
-    <svg class="nav-icon" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-    <div class="nav-label">المجتمع</div>
-  </div>
-  <div class="nav-item" onclick="switchScreen('workouts', this)">
-    <svg class="nav-icon" viewBox="0 0 24 24"><path d="m6.5 6.5 11 11"/><path d="m18 22 4-4"/><path d="m2 6 4-4"/></svg>
-    <div class="nav-label">التمارين</div>
-  </div>
-  <div class="nav-item" onclick="switchScreen('water', this)">
-    <svg class="nav-icon" viewBox="0 0 24 24"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/></svg>
-    <div class="nav-label">الماء</div>
-  </div>
-  <div class="nav-item" onclick="switchScreen('chat', this)">
-    <svg class="nav-icon" viewBox="0 0 24 24"><path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v5z"/></svg>
-    <div class="nav-label">المساعد</div>
-  </div>
-  <div class="nav-item" onclick="switchScreen('settings', this)">
-    <svg class="nav-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-    <div class="nav-label">الإعدادات</div>
-  </div>
+  <button class="nav-item active" data-tab="dashboard" onclick="switchScreen('dashboard', this)" aria-label="اليوم"><svg class="nav-icon" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V21H3z"/><path d="M9 21v-7h6v7"/></svg><span class="nav-label">اليوم</span></button>
+  <button class="nav-item" data-tab="meals" onclick="switchScreen('meals', this)" aria-label="الوجبات"><svg class="nav-icon" viewBox="0 0 24 24"><path d="M4 3v8a3 3 0 0 0 6 0V3M7 3v18M17 3v18M17 3c-5 4-5 9 0 9h3"/></svg><span class="nav-label">الوجبات</span></button>
+  <button class="nav-item" data-tab="workouts" onclick="switchScreen('workouts', this)" aria-label="النشاط"><svg class="nav-icon" viewBox="0 0 24 24"><path d="m3 14 4-4 4 4 6-8 4 3"/><path d="M3 21h18"/></svg><span class="nav-label">النشاط</span></button>
+  <button class="nav-item" data-tab="fasting" onclick="switchScreen('fasting', this)" aria-label="الصيام"><svg class="nav-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span class="nav-label">الصيام</span></button>
+  <button class="nav-item" data-tab="more" onclick="switchScreen('more', this)" aria-label="المزيد"><svg class="nav-icon" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg><span class="nav-label">المزيد</span></button>
 </div>
 
 <script>
@@ -1034,27 +1062,7 @@ document.addEventListener('touchend', e => {
   lastTouchEnd = now;
 }, { passive: false });
 
-// ============ INLINE SERVICE WORKER FOR RELIABLE NOTIFICATIONS ============
-let swRegistration = null;
-if ('serviceWorker' in navigator) {
-  const swCode = `
-    self.addEventListener('install', (e) => self.skipWaiting());
-    self.addEventListener('activate', (e) => e.waitUntil(self.clients.claim()));
-    self.addEventListener('message', (e) => {
-      if (e.data && e.data.type === 'SHOW_NOTIFICATION') {
-        self.registration.showNotification(e.data.title, {
-          body: e.data.body,
-          icon: e.data.icon,
-          badge: e.data.icon
-        });
-      }
-    });
-  `;
-  const blob = new Blob([swCode], { type: 'application/javascript' });
-  navigator.serviceWorker.register(URL.createObjectURL(blob))
-    .then(reg => { swRegistration = reg; })
-    .catch(() => {});
-}
+// Local reminders run while the app is open; there is no push server.
 
 // ============ GEMINI API CORE WITH EXPONENTIAL BACKOFF ============
 const apiKey = ""; // Runtime provided key by host execution environment
@@ -1069,25 +1077,28 @@ async function fetchGeminiWithRetry(payload) {
 
   for (const currentKey of keysToTry) {
     if (!currentKey) continue;
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${currentKey}`;
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`;
 
     for (let attempt = 0; attempt <= delays.length; attempt++) {
       try {
         const res = await fetch(url, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'application/json', 'x-goog-api-key': currentKey },
           body: JSON.stringify(payload)
         });
 
         if (!res.ok) {
           const errorData = await res.json().catch(() => ({}));
           const msg = errorData?.error?.message || `HTTP ${res.status}`;
-          throw new Error(msg);
+          const error = new Error(msg);
+          error.retryable = res.status === 429 || res.status >= 500;
+          throw error;
         }
 
         return await res.json();
       } catch (err) {
         lastError = err;
+        if (err.retryable === false) throw err;
         if (attempt < delays.length) {
           await new Promise(r => setTimeout(r, delays[attempt]));
         }
@@ -1407,13 +1418,13 @@ function renderSuggestedMeals() {
     container.innerHTML = list.map((item, idx) => `
       <div class="food-item">
         <div class="food-info">
-          <div style="font-weight:800; font-size:14px; color:#fff;">${item.name}</div>
-          <div style="font-size:11px; color:var(--text-secondary);">${item.desc}</div>
+          <div style="font-weight:800; font-size:14px; color:#fff;">${escapeHtml(item.name)}</div>
+          <div style="font-size:11px; color:var(--text-secondary);">${escapeHtml(item.desc)}</div>
           <div style="font-size:11px; color:var(--accent-emerald); margin-top:2px;">🔥 ${item.cal} سعرة | 🥩 ${item.protein}g بروتين | 🌾 ${item.carbs}g كربوهيدرات</div>
           <div style="font-size:10px; color:var(--text-secondary); margin-top:1px;">🍬 ${item.sugar ?? 0}g سكر | 🌿 ${item.fiber ?? 0}g ألياف</div>
         </div>
         <div style="display:flex; flex-direction:column; gap:6px;">
-          <button class="icon-btn" style="background:var(--accent-emerald); color:#042f2e; font-weight:800; border:none;" onclick="addPresetCombo('${item.name.replace(/'/g, "\\'")}', ${item.cal}, ${item.protein}, ${item.carbs}, ${item.fat}, ${item.sugar ?? 0}, ${item.fiber ?? 0})">➕ إضافة</button>
+          <button class="icon-btn" style="background:var(--accent-emerald); color:#042f2e; font-weight:800; border:none;" onclick="addCustomMealByIndex(${idx})">➕ إضافة</button>
           <button class="icon-btn" style="background:var(--accent-coral); color:#fff; font-weight:800; border:none;" onclick="removeCustomMeal(${idx})">🗑️ حذف</button>
         </div>
       </div>
@@ -1426,6 +1437,11 @@ function renderSuggestedMeals() {
 }
 
 // ============ البحث عبر كل التصنيفات دفعة وحدة — يظهر النتائج فور الكتابة ============
+function addCustomMealByIndex(idx) {
+  const item = appState.customMeals?.[idx];
+  if (item) addPresetCombo(item.name, item.cal, item.protein, item.carbs, item.fat, item.sugar, item.fiber);
+}
+
 function handleMealsSearch() {
   const query = document.getElementById('meals-search-input').value.trim();
   const pillContainer = document.getElementById('meals-pill-container');
@@ -1450,7 +1466,7 @@ function handleMealsSearch() {
   }
 
   if (results.length === 0) {
-    container.innerHTML = `<div class="message-box">ما فيه نتائج مطابقة لـ"${query}" — جرّب كلمة مفتاحية ثانية</div>`;
+    container.innerHTML = `<div class="message-box">ما فيه نتائج مطابقة لـ"${escapeHtml(query)}" — جرّب كلمة مفتاحية ثانية</div>`;
     return;
   }
 
@@ -1534,9 +1550,13 @@ function showToast(message, type = 'info') {
   const container = document.getElementById('toast-container');
   const toast = document.createElement('div');
   toast.className = `toast ${type}`;
-  toast.innerHTML = `<span>${message}</span>`;
+  toast.textContent = message;
   container.appendChild(toast);
   setTimeout(() => toast.remove(), 4000);
+}
+
+function escapeHtml(value) {
+  return String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 }
 
 function showModal(title, contentHtml) {
@@ -1547,18 +1567,33 @@ function showModal(title, contentHtml) {
 function closeModal() { document.getElementById('app-modal').classList.remove('active'); }
 
 function loadUsersDB() {
-  try { return JSON.parse(localStorage.getItem('healthAppUsers') || '{}'); }
-  catch (e) { return {}; }
+  try {
+    const users = JSON.parse(localStorage.getItem('healthAppUsers') || '{}');
+    if (!users || typeof users !== 'object' || Array.isArray(users)) throw new Error('Invalid users data');
+    return users;
+  } catch (e) {
+    // Never replace unreadable data with an empty database.
+    showToast('تعذر قراءة البيانات المحفوظة. لم تُمسح؛ احتفظ ببيانات هذا المتصفح ولا تعِد ضبطه.', 'warning');
+    return null;
+  }
 }
 function saveCurrentUserData() {
-  if (!currentUsername) return;
+  if (!currentUsername) return false;
   const db = loadUsersDB();
+  if (!db) return false;
   db[currentUsername] = appState;
-  localStorage.setItem('healthAppUsers', JSON.stringify(db));
-  syncLeaderboardToFirestore();
+  try { localStorage.setItem('healthAppUsers', JSON.stringify(db)); }
+  catch (e) {
+    showToast('تعذر حفظ التغيير: مساحة المتصفح غير كافية. صدّر نسخة احتياطية قبل المتابعة.', 'warning');
+    return false;
+  }
+  return true;
 }
 
-function todayStr() { return new Date().toISOString().split('T')[0]; }
+function todayStr(date = new Date()) {
+  const local = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+  return local.toISOString().slice(0, 10);
+}
 function getTodaysMeals() { return appState.meals.filter(m => m.date === todayStr()); }
 function getTodaysWorkouts() { return (appState.workouts || []).filter(w => w.date === todayStr()); }
 
@@ -1570,12 +1605,12 @@ function ensureTodayWater() {
 }
 
 // ============ INIT ============
-window.addEventListener('load', async () => {
-  if (window.initFirebaseServices) await window.initFirebaseServices();
+window.addEventListener('load', () => {
 
   const savedUsername = localStorage.getItem('healthAppCurrentUser');
   if (savedUsername) {
     const db = loadUsersDB();
+    if (!db) { showScreen('login-screen'); return; }
     if (db[savedUsername] && db[savedUsername].profile) {
       currentUsername = savedUsername;
       appState = Object.assign({ meals: [], workouts: [], weights: [], water: 0, waterDate: null, chat: [], streak: 1, waterIntervalHours: 2, lastWaterNotifTime: 0, lastMealNotifTime: 0, fasting: { active: false, startTime: null, targetHours: 16, logs: [], lastEndTime: null } }, db[savedUsername]);
@@ -1587,23 +1622,44 @@ window.addEventListener('load', async () => {
       initChart();
       initFastingTimer();
       renderSuggestedMeals();
-      fetchLeaderboard();
       startNotificationScheduler();
       return;
     }
   }
   showScreen('login-screen');
+  renderLocalProfiles();
 });
 
-// ============ AUTH ============
+// Local profiles are labels on this phone; no remote account is created.
+function renderLocalProfiles() {
+  const container = document.getElementById('local-profiles');
+  if (!container) return;
+  const db = loadUsersDB();
+  if (!db) return;
+  container.replaceChildren();
+  for (const name of Object.keys(db).filter(name => db[name]?.profile)) {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.textContent = name;
+    button.addEventListener('click', () => {
+      document.getElementById('username').value = name;
+      handleLogin();
+    });
+    container.appendChild(button);
+  }
+}
+
 function handleLogin() {
   const username = document.getElementById('username').value.trim();
   if (!username) { showToast('يرجى إدخال اسم المستخدم', 'warning'); return; }
-
+  const db = loadUsersDB();
+  if (!db) return;
+  if (!Object.prototype.hasOwnProperty.call(db, username) && Object.keys(db).length > 0) {
+    showToast('الاسم غير موجود هنا. اختر ملفك المحفوظ أدناه أو اضغط «إنشاء ملف جديد».', 'warning');
+    return;
+  }
   currentUsername = username;
   localStorage.setItem('healthAppCurrentUser', username);
-
-  const db = loadUsersDB();
   if (db[username] && db[username].profile) {
     appState = Object.assign({ meals: [], workouts: [], weights: [], water: 0, waterDate: null, chat: [], streak: 1, waterIntervalHours: 2, lastWaterNotifTime: 0, lastMealNotifTime: 0, fasting: { active: false, startTime: null, targetHours: 16, logs: [], lastEndTime: null } }, db[username]);
     document.getElementById('bottom-nav').style.display = 'flex';
@@ -1614,12 +1670,23 @@ function handleLogin() {
     initChart();
     initFastingTimer();
     renderSuggestedMeals();
-    fetchLeaderboard();
     startNotificationScheduler();
   } else {
     appState = db[username] || { profile: null, meals: [], workouts: [], weights: [], water: 0, chat: [], streak: 1, waterIntervalHours: 2, lastWaterNotifTime: 0, lastMealNotifTime: 0, fasting: { active: false, startTime: null, targetHours: 16, logs: [], lastEndTime: null } };
     showScreen('setup-screen');
   }
+}
+
+function startNewProfile() {
+  const username = document.getElementById('username').value.trim();
+  if (!username) { showToast('اكتب اسم ملفك أولاً.', 'warning'); return; }
+  const db = loadUsersDB();
+  if (!db) return;
+  if (Object.prototype.hasOwnProperty.call(db, username)) { handleLogin(); return; }
+  currentUsername = username;
+  appState = { profile: null, meals: [], workouts: [], weights: [], water: 0, chat: [], streak: 1,
+    fasting: { active: false, startTime: null, targetHours: 16, logs: [], lastEndTime: null } };
+  showScreen('setup-screen');
 }
 
 function completeSetup() {
@@ -1638,19 +1705,21 @@ function completeSetup() {
 
   let bmr = (10 * weight) + (6.25 * height) - (5 * age);
   bmr = gender === 'male' ? bmr + 5 : bmr - 161;
-  const tdee = bmr * 1.375;
+  const activityFactor = Number(document.getElementById('setup-activity').value) || 1.375;
+  const tdee = bmr * activityFactor;
 
   let dailyCalories = tdee;
   if (goal === 'lose') dailyCalories = tdee - 500;
   else if (goal === 'gain') dailyCalories = tdee + 400;
 
   appState.profile = {
-    name, age, gender, height, currentWeight: weight, targetWeight, goal,
+    ...(appState.profile || {}),
+    name, age, gender, height, currentWeight: weight, targetWeight, goal, activityFactor,
     bmr: Math.round(bmr), tdee: Math.round(tdee), dailyCalories: Math.round(dailyCalories),
     protein: Math.round(weight * 1.8),
     carbs: Math.round((dailyCalories * 0.45) / 4),
     fats: Math.round((dailyCalories * 0.25) / 9),
-    water: 8
+    water: appState.profile?.water || 8
   };
 
   if (!appState.meals) appState.meals = [];
@@ -1668,6 +1737,9 @@ function completeSetup() {
     appState.weights.sort((a, b) => new Date(a.date) - new Date(b.date));
   }
 
+  if (!saveCurrentUserData()) return;
+  localStorage.setItem('healthAppCurrentUser', currentUsername);
+
   document.getElementById('bottom-nav').style.display = 'flex';
   showScreen('dashboard-screen');
   updateLoginStreak();
@@ -1684,13 +1756,16 @@ function switchScreen(screenName, navElement) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
 
-  document.getElementById(screenName + '-screen').classList.add('active');
-  if (navElement) navElement.classList.add('active');
+  const target = document.getElementById(screenName + '-screen');
+  if (!target) return;
+  target.classList.add('active');
+  const tab = ['water', 'chat', 'settings'].includes(screenName) ? 'more' : screenName;
+  (navElement || document.querySelector(`.nav-item[data-tab="${tab}"]`))?.classList.add('active');
+  document.querySelector('.main-container').scrollTop = 0;
 
   if (screenName === 'dashboard') { updateDashboard(); updateChartData(); }
   if (screenName === 'meals') { updateMealsList(); renderSuggestedMeals(); }
   if (screenName === 'fasting') renderFastingHistory();
-  if (screenName === 'community') fetchLeaderboard();
   if (screenName === 'workouts') updateWorkoutsList();
   if (screenName === 'water') updateWaterScreen();
   if (screenName === 'chat') renderChatHistory();
@@ -1723,9 +1798,15 @@ function updateDashboard() {
   const fiber = todaysMeals.reduce((s, m) => s + (m.fiber || 0), 0);
 
   document.getElementById('user-welcome').textContent = `مرحباً ${p.name || currentUsername} 👋`;
+  document.getElementById('dashboard-date').textContent = new Intl.DateTimeFormat('ar-OM', { weekday: 'long', day: 'numeric', month: 'long' }).format(new Date());
+  const remaining = Math.max(0, Math.round((Number(p.dailyCalories) || 0) - consumedCals));
+  const percent = p.dailyCalories > 0 ? Math.min(100, Math.round(consumedCals / p.dailyCalories * 100)) : 0;
+  document.getElementById('daily-remaining').textContent = remaining;
+  document.getElementById('daily-goal-percent').textContent = `${percent}% من الهدف`;
+  document.getElementById('daily-calorie-progress').style.width = `${percent}%`;
   document.getElementById('streak-days').textContent = `${appState.streak || 1} أيام`;
   document.getElementById('dashboard-calories').textContent = p.dailyCalories;
-  document.getElementById('dashboard-consumed').textContent = `${netCals} (صافي)`;
+  document.getElementById('dashboard-consumed').textContent = consumedCals;
   document.getElementById('dashboard-weight').textContent = currentWeight.toFixed(1);
   document.getElementById('dashboard-target').textContent = p.targetWeight;
   document.getElementById('dashboard-water').textContent = appState.water;
@@ -1924,7 +2005,7 @@ function getLast7DaysSummaries() {
   for (let i = 6; i >= 0; i--) {
     const d = new Date();
     d.setDate(d.getDate() - i);
-    days.push(getDaySummary(d.toISOString().split('T')[0]));
+    days.push(getDaySummary(todayStr(d)));
   }
   return days;
 }
@@ -1980,7 +2061,7 @@ function getWeekAverages(weeksAgo) {
   for (let i = 6; i >= 0; i--) {
     const d = new Date();
     d.setDate(d.getDate() - i - (weeksAgo * 7));
-    days.push(getDaySummary(d.toISOString().split('T')[0]));
+    days.push(getDaySummary(todayStr(d)));
   }
   const active = days.filter(d => d.consumed > 0 || d.burned > 0);
   if (active.length === 0) return null;
@@ -2077,7 +2158,7 @@ function renderYesterdayComparison() {
 
   const y = new Date();
   y.setDate(y.getDate() - 1);
-  const yesterdayStr = y.toISOString().split('T')[0];
+  const yesterdayStr = todayStr(y);
 
   const yesterday = getDaySummary(yesterdayStr);
   const today = getDaySummary(todayStr());
@@ -2383,6 +2464,38 @@ function updateChartData() {
   dashboardChartInstance.update();
 }
 
+// AI estimates are reviewed before saving; no model text is inserted as executable HTML.
+const pendingAiMeals = Object.create(null);
+function normalizeAiMeal(result) {
+  if (!result || typeof result.name !== 'string' || !result.name.trim()) throw new Error('اسم الوجبة غير متاح');
+  const meal = { name: result.name.trim().slice(0, 160) };
+  for (const key of ['calories', 'protein', 'carbs', 'fat', 'sugar', 'fiber']) {
+    const n = Number(result[key] ?? 0);
+    if (!Number.isFinite(n) || n < 0 || n > 10000) throw new Error('قيم غذائية غير صالحة');
+    meal[key] = n;
+  }
+  return meal;
+}
+function showAiMealPreview(result, targetId, label, source) {
+  const meal = normalizeAiMeal(result);
+  pendingAiMeals[source] = meal;
+  document.getElementById(targetId).innerHTML = `
+    <div class="message-box success" style="margin-top:10px;">
+      <strong>${label}:</strong> ${escapeHtml(meal.name)}<br>
+      🔥 ${meal.calories} سعرة | 🥩 بروتين: ${meal.protein}غ | 🌾 كربوهيدرات: ${meal.carbs}غ | 🫒 دهون: ${meal.fat}غ
+      <div style="font-size:11px; margin-top:6px;">تقدير تقريبي؛ تحقق من حجم الحصة قبل إضافتها.</div>
+    </div>
+    <button class="btn btn-primary" onclick="confirmPendingAiMeal('${source}')">اعتماد وإضافة للسجل</button>`;
+}
+function confirmPendingAiMeal(source) {
+  const meal = pendingAiMeals[source];
+  if (!meal) return;
+  confirmAiMeal(meal.name, meal.calories, meal.protein, meal.carbs, meal.fat, meal.sugar, meal.fiber);
+  delete pendingAiMeals[source];
+  const target = { text: 'meal-text-preview', voice: 'voice-transcript-preview', barcode: 'barcode-result-preview' }[source];
+  if (target) document.getElementById(target).replaceChildren();
+}
+
 // ============ FREE TEXT & MANUAL MEAL LOGGING ============
 async function handleMealText() {
   const text = document.getElementById('meal-text-input').value.trim();
@@ -2394,13 +2507,7 @@ async function handleMealText() {
   try {
     const result = await analyzeMealTextGemini(text);
 
-    previewDiv.innerHTML = `
-      <div class="message-box success" style="margin-top:10px;">
-        <strong>🍽️ التقدير المكتشف:</strong> ${result.name}<br>
-        🔥 ${result.calories} سعرة | 🥩 بروتين: ${result.protein}g | 🌾 كربوهيدرات: ${result.carbs}g | 🫒 دهون: ${result.fat}g
-      </div>
-      <button class="btn btn-primary" onclick="confirmAiMeal('${result.name.replace(/'/g, "\\'")}', ${result.calories}, ${result.protein}, ${result.carbs}, ${result.fat}, ${result.sugar}, ${result.fiber})">✅ اعتماد وإضافة للسجل</button>
-    `;
+    showAiMealPreview(result, 'meal-text-preview', '🍽️ تقدير الوجبة', 'text');
   } catch (e) {
     previewDiv.innerHTML = `<div class="message-box error" style="margin-top:10px;">تعذر التحليل: ${e.message}</div>`;
   }
@@ -2498,22 +2605,11 @@ function toggleVoiceRecognition() {
   speechRecognition.onresult = async (event) => {
     const transcript = event.results[0][0].transcript;
     document.getElementById('voice-btn-text').textContent = '🎙️ ابدأ التسجيل الصوتي';
-    document.getElementById('voice-transcript-preview').innerHTML = `
-      <div class="message-box" style="margin-top:10px;">
-        <strong>الصوت الملتقط:</strong> "${transcript}"<br>
-        🤖 جاري التقدير بالذكاء الاصطناعي...
-      </div>
-    `;
+    document.getElementById('voice-transcript-preview').textContent = `الصوت الملتقط: ${transcript} — جارٍ تقدير قيم الوجبة...`;
 
     try {
       const result = await analyzeMealTextGemini(transcript);
-      document.getElementById('voice-transcript-preview').innerHTML = `
-        <div class="message-box success" style="margin-top:10px;">
-          <strong>🍽️ التقدير من الصوت:</strong> ${result.name}<br>
-          🔥 ${result.calories} سعرة | 🥩 بروتين: ${result.protein}g | 🌾 كربوهيدرات: ${result.carbs}g | 🫒 دهون: ${result.fat}g
-        </div>
-        <button class="btn btn-primary" onclick="confirmAiMeal('${result.name.replace(/'/g, "\\'")}', ${result.calories}, ${result.protein}, ${result.carbs}, ${result.fat}, ${result.sugar}, ${result.fiber})">✅ اعتماد وإضافة للسجل</button>
-      `;
+      showAiMealPreview(result, 'voice-transcript-preview', '🍽️ تقدير الوجبة', 'voice');
     } catch (e) {
       document.getElementById('voice-transcript-preview').innerHTML = `<div class="message-box error" style="margin-top:10px;">تعذر تحليل الصوت: ${e.message}</div>`;
     }
@@ -2655,19 +2751,14 @@ async function lookupBarcode(barcode) {
     const sugar = Math.round(nutriments.sugars_100g || 0);
     const fiber = Math.round(nutriments.fiber_100g || 0);
 
-    preview.innerHTML = `
-      <div class="message-box success" style="margin-top:10px;">
-        <strong>📦 المنتج:</strong> ${name}<br>
-        🔥 ${calories} سعرة /100g | 🥩 بروتين: ${protein}g | 🌾 كربوهيدرات: ${carbs}g | 🫒 دهون: ${fat}g
-      </div>
-      <button class="btn btn-cyan" onclick="confirmAiMeal('${name.replace(/'/g, "\\'")}', ${calories}, ${protein}, ${carbs}, ${fat}, ${sugar}, ${fiber})">✅ إضافة الوجبة للسجل</button>
-    `;
+    showAiMealPreview({ name: `${name} (100غ)`, calories, protein, carbs, fat, sugar, fiber },
+      'barcode-result-preview', '📦 المنتج — القيم لكل 100غ', 'barcode');
   } catch (e) {
     preview.innerHTML = `<div class="message-box error" style="margin-top:10px;">فشل الاتصال: ${e.message}</div>`;
   }
 }
 
-// ============ HIGHLY RELIABLE NOTIFICATION & REMINDER SYSTEM ============
+// ============ REMINDERS WHILE THE APP IS OPEN ============
 function updateReminderPreferences() {
   const val = parseInt(document.getElementById('water-reminder-interval-select').value) || 2;
   appState.waterIntervalHours = val;
@@ -2685,7 +2776,7 @@ function requestNotificationPermission() {
     if (permission === "granted") {
       appState.notificationsEnabled = true;
       saveCurrentUserData();
-      showToast("تم تفعيل التنبيهات بنجاح! 🔔", "success");
+      showToast("فُعّلت تذكيرات التطبيق أثناء فتحه.", "success");
       document.getElementById('notification-toggle-btn').innerHTML = "<span>✅ الإشعارات مفعلة بنجاح</span>";
       startNotificationScheduler();
     } else {
@@ -2695,24 +2786,16 @@ function requestNotificationPermission() {
 }
 
 function triggerNotification(title, body) {
-  const scaleIconUrl = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='120' fill='%23070a16'/><rect x='70' y='70' width='372' height='372' rx='70' fill='%23111827' stroke='%2310b981' stroke-width='22'/><rect x='150' y='115' width='212' height='80' rx='20' fill='%23042f2e' stroke='%2310b981' stroke-width='10'/><circle cx='180' cy='155' r='8' fill='%2310b981'/><path d='M210 155h90' stroke='%2310b981' stroke-width='14' stroke-linecap='round' stroke-dasharray='15 10'/><path d='M150 360 a130 130 0 0 1 212 0' fill='none' stroke='%2306b6d4' stroke-width='24' stroke-linecap='round'/><path d='M256 360 l45 -70' stroke='%23f43f5e' stroke-width='16' stroke-linecap='round'/><circle cx='256' cy='360' r='22' fill='%23f43f5e'/></svg>";
-
-  if (swRegistration && swRegistration.active) {
-    swRegistration.active.postMessage({
-      type: 'SHOW_NOTIFICATION',
-      title: title,
-      body: body,
-      icon: scaleIconUrl
-    });
-  } else if ("Notification" in window && Notification.permission === "granted") {
-    new Notification(title, { body: body, icon: scaleIconUrl });
+  if ("Notification" in window && Notification.permission === "granted") {
+    try { new Notification(title, { body, icon: './icon-192.png' }); }
+    catch (e) { /* Some mobile browsers only support push notifications. */ }
   }
 
   showToast(`🔔 [تذكير]: ${title} - ${body}`, 'info');
 }
 
 function sendTestNotification() {
-  triggerNotification("مستشار صحتك الذكي ⚖️", "إشعار تجريبي ناجح! تذكير شرب الماء والوجبة القادمة.");
+  triggerNotification("ميزانك ⚖️", "إشعار تجريبي ناجح! تذكير شرب الماء والوجبة القادمة.");
 }
 
 let notificationSchedulerInterval = null;
@@ -2769,7 +2852,7 @@ function updateLoginStreak() {
   } else {
     const yesterday = new Date();
     yesterday.setDate(yesterday.getDate() - 1);
-    const yesterdayStr = yesterday.toISOString().split('T')[0];
+    const yesterdayStr = yesterdatodayStr(y);
 
     if (appState.lastActiveDate === yesterdayStr) {
       appState.streak = (appState.streak || 0) + 1; // يوم متتالٍ — زِد السلسلة
@@ -2979,66 +3062,6 @@ function deleteFastingLog(idx) {
   showToast('تم حذف سجل الصيام 🗑️', 'info');
 }
 
-// ============ COMMUNITY & LEADERBOARD ============
-async function syncLeaderboardToFirestore() {
-  if (!window.firebaseDb || !currentUsername || !appState.profile) return;
-  try {
-    const leaderboardRef = doc(window.firebaseDb, 'artifacts', window.firebaseAppId, 'public', 'data', 'leaderboard', currentUsername);
-    await setDoc(leaderboardRef, {
-      username: currentUsername,
-      name: appState.profile.name,
-      streak: appState.streak || 1,
-      water: appState.water || 0,
-      updatedAt: todayStr()
-    });
-  } catch (e) {
-    console.warn("Firestore leaderboard sync:", e);
-  }
-}
-
-async function fetchLeaderboard() {
-  const container = document.getElementById('leaderboard-list');
-  if (!container) return;
-
-  if (!window.firebaseDb) {
-    container.innerHTML = `
-      <div class="food-item">
-        <div class="food-info"><div style="font-weight:800; color:#fff;">👑 ${appState.profile?.name || currentUsername} (أنت)</div></div>
-        <div style="font-weight:900; color:var(--accent-amber);">🔥 ${appState.streak || 1} أيام</div>
-      </div>
-    `;
-    return;
-  }
-
-  try {
-    const colRef = collection(window.firebaseDb, 'artifacts', window.firebaseAppId, 'public', 'data', 'leaderboard');
-    const snapshot = await getDocs(colRef);
-    let list = [];
-    snapshot.forEach(doc => list.push(doc.data()));
-
-    list.sort((a,b) => (b.streak || 0) - (a.streak || 0));
-
-    if (list.length === 0) {
-      container.innerHTML = '<div class="message-box">لا يوجد متصدرين حالياً. كن أول من ينضم!</div>';
-      return;
-    }
-
-    container.innerHTML = list.map((item, index) => `
-      <div class="food-item">
-        <div style="font-size:18px; font-weight:900; margin-left:10px; color:var(--accent-cyan);">#${index + 1}</div>
-        <div class="food-info">
-          <div style="font-weight:800; font-size:14px; color:#fff;">${item.name || item.username}</div>
-          <div style="font-size:11px; color:var(--text-secondary);">💧 شرب الماء: ${item.water || 0} أكواب</div>
-        </div>
-        <div style="font-weight:900; color:var(--accent-amber);">🔥 ${item.streak || 1} أيام</div>
-      </div>
-    `).join('');
-  } catch (e) {
-    container.innerHTML = `<div class="message-box warning">تعذر تحميل القائمة المباشرة.</div>`;
-  }
-}
-
-// ============ TEXT-TO-SPEECH (TTS) ============
 async function speakAiResponse(textToSpeak) {
   showToast('جاري تحضير الصوت الناطق...', 'info');
 
@@ -3127,8 +3150,10 @@ async function handleMealPhoto(event) {
     const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
     const result = JSON.parse(text);
 
-    lastPhotoAnalysisResult = result;
-    renderPhotoAnalysisResult(result);
+    const estimatedWeight = Number(result.estimatedWeight);
+    if (!Number.isFinite(estimatedWeight) || estimatedWeight <= 0 || estimatedWeight > 20000) throw new Error('الوزن التقديري غير صالح');
+    lastPhotoAnalysisResult = { ...normalizeAiMeal(result), estimatedWeight };
+    renderPhotoAnalysisResult(lastPhotoAnalysisResult);
   } catch (e) {
     previewDiv.innerHTML = `<div class="message-box error" style="margin-top:10px;">تعذر التحليل: ${e.message}</div>`;
   }
@@ -3138,7 +3163,7 @@ function renderPhotoAnalysisResult(result) {
   const previewDiv = document.getElementById('meal-photo-preview');
   previewDiv.innerHTML = `
     <div class="message-box success" style="margin-top:10px;">
-      <strong>🍽️ الوجبة:</strong> ${result.name}<br>
+      <strong>🍽️ الوجبة:</strong> ${escapeHtml(result.name)}<br>
       ⚖️ الوزن التقديري: <strong>${result.estimatedWeight}</strong> غرام (تقدير بصري تقريبي، وليس وزناً دقيقاً)
     </div>
     <div style="display:flex; align-items:center; gap:8px; margin-top:10px;">
@@ -3257,7 +3282,7 @@ function updateMealsList() {
   container.innerHTML = todaysMeals.map(m => `
     <div class="food-item">
       <div class="food-info">
-        <div style="font-weight:800; font-size:14px; color:#fff;">${m.name}</div>
+        <div style="font-weight:800; font-size:14px; color:#fff;">${escapeHtml(m.name)}</div>
         <div style="font-size:11px; color:var(--text-secondary);">🔥 ${m.cal} سعرة | 🥩 بروتين: ${m.protein}غ | 🌾 كربوهيدرات: ${m.carbs}غ | 🫒 دهون: ${m.fat}غ</div>
       </div>
       <button class="delete-btn" onclick="deleteMeal(${m.id})">حذف</button>
@@ -3384,8 +3409,8 @@ function updateWorkoutsList() {
   container.innerHTML = todays.map(w => `
     <div class="food-item">
       <div class="food-info">
-        <div style="font-weight:800; font-size:14px; color:#fff;">🏋️‍♂️ ${w.name}</div>
-        <div style="font-size:11px; color:var(--text-secondary);">⏱️ التفاصيل: ${w.duration} | 🔥 السعرات المحروقة: ${w.cal} سعرة</div>
+        <div style="font-weight:800; font-size:14px; color:#fff;">🏋️‍♂️ ${escapeHtml(w.name)}</div>
+        <div style="font-size:11px; color:var(--text-secondary);">⏱️ التفاصيل: ${escapeHtml(w.duration)} | 🔥 السعرات المحروقة: ${w.cal} سعرة</div>
       </div>
       <button class="delete-btn" onclick="deleteWorkout(${w.id})">حذف</button>
     </div>
@@ -3456,12 +3481,18 @@ function renderChatMessage(role, text) {
     div.style.color = '#042f2e';
     div.style.fontWeight = '700';
   }
-
-  const speechBtnHtml = role === 'assistant' 
-    ? `<button class="icon-btn" style="margin-top:8px; display:inline-flex;" onclick="speakAiResponse('${text.replace(/'/g, "\\'")}')">🔊 استمع للإجابة</button>`
-    : '';
-
-  div.innerHTML = `<strong>${role === 'user' ? '👤 أنت' : '🤖 المساعد'}:</strong> ${text}${speechBtnHtml}`;
+  const label = document.createElement('strong');
+  label.textContent = role === 'user' ? '👤 أنت: ' : '✧ المساعد: ';
+  div.append(label, document.createTextNode(String(text ?? '')));
+  if (role === 'assistant') {
+    const button = document.createElement('button');
+    button.className = 'icon-btn';
+    button.style.marginTop = '8px';
+    button.style.display = 'block';
+    button.textContent = '🔊 استمع للإجابة';
+    button.addEventListener('click', () => speakAiResponse(String(text ?? '')));
+    div.append(button);
+  }
   container.appendChild(div);
   container.scrollTop = container.scrollHeight;
 }
@@ -3514,7 +3545,7 @@ function shareProgressModal() {
   if (!p) return;
   const currW = appState.weights[appState.weights.length - 1]?.weight || p.currentWeight;
   
-  const text = `🎯 ملخص إنجازاتي مع مستشارك الصحي الذكي:\n` +
+  const text = `🎯 ملخص إنجازاتي مع ميزانك:\n` +
     `👤 المستخدم: ${p.name}\n` +
     `⚖️ الوزن الحالي: ${currW} كغ (الهدف: ${p.targetWeight} كغ)\n` +
     `🔥 التزام متواصل: ${appState.streak || 1} أيام!`;
@@ -3533,7 +3564,7 @@ function updateProfileUI() {
   if (!p) return;
   document.getElementById('profile-info').innerHTML = `
     <div class="message-box">
-      <strong>الاسم:</strong> ${p.name}<br>
+      <strong>الاسم:</strong> ${escapeHtml(p.name)}<br>
       <strong>العمر:</strong> ${p.age} سنة | <strong>الجنس:</strong> ${p.gender === 'male' ? 'ذكر' : 'أنثى'}<br>
       <strong>الطول:</strong> ${p.height}سم | <strong>الوزن الحالي:</strong> ${p.currentWeight}كغ<br>
       <strong>السعرات المستهدفة:</strong> ${p.dailyCalories} سعرة حرارية
@@ -3551,7 +3582,18 @@ function updateProfileUI() {
   }
 }
 
-function editProfile() { showScreen('setup-screen'); }
+function editProfile() {
+  const p = appState.profile;
+  if (!p) return;
+  const fields = {
+    'setup-name': p.name, 'setup-age': p.age, 'setup-gender': p.gender,
+    'setup-height': p.height, 'setup-current-weight': appState.weights?.at(-1)?.weight ?? p.currentWeight,
+    'setup-target-weight': p.targetWeight, 'setup-goal': p.goal,
+    'setup-activity': p.activityFactor || 1.375
+  };
+  for (const [id, value] of Object.entries(fields)) document.getElementById(id).value = value ?? '';
+  showScreen('setup-screen');
+}
 
 function saveApiSettings() {
   const geminiKey = document.getElementById('gemini-key-input').value.trim();
@@ -3568,7 +3610,7 @@ function saveApiSettings() {
 function clearCustomApiKey() {
   localStorage.removeItem('healthAppGeminiKey');
   document.getElementById('gemini-key-input').value = '';
-  showToast('تمت العودة لمفتاح النظام الافتراضي بنجاح ✅', 'success');
+  showToast('حُذف المفتاح. أضف مفتاحاً جديداً لتفعيل التحليل الذكي.', 'success');
 }
 
 function loadApiSettingsUI() {
@@ -3577,59 +3619,99 @@ function loadApiSettingsUI() {
 }
 
 // ============ النسخة الاحتياطية — تصدير/استيراد ملف JSON كامل، وتذكير عند دخول يوم جديد ============
-function exportBackup() {
+async function exportBackup() {
+  const users = loadUsersDB();
+  if (!users) return;
+  // Include the latest in-memory state without writing or changing existing records.
+  if (currentUsername) users[currentUsername] = appState;
   const backupPayload = {
-    version: 1,
+    version: 2,
     exportDate: new Date().toISOString(),
-    username: currentUsername,
-    data: appState
+    users
   };
 
-  const blob = new Blob([JSON.stringify(backupPayload, null, 2)], { type: 'application/json' });
+  const fileName = `ميزانك_كل_الحسابات_${todayStr()}.json`;
+  const file = new File([JSON.stringify(backupPayload, null, 2)], fileName, { type: 'application/json' });
+  if (navigator.canShare?.({ files: [file] })) {
+    try {
+      await navigator.share({ files: [file], title: 'نسخة ميزانك الاحتياطية' });
+      localStorage.setItem('healthAppBackupReminderDate', todayStr());
+      hideBackupReminderBanner();
+      showToast('اختر حفظ الملف في «الملفات» أو iCloud وتحقق من وجوده.', 'info');
+    } catch (e) {
+      if (e.name !== 'AbortError') showToast('تعذر مشاركة النسخة. أعد المحاولة أو استخدم متصفحاً آخر.', 'warning');
+    }
+    return;
+  }
+
+  const blob = file;
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `نسخة_احتياطية_${currentUsername}_${todayStr()}.json`;
+  a.download = fileName;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-
-  appState.lastBackupDate = todayStr();
-  saveCurrentUserData();
-  renderBackupStatus();
+  setTimeout(() => URL.revokeObjectURL(url), 60000);
+  localStorage.setItem('healthAppBackupReminderDate', todayStr());
   hideBackupReminderBanner();
-  showToast('تم تصدير نسخة احتياطية بنجاح 💾', 'success');
+
+  // A browser click does not prove the file was saved, especially on iPhone.
+  showToast('تم تجهيز ملف النسخة. تأكد من حفظه في «الملفات» أو iCloud.', 'info');
 }
 
 function triggerImportBackup() {
-  document.getElementById('backup-import-input').click();
+  document.getElementById(currentUsername ? 'backup-import-input' : 'login-backup-import-input').click();
 }
 
 function handleImportBackup(event) {
   const file = event.target.files?.[0];
   if (!file) return;
+  event.target.value = '';
 
   const reader = new FileReader();
   reader.onload = (e) => {
     try {
       const backup = JSON.parse(e.target.result);
-      if (!backup || !backup.data) throw new Error('ملف غير صالح');
+      const imported = backup?.version === 2 && backup.users && typeof backup.users === 'object' && !Array.isArray(backup.users)
+        ? backup.users
+        : backup?.version === 1 && typeof backup.username === 'string' && backup.data
+          ? { [backup.username]: backup.data } : null;
+      const entries = imported && Object.entries(imported);
+      if (!entries?.length || entries.length > 100) throw new Error('Invalid backup');
+      for (const [name, data] of entries) {
+        if (!name || name.length > 100 || ['__proto__', 'constructor', 'prototype'].includes(name)
+            || !data || typeof data !== 'object' || Array.isArray(data)
+            || !data.profile || !Array.isArray(data.meals) || !Array.isArray(data.workouts)
+            || !Array.isArray(data.weights)) throw new Error('Invalid account');
+      }
 
-      const confirmed = confirm('استعادة هذي النسخة الاحتياطية سيستبدل كل بياناتك الحالية بالكامل. متابعة؟');
-      if (!confirmed) return;
-
-      appState = backup.data;
-      saveCurrentUserData();
-      updateDashboard();
-      renderBackupStatus();
-      showToast('تم استعادة النسخة الاحتياطية بنجاح ✅', 'success');
+      const db = loadUsersDB();
+      if (!db) return;
+      const restoredNames = [];
+      for (const [name, data] of entries) {
+        let restoredName = name;
+        let suffix = 1;
+        while (Object.prototype.hasOwnProperty.call(db, restoredName)) {
+          restoredName = `${name} (مستورد ${suffix++})`;
+        }
+        db[restoredName] = data;
+        restoredNames.push(restoredName);
+      }
+      // One atomic write: current account stays untouched even if quota is exceeded.
+      localStorage.setItem('healthAppUsers', JSON.stringify(db));
+      if (!currentUsername) {
+        showScreen('login-screen');
+        renderLocalProfiles();
+        document.getElementById('username').value = restoredNames[0];
+      }
+      showToast(`استُعيدت نسخة باسم «${restoredNames[0]}». ${currentUsername ? 'يمكن فتحها من تبديل الملف الشخصي.' : 'اضغط «افتح ملفي».'}`, 'success');
     } catch (err) {
-      showToast('تعذر استيراد الملف — تأكد إنه نسخة احتياطية صحيحة من نفس التطبيق', 'warning');
+      showToast('تعذرت الاستعادة. تأكد من صحة الملف ومساحة المتصفح؛ بياناتك الحالية لم تتغير.', 'warning');
     }
   };
+  reader.onerror = () => showToast('تعذر فتح ملف النسخة الاحتياطية؛ بياناتك الحالية لم تتغير.', 'warning');
   reader.readAsText(file);
-  event.target.value = '';
 }
 
 function renderBackupStatus() {
@@ -3637,20 +3719,20 @@ function renderBackupStatus() {
   if (!container) return;
 
   if (!appState.lastBackupDate) {
-    container.innerHTML = '<div class="message-box" style="border-right-color: var(--accent-amber);">⚠️ ما أخذت أي نسخة احتياطية بعد</div>';
+    container.innerHTML = '<div class="message-box" style="border-right-color: var(--accent-amber);">بعد التصدير، تحقق بنفسك من وجود ملف النسخة في «الملفات».</div>';
     return;
   }
 
   const daysSince = Math.floor((new Date(todayStr()) - new Date(appState.lastBackupDate)) / (1000 * 60 * 60 * 24));
   const label = daysSince === 0 ? 'اليوم' : daysSince === 1 ? 'قبل يوم' : `قبل ${daysSince} أيام`;
   const color = daysSince >= 7 ? 'var(--accent-coral)' : 'var(--accent-emerald)';
-  container.innerHTML = `<div class="message-box" style="border-right-color: ${color};">آخر نسخة احتياطية: ${label} (${appState.lastBackupDate})</div>`;
+  container.innerHTML = `<div class="message-box" style="border-right-color: ${color};">آخر تاريخ مسجل لطلب نسخة: ${label}. تحقق من وجود الملف في «الملفات».</div>`;
 }
 
 // يظهر تذكير لطيف بأعلى لوحة التحكم عند دخول يوم جديد لم تُؤخذ فيه نسخة احتياطية بعد
 function checkAndShowBackupReminder() {
   const today = todayStr();
-  if (appState.lastBackupDate === today) return; // أخذ نسخة اليوم أصلاً
+  if (appState.lastBackupDate === today || localStorage.getItem('healthAppBackupReminderDate') === today) return;
 
   const banner = document.getElementById('backup-reminder-banner');
   if (!banner) return;
@@ -3663,6 +3745,7 @@ function hideBackupReminderBanner() {
 }
 
 function dismissBackupReminder() {
+  localStorage.setItem('healthAppBackupReminderDate', todayStr());
   hideBackupReminderBanner();
 }
 

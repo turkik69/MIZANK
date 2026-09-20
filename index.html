@@ -2,21 +2,20 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<!-- تثبيت الشاشة وحظر الزووم تماماً -->
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<meta name="theme-color" content="#0d2330">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#f5f4ee">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="ميزانك">
 
-<link rel="manifest" href="./manifest.webmanifest">
-<link rel="icon" type="image/svg+xml" href="./icon.svg">
-<link rel="apple-touch-icon" href="./icon-192.png">
-<title>ميزانك | صحتك كل يوم</title>
+<link rel="manifest" href="./manifest.webmanifest?v=3">
+<link rel="icon" type="image/svg+xml" href="./icon.svg?v=3">
+<link rel="apple-touch-icon" href="./icon-192.png?v=3">
+<title>مِيزانك | مساحتك الصحية</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@500;700;800&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
 
 <!-- Chart.js for analytics -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -37,7 +36,7 @@
   --bg-card: rgba(17, 24, 48, 0.75);
   --bg-card-hover: rgba(26, 36, 70, 0.85);
   --border-glass: rgba(255, 255, 255, 0.12);
-  
+
   --accent-emerald: #10b981;
   --accent-emerald-glow: rgba(16, 185, 129, 0.35);
   --accent-coral: #f43f5e;
@@ -66,7 +65,7 @@ html, body {
 body {
   display: flex; flex-direction: column;
   position: relative;
-  background: 
+  background:
     radial-gradient(circle at 15% 15%, rgba(16, 185, 129, 0.15) 0%, transparent 40%),
     radial-gradient(circle at 85% 30%, rgba(244, 63, 94, 0.12) 0%, transparent 45%),
     radial-gradient(circle at 50% 85%, rgba(6, 182, 212, 0.15) 0%, transparent 50%),
@@ -312,6 +311,7 @@ body { background: radial-gradient(circle at 85% -5%,rgba(74,215,188,.11),transp
 @media(max-width:390px){ .screen{padding:12px}.quick-actions button{font-size:11px}.macro-item{padding:8px}.daily-hero-number strong{font-size:39px} }
 
 </style>
+<link rel="stylesheet" href="./identity.css?v=3">
 </head>
 <body>
 
@@ -330,35 +330,26 @@ body { background: radial-gradient(circle at 85% -5%,rgba(74,215,188,.11),transp
 
 <div class="main-container">
 
-  <!-- LOGIN SCREEN -->
-  <div id="login-screen" class="screen active">
-    <div style="max-width: 440px; margin: 40px auto 0; text-align: center;">
-      <div class="glass-card" style="padding: 40px 25px;">
-        <div style="width: 80px; height: 80px; margin: 0 auto 15px; border-radius: 24px; background: rgba(16, 185, 129, 0.1); border: 2px solid var(--accent-emerald); display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 30px var(--accent-emerald-glow);">
-          <svg width="48" height="48" viewBox="0 0 512 512">
-            <rect x="70" y="70" width="372" height="372" rx="70" fill="#1b3540" stroke="#4ad7bc" stroke-width="22"/>
-            <rect x="150" y="115" width="212" height="80" rx="20" fill="#0d2330" stroke="#4ad7bc" stroke-width="10"/>
-            <circle cx="180" cy="155" r="8" fill="#10b981"/>
-            <path d="M210 155h90" stroke="#4ad7bc" stroke-width="14" stroke-linecap="round" stroke-dasharray="15 10"/>
-            <path d="M150 360 a130 130 0 0 1 212 0" fill="none" stroke="#9fc8ef" stroke-width="24" stroke-linecap="round"/>
-            <path d="M256 360 l45 -70" stroke="#f5aa76" stroke-width="16" stroke-linecap="round"/>
-            <circle cx="256" cy="360" r="22" fill="#f5aa76"/>
-          </svg>
-        </div>
-        <div class="eyebrow">رفيقك الصحي الشخصي</div>
-        <h1 class="brand-title">ميزانك<span>.</span></h1>
-        <p style="color: var(--text-secondary); font-size: 13px; margin-bottom: 25px;">سجل يومك، افهم تقدمك، وواصل بخطوات تناسبك.</p>
-        
-        <div class="form-group">
-          <label class="form-label">اسم ملفك على هذا الهاتف</label>
-          <input type="text" id="username" class="form-input" placeholder="مثال: الكابتن أحمد" onkeypress="if(event.key==='Enter') handleLogin()">
-        </div>
-        <button class="btn btn-primary" onclick="handleLogin()">افتح ملفي</button>
-        <button class="text-action" onclick="startNewProfile()">إنشاء ملف جديد على هذا الهاتف</button>
+  <!-- Welcome / local profile selection -->
+  <div id="login-screen" class="screen active welcome-screen">
+    <div class="welcome-grid">
+      <div class="welcome-art">
+        <div class="welcome-top"><span class="brand-symbol">م</span><span>مِيزانك <i>●</i></span></div>
+        <div class="welcome-art-center"><span class="art-orbit orbit-one"></span><span class="art-orbit orbit-two"></span><span class="art-core">كل يوم<br><b>يُحسب.</b></span></div>
+        <div class="welcome-art-foot">صحتك، بطريقتك.</div>
+      </div>
+      <div class="welcome-panel">
+        <div class="section-kicker">مساحتك الشخصية</div>
+        <h1>تقدّمك يبدأ<br><em>من يومك.</em></h1>
+        <p>وجباتك، حركتك، ماءك ووزنك في مكان واحد. واضح وبسيط، وموجود على هاتفك.</p>
         <div id="local-profiles" class="local-profiles"></div>
-        <p class="privacy-note">بياناتك تبقى على هذا الجهاز. لا يلزم حساب أو كلمة مرور.</p>
-        <button class="text-action" onclick="triggerImportBackup()">لدي نسخة سابقة — استعادتها</button>
+        <div class="welcome-divider"><span>افتح ملفك أو أنشئ ملفًا جديدًا</span></div>
+        <div class="form-group"><label class="form-label" for="username">اسم الملف على هذا الهاتف</label><input type="text" id="username" class="form-input" placeholder="اكتب اسم ملفك" onkeypress="if(event.key==='Enter') handleLogin()"></div>
+        <button class="btn btn-primary" onclick="handleLogin()">افتح ملفي <span aria-hidden="true">←</span></button>
+        <button class="text-action" onclick="startNewProfile()">إنشاء ملف جديد</button>
+        <div class="restore-inline"><span>لديك نسخة من ميزانك القديم؟</span><button onclick="triggerImportBackup()">استعد بياناتك</button></div>
         <input type="file" id="login-backup-import-input" accept="application/json,.json" hidden onchange="handleImportBackup(event)">
+        <p class="welcome-privacy">سجلاتك محفوظة على هذا الجهاز، ويمكنك تصديرها وقتما تشاء.</p>
       </div>
     </div>
   </div>
@@ -367,15 +358,15 @@ body { background: radial-gradient(circle at 85% -5%,rgba(74,215,188,.11),transp
   <div id="setup-screen" class="screen">
     <div class="glass-card" style="max-width:580px; margin:0 auto;">
       <div style="text-align:center; margin-bottom:20px;">
-        <h1 class="screen-title" style="justify-content: center;">📝 بيانات ملفك الشخصي</h1>
-        <p class="screen-subtitle">حساب الاحتياجات وفق المعادلات العلمية</p>
+        <div class="section-kicker">الخطوة الأولى</div><h1 class="screen-title" style="justify-content: center;">لنضبط ميزانك لك</h1>
+        <p class="screen-subtitle">اختر هدفك وبياناتك لتظهر لوحة يوم تناسبك</p>
       </div>
 
       <div class="form-group">
         <label class="form-label">الاسم الكامل</label>
         <input type="text" id="setup-name" class="form-input" placeholder="اسمك الكريم">
       </div>
-      
+
       <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
         <div class="form-group">
           <label class="form-label">العمر (سنة)</label>
@@ -429,62 +420,21 @@ body { background: radial-gradient(circle at 85% -5%,rgba(74,215,188,.11),transp
     </div>
   </div>
 
-  <!-- DASHBOARD SCREEN -->
-  <div id="dashboard-screen" class="screen">
-    <div class="screen-header">
-      <div>
-        <div class="screen-title" id="user-welcome">مرحباً بك 👋</div>
-        <div class="screen-subtitle" id="dashboard-date">نظرة واضحة على يومك</div>
-      </div>
-      <button class="avatar-btn" aria-label="افتح ملفي" onclick="switchScreen('settings')">◉</button>
+  <!-- TODAY: an overview rather than a list of reports -->
+  <div id="dashboard-screen" class="screen today-screen">
+    <div class="today-topline"><div><div class="section-kicker">مساحة يومك</div><div class="screen-title" id="user-welcome">مرحباً بك</div><div class="screen-subtitle" id="dashboard-date">اليوم</div></div><button class="profile-trigger" aria-label="افتح ملفي" onclick="switchScreen('settings')"><span>م</span></button></div>
+    <div id="backup-reminder-banner" class="backup-ribbon" style="display:none"><span>احتفظ بنسخة من بياناتك اليوم.</span><button onclick="exportBackup()">احفظ نسخة</button><button onclick="dismissBackupReminder()" aria-label="إغلاق التذكير">✕</button></div>
+    <div class="today-hero">
+      <div class="hero-copy"><div class="hero-eyebrow">هدف التغذية اليومي</div><div class="hero-main"><strong id="daily-remaining">0</strong><span id="daily-remaining-label">سعرة متبقية من هدفك</span></div><div class="hero-sub">المسجل <b id="dashboard-consumed">0</b> من <b id="dashboard-calories">0</b> سعرة</div><div class="hero-action-row"><button onclick="switchScreen('meals');setMealMode('text')">＋ أضف وجبة</button><button onclick="switchScreen('water')">سجّل الماء</button></div></div>
+      <div class="hero-gauge" id="hero-gauge"><div class="hero-gauge-core"><span id="daily-goal-percent">0%</span><small>من الهدف</small></div></div>
+      <div class="progress-track" aria-hidden="true"><div id="daily-calorie-progress" class="progress-fill"></div></div>
     </div>
-
-    <div id="backup-reminder-banner" style="display:none; align-items:center; justify-content:space-between; gap:10px; background:rgba(245,158,11,0.15); border:1px solid var(--accent-amber); border-radius:12px; padding:12px 16px; margin-bottom:16px;">
-      <span style="font-size:12px; color:#fff;">💾 يوم جديد بدأ — خذ نسخة احتياطية من بياناتك؟</span>
-      <div style="display:flex; gap:8px; flex-shrink:0;">
-        <button class="icon-btn" style="background:var(--accent-amber); color:#1a1200; font-weight:800; border:none; padding:6px 12px; font-size:11px;" onclick="exportBackup()">خذها الآن</button>
-        <button class="icon-btn" style="background:rgba(255,255,255,0.1); color:#fff; border:none; padding:6px 10px; font-size:11px;" onclick="dismissBackupReminder()">لاحقاً</button>
-      </div>
+    <div class="today-section-label"><h2>مؤشراتك</h2><span>لمحة سريعة</span></div>
+    <div class="dashboard-grid bento-grid">
+      <button class="metric-card metric-weight" onclick="switchScreen('water')"><span class="metric-glyph">↗</span><span class="metric-caption">الوزن الحالي</span><strong class="metric-value" id="dashboard-weight">0</strong><small>الهدف <span id="dashboard-target">0</span> كغ</small></button>
+      <button class="metric-card metric-water" onclick="switchScreen('water')"><span class="metric-glyph">◉</span><span class="metric-caption">الماء اليوم</span><strong class="metric-value" id="dashboard-water">0</strong><small>من <span id="dashboard-water-target">8</span> أكواب</small></button>
+      <div class="metric-card metric-streak"><span class="metric-glyph">✦</span><span class="metric-caption">الاستمرارية</span><strong class="metric-value" id="streak-days">يوم واحد</strong><small>خطوة كل يوم</small></div>
     </div>
-
-    <div class="daily-hero glass-card">
-      <div class="daily-hero-title"><span>خطوتك اليوم</span><span id="daily-goal-percent">0%</span></div>
-      <div class="daily-hero-number"><strong id="daily-remaining">0</strong><span id="daily-remaining-label">سعرة متبقية من هدفك</span></div>
-      <div class="progress-track"><div id="daily-calorie-progress" class="progress-fill"></div></div>
-      <div class="quick-actions">
-        <button onclick="switchScreen('meals')"><span class="quick-icon">＋</span> أضف وجبة</button>
-        <button onclick="switchScreen('water')"><span class="quick-icon">◉</span> سجل الماء</button>
-        <button onclick="switchScreen('workouts')"><span class="quick-icon">↗</span> أضف نشاطاً</button>
-      </div>
-    </div>
-
-    <!-- Metric Cards -->
-    <div class="dashboard-grid">
-      <div class="metric-card">
-        <div style="font-size:11px; color:var(--text-secondary); font-weight:700;">السعرات اليومية 🔥</div>
-        <div class="metric-value" id="dashboard-calories">0</div>
-        <div style="font-size:11px; color:var(--text-muted);">المستهلك: <span id="dashboard-consumed" style="color:#fff;">0</span></div>
-      </div>
-
-      <div class="metric-card">
-        <div style="font-size:11px; color:var(--text-secondary); font-weight:700;">الوزن الحالي ⚖️</div>
-        <div class="metric-value" id="dashboard-weight">0</div>
-        <div style="font-size:11px; color:var(--text-muted);">الهدف: <span id="dashboard-target" style="color:#fff;">0</span> كغ</div>
-      </div>
-
-      <div class="metric-card">
-        <div style="font-size:11px; color:var(--text-secondary); font-weight:700;">ترطيب الجسم 💧</div>
-        <div class="metric-value" id="dashboard-water">0</div>
-        <div style="font-size:11px; color:var(--text-muted);">من <span id="dashboard-water-target" style="color:#fff;">8</span> أكواب</div>
-      </div>
-
-      <div class="metric-card">
-        <div style="font-size:11px; color:var(--text-secondary); font-weight:700;">سلسلة الالتزام 🔥</div>
-        <div class="metric-value" id="streak-days" style="color:var(--accent-amber);">1 يوم</div>
-        <div style="font-size:11px; color:var(--text-muted);">تفاعل يومي متواصل</div>
-      </div>
-    </div>
-
     <!-- Macros Card -->
     <div class="glass-card">
       <h3 style="font-size:14px; font-weight:800; color:#fff; margin-bottom:12px;">🥗 الماكروز اليومية (Macros)</h3>
@@ -622,18 +572,26 @@ body { background: radial-gradient(circle at 85% -5%,rgba(74,215,188,.11),transp
   <div id="meals-screen" class="screen">
     <div class="screen-header">
       <div>
-        <div class="screen-title">وجباتي</div>
+        <div class="section-kicker">التغذية</div><div class="screen-title">وجباتي</div>
         <div class="screen-subtitle">اكتب وجبتك أو صوّرها أو اختر من قائمتك</div>
       </div>
     </div>
 
+    <div class="meal-summary"><span>المسجل اليوم</span><strong><b id="meals-day-count">0</b> وجبة</strong><span class="meal-summary-total"><b id="meals-day-total">0</b> سعرة</span></div>
+    <div class="today-section-label"><h2>أضف وجبة</h2><span>اختر الطريقة الأنسب لك</span></div>
+    <div class="meal-mode-tabs" role="tablist" aria-label="طريقة إضافة الوجبة">
+      <button type="button" class="active" data-meal-tab="text" onclick="setMealMode('text')">✎ <span>كتابة</span></button>
+      <button type="button" data-meal-tab="photo" onclick="setMealMode('photo')">▧ <span>صورة</span></button>
+      <button type="button" data-meal-tab="voice" onclick="setMealMode('voice')">◉ <span>صوت</span></button>
+      <button type="button" data-meal-tab="barcode" onclick="setMealMode('barcode')">▥ <span>باركود</span></button>
+    </div>
     <!-- DEDICATED TEXT WRITING CARD -->
-    <div class="glass-card" style="border-color: var(--accent-emerald); background: linear-gradient(135deg, rgba(16, 185, 129, 0.12) 0%, rgba(17, 24, 48, 0.8) 100%);">
+    <div class="glass-card meal-mode-panel mode-text" data-meal-panel="text" style="border-color: var(--accent-emerald); background: linear-gradient(135deg, rgba(16, 185, 129, 0.12) 0%, rgba(17, 24, 48, 0.8) 100%);">
       <h3 style="color: var(--accent-emerald); margin-bottom: 4px; font-size:16px; font-weight:800; display:flex; align-items:center; gap:8px;">
-        ✍️ كتابة ما أكلته (إدخال نصي للوجبة)
+        اكتب ما أكلته
       </h3>
       <p style="font-size:12px; color:var(--text-secondary); margin-bottom:12px;">
-        اكتب وصف وجبتك هنا وسيقوم الذكاء الاصطناعي بحساب سعراتها ومكوناتها تلقائياً:
+        صف الوجبة والكمية التقريبية؛ راجع التقدير قبل إضافته.
       </p>
 
       <div class="form-group" style="margin-bottom:10px;">
@@ -649,10 +607,10 @@ body { background: radial-gradient(circle at 85% -5%,rgba(74,215,188,.11),transp
     </div>
 
     <!-- Voice Input Card -->
-    <div class="glass-card" style="border-color: var(--accent-emerald);">
-      <h3 style="color: var(--accent-emerald); margin-bottom: 4px; font-size:15px; font-weight:800;">🎙️ تسجيل الوجبة بالتحدث الصوتي</h3>
+    <div class="glass-card meal-mode-panel mode-voice" data-meal-panel="voice" style="border-color: var(--accent-emerald);">
+      <h3 style="color: var(--accent-emerald); margin-bottom: 4px; font-size:15px; font-weight:800;">تحدث عن وجبتك</h3>
       <p style="font-size:12px; color:var(--text-secondary); margin-bottom:12px;">انقر وتحدث بما أكلته (مثال: "أكلت توست أسمر بالبيض مع موزة وشربت قهوة أمريكية")</p>
-      
+
       <button class="btn btn-primary" id="voice-record-btn" onclick="toggleVoiceRecognition()">
         <span id="voice-btn-text">🎙️ ابدأ التسجيل الصوتي</span>
       </button>
@@ -660,10 +618,10 @@ body { background: radial-gradient(circle at 85% -5%,rgba(74,215,188,.11),transp
     </div>
 
     <!-- Barcode Scanner Card -->
-    <div class="glass-card" style="border-color: var(--accent-cyan);">
-      <h3 style="color: var(--accent-cyan); margin-bottom: 4px; font-size:15px; font-weight:800;">📲 ماسح الباركود الذكي (Barcode)</h3>
+    <div class="glass-card meal-mode-panel mode-barcode" data-meal-panel="barcode" style="border-color: var(--accent-cyan);">
+      <h3 style="color: var(--accent-cyan); margin-bottom: 4px; font-size:15px; font-weight:800;">ابحث عن المنتج</h3>
       <p style="font-size:12px; color:var(--text-secondary); margin-bottom:12px;">توجيه الكاميرا المباشرة أو التقاط صورة للباركود مباشرة</p>
-      
+
       <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:10px;">
         <button class="btn btn-cyan" onclick="startBarcodeScanner()">📹 فتح الكاميرا المباشرة</button>
         <button class="btn btn-secondary" onclick="triggerBarcodeCameraPhoto()">📸 التقاط صورة الباركود</button>
@@ -684,13 +642,21 @@ body { background: radial-gradient(circle at 85% -5%,rgba(74,215,188,.11),transp
     </div>
 
     <!-- AI Photo Card -->
-    <div class="glass-card">
-      <h3 style="color: var(--accent-emerald); margin-bottom: 4px; font-size:15px; font-weight:800;">📸 تحليل الصورة بالذكاء الاصطناعي</h3>
+    <div class="glass-card meal-mode-panel mode-photo" data-meal-panel="photo">
+      <h3 style="color: var(--accent-emerald); margin-bottom: 4px; font-size:15px; font-weight:800;">صوّر وجبتك</h3>
       <input type="file" id="meal-photo-input" accept="image/*" capture="environment" style="display:none;" onchange="handleMealPhoto(event)">
       <button class="btn btn-secondary" onclick="document.getElementById('meal-photo-input').click()">📷 التقاط صورة الوجبة</button>
       <div id="meal-photo-preview"></div>
     </div>
 
+    <div class="today-section-label"><h2>ما سجلته اليوم</h2><span>يمكنك مراجعة أي وجبة أو حذفها</span></div>
+    <!-- Today's Meals -->
+    <div class="glass-card">
+      <h3 style="color: #fff; margin-bottom: 12px; font-size:15px; font-weight:800;">سجل اليوم</h3>
+      <div id="meals-list"></div>
+    </div>
+
+    <details class="meal-library"><summary><strong>مكتبة الوجبات</strong><span>أطعمة ومشروبات للاختيار السريع ←</span></summary>
     <!-- CATEGORIZED MEALS & DRINKS & FRUITS -->
     <div class="glass-card" style="border-color: var(--accent-amber);">
       <h3 style="color: var(--accent-amber); margin-bottom: 8px; font-size:15px; font-weight:800;">💡 قائمتك المحلية: توست، صالونات، فواكه، حلويات ومشروبات</h3>
@@ -715,20 +681,15 @@ body { background: radial-gradient(circle at 85% -5%,rgba(74,215,188,.11),transp
 
       <div id="suggested-meals-container"></div>
     </div>
-
-    <!-- Today's Meals -->
-    <div class="glass-card">
-      <h3 style="color: #fff; margin-bottom: 12px; font-size:15px; font-weight:800;">📋 وجبات اليوم المسجلة</h3>
-      <div id="meals-list"></div>
-    </div>
+    </details>
   </div>
 
   <!-- FASTING TRACKER SCREEN -->
   <div id="fasting-screen" class="screen">
     <div class="screen-header">
       <div>
-        <div class="screen-title">مؤقت الصيام المتقطع ⏱️</div>
-        <div class="screen-subtitle">تتبع ساعات الصيام وتفعيل مرحلة حرق الدهون</div>
+        <div class="section-kicker">الصيام</div><div class="screen-title">وقت لنفسك</div>
+        <div class="screen-subtitle">مؤقت واضح وسجل لكل جلسة</div>
       </div>
     </div>
 
@@ -736,7 +697,7 @@ body { background: radial-gradient(circle at 85% -5%,rgba(74,215,188,.11),transp
       <div class="form-group" style="max-width:260px; margin:0 auto 15px;">
         <label class="form-label">نظام الصيام المفضل</label>
         <select id="fasting-protocol-select" class="form-select" onchange="changeFastingProtocol()">
-          <option value="16:8">16:8 (الموصى به - 16 ساعة صيام)</option>
+          <option value="16:8">16:8 (16 ساعة صيام)</option>
           <option value="18:6">18:6 (صيام متقدم - 18 ساعة)</option>
           <option value="20:4">20:4 (نظام المحارب - 20 ساعة)</option>
           <option value="14:10">14:10 (صيام خفيف - 14 ساعة)</option>
@@ -795,39 +756,15 @@ body { background: radial-gradient(circle at 85% -5%,rgba(74,215,188,.11),transp
   <div id="workouts-screen" class="screen">
     <div class="screen-header">
       <div>
-        <div class="screen-title">حركتي ونشاطي</div>
+        <div class="section-kicker">النشاط</div><div class="screen-title">حركتي</div>
         <div class="screen-subtitle">سجل التمرين وتابع تقدمك بهدوء</div>
-      </div>
-    </div>
-
-    <!-- Ready Abs & Core Routines -->
-    <div class="glass-card" style="border-color: var(--accent-coral);">
-      <h3 style="color: var(--accent-coral); margin-bottom: 8px; font-size:15px; font-weight:800;">🔥 برامج تمارين المعدة والبطن الموصى بها</h3>
-      <p style="font-size:12px; color:var(--text-secondary); margin-bottom:12px;">مجموعات تمارين محسوبة الجولات والعدات لنحت وتقوية البطن:</p>
-      
-      <div class="food-item">
-        <div class="food-info">
-          <div style="font-weight:800; font-size:14px; color:#fff;">🧘‍♂️ برنامج نحت البطن الشامل</div>
-          <div style="font-size:11px; color:var(--text-secondary);">3 جولات Crunches (15 عدة) + رفع الأرجل (12 عدة) + بلانك (45 ثانية)</div>
-          <div style="font-size:11px; color:var(--accent-coral); margin-top:2px;">⏱️ ~20 دقيقة | 🔥 ~180 سعرة محروقة</div>
-        </div>
-        <button class="icon-btn" style="background:var(--accent-coral); color:#fff; border:none;" onclick="addPresetWorkoutLog('برنامج نحت البطن الشامل', 20, 180, '3 جولات معدة + أرجل + بلانك')">➕ تسجيل</button>
-      </div>
-
-      <div class="food-item">
-        <div class="food-info">
-          <div style="font-weight:800; font-size:14px; color:#fff;">🪢 تحدي نط الحبل السريع</div>
-          <div style="font-size:11px; color:var(--text-secondary);">500 قفزة حبل (مقسمة على 5 مجموعات × 100 عدة)</div>
-          <div style="font-size:11px; color:var(--accent-coral); margin-top:2px;">⏱️ ~15 دقيقة | 🔥 ~200 سعرة محروقة</div>
-        </div>
-        <button class="icon-btn" style="background:var(--accent-coral); color:#fff; border:none;" onclick="addPresetWorkoutLog('تحدي 500 نط حبل', 15, 200, '500 قفزة حبل')">➕ تسجيل</button>
       </div>
     </div>
 
     <!-- Manual Workout Log Card -->
     <div class="glass-card">
       <h3 style="color: var(--accent-emerald); margin-bottom: 12px; font-size:15px; font-weight:800;">➕ إضافة نشاط أو تمرين مخصص</h3>
-      
+
       <div class="form-group">
         <label class="form-label">نوع التمرين</label>
         <select id="workout-type" class="form-select" onchange="updateWorkoutCalRate()">
@@ -895,6 +832,33 @@ body { background: radial-gradient(circle at 85% -5%,rgba(74,215,188,.11),transp
       <h3 style="color: #fff; margin-bottom: 12px; font-size:15px; font-weight:800;">🔥 تمارين اليوم المسجلة</h3>
       <div id="workouts-list"></div>
     </div>
+
+    <details class="routine-library"><summary><strong>برامج جاهزة</strong><span>اقتراحات تدريب قابلة للإضافة ←</span></summary>
+    <!-- Ready Abs & Core Routines -->
+    <div class="glass-card" style="border-color: var(--accent-coral);">
+      <h3 style="color: var(--accent-coral); margin-bottom: 8px; font-size:15px; font-weight:800;">🔥 برامج تمارين المعدة والبطن الموصى بها</h3>
+      <p style="font-size:12px; color:var(--text-secondary); margin-bottom:12px;">مجموعات تمارين محسوبة الجولات والعدات لنحت وتقوية البطن:</p>
+
+      <div class="food-item">
+        <div class="food-info">
+          <div style="font-weight:800; font-size:14px; color:#fff;">🧘‍♂️ برنامج نحت البطن الشامل</div>
+          <div style="font-size:11px; color:var(--text-secondary);">3 جولات Crunches (15 عدة) + رفع الأرجل (12 عدة) + بلانك (45 ثانية)</div>
+          <div style="font-size:11px; color:var(--accent-coral); margin-top:2px;">⏱️ ~20 دقيقة | 🔥 ~180 سعرة محروقة</div>
+        </div>
+        <button class="icon-btn" style="background:var(--accent-coral); color:#fff; border:none;" onclick="addPresetWorkoutLog('برنامج نحت البطن الشامل', 20, 180, '3 جولات معدة + أرجل + بلانك')">➕ تسجيل</button>
+      </div>
+
+      <div class="food-item">
+        <div class="food-info">
+          <div style="font-weight:800; font-size:14px; color:#fff;">🪢 تحدي نط الحبل السريع</div>
+          <div style="font-size:11px; color:var(--text-secondary);">500 قفزة حبل (مقسمة على 5 مجموعات × 100 عدة)</div>
+          <div style="font-size:11px; color:var(--accent-coral); margin-top:2px;">⏱️ ~15 دقيقة | 🔥 ~200 سعرة محروقة</div>
+        </div>
+        <button class="icon-btn" style="background:var(--accent-coral); color:#fff; border:none;" onclick="addPresetWorkoutLog('تحدي 500 نط حبل', 15, 200, '500 قفزة حبل')">➕ تسجيل</button>
+      </div>
+    </div>
+
+    </details>
   </div>
 
   <!-- WATER & WEIGHT SCREEN -->
@@ -955,15 +919,36 @@ body { background: radial-gradient(circle at 85% -5%,rgba(74,215,188,.11),transp
   <div id="settings-screen" class="screen">
     <div class="screen-header">
       <div>
-        <div class="screen-title">الإعدادات والتنبيهات ⚙️🔔</div>
-        <div class="screen-subtitle">إدارة الإشعارات ومفاتيح الذكاء الاصطناعي</div>
+        <div class="section-kicker">مساحتك الشخصية</div><div class="screen-title">ملفي وبياناتي</div>
+        <div class="screen-subtitle">أهدافك، خصوصيتك، ونسختك الاحتياطية في مكان واحد</div>
       </div>
+    </div>
+
+    <div class="glass-card profile-card">
+      <div class="section-kicker">حساب هذا الهاتف</div><h3 style="color: #fff; margin-bottom: 12px; font-size:15px; font-weight:800;">ملفي الشخصي</h3>
+      <div id="profile-info"></div>
+      <div style="display:flex; flex-direction:column; gap:10px; margin-top:15px;">
+        <button class="btn btn-secondary" onclick="editProfile()">✏️ تعديل بيانات الحساب</button>
+        <button class="btn btn-coral" onclick="logout()">تبديل الملف على هذا الهاتف</button>
+
+      </div>
+    </div>
+
+    <div class="glass-card backup-card">
+      <div class="section-kicker">سجلاتك في يدك</div><h3 style="color: var(--accent-emerald); margin-bottom: 4px; font-size:15px; font-weight:800;">النسخة الاحتياطية</h3>
+      <p style="font-size:11px; color:var(--text-muted); margin-bottom:12px;">بياناتك محفوظة بمتصفح هذا الجهاز فقط. التصدير يشمل جميع حسابات ميزانك في هذا المتصفح؛ تأكد من حفظ الملف في تطبيق الملفات أو iCloud. الاستعادة تُضيف حساباً منفصلاً ولا تمس السجلات الحالية.</p>
+      <div id="backup-status-display" style="margin-bottom:12px;"></div>
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+        <button class="btn btn-primary" onclick="exportBackup()">📤 تصدير نسخة احتياطية</button>
+        <button class="btn btn-secondary" onclick="triggerImportBackup()">📥 استعادة من نسخة</button>
+      </div>
+      <input type="file" id="backup-import-input" accept="application/json,.json" style="display:none;" onchange="handleImportBackup(event)">
     </div>
 
     <div class="glass-card" style="border-color: var(--accent-purple);">
       <h3 style="color: var(--accent-purple); margin-bottom: 8px; font-size:15px; font-weight:800;">🔔 نظام التذكيرات والإشعارات الذكية</h3>
       <p style="font-size:12px; color:var(--text-secondary); margin-bottom:14px;">تذكيرات الماء والوجبات تعمل أثناء فتح التطبيق فقط. لا تصل تنبيهات عند إغلاقه.</p>
-      
+
       <div class="form-group">
         <label class="form-label">تكرار تذكير شرب الماء</label>
         <select id="water-reminder-interval-select" class="form-select" onchange="updateReminderPreferences()">
@@ -999,36 +984,17 @@ body { background: radial-gradient(circle at 85% -5%,rgba(74,215,188,.11),transp
       </div>
     </div>
 
-    <div class="glass-card">
-      <h3 style="color: var(--accent-emerald); margin-bottom: 4px; font-size:15px; font-weight:800;">💾 نسختي الاحتياطية</h3>
-      <p style="font-size:11px; color:var(--text-muted); margin-bottom:12px;">بياناتك محفوظة بمتصفح هذا الجهاز فقط. التصدير يشمل جميع حسابات ميزانك في هذا المتصفح؛ تأكد من حفظ الملف في تطبيق الملفات أو iCloud. الاستعادة تُضيف حساباً منفصلاً ولا تمس السجلات الحالية.</p>
-      <div id="backup-status-display" style="margin-bottom:12px;"></div>
-      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
-        <button class="btn btn-primary" onclick="exportBackup()">📤 تصدير نسخة احتياطية</button>
-        <button class="btn btn-secondary" onclick="triggerImportBackup()">📥 استعادة من نسخة</button>
-      </div>
-      <input type="file" id="backup-import-input" accept="application/json,.json" style="display:none;" onchange="handleImportBackup(event)">
-    </div>
 
-    <div class="glass-card">
-      <h3 style="color: #fff; margin-bottom: 12px; font-size:15px; font-weight:800;">👤 الملف الشخصي</h3>
-      <div id="profile-info"></div>
-      <div style="display:flex; flex-direction:column; gap:10px; margin-top:15px;">
-        <button class="btn btn-secondary" onclick="editProfile()">✏️ تعديل بيانات الحساب</button>
-        <button class="btn btn-coral" onclick="logout()">تبديل الملف على هذا الهاتف</button>
-
-      </div>
-    </div>
   </div>
 
   <div id="more-screen" class="screen">
-    <div class="screen-header"><div><div class="eyebrow">كل أدواتك في مكان واحد</div><div class="screen-title">المزيد</div><div class="screen-subtitle">ماء، مساعد، إعدادات وبياناتك</div></div></div>
+    <div class="screen-header"><div><div class="eyebrow">مساحتك الخاصة</div><div class="screen-title">المزيد</div><div class="screen-subtitle">تفاصيلك وبياناتك وأدواتك</div></div></div>
     <div class="more-list">
       <button onclick="switchScreen('water')"><span class="more-icon water">◉</span><span><strong>الماء والترطيب</strong><small>تابع أكوابك اليومية</small></span><b>‹</b></button>
       <button onclick="switchScreen('chat')"><span class="more-icon ai">✧</span><span><strong>المساعد الذكي</strong><small>اسأل عن يومك ووجباتك</small></span><b>‹</b></button>
       <button onclick="switchScreen('settings')"><span class="more-icon settings">⚙</span><span><strong>ملفي والإعدادات</strong><small>الأهداف والنسخة الاحتياطية</small></span><b>‹</b></button>
     </div>
-    <div class="glass-card privacy-card"><strong>بياناتك ملكك</strong><p>تبقى السجلات على هاتفك. التحليل الذكي يرسل فقط ما تختار تحليله إلى خدمة Gemini عند تفعيل المفتاح.</p></div>
+    <div class="glass-card privacy-card"><strong>خصوصيتك أولًا</strong><p>تبقى السجلات على هاتفك. التحليل الذكي يرسل فقط ما تختار تحليله إلى خدمة Gemini عند تفعيل المفتاح.</p></div>
   </div>
 </div>
 
@@ -1041,27 +1007,6 @@ body { background: radial-gradient(circle at 85% -5%,rgba(74,215,188,.11),transp
 </div>
 
 <script>
-// ============ STRICT ZOOM PREVENTION ============
-document.addEventListener('gesturestart', e => e.preventDefault(), { passive: false });
-document.addEventListener('gesturechange', e => e.preventDefault(), { passive: false });
-document.addEventListener('gestureend', e => e.preventDefault(), { passive: false });
-
-document.addEventListener('touchstart', e => {
-  if (e.touches.length > 1) e.preventDefault();
-}, { passive: false });
-
-let lastTouchEnd = 0;
-document.addEventListener('touchend', e => {
-  const now = Date.now();
-  if (now - lastTouchEnd <= 300) {
-    const t = e.target;
-    if (t.tagName !== 'INPUT' && t.tagName !== 'TEXTAREA' && t.tagName !== 'SELECT') {
-      e.preventDefault();
-    }
-  }
-  lastTouchEnd = now;
-}, { passive: false });
-
 // Local reminders run while the app is open; there is no push server.
 
 // ============ GEMINI API CORE WITH EXPONENTIAL BACKOFF ============
@@ -1752,6 +1697,15 @@ function completeSetup() {
   showToast('تم إعداد حسابك بنجاح! 🚀', 'success');
 }
 
+function setMealMode(mode = 'text') {
+  document.querySelectorAll('[data-meal-panel]').forEach(panel => panel.classList.toggle('active', panel.dataset.mealPanel === mode));
+  document.querySelectorAll('[data-meal-tab]').forEach(tab => {
+    const active = tab.dataset.mealTab === mode;
+    tab.classList.toggle('active', active);
+    tab.setAttribute('aria-selected', String(active));
+  });
+}
+
 function switchScreen(screenName, navElement) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -1764,7 +1718,7 @@ function switchScreen(screenName, navElement) {
   document.querySelector('.main-container').scrollTop = 0;
 
   if (screenName === 'dashboard') { updateDashboard(); updateChartData(); }
-  if (screenName === 'meals') { updateMealsList(); renderSuggestedMeals(); }
+  if (screenName === 'meals') { updateMealsList(); renderSuggestedMeals(); setMealMode(document.querySelector('[data-meal-tab].active')?.dataset.mealTab || 'text'); }
   if (screenName === 'fasting') renderFastingHistory();
   if (screenName === 'workouts') updateWorkoutsList();
   if (screenName === 'water') updateWaterScreen();
@@ -1803,8 +1757,9 @@ function updateDashboard() {
   const percent = p.dailyCalories > 0 ? Math.min(100, Math.round(consumedCals / p.dailyCalories * 100)) : 0;
   document.getElementById('daily-remaining').textContent = Math.abs(remaining);
   document.getElementById('daily-remaining-label').textContent = remaining < 0 ? 'سعرة فوق هدفك' : 'سعرة متبقية من هدفك';
-  document.getElementById('daily-goal-percent').textContent = `${percent}% من الهدف`;
+  document.getElementById('daily-goal-percent').textContent = `${percent}%`;
   document.getElementById('daily-calorie-progress').style.width = `${percent}%`;
+  document.getElementById('hero-gauge').style.setProperty('--gauge-angle', `${percent * 3.6}deg`);
   const streak = appState.streak || 1;
   document.getElementById('streak-days').textContent = streak === 1 ? 'يوم واحد' : streak === 2 ? 'يومان' : `${streak} أيام`;
   document.getElementById('dashboard-calories').textContent = p.dailyCalories;
@@ -2297,6 +2252,11 @@ function renderMetabolismTip() {
   );
 
   let tip;
+  const countEl = document.getElementById('meals-day-count');
+  const totalEl = document.getElementById('meals-day-total');
+  if (countEl) countEl.textContent = todaysMeals.length;
+  if (totalEl) totalEl.textContent = Math.round(todaysMeals.reduce((sum, meal) => sum + Number(meal.cal || 0), 0));
+
   if (todaysMeals.length === 0) {
     tip = { color: 'var(--accent-cyan)', text: '📋 لسا ما سجّلت وجبات اليوم — بروتينك بأول وجبة يبدأ يفعّل التأثير الحراري لهضم الطعام مبكراً' };
   } else if (protein >= proteinTarget * 0.8) {
@@ -2419,8 +2379,8 @@ function initChart() {
       datasets: [{
         label: 'تتبع الوزن (كغ)',
         data: weightValues.length ? weightValues : [appState.profile?.currentWeight || 70],
-        borderColor: '#10b981',
-        backgroundColor: 'rgba(16, 185, 129, 0.15)',
+        borderColor: '#257f64',
+        backgroundColor: 'rgba(147, 194, 116, 0.16)',
         fill: true,
         tension: 0.35,
         pointRadius: 5
@@ -2429,10 +2389,10 @@ function initChart() {
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      plugins: { legend: { labels: { color: '#94a3b8', font: { family: 'Tajawal' } } } },
+      plugins: { legend: { labels: { color: '#536761', font: { family: 'IBM Plex Sans Arabic' } } } },
       scales: {
-        x: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(255,255,255,0.05)' } },
-        y: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(255,255,255,0.05)' } }
+        x: { ticks: { color: '#667a70' }, grid: { color: '#e7eee5' } },
+        y: { ticks: { color: '#667a70' }, grid: { color: '#e7eee5' } }
       }
     }
   });
@@ -2569,7 +2529,7 @@ function toggleVoiceRecognition() {
   }
 
   const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
-  
+
   if (speechRecognition) {
     speechRecognition.stop();
     speechRecognition = null;
@@ -3527,7 +3487,7 @@ function shareProgressModal() {
   const p = appState.profile;
   if (!p) return;
   const currW = appState.weights[appState.weights.length - 1]?.weight || p.currentWeight;
-  
+
   const text = `🎯 ملخص إنجازاتي مع ميزانك:\n` +
     `👤 المستخدم: ${p.name}\n` +
     `⚖️ الوزن الحالي: ${currW} كغ (الهدف: ${p.targetWeight} كغ)\n` +
@@ -3546,11 +3506,12 @@ function updateProfileUI() {
   const p = appState.profile;
   if (!p) return;
   document.getElementById('profile-info').innerHTML = `
-    <div class="message-box">
-      <strong>الاسم:</strong> ${escapeHtml(p.name)}<br>
-      <strong>العمر:</strong> ${p.age} سنة | <strong>الجنس:</strong> ${p.gender === 'male' ? 'ذكر' : 'أنثى'}<br>
-      <strong>الطول:</strong> ${p.height}سم | <strong>الوزن الحالي:</strong> ${appState.weights?.at(-1)?.weight ?? p.currentWeight}كغ<br>
-      <strong>السعرات المستهدفة:</strong> ${p.dailyCalories} سعرة حرارية
+    <div class="profile-overview"><span class="profile-avatar">${escapeHtml((p.name || currentUsername || 'م').trim().charAt(0))}</span><span><strong>${escapeHtml(p.name || currentUsername)}</strong><small>ملفك المحلي على هذا الهاتف</small></span></div>
+    <div class="profile-facts">
+      <div><small>الوزن الحالي</small><strong>${appState.weights?.at(-1)?.weight ?? p.currentWeight} كغ</strong></div>
+      <div><small>هدفي اليومي</small><strong>${p.dailyCalories} سعرة</strong></div>
+      <div><small>الطول</small><strong>${p.height} سم</strong></div>
+      <div><small>العمر</small><strong>${p.age} سنة</strong></div>
     </div>
   `;
 

@@ -435,6 +435,8 @@ body { background: radial-gradient(circle at 85% -5%,rgba(74,215,188,.11),transp
       <button class="metric-card metric-water" onclick="switchScreen('water')"><span class="metric-glyph">◉</span><span class="metric-caption">الماء اليوم</span><strong class="metric-value" id="dashboard-water">0</strong><small>من <span id="dashboard-water-target">8</span> أكواب</small></button>
       <div class="metric-card metric-streak"><span class="metric-glyph">✦</span><span class="metric-caption">الاستمرارية</span><strong class="metric-value" id="streak-days">يوم واحد</strong><small>خطوة كل يوم</small></div>
     </div>
+    <div id="today-next-action" class="next-action" aria-live="polite"></div>
+    <details class="dashboard-details today-analysis"><summary><strong>تفاصيل التغذية اليوم</strong><span>السعرات والمغذيات والتوصيات ←</span></summary>
     <!-- Macros Card -->
     <div class="glass-card">
       <h3 style="font-size:14px; font-weight:800; color:#fff; margin-bottom:12px;">🥗 الماكروز اليومية (Macros)</h3>
@@ -481,6 +483,7 @@ body { background: radial-gradient(circle at 85% -5%,rgba(74,215,188,.11),transp
       <p style="font-size:11px; color:var(--text-secondary); margin-bottom:12px;">لحظية ليومك الحالي — تتحدث فوراً مع كل وجبة تسجّلها</p>
       <div id="smart-insights-display"></div>
     </div>
+    </details>
 
     <details class="dashboard-details"><summary>التقارير والتقدم <span>الوزن، المقارنات والأرشيف</span></summary>
     <!-- Yesterday vs Today Comparison -->
@@ -599,7 +602,7 @@ body { background: radial-gradient(circle at 85% -5%,rgba(74,215,188,.11),transp
       </div>
 
       <div style="display:grid; grid-template-columns: 2fr 1fr; gap:10px;">
-        <button class="btn btn-primary" onclick="handleMealText()">🤖 تحليل التغذية بالذكاء الاصطناعي</button>
+        <button class="btn btn-primary" onclick="handleMealText()">ابحث وقدّر من مكتبتي</button>
         <button class="btn btn-secondary" onclick="openManualMealModal()">➕ إدخال سريع</button>
       </div>
 
@@ -644,6 +647,7 @@ body { background: radial-gradient(circle at 85% -5%,rgba(74,215,188,.11),transp
     <!-- AI Photo Card -->
     <div class="glass-card meal-mode-panel mode-photo" data-meal-panel="photo">
       <h3 style="color: var(--accent-emerald); margin-bottom: 4px; font-size:15px; font-weight:800;">صوّر وجبتك</h3>
+      <p>تحليل الصور يحتاج اتصال Gemini. يمكنك دائمًا إضافة الوجبة يدويًا من تبويب الكتابة.</p>
       <input type="file" id="meal-photo-input" accept="image/*" capture="environment" style="display:none;" onchange="handleMealPhoto(event)">
       <button class="btn btn-secondary" onclick="document.getElementById('meal-photo-input').click()">📷 التقاط صورة الوجبة</button>
       <div id="meal-photo-preview"></div>
@@ -901,8 +905,8 @@ body { background: radial-gradient(circle at 85% -5%,rgba(74,215,188,.11),transp
   <div id="chat-screen" class="screen">
     <div class="screen-header">
       <div>
-        <div class="screen-title">المساعد الصحي الناطق 🤖🔊</div>
-        <div class="screen-subtitle">استشر الذكاء الاصطناعي مع دعم النطق الصوتي</div>
+        <div class="section-kicker">إرشاد يومي</div><div class="screen-title">مساعد ميزانك</div>
+        <div class="screen-subtitle">اسأل عن سجلاتك وأهدافك؛ يعمل محليًا دون مفتاح. الردود التوليدية اختيارية.</div>
       </div>
       <button class="icon-btn" onclick="clearChat()">🗑️ مسح</button>
     </div>
@@ -945,7 +949,7 @@ body { background: radial-gradient(circle at 85% -5%,rgba(74,215,188,.11),transp
       <input type="file" id="backup-import-input" accept="application/json,.json" style="display:none;" onchange="handleImportBackup(event)">
     </div>
 
-    <div class="glass-card" style="border-color: var(--accent-purple);">
+    <details class="settings-optional"><summary><strong>التذكيرات أثناء فتح التطبيق</strong><span>توقيت الماء والتنبيهات ←</span></summary><div class="glass-card" style="border-color: var(--accent-purple);">
       <h3 style="color: var(--accent-purple); margin-bottom: 8px; font-size:15px; font-weight:800;">🔔 نظام التذكيرات والإشعارات الذكية</h3>
       <p style="font-size:12px; color:var(--text-secondary); margin-bottom:14px;">تذكيرات الماء والوجبات تعمل أثناء فتح التطبيق فقط. لا تصل تنبيهات عند إغلاقه.</p>
 
@@ -964,14 +968,15 @@ body { background: radial-gradient(circle at 85% -5%,rgba(74,215,188,.11),transp
         </button>
         <button class="btn btn-secondary" onclick="sendTestNotification()">⚡ تجربة إرسال إشعار فوراً</button>
       </div>
-    </div>
+    </div></details>
 
-    <div class="glass-card">
-      <h3 style="color: var(--accent-emerald); margin-bottom: 12px; font-size:15px; font-weight:800;">🔑 مفتاح Google Gemini API</h3>
+    <details class="settings-optional"><summary><strong>تحليل Gemini المتقدم</strong><span>للصور والردود التوليدية، اختياري ←</span></summary><div class="glass-card">
+      <h3 style="color: var(--accent-emerald); margin-bottom: 12px; font-size:15px; font-weight:800;">اتصال Gemini الاختياري</h3>
+      <p>مساعد اليوم والبحث في الوجبات يعملان دون مفتاح. تحتاج الصور والردود التوليدية إلى مفتاح خاص بك واتصال بالإنترنت؛ لا يمكن تضمين مفتاح سري داخل التطبيق العام.</p>
       <div class="form-group">
-        <label class="form-label">مفتاح API (مطلوب لتفعيل المساعد وتحليل الوجبات)</label>
+        <label class="form-label">مفتاح API (للصور والمحادثة التوليدية فقط)</label>
         <input type="password" id="gemini-key-input" class="form-input" placeholder="AIzaSy... أو AQ...">
-        <p style="font-size:11px; color:var(--text-muted); margin-top:5px;">أضف مفتاحك من Google AI Studio. يُحفظ على هذا الجهاز فقط، ويُستخدم عند اختيارك تحليل وجبة أو مراسلة المساعد. لا يظهر في النسخة الاحتياطية.</p>
+        <p style="font-size:11px; color:var(--text-muted); margin-top:5px;">يُحفظ مفتاحك على هذا الجهاز، ولا يدخل في النسخة الاحتياطية. عند إضافته تُرسل الصور وأسئلة المحادثة إلى Gemini؛ إزالة المفتاح تعيد الردود المحلية.</p>
       </div>
       <div class="form-group">
         <label class="form-label">نموذج Gemini (عدّله هنا لو توقف التحليل مستقبلاً)</label>
@@ -982,7 +987,7 @@ body { background: radial-gradient(circle at 85% -5%,rgba(74,215,188,.11),transp
         <button class="btn btn-primary" onclick="saveApiSettings()">💾 حفظ الإعدادات</button>
         <button class="btn btn-secondary" onclick="clearCustomApiKey()">حذف المفتاح من الهاتف</button>
       </div>
-    </div>
+    </div></details>
 
 
   </div>
@@ -991,10 +996,10 @@ body { background: radial-gradient(circle at 85% -5%,rgba(74,215,188,.11),transp
     <div class="screen-header"><div><div class="eyebrow">مساحتك الخاصة</div><div class="screen-title">المزيد</div><div class="screen-subtitle">تفاصيلك وبياناتك وأدواتك</div></div></div>
     <div class="more-list">
       <button onclick="switchScreen('water')"><span class="more-icon water">◉</span><span><strong>الماء والترطيب</strong><small>تابع أكوابك اليومية</small></span><b>‹</b></button>
-      <button onclick="switchScreen('chat')"><span class="more-icon ai">✧</span><span><strong>المساعد الذكي</strong><small>اسأل عن يومك ووجباتك</small></span><b>‹</b></button>
+      <button onclick="switchScreen('chat')"><span class="more-icon ai">✧</span><span><strong>مساعد ميزانك</strong><small>ملخص يومك دون إعداد</small></span><b>‹</b></button>
       <button onclick="switchScreen('settings')"><span class="more-icon settings">⚙</span><span><strong>ملفي والإعدادات</strong><small>الأهداف والنسخة الاحتياطية</small></span><b>‹</b></button>
     </div>
-    <div class="glass-card privacy-card"><strong>خصوصيتك أولًا</strong><p>تبقى السجلات على هاتفك. التحليل الذكي يرسل فقط ما تختار تحليله إلى خدمة Gemini عند تفعيل المفتاح.</p></div>
+    <div class="glass-card privacy-card"><strong>خصوصيتك أولًا</strong><p>سجلاتك ومساعدك الأساسي يعملان على هاتفك. عند إضافة مفتاح Gemini، تُرسل الصور والأسئلة التي تختارها إلى خدمته.</p></div>
   </div>
 </div>
 
@@ -1010,11 +1015,9 @@ body { background: radial-gradient(circle at 85% -5%,rgba(74,215,188,.11),transp
 // Local reminders run while the app is open; there is no push server.
 
 // ============ GEMINI API CORE WITH EXPONENTIAL BACKOFF ============
-const apiKey = ""; // Runtime provided key by host execution environment
-
 async function fetchGeminiWithRetry(payload) {
   const customKey = localStorage.getItem('healthAppGeminiKey');
-  const keysToTry = (customKey && customKey.trim() !== "") ? [customKey.trim(), apiKey] : [apiKey];
+  const keysToTry = customKey?.trim() ? [customKey.trim()] : [];
   const delays = [1000, 2000, 4000, 8000, 16000];
   const model = localStorage.getItem('healthAppGeminiModel') || 'gemini-3.5-flash';
 
@@ -1052,7 +1055,7 @@ async function fetchGeminiWithRetry(payload) {
   }
 
   if (!lastError) {
-    throw new Error('أضف مفتاح Google Gemini API من الإعدادات ⚙️ أولاً لتفعيل هذه الميزة.');
+    throw new Error('تحليل الصور يحتاج اتصال Gemini. افتح «ملفي وبياناتي» لإعداده، أو أضف الوجبة يدويًا.');
   }
   throw lastError;
 }
@@ -1777,6 +1780,14 @@ function updateDashboard() {
   document.getElementById('dashboard-fats-target').textContent = `/ ${p.fats} غ`;
   document.getElementById('dashboard-sugar').textContent = Math.round(sugar * 10) / 10;
   document.getElementById('dashboard-fiber').textContent = Math.round(fiber * 10) / 10;
+  const nextAction = document.getElementById('today-next-action');
+  if (nextAction) {
+    const remainingWater = Math.max(0, (Number(p.water) || 8) - (Number(appState.water) || 0));
+    const message = !todaysMeals.length ? 'ابدأ يومك بتسجيل أول وجبة، وسترى تقدمك هنا.'
+      : remainingWater ? `سجّلت ${todaysMeals.length} وجبة اليوم. بقي ${remainingWater} ${remainingWater === 1 ? 'كوب ماء' : 'أكواب ماء'} لهدف الترطيب.`
+      : 'أكملت هدف الماء اليوم. راجع وجباتك أو نشاطك متى أردت.';
+    nextAction.textContent = message;
+  }
 
   renderCalorieBalance(consumedCals);
   renderSmartInsights();
@@ -2443,17 +2454,41 @@ function confirmPendingAiMeal(source) {
 async function handleMealText() {
   const text = document.getElementById('meal-text-input').value.trim();
   if (!text) { showToast('اكتب وصف الوجبة أولاً في المربع', 'warning'); return; }
+  showLocalMealMatches(text, 'meal-text-preview', 'text');
+}
 
-  const previewDiv = document.getElementById('meal-text-preview');
-  previewDiv.innerHTML = '<div class="message-box" style="margin-top:10px;">🤖 جاري تقدير القيم الغذائية من النص بالذكاء الاصطناعي...</div>';
-
-  try {
-    const result = await analyzeMealTextGemini(text);
-
-    showAiMealPreview(result, 'meal-text-preview', '🍽️ تقدير الوجبة', 'text');
-  } catch (e) {
-    previewDiv.innerHTML = `<div class="message-box error" style="margin-top:10px;">تعذر التحليل: ${e.message}</div>`;
-  }
+const localMealMatches = Object.create(null);
+function normalizeMealSearch(value) {
+  return String(value).normalize('NFKD').replace(/[\u064B-\u065F\u0670]/g, '')
+    .replace(/[أإآ]/g, 'ا').replace(/ى/g, 'ي').replace(/ة/g, 'ه')
+    .replace(/[^\u0621-\u064A\d\s]/g, ' ').replace(/\s+/g, ' ').trim();
+}
+function showLocalMealMatches(description, targetId, source) {
+  const stop = new Set(['اكلت','عندي','صحن','طبق','حبه','كوب','من','مع','على','في','و','ال']);
+  const words = normalizeMealSearch(description).split(' ').filter(w => w.length > 2 && !stop.has(w));
+  const catalog = Object.entries(suggestedMealsData).flatMap(([category, items]) =>
+    items.map((item, index) => ({ item, category, index })));
+  (appState.customMeals || []).forEach((item, index) => catalog.push({ item, category: 'custom', index }));
+  localMealMatches[source] = catalog.filter(({ item }) => {
+    const label = normalizeMealSearch(item.name);
+    return words.some(w => label.includes(w) || label.split(' ').some(piece => piece.length > 3 && (piece.startsWith(w) || w.startsWith(piece))));
+  }).sort((a, b) => {
+    const score = x => words.reduce((n, w) => n + Number(normalizeMealSearch(x.item.name).includes(w)), 0);
+    return score(b) - score(a);
+  }).slice(0, 5);
+  const matches = localMealMatches[source];
+  const target = document.getElementById(targetId);
+  target.innerHTML = matches.length ? `
+    <div class="local-results-title">اختر أقرب وجبة من مكتبتك المحلية؛ القيم لحصة تقديرية ويمكنك تعديلها يدويًا.</div>
+    <div class="local-results">${matches.map(({ item }, idx) => `<button type="button" onclick="selectLocalMeal('${source}',${idx})"><strong>${escapeHtml(item.name)}</strong><span>${Math.round(Number(item.cal)||0)} سعرة تقريبًا</span></button>`).join('')}</div>
+    <button class="text-action" onclick="openManualMealModal()">لم تجد وجبتك؟ أدخلها يدويًا</button>` :
+    '<div class="message-box">لم أجد وجبة مطابقة في مكتبتك المحلية. أدخل قيمها من ملصق المنتج أو أضفها يدويًا.</div><button class="btn btn-secondary" onclick="openManualMealModal()">إدخال يدوي</button>';
+}
+function selectLocalMeal(source, index) {
+  const item = localMealMatches[source]?.[index]?.item;
+  if (!item) return;
+  showAiMealPreview({ name: item.name, calories: item.cal, protein: item.protein, carbs: item.carbs, fat: item.fat, sugar: item.sugar, fiber: item.fiber },
+    source === 'voice' ? 'voice-transcript-preview' : 'meal-text-preview', 'تقدير من مكتبتك', source);
 }
 
 function openManualMealModal() {
@@ -2548,14 +2583,7 @@ function toggleVoiceRecognition() {
   speechRecognition.onresult = async (event) => {
     const transcript = event.results[0][0].transcript;
     document.getElementById('voice-btn-text').textContent = '🎙️ ابدأ التسجيل الصوتي';
-    document.getElementById('voice-transcript-preview').textContent = `الصوت الملتقط: ${transcript} — جارٍ تقدير قيم الوجبة...`;
-
-    try {
-      const result = await analyzeMealTextGemini(transcript);
-      showAiMealPreview(result, 'voice-transcript-preview', '🍽️ تقدير الوجبة', 'voice');
-    } catch (e) {
-      document.getElementById('voice-transcript-preview').innerHTML = `<div class="message-box error" style="margin-top:10px;">تعذر تحليل الصوت: ${e.message}</div>`;
-    }
+    showLocalMealMatches(transcript, 'voice-transcript-preview', 'voice');
     speechRecognition = null;
   };
 
@@ -3409,7 +3437,7 @@ function renderChatHistory() {
   if (!container) return;
   container.innerHTML = '';
   if (!appState.chat || appState.chat.length === 0) {
-    renderChatMessage('assistant', 'مرحباً بك! أنا مستشارك الصحي الناطق. كيف يمكنني مساعدتك اليوم؟');
+    renderChatMessage('assistant', 'مرحبًا! أستطيع تلخيص وجباتك وماءك وهدفك محليًا دون مفتاح. اسألني عن يومك.');
   } else {
     appState.chat.forEach(m => renderChatMessage(m.role, m.content));
   }
@@ -3448,6 +3476,13 @@ async function sendChat() {
 
   renderChatMessage('user', msg);
   appState.chat.push({ role: 'user', content: msg });
+  if (!localStorage.getItem('healthAppGeminiKey')?.trim()) {
+    const reply = getLocalCoachReply(msg);
+    renderChatMessage('assistant', reply);
+    appState.chat.push({ role: 'assistant', content: reply });
+    saveCurrentUserData();
+    return;
+  }
 
   const p = appState.profile;
   const context = `أنت مستشار صحي ذكي ومحفز. بيانات المستخدم الحالية:
@@ -3473,8 +3508,27 @@ async function sendChat() {
     appState.chat.push({ role: 'assistant', content: reply });
     saveCurrentUserData();
   } catch (e) {
-    renderChatMessage('assistant', 'عذراً، تعذر الاتصال بالمساعد الذكي حالياً.');
+    const reply = `تعذر اتصال Gemini؛ إليك ملخصًا محليًا: ${getLocalCoachReply(msg)}`;
+    renderChatMessage('assistant', reply);
+    appState.chat.push({ role: 'assistant', content: reply });
+    saveCurrentUserData();
   }
+}
+
+function getLocalCoachReply(question) {
+  const query = normalizeMealSearch(question);
+  const profile = appState.profile || {};
+  const meals = getTodaysMeals();
+  const consumed = meals.reduce((sum, meal) => sum + (Number(meal.cal) || 0), 0);
+  const protein = Math.round(meals.reduce((sum, meal) => sum + (Number(meal.protein) || 0), 0));
+  const water = Number(appState.water) || 0;
+  const target = Number(profile.dailyCalories) || 0;
+  if (/ماء|شرب|ترطيب/.test(query)) return `شربت ${water} من ${profile.water || 8} أكواب اليوم. سجّل الكوب التالي من شاشة الماء عند شربه.`;
+  if (/بروتين|كارب|دهون|مغذ/.test(query)) return `المسجل من وجباتك اليوم: ${protein} غ بروتين من هدف ${profile.protein || 0} غ. افتح «تفاصيل التغذية اليوم» لبقية العناصر.`;
+  if (/وزن|هدف|تقدم/.test(query)) return `آخر وزن مسجل ${appState.weights.at(-1)?.weight ?? profile.currentWeight ?? '—'} كغ، وهدفك ${profile.targetWeight ?? '—'} كغ. قياسك في أوقات متشابهة يساعد على فهم الاتجاه.`;
+  if (/سعر|وجبه|اكل|طعام|غذا/.test(query)) return `سجّلت ${meals.length} وجبة بإجمالي ${Math.round(consumed)} سعرة من هدف ${Math.round(target)} سعرة. هذه الأرقام من سجلاتك، والتقديرات الغذائية تقريبية.`;
+  if (/رياض|تمرين|نشاط|حرك/.test(query)) return `لديك ${getTodaysWorkouts().length} تمارين مسجلة اليوم. افتح شاشة النشاط لإضافة تمرين أو مراجعة ما سجلته.`;
+  return `ملخص اليوم: ${meals.length} وجبة، ${Math.round(consumed)} من ${Math.round(target)} سعرة، و${water} من ${profile.water || 8} أكواب ماء. اسألني عن السعرات أو البروتين أو الماء أو الوزن؛ إجاباتي هنا مبنية على سجلاتك المحلية.`;
 }
 
 function clearChat() {

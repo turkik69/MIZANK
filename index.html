@@ -2469,7 +2469,12 @@ function showLocalMealMatches(description, targetId, source) {
   const words = normalizedQuery.split(' ').filter(w => w.length > 2 && !stop.has(w));
   const catalog = Object.entries(suggestedMealsData).flatMap(([category, items]) =>
     items.map((item, index) => ({ item, category, index })));
-  (appState.customMeals || []).forEach((item, index) => catalog.push({ item, category: 'custom', index }));
+  const existingNames = new Set(catalog.map(({ item }) => normalizeMealSearch(item.name)));
+  (appState.customMeals || []).forEach((item, index) => {
+    const name = normalizeMealSearch(item.name);
+    if (!existingNames.has(name)) catalog.push({ item, category: 'custom', index });
+    existingNames.add(name);
+  });
   localMealMatches[source] = catalog.filter(({ item }) => {
     const label = normalizeMealSearch(item.name);
     return words.some(w => label.includes(w) || label.split(' ').some(piece => piece.length > 3 && (piece.startsWith(w) || w.startsWith(piece))));

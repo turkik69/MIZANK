@@ -125,10 +125,12 @@ button.metric-card {cursor:pointer;font-family:'IBM Plex Sans Arabic'}
 #dashboard-screen .glass-card {margin-bottom:12px}
 #dashboard-screen .macro-grid {gap:8px}#dashboard-screen .macro-item {padding:12px 7px}
 #dashboard-screen .macro-item [id^="dashboard-"] {color:#1c6555!important}
-.dashboard-details summary,.meal-library summary,.routine-library summary {list-style:none;background:#fff;color:#1b493d;border:1px solid #dce7dc;border-radius:17px;padding:17px 19px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:10px;box-shadow:var(--shadow-main);margin-bottom:14px}
-.dashboard-details summary::-webkit-details-marker,.meal-library summary::-webkit-details-marker,.routine-library summary::-webkit-details-marker {display:none}
-.dashboard-details summary span,.meal-library summary span,.routine-library summary span {font-size:11px;color:#698174;font-weight:500}
-.dashboard-details[open] summary,.meal-library[open] summary,.routine-library[open] summary {border-color:#92bd98;background:#eef6e9}
+.dashboard-details summary,.meal-library summary,.routine-library summary,.settings-optional summary {list-style:none;background:#fff;color:#1b493d;border:1px solid #dce7dc;border-radius:17px;padding:17px 19px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:10px;box-shadow:var(--shadow-main);margin-bottom:14px}
+.dashboard-details summary::-webkit-details-marker,.meal-library summary::-webkit-details-marker,.routine-library summary::-webkit-details-marker,.settings-optional summary::-webkit-details-marker {display:none}
+.dashboard-details summary span,.meal-library summary span,.routine-library summary span,.settings-optional summary span {font-size:11px;color:#698174;font-weight:500}
+.dashboard-details[open] summary,.meal-library[open] summary,.routine-library[open] summary,.settings-optional[open] summary {border-color:#92bd98;background:#eef6e9}
+.next-action {background:#e7f1dd;border:1px solid #d6e8ce;color:#275845;padding:15px 18px;margin:-8px 0 17px;border-radius:17px;font:600 13px/1.7 'IBM Plex Sans Arabic'}
+.today-analysis {margin-bottom:8px}.today-analysis summary strong {font-size:15px}
 
 /* Food: one deliberate entry mode, then today's list and an optional library. */
 .meal-summary {background:#e2efdd;border:1px solid #cee2cb;border-radius:20px;padding:16px 18px;display:flex;align-items:center;justify-content:space-between;gap:8px;color:#2e5545;font-size:12px;margin:1px 0 24px}
@@ -147,6 +149,11 @@ button.metric-card {cursor:pointer;font-family:'IBM Plex Sans Arabic'}
 .meal-library summary strong,.routine-library summary strong {font-size:15px}
 #meals-screen .glass-card [style*="color:var(--accent-emerald)"] {color:#277660!important}
 #meals-screen .glass-card [style*="color:var(--accent-amber)"] {color:#966129!important}
+.local-results-title {font:600 12px/1.7 'IBM Plex Sans Arabic';color:#5d7568;margin:13px 0 8px}
+.local-results {display:grid;gap:7px}
+.local-results button {background:#f4f8f0;border:1px solid #dce9d6;border-radius:13px;text-align:right;padding:11px 13px;display:flex;align-items:center;justify-content:space-between;gap:8px;color:#245747;font:600 13px 'IBM Plex Sans Arabic';cursor:pointer}
+.local-results button span {font-size:11px;color:#66816f;white-space:nowrap}
+.settings-optional {margin:16px 0}.settings-optional .glass-card {margin-top:-5px}
 
 /* The secondary screens use the same visual grammar. */
 #fasting-screen>.glass-card:first-of-type {background:#eff5ea!important;text-align:center;border-color:#dce7d4}

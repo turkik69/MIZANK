@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<meta name="theme-color" content="#f5f4ee">
+<meta name="theme-color" content="#f5f7ff">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -311,7 +311,7 @@ body { background: radial-gradient(circle at 85% -5%,rgba(74,215,188,.11),transp
 @media(max-width:390px){ .screen{padding:12px}.quick-actions button{font-size:11px}.macro-item{padding:8px}.daily-hero-number strong{font-size:39px} }
 
 </style>
-<link rel="stylesheet" href="./identity.css?v=5">
+<link rel="stylesheet" href="./identity.css?v=6">
 </head>
 <body>
 
@@ -431,9 +431,9 @@ body { background: radial-gradient(circle at 85% -5%,rgba(74,215,188,.11),transp
     </div>
     <div class="today-section-label"><h2>مؤشراتك</h2><span>لمحة سريعة</span></div>
     <div class="dashboard-grid bento-grid">
-      <button class="metric-card metric-weight" onclick="switchScreen('water')"><span class="metric-glyph">↗</span><span class="metric-caption">الوزن الحالي</span><strong class="metric-value" id="dashboard-weight">0</strong><small>الهدف <span id="dashboard-target">0</span> كغ</small></button>
-      <button class="metric-card metric-water" onclick="switchScreen('water')"><span class="metric-glyph">◉</span><span class="metric-caption">الماء اليوم</span><strong class="metric-value" id="dashboard-water">0</strong><small>من <span id="dashboard-water-target">8</span> أكواب</small></button>
-      <div class="metric-card metric-streak"><span class="metric-glyph">✦</span><span class="metric-caption">الاستمرارية</span><strong class="metric-value" id="streak-days">يوم واحد</strong><small>خطوة كل يوم</small></div>
+      <button class="metric-card metric-weight" onclick="switchScreen('water')"><span class="metric-glyph"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20h14a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2Z"/><path d="M9 10a4 4 0 0 1 6 0M12 10l2-2"/></svg></span><span class="metric-caption">الوزن الحالي</span><strong class="metric-value" id="dashboard-weight">0</strong><small>الهدف <span id="dashboard-target">0</span> كغ</small></button>
+      <button class="metric-card metric-water" onclick="switchScreen('water')"><span class="metric-glyph"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3S6 10 6 15a6 6 0 0 0 12 0c0-5-6-12-6-12Z"/><path d="M9 16a3 3 0 0 0 3 2"/></svg></span><span class="metric-caption">الماء اليوم</span><strong class="metric-value" id="dashboard-water">0</strong><small>من <span id="dashboard-water-target">8</span> أكواب</small></button>
+      <div class="metric-card metric-streak"><span class="metric-glyph"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c2 3 4 5 4 8a4 4 0 0 1-8 0c0-1 .3-2 1-3-3 2-5 5-5 8a8 8 0 0 0 16 0c0-5-3-9-8-13Z"/><path d="M10 18c0-2 1-3 2-5 1 2 2 3 2 5a2 2 0 0 1-4 0Z"/></svg></span><span class="metric-caption">الاستمرارية</span><strong class="metric-value" id="streak-days">يوم واحد</strong><small>خطوة كل يوم</small></div>
     </div>
     <div id="today-next-action" class="next-action" aria-live="polite"></div>
     <details class="dashboard-details today-analysis"><summary><strong>تفاصيل التغذية اليوم</strong><span>السعرات والمغذيات والتوصيات ←</span></summary>
@@ -1854,10 +1854,10 @@ function calculateBMI(weightKg, heightCm) {
 }
 
 function getBMICategory(bmi) {
-  if (bmi < 18.5) return { label: 'أقل من الطبيعي (نحافة)', color: 'var(--accent-cyan)' };
-  if (bmi < 25) return { label: 'وزن طبيعي', color: 'var(--accent-emerald)' };
-  if (bmi < 30) return { label: 'زيادة وزن', color: 'var(--accent-amber)' };
-  return { label: 'سمنة', color: 'var(--accent-coral)' };
+  if (bmi < 18.5) return { key: 'underweight', label: 'أقل من الطبيعي (نحافة)', color: 'var(--accent-cyan)' };
+  if (bmi < 25) return { key: 'normal', label: 'وزن طبيعي', color: 'var(--accent-emerald)' };
+  if (bmi < 30) return { key: 'overweight', label: 'زيادة وزن', color: 'var(--accent-amber)' };
+  return { key: 'obese', label: 'سمنة', color: 'var(--accent-coral)' };
 }
 
 function getBodyShapePattern(gender, bmiCategory) {
@@ -1895,21 +1895,31 @@ function renderBodyShape() {
   };
   const zone = zoneCoords[shape.zone] || zoneCoords.balanced;
 
+  const marker = Math.max(3, Math.min(97, ((bmi - 15) / 25) * 100));
   container.innerHTML = `
-    <div style="display:flex; gap:16px; align-items:center; flex-wrap:wrap;">
-      <svg viewBox="0 0 120 220" style="width:100px; height:180px; flex-shrink:0;">
-        <circle cx="60" cy="20" r="16" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
-        <path d="M 40 40 Q 30 70 32 110 L 88 110 Q 90 70 80 40 Z" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
-        <path d="M 32 110 Q 28 150 35 205 L 55 205 L 58 130 L 62 130 L 65 205 L 85 205 Q 92 150 88 110 Z" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
-        <path d="M 40 45 Q 20 70 22 100" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="9" stroke-linecap="round"/>
-        <path d="M 80 45 Q 100 70 98 100" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="9" stroke-linecap="round"/>
-        <ellipse cx="${zone.cx}" cy="${zone.cy}" rx="${zone.rx}" ry="${zone.ry}" style="fill:${cat.color}; opacity:0.4;"/>
-      </svg>
-      <div style="flex:1; min-width:170px;">
-        <div style="font-size:12px; color:var(--text-secondary);">مؤشر كتلة الجسم (BMI)</div>
-        <div style="font-size:26px; font-weight:900; color:${cat.color};">${bmi.toFixed(1)}</div>
-        <div style="font-size:13px; font-weight:700; color:${cat.color}; margin-bottom:8px;">${cat.label}</div>
-        <div style="font-size:12px; color:var(--text-secondary);">${shape.pattern}</div>
+    <div class="bmi-card bmi-${cat.key}">
+      <div class="body-visual" aria-label="شكل جسم توضيحي لفئة ${cat.label}">
+        <span class="body-halo"></span>
+        <svg viewBox="0 0 140 240" role="img" aria-hidden="true">
+          <g class="body-silhouette">
+            <circle class="body-head" cx="70" cy="27" r="19"/>
+            <path class="body-torso" d="M47 52C38 72 38 106 43 132C48 149 54 158 55 177H85C86 158 92 149 97 132C102 106 102 72 93 52C82 46 58 46 47 52Z"/>
+            <path class="body-arm body-arm-left" d="M48 58C34 76 29 101 27 132"/>
+            <path class="body-arm body-arm-right" d="M92 58C106 76 111 101 113 132"/>
+            <path class="body-leg body-leg-left" d="M61 171C58 194 57 215 55 231"/>
+            <path class="body-leg body-leg-right" d="M79 171C82 194 83 215 85 231"/>
+          </g>
+          <ellipse class="body-focus" cx="${zone.cx + 10}" cy="${zone.cy}" rx="${Math.max(17, zone.rx - 5)}" ry="${Math.max(17, zone.ry - 8)}"/>
+        </svg>
+        <span class="body-label">شكل توضيحي</span>
+      </div>
+      <div class="bmi-reading">
+        <span>مؤشر كتلة الجسم</span>
+        <strong>${bmi.toFixed(1)}</strong>
+        <b>${cat.label}</b>
+        <p>${shape.pattern}</p>
+        <div class="bmi-scale" aria-label="مقياس مؤشر كتلة الجسم"><i style="left:${marker}%"></i></div>
+        <div class="bmi-scale-labels"><span>نحافة</span><span>طبيعي</span><span>زيادة</span><span>سمنة</span></div>
       </div>
     </div>
     <div class="message-box" style="margin-top:12px; border-right-color:${cat.color};">

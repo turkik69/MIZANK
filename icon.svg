@@ -1,7 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="مِيزانك">
-  <rect width="512" height="512" rx="118" fill="#163b33"/>
-  <circle cx="356" cy="143" r="43" fill="#d4f177"/>
-  <path d="M118 339c71-113 141-113 211 0" fill="none" stroke="#f7f8e9" stroke-width="43" stroke-linecap="round"/>
-  <path d="M183 340c47-71 93-71 140 0" fill="none" stroke="#d4f177" stroke-width="33" stroke-linecap="round"/>
-  <path d="M123 405h266" stroke="#79b8a1" stroke-width="24" stroke-linecap="round"/>
+  <defs>
+    <linearGradient id="bg" x1="70" y1="55" x2="445" y2="465" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#353B91"/><stop offset=".68" stop-color="#5B60E5"/><stop offset="1" stop-color="#17A987"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="118" fill="url(#bg)"/>
+  <circle cx="368" cy="139" r="43" fill="#DCF66E"/>
+  <path d="M112 337c76-116 151-116 226 0" fill="none" stroke="#FFFFFF" stroke-width="43" stroke-linecap="round"/>
+  <path d="M181 338c49-73 98-73 146 0" fill="none" stroke="#DCF66E" stroke-width="33" stroke-linecap="round"/>
+  <path d="M120 405h272" stroke="#8FE6CF" stroke-width="24" stroke-linecap="round"/>
 </svg>

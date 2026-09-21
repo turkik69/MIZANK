@@ -211,3 +211,80 @@ button.metric-card {cursor:pointer;font-family:'IBM Plex Sans Arabic'}
   #setup-screen [style*="grid-template-columns: 1fr 1fr 1fr"] {grid-template-columns:repeat(2,minmax(0,1fr))!important}
 }
 @media(max-width:360px) { .hero-gauge {width:82px;height:82px}.hero-gauge-core {width:65px;height:65px}.hero-main strong {font-size:43px}.meal-mode-tabs{gap:5px}.meal-mode-tabs button{font-size:17px}.meal-summary{flex-wrap:wrap} }
+
+/* MIZANK V3 — energetic, edge-to-edge iPhone experience */
+:root {
+  --bg-main:#f5f7ff;--bg-card:#fff;--bg-card-hover:#f2f4ff;--border-glass:#e2e6f5;
+  --accent-emerald:#16a887;--accent-emerald-glow:rgba(22,168,135,.14);
+  --accent-coral:#ff765f;--accent-coral-glow:rgba(255,118,95,.14);
+  --accent-cyan:#279bd4;--accent-cyan-glow:rgba(39,155,212,.14);
+  --accent-amber:#f0a43b;--accent-purple:#6868e8;
+  --text-primary:#17243b;--text-secondary:#5f6e83;--text-muted:#7b8798;
+  --ink:#17243b;--lime:#dcf66e;--cream:#f5f7ff;
+  --shadow-main:0 12px 30px rgba(45,55,105,.075);
+}
+html,body {height:100%;min-height:100%;background:#f5f7ff!important;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+body {position:fixed;inset:0;min-height:100dvh;background:linear-gradient(155deg,#f7f8ff 0%,#f3fff9 46%,#fff8f1 100%)!important}
+body:before {content:'';position:fixed;z-index:2000;pointer-events:none;top:0;left:0;right:0;height:env(safe-area-inset-top);background:#f7f8ff}
+.main-container {height:100dvh;min-height:100dvh;padding-top:calc(env(safe-area-inset-top) + 16px);padding-bottom:calc(90px + env(safe-area-inset-bottom));background:linear-gradient(155deg,#f7f8ff 0%,#f3fff9 46%,#fff8f1 100%)}
+.screen {padding-top:10px}
+.screen-header,.today-topline {position:relative;z-index:2;isolation:isolate;opacity:1!important;background:#f7f8ff!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;filter:none!important;transform:translateZ(0)}
+.screen-header {margin-inline:-2px;padding-inline:5px}
+.today-topline {margin:0 -2px 4px;padding:10px 5px 20px}
+.section-kicker,.eyebrow {color:#545de2;font-weight:800;opacity:1;text-shadow:none;filter:none}
+.screen-title,.today-topline .screen-title {color:#16253d;font-weight:700;text-shadow:none;filter:none}
+.screen-subtitle {color:#66758b}
+.profile-trigger {background:linear-gradient(145deg,#6c6fec,#555bdc);color:#fff;border:0;box-shadow:0 8px 20px rgba(91,94,222,.24)}
+
+.today-hero {background:linear-gradient(135deg,#333a80 0%,#5058d8 58%,#695ee5 100%);box-shadow:0 20px 42px rgba(72,74,177,.23);border:1px solid rgba(255,255,255,.14)}
+.today-hero:before {width:300px;height:300px;border:45px solid rgba(220,246,110,.09);left:-170px;top:-160px}
+.hero-eyebrow {color:#dbe0ff}.hero-main strong {color:#fff}.hero-main span,.hero-sub {color:#e2e5ff}.hero-sub b{color:#fff}
+.hero-action-row button {background:#dcf66e;color:#25305d;box-shadow:0 8px 18px rgba(0,0,0,.12)}
+.hero-action-row button+button {background:#fff;color:#4a51b8;border-color:#fff}
+.hero-gauge {background:conic-gradient(#dcf66e var(--gauge-angle),rgba(255,255,255,.17) 0);box-shadow:0 0 0 1px rgba(255,255,255,.1)}
+.hero-gauge-core {background:#4b52c2}.hero-gauge-core span {color:#fff}.hero-gauge-core small{color:#e5e8ff}
+.today-hero .progress-fill {background:linear-gradient(90deg,#dcf66e,#7ff1bf)}
+
+.metric-card {border:0!important;box-shadow:0 12px 28px rgba(51,61,113,.08)!important;overflow:hidden;position:relative}
+.metric-card:after {content:'';position:absolute;width:85px;height:85px;border-radius:50%;left:-35px;bottom:-42px;opacity:.38}
+.metric-weight {background:linear-gradient(145deg,#fff,#f1f0ff)!important}.metric-weight:after{background:#c7c4ff}
+.metric-water {background:linear-gradient(145deg,#fff,#eafaff)!important}.metric-water:after{background:#a9e8f6}
+.metric-streak {background:linear-gradient(145deg,#fff,#fff3e7)!important}.metric-streak:after{background:#ffd4aa}
+.metric-glyph {width:40px;height:40px;border-radius:13px;background:#e8e7ff;color:#5b5fdf}
+.metric-water .metric-glyph {background:#ddf6fb;color:#1495af}.metric-streak .metric-glyph {background:#fff0df;color:#f07a45}
+.metric-glyph svg {width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.metric-value {color:#202d48!important}.metric-caption {color:#56657a}
+.next-action {background:linear-gradient(90deg,#e7fbf2,#f0f7ff);border-color:#ccebdd;color:#197259;box-shadow:0 8px 20px rgba(45,145,111,.07)}
+.dashboard-details summary,.meal-library summary,.routine-library summary,.settings-optional summary {border:0;background:#fff;color:#23314b;box-shadow:0 10px 25px rgba(48,61,118,.07)}
+.dashboard-details[open] summary,.meal-library[open] summary,.routine-library[open] summary,.settings-optional[open] summary {background:#eceeff;border:0;color:#444ac2}
+.meal-mode-tabs button.active,.btn-primary {background:linear-gradient(135deg,#5d61e7,#4a50cd);color:#fff;border-color:#555bda}
+.meal-summary {background:linear-gradient(90deg,#eceeff,#e7fbf3);border:0;color:#39448c}
+.bottom-nav {bottom:0;width:100%;max-width:680px;height:calc(76px + env(safe-area-inset-bottom));padding:6px 9px env(safe-area-inset-bottom);border-radius:24px 24px 0 0;background:#fff;border:0;box-shadow:0 -10px 32px rgba(40,51,100,.11)}
+.nav-item {color:#758298}.nav-item.active {background:linear-gradient(135deg,#6266e9,#4f55d3);color:#fff;box-shadow:0 8px 18px rgba(83,88,215,.22)}
+
+.bmi-card {display:grid;grid-template-columns:145px 1fr;gap:18px;align-items:center;background:linear-gradient(145deg,#f0f1ff,#f8fffc);border:1px solid #e1e5f7;border-radius:22px;padding:17px}
+.body-visual {height:235px;position:relative;display:grid;place-items:center;color:#6267df;overflow:hidden;border-radius:18px;background:linear-gradient(180deg,#e7e9ff,#f4f5ff)}
+.body-visual svg {height:205px;width:120px;position:relative;z-index:2;overflow:visible}
+.body-halo {position:absolute;width:145px;height:145px;border-radius:50%;background:#daddff;filter:none;opacity:.6}
+.body-silhouette {fill:currentColor}.body-torso {transform-box:fill-box;transform-origin:center;transition:transform .25s ease}
+.body-arm,.body-leg {fill:none;stroke:currentColor;stroke-width:13;stroke-linecap:round}
+.body-focus {fill:#dcf66e;opacity:.8;mix-blend-mode:screen}
+.body-label {position:absolute;bottom:8px;z-index:3;background:#fff;color:#66718a;border-radius:20px;padding:4px 9px;font-size:9px;font-weight:700}
+.bmi-underweight .body-torso {transform:scaleX(.78)}.bmi-underweight .body-arm,.bmi-underweight .body-leg{stroke-width:10}
+.bmi-normal .body-torso {transform:scaleX(.96)}
+.bmi-overweight .body-torso {transform:scaleX(1.16)}.bmi-overweight .body-visual{color:#e49a31;background:linear-gradient(180deg,#fff1d8,#fff8ec)}
+.bmi-obese .body-torso {transform:scaleX(1.36)}.bmi-obese .body-arm{stroke-width:16}.bmi-obese .body-visual{color:#ef715e;background:linear-gradient(180deg,#ffe3dc,#fff3ef)}
+.bmi-reading>span {display:block;color:#68768b;font-size:12px;font-weight:700}.bmi-reading>strong {display:block;color:#293452;font:800 42px/1.2 'Manrope';margin:3px 0}.bmi-reading>b {color:#585dde;font-size:15px}.bmi-overweight .bmi-reading>b{color:#d5851c}.bmi-obese .bmi-reading>b{color:#e35f4e}
+.bmi-reading p {color:#68768b;font-size:12px;line-height:1.65;margin:7px 0 15px}
+.bmi-scale {height:8px;border-radius:10px;background:linear-gradient(90deg,#48b9e6 0 14%,#28bc92 14% 42%,#f0ae39 42% 65%,#ef6757 65%);position:relative;direction:ltr}
+.bmi-scale i {position:absolute;top:50%;width:15px;height:15px;border:3px solid #fff;background:#273653;border-radius:50%;transform:translate(-50%,-50%);box-shadow:0 2px 7px rgba(25,35,70,.28)}
+.bmi-scale-labels {display:flex;justify-content:space-between;color:#7b8798;font-size:8px;margin-top:6px}
+
+@media(max-width:680px) {
+  .main-container {padding-top:calc(env(safe-area-inset-top) + 12px);padding-bottom:calc(84px + env(safe-area-inset-bottom))}
+  .screen {padding-inline:12px}
+  .today-topline {padding-top:8px}
+  .bottom-nav {width:100%;bottom:0}
+  .bmi-card {grid-template-columns:120px 1fr;padding:13px;gap:12px}.body-visual{height:215px}.body-visual svg{height:188px;width:106px}.bmi-reading>strong{font-size:36px}
+}
+@media(max-width:390px) {.bmi-card{grid-template-columns:105px 1fr}.body-visual{height:195px}.body-visual svg{height:170px}.bmi-reading>strong{font-size:32px}}

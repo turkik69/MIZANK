@@ -649,7 +649,7 @@ body { background: radial-gradient(circle at 85% -5%,rgba(74,215,188,.11),transp
       <h3 style="color: var(--accent-emerald); margin-bottom: 4px; font-size:15px; font-weight:800;">صوّر وجبتك</h3>
       <p>تحليل الصور يحتاج اتصال Gemini. يمكنك دائمًا إضافة الوجبة يدويًا من تبويب الكتابة.</p>
       <input type="file" id="meal-photo-input" accept="image/*" capture="environment" style="display:none;" onchange="handleMealPhoto(event)">
-      <button class="btn btn-secondary" onclick="document.getElementById('meal-photo-input').click()">📷 التقاط صورة الوجبة</button>
+      <button class="btn btn-secondary" onclick="startPhotoMeal()">📷 التقاط صورة الوجبة</button>
       <div id="meal-photo-preview"></div>
     </div>
 
@@ -2464,8 +2464,9 @@ function normalizeMealSearch(value) {
     .replace(/[^\u0621-\u064A\d\s]/g, ' ').replace(/\s+/g, ' ').trim();
 }
 function showLocalMealMatches(description, targetId, source) {
+  const normalizedQuery = normalizeMealSearch(description);
   const stop = new Set(['اكلت','عندي','صحن','طبق','حبه','كوب','من','مع','على','في','و','ال']);
-  const words = normalizeMealSearch(description).split(' ').filter(w => w.length > 2 && !stop.has(w));
+  const words = normalizedQuery.split(' ').filter(w => w.length > 2 && !stop.has(w));
   const catalog = Object.entries(suggestedMealsData).flatMap(([category, items]) =>
     items.map((item, index) => ({ item, category, index })));
   (appState.customMeals || []).forEach((item, index) => catalog.push({ item, category: 'custom', index }));
@@ -2473,13 +2474,18 @@ function showLocalMealMatches(description, targetId, source) {
     const label = normalizeMealSearch(item.name);
     return words.some(w => label.includes(w) || label.split(' ').some(piece => piece.length > 3 && (piece.startsWith(w) || w.startsWith(piece))));
   }).sort((a, b) => {
-    const score = x => words.reduce((n, w) => n + Number(normalizeMealSearch(x.item.name).includes(w)), 0);
+    const score = x => {
+      const label = normalizeMealSearch(x.item.name);
+      return words.reduce((n, w) => n + Number(label.includes(w)), 0)
+        + (normalizedQuery.length > 4 && label.includes(normalizedQuery) ? 4 : 0)
+        - label.length / 1000;
+    };
     return score(b) - score(a);
   }).slice(0, 5);
   const matches = localMealMatches[source];
   const target = document.getElementById(targetId);
   target.innerHTML = matches.length ? `
-    <div class="local-results-title">اختر أقرب وجبة من مكتبتك المحلية؛ القيم لحصة تقديرية ويمكنك تعديلها يدويًا.</div>
+    <div class="local-results-title">اختر أقرب وجبة من مكتبتك المحلية. إذا اختلفت الكمية، استخدم الإدخال اليدوي.</div>
     <div class="local-results">${matches.map(({ item }, idx) => `<button type="button" onclick="selectLocalMeal('${source}',${idx})"><strong>${escapeHtml(item.name)}</strong><span>${Math.round(Number(item.cal)||0)} سعرة تقريبًا</span></button>`).join('')}</div>
     <button class="text-action" onclick="openManualMealModal()">لم تجد وجبتك؟ أدخلها يدويًا</button>` :
     '<div class="message-box">لم أجد وجبة مطابقة في مكتبتك المحلية. أدخل قيمها من ملصق المنتج أو أضفها يدويًا.</div><button class="btn btn-secondary" onclick="openManualMealModal()">إدخال يدوي</button>';
@@ -3082,6 +3088,12 @@ async function handleMealPhoto(event) {
   const file = event.target.files?.[0];
   if (!file) return;
 
+  if (!localStorage.getItem('healthAppGeminiKey')?.trim()) {
+    document.getElementById('meal-photo-preview').innerHTML = '<div class="message-box">تحليل الصورة يحتاج اتصال Gemini الخاص بك. يمكنك تسجيل الوجبة من تبويب الكتابة دون مفتاح.</div>';
+    event.target.value = '';
+    return;
+  }
+
   const previewDiv = document.getElementById('meal-photo-preview');
   previewDiv.innerHTML = '<div class="message-box" style="margin-top:10px;">🔍 جاري تحليل الصورة وتقدير الكمية بصرياً...</div>';
 
@@ -3128,6 +3140,14 @@ async function handleMealPhoto(event) {
   } catch (e) {
     previewDiv.innerHTML = `<div class="message-box error" style="margin-top:10px;">تعذر التحليل: ${e.message}</div>`;
   }
+}
+
+function startPhotoMeal() {
+  if (!localStorage.getItem('healthAppGeminiKey')?.trim()) {
+    document.getElementById('meal-photo-preview').innerHTML = '<div class="message-box">تحليل الصور يتطلب إعداد Gemini الاختياري من «ملفي وبياناتي». لتسجيل الوجبة الآن، اختر «كتابة» ثم ابحث في مكتبتك أو أدخلها يدويًا.</div>';
+    return;
+  }
+  document.getElementById('meal-photo-input').click();
 }
 
 function renderPhotoAnalysisResult(result) {

@@ -311,7 +311,7 @@ body { background: radial-gradient(circle at 85% -5%,rgba(74,215,188,.11),transp
 @media(max-width:390px){ .screen{padding:12px}.quick-actions button{font-size:11px}.macro-item{padding:8px}.daily-hero-number strong{font-size:39px} }
 
 </style>
-<link rel="stylesheet" href="./identity.css?v=4">
+<link rel="stylesheet" href="./identity.css?v=5">
 </head>
 <body>
 
@@ -1012,15 +1012,31 @@ body { background: radial-gradient(circle at 85% -5%,rgba(74,215,188,.11),transp
 </div>
 
 <script>
-// Keep the app viewport stable with two fingers; one-finger scrolling still works.
-for (const gesture of ['gesturestart', 'gesturechange', 'gestureend']) {
-  document.addEventListener(gesture, event => event.preventDefault(), { passive: false });
+// Lock the viewport while two fingers are touching it; one-finger scrolling stays enabled.
+let multiTouchScrollTop = 0;
+function lockMultiTouch(event) {
+  if (event.touches?.length < 2) return;
+  const container = document.querySelector('.main-container');
+  if (!document.documentElement.classList.contains('multi-touch-lock')) {
+    multiTouchScrollTop = container?.scrollTop || 0;
+    document.documentElement.classList.add('multi-touch-lock');
+  }
+  event.preventDefault();
+  if (container && container.scrollTop !== multiTouchScrollTop) container.scrollTop = multiTouchScrollTop;
 }
-for (const touchEvent of ['touchstart', 'touchmove']) {
-  document.addEventListener(touchEvent, event => {
-    if (event.touches.length > 1) event.preventDefault();
-  }, { passive: false });
+function releaseMultiTouch(event) {
+  if (!event.touches || event.touches.length < 2) {
+    document.documentElement.classList.remove('multi-touch-lock');
+  }
 }
+for (const gesture of ['gesturestart', 'gesturechange']) {
+  document.addEventListener(gesture, event => event.preventDefault(), { passive: false, capture: true });
+}
+document.addEventListener('gestureend', releaseMultiTouch, { passive: false, capture: true });
+document.addEventListener('touchstart', lockMultiTouch, { passive: false, capture: true });
+document.addEventListener('touchmove', lockMultiTouch, { passive: false, capture: true });
+document.addEventListener('touchend', releaseMultiTouch, { passive: false, capture: true });
+document.addEventListener('touchcancel', releaseMultiTouch, { passive: false, capture: true });
 
 // Local reminders run while the app is open; there is no push server.
 

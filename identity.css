@@ -22,6 +22,8 @@
 }
 html,body { background:var(--cream)!important; color:var(--ink); font-family:'IBM Plex Sans Arabic',system-ui,sans-serif; }
 html,body,.main-container {touch-action:pan-x pan-y;overscroll-behavior:contain}
+html.multi-touch-lock,html.multi-touch-lock body {overscroll-behavior:none}
+html.multi-touch-lock .main-container {overflow-y:hidden!important;touch-action:none!important}
 body { background-image:radial-gradient(circle at 0 0,#edf3e5 0,transparent 33%),radial-gradient(circle at 100% 100%,#e7f0ed 0,transparent 32%)!important; }
 .main-container { padding-top:calc(10px + env(safe-area-inset-top)); padding-bottom:calc(104px + env(safe-area-inset-bottom)); scrollbar-color:#b6c9be transparent; }
 .screen { max-width:860px; padding:16px 18px 34px; animation:identityIn .25s ease; }

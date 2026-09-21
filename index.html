@@ -9,9 +9,9 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="ميزانك">
 
-<link rel="manifest" href="./manifest.webmanifest?v=7">
-<link rel="icon" type="image/svg+xml" href="./icon.svg?v=7">
-<link rel="apple-touch-icon" href="./icon-192.png?v=7">
+<link rel="manifest" href="./manifest.webmanifest?v=8">
+<link rel="icon" type="image/svg+xml" href="./icon.svg?v=8">
+<link rel="apple-touch-icon" href="./icon-192.png?v=8">
 <title>مِيزانك | مساحتك الصحية</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -311,7 +311,7 @@ body { background: radial-gradient(circle at 85% -5%,rgba(74,215,188,.11),transp
 @media(max-width:390px){ .screen{padding:12px}.quick-actions button{font-size:11px}.macro-item{padding:8px}.daily-hero-number strong{font-size:39px} }
 
 </style>
-<link rel="stylesheet" href="./identity.css?v=7">
+<link rel="stylesheet" href="./identity.css?v=8">
 </head>
 <body>
 
@@ -395,6 +395,12 @@ body { background: radial-gradient(circle at 85% -5%,rgba(74,215,188,.11),transp
           <label class="form-label">الوزن المستهدف</label>
           <input type="number" id="setup-target-weight" class="form-input" min="30" step="0.1" placeholder="70">
         </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">نسبة الدهون في الجسم % <span style="font-weight:500;color:var(--text-muted)">(اختياري)</span></label>
+        <input type="number" id="setup-body-fat" class="form-input" min="3" max="65" step="0.1" inputmode="decimal" placeholder="مثال: 24.5">
+        <small style="display:block;margin-top:6px;color:var(--text-muted);line-height:1.6">أدخلها إن كانت لديك قراءة من جهاز قياس؛ وإلا سيعرض ميزانك تقديراً تقريبياً اعتماداً على بيانات الحساب.</small>
       </div>
 
       <div class="form-group">
@@ -1374,7 +1380,7 @@ function renderFoodItemCard(item, category, idx) {
       <div style="font-size:11px; color:var(--accent-emerald); margin-top:2px;">🔥 ${item.cal} سعرة | 🥩 ${item.protein}g بروتين | 🌾 ${item.carbs}g كربوهيدرات</div>
       <div style="font-size:10px; color:var(--text-secondary); margin-top:1px;">🍬 ${item.sugar ?? 0}g سكر | 🌿 ${item.fiber ?? 0}g ألياف</div>
     </div>
-    <button class="icon-btn" style="background:var(--accent-emerald); color:#042f2e; font-weight:800; border:none;" onclick="addPresetCombo('${item.name.replace(/'/g, "\\'")}', ${item.cal}, ${item.protein}, ${item.carbs}, ${item.fat}, ${item.sugar ?? 0}, ${item.fiber ?? 0})">➕ إضافة للسجل</button>
+    <button class="icon-btn" style="background:var(--accent-emerald); color:#042f2e; font-weight:800; border:none;" onclick="addPresetCombo('${item.name.replace(/'/g, "\\'")}', ${item.cal}, ${item.protein}, ${item.carbs}, ${item.fat}, ${item.sugar ?? 0}, ${item.fiber ?? 0}, '${category}')">➕ إضافة للسجل</button>
   </div>
 `;
 }
@@ -1469,7 +1475,8 @@ function addScaledMeal(category, idx, inputId) {
     Math.round(item.carbs * ratio * 10) / 10,
     Math.round(item.fat * ratio * 10) / 10,
     Math.round((item.sugar ?? 0) * ratio * 10) / 10,
-    Math.round((item.fiber ?? 0) * ratio * 10) / 10
+    Math.round((item.fiber ?? 0) * ratio * 10) / 10,
+    category
   );
 }
 
@@ -1488,12 +1495,35 @@ function selectSuggestedCategory(cat, el) {
   renderSuggestedMeals();
 }
 
-function addPresetCombo(name, cal, p, c, f, sugar, fiber) {
-  appState.meals.push({
-    id: Date.now(), date: todayStr(), name, cal, protein: p, carbs: c, fat: f,
+function inferMealType(name, explicitType = '', loggedAt = Date.now()) {
+  if (['breakfast', 'lunch', 'dinner'].includes(explicitType)) return explicitType;
+  if (['snacks', 'desserts', 'drinks', 'snack'].includes(explicitType)) return 'snack';
+
+  const label = String(name || '').replace(/[ًٌٍَُِّْـ]/g, '').toLowerCase();
+  if (/فطور|افطار|صباح|توست|بيض|رقاق|بلاليط/.test(label)) return 'breakfast';
+  if (/غداء|غدا|كبسه|كبسة|صالونه|صالونة|برياني|مكبوس|ارز|أرز|عيش/.test(label)) return 'lunch';
+  if (/عشاء|شوربه|شوربة|وجبه خفيفه|وجبة خفيفة/.test(label)) return 'dinner';
+
+  const time = new Date(loggedAt);
+  const hour = Number.isNaN(time.getTime()) ? new Date().getHours() : time.getHours();
+  if (hour < 11) return 'breakfast';
+  if (hour < 17) return 'lunch';
+  return 'dinner';
+}
+
+function createMealLogEntry(name, cal, p, c, f, sugar, fiber, explicitType = '') {
+  const loggedAt = Date.now();
+  return {
+    id: loggedAt, date: todayStr(), name, cal, protein: p, carbs: c, fat: f,
     sugar: sugar || 0, fiber: fiber || 0,
-    time: new Date().toLocaleTimeString('ar', { hour: '2-digit', minute: '2-digit' })
-  });
+    mealType: inferMealType(name, explicitType, loggedAt),
+    loggedAt,
+    time: new Date(loggedAt).toLocaleTimeString('ar', { hour: '2-digit', minute: '2-digit' })
+  };
+}
+
+function addPresetCombo(name, cal, p, c, f, sugar, fiber, explicitType = '') {
+  appState.meals.push(createMealLogEntry(name, cal, p, c, f, sugar, fiber, explicitType));
   saveCurrentUserData();
   updateDashboard();
   updateMealsList();
@@ -1514,7 +1544,9 @@ let appState = {
   notificationsEnabled: false,
   waterIntervalHours: 2,
   lastWaterNotifTime: 0,
+  lastWaterIntakeTime: 0,
   lastMealNotifTime: 0,
+  reminderState: null,
   fasting: { active: false, startTime: null, targetHours: 16, logs: [], lastEndTime: null }
 };
 let dashboardChartInstance = null;
@@ -1575,6 +1607,8 @@ function ensureTodayWater() {
   if (appState.waterDate !== todayStr()) {
     appState.water = 0;
     appState.waterDate = todayStr();
+    appState.lastWaterIntakeTime = Date.now();
+    appState.lastWaterNotifTime = Date.now();
   }
 }
 
@@ -1670,10 +1704,16 @@ function completeSetup() {
   const height = parseInt(document.getElementById('setup-height').value);
   const weight = parseFloat(document.getElementById('setup-current-weight').value);
   const targetWeight = parseFloat(document.getElementById('setup-target-weight').value);
+  const bodyFatInput = document.getElementById('setup-body-fat').value.trim();
+  const bodyFat = bodyFatInput === '' ? null : parseFloat(bodyFatInput);
   const goal = document.getElementById('setup-goal').value;
 
   if (!age || !gender || !height || !weight || !targetWeight) {
     showToast('يرجى ملء كافة البيانات الرئيسية', 'warning');
+    return;
+  }
+  if (bodyFat !== null && (!Number.isFinite(bodyFat) || bodyFat < 3 || bodyFat > 65)) {
+    showToast('أدخل نسبة دهون بين 3% و65% أو اترك الخانة فارغة', 'warning');
     return;
   }
 
@@ -1689,6 +1729,7 @@ function completeSetup() {
   appState.profile = {
     ...(appState.profile || {}),
     name, age, gender, height, currentWeight: weight, targetWeight, goal, activityFactor,
+    bodyFat,
     bmr: Math.round(bmr), tdee: Math.round(tdee), dailyCalories: Math.round(dailyCalories),
     protein: Math.round(weight * 1.8),
     carbs: Math.round((dailyCalories * 0.45) / 4),
@@ -1877,6 +1918,71 @@ function getBodyShapePattern(gender, bmiCategory) {
     focus: 'ركّز على تمارين الأرداف والفخذين وتمارين المقاومة الشاملة، مع نظام غذائي متوازن قليل السكريات المكررة.' };
 }
 
+function getBodyFatReading(profile, bmi) {
+  const measured = Number(profile.bodyFat);
+  if (Number.isFinite(measured) && measured >= 3 && measured <= 65) {
+    return { value: measured, measured: true };
+  }
+
+  // تقدير للبالغين من BMI والعمر والجنس؛ لا يُعرض أبداً على أنه قياس فعلي.
+  const sexValue = profile.gender === 'male' ? 1 : 0;
+  const age = Math.max(18, Number(profile.age) || 18);
+  const estimate = (1.2 * bmi) + (0.23 * age) - (10.8 * sexValue) - 5.4;
+  return { value: Math.max(4, Math.min(60, estimate)), measured: false };
+}
+
+function getBodyFatTier(gender, bodyFat) {
+  const limits = gender === 'female'
+    ? [14, 18, 22, 29, 36]
+    : [8, 13, 17, 24, 30];
+  const keys = ['defined', 'lean', 'fit', 'average', 'high', 'very-high'];
+  const labels = ['منخفضة جداً', 'منخفضة', 'لياقة مرتفعة', 'متوسطة', 'مرتفعة', 'مرتفعة جداً'];
+  const index = limits.findIndex(limit => bodyFat <= limit);
+  const tierIndex = index === -1 ? 5 : index;
+  return { key: keys[tierIndex], label: labels[tierIndex], index: tierIndex };
+}
+
+function buildBodyFigure(gender, tierIndex) {
+  const isFemale = gender === 'female';
+  const sizes = isFemale
+    ? [
+        [34, 20, 31, 10], [35, 21, 32, 11], [36, 23, 34, 12],
+        [38, 27, 37, 14], [41, 33, 42, 17], [45, 40, 47, 20]
+      ]
+    : [
+        [43, 23, 28, 11], [44, 24, 29, 12], [45, 26, 30, 13],
+        [46, 30, 33, 15], [49, 36, 38, 18], [53, 43, 45, 21]
+      ];
+  const [shoulder, waist, hips, limb] = sizes[Math.max(0, Math.min(5, tierIndex))];
+  const cx = 70;
+  const chestY = isFemale ? 76 : 72;
+  const waistY = 119;
+  const hipY = 151;
+  const torso = `M ${cx-shoulder} 61 Q ${cx-waist-4} ${chestY} ${cx-waist} ${waistY} Q ${cx-hips} 138 ${cx-hips} ${hipY} Q ${cx} 164 ${cx+hips} ${hipY} Q ${cx+hips} 138 ${cx+waist} ${waistY} Q ${cx+waist+4} ${chestY} ${cx+shoulder} 61 Q ${cx} 47 ${cx-shoulder} 61 Z`;
+  const leftArm = `M ${cx-shoulder+3} 67 Q ${20-limb/3} 97 ${27-limb/4} 139`;
+  const rightArm = `M ${cx+shoulder-3} 67 Q ${120+limb/3} 97 ${113+limb/4} 139`;
+  const legGap = Math.max(7, 13 - tierIndex);
+  const leftLeg = `M ${cx-legGap} 153 Q ${cx-hips+5} 190 ${cx-hips+7} 230`;
+  const rightLeg = `M ${cx+legGap} 153 Q ${cx+hips-5} 190 ${cx+hips-7} 230`;
+  const outfit = isFemale
+    ? `<path class="body-top" d="M${cx-shoulder+6} 63 Q${cx} 50 ${cx+shoulder-6} 63 L${cx+waist} 112 Q${cx} 120 ${cx-waist} 112Z"/><path class="body-bottom" d="M${cx-hips} 141 Q${cx} 153 ${cx+hips} 141 L${cx+hips-2} 166 Q${cx} 157 ${cx-hips+2} 166Z"/>`
+    : `<path class="body-top" d="M${cx-shoulder+6} 63 Q${cx} 50 ${cx+shoulder-6} 63 L${cx+waist} 119 Q${cx} 124 ${cx-waist} 119Z"/><path class="body-bottom" d="M${cx-hips} 143 Q${cx} 154 ${cx+hips} 143 L${cx+hips-3} 169 L${cx+5} 164 L${cx} 154 L${cx-5} 164 L${cx-hips+3} 169Z"/>`;
+
+  return `<svg viewBox="0 0 140 240" role="img" aria-hidden="true" class="body-figure body-figure-${gender}">
+    <g class="body-person">
+      <circle class="body-skin" cx="70" cy="26" r="18"/>
+      <rect class="body-skin" x="62" y="40" width="16" height="17" rx="7"/>
+      <path class="body-skin body-torso-shape" d="${torso}"/>
+      <path class="body-limb" d="${leftArm}" style="stroke-width:${limb}px"/>
+      <path class="body-limb" d="${rightArm}" style="stroke-width:${limb}px"/>
+      <path class="body-limb" d="${leftLeg}" style="stroke-width:${limb + 4}px"/>
+      <path class="body-limb" d="${rightLeg}" style="stroke-width:${limb + 4}px"/>
+      ${outfit}
+      <path class="body-detail" d="M58 124 Q70 130 82 124"/>
+    </g>
+  </svg>`;
+}
+
 function renderBodyShape() {
   const container = document.getElementById('body-shape-display');
   const p = appState.profile;
@@ -1886,38 +1992,25 @@ function renderBodyShape() {
   const bmi = calculateBMI(currentWeight, p.height);
   const cat = getBMICategory(bmi);
   const shape = getBodyShapePattern(p.gender, cat);
-
-  const zoneCoords = {
-    abdomen: { cx: 60, cy: 92, rx: 30, ry: 24 },
-    hips: { cx: 60, cy: 150, rx: 34, ry: 36 },
-    legs: { cx: 60, cy: 165, rx: 22, ry: 45 },
-    balanced: { cx: 60, cy: 110, rx: 36, ry: 90 }
-  };
-  const zone = zoneCoords[shape.zone] || zoneCoords.balanced;
+  const fat = getBodyFatReading(p, bmi);
+  const fatTier = getBodyFatTier(p.gender, fat.value);
+  const genderLabel = p.gender === 'female' ? 'أنثى' : 'ذكر';
 
   const marker = Math.max(3, Math.min(97, ((bmi - 15) / 25) * 100));
   container.innerHTML = `
-    <div class="bmi-card bmi-${cat.key}">
-      <div class="body-visual" aria-label="شكل جسم توضيحي لفئة ${cat.label}">
+    <div class="bmi-card bmi-${cat.key} fat-${fatTier.key}">
+      <div class="body-visual" aria-label="مجسم جسم ${genderLabel} توضيحي لفئة ${cat.label} ونسبة دهون ${fat.value.toFixed(1)} بالمئة">
         <span class="body-halo"></span>
-        <svg viewBox="0 0 140 240" role="img" aria-hidden="true">
-          <g class="body-silhouette">
-            <circle class="body-head" cx="70" cy="27" r="19"/>
-            <path class="body-torso" d="M47 52C38 72 38 106 43 132C48 149 54 158 55 177H85C86 158 92 149 97 132C102 106 102 72 93 52C82 46 58 46 47 52Z"/>
-            <path class="body-arm body-arm-left" d="M48 58C34 76 29 101 27 132"/>
-            <path class="body-arm body-arm-right" d="M92 58C106 76 111 101 113 132"/>
-            <path class="body-leg body-leg-left" d="M61 171C58 194 57 215 55 231"/>
-            <path class="body-leg body-leg-right" d="M79 171C82 194 83 215 85 231"/>
-          </g>
-          <ellipse class="body-focus" cx="${zone.cx + 10}" cy="${zone.cy}" rx="${Math.max(17, zone.rx - 5)}" ry="${Math.max(17, zone.ry - 8)}"/>
-        </svg>
-        <span class="body-label">شكل توضيحي</span>
+        ${buildBodyFigure(p.gender, fatTier.index)}
+        <span class="body-gender-badge">${genderLabel}</span>
+        <span class="body-label">${fatTier.label}</span>
       </div>
       <div class="bmi-reading">
         <span>مؤشر كتلة الجسم</span>
         <strong>${bmi.toFixed(1)}</strong>
         <b>${cat.label}</b>
-        <p>${shape.pattern}</p>
+        <div class="body-fat-reading"><span>نسبة الدهون</span><strong>${fat.value.toFixed(1)}%</strong><small>${fat.measured ? 'قراءة مسجلة' : 'تقدير تقريبي'}</small></div>
+        <p>${shape.pattern} — المجسّم يتبع الجنس المسجل وتدرّج الدهون.</p>
         <div class="bmi-scale" aria-label="مقياس مؤشر كتلة الجسم"><i style="left:${marker}%"></i></div>
         <div class="bmi-scale-labels"><span>نحافة</span><span>طبيعي</span><span>زيادة</span><span>سمنة</span></div>
       </div>
@@ -1925,7 +2018,7 @@ function renderBodyShape() {
     <div class="message-box" style="margin-top:12px; border-right-color:${cat.color};">
       🎯 <strong>مناطق التركيز المقترحة:</strong> ${shape.focus}
     </div>
-    <p style="font-size:10px; color:var(--text-muted); margin-top:6px;">* تصنيف عام تقريبي بناءً على الوزن والطول والجنس فقط وليس تشخيصاً طبياً — الرسم توضيحي وليس تمثيلاً فعلياً لجسمك.</p>
+    <p style="font-size:10px; color:var(--text-muted); margin-top:6px;">* المجسّم مرجع بصري تقريبي وليس تمثيلاً فعلياً للجسم أو تشخيصاً طبياً. أدخل قراءة دهون مقاسة من «تعديل بياناتي» للحصول على تدرّج أدق.</p>
   `;
 }
 
@@ -2589,10 +2682,7 @@ function saveManualMealFromModal() {
 
   if (!name) { showToast('يرجى إدخال اسم الوجبة على الأقل', 'warning'); return; }
 
-  appState.meals.push({
-    id: Date.now(), date: todayStr(), name, cal, protein: p, carbs: c, fat: f, sugar, fiber,
-    time: new Date().toLocaleTimeString('ar', { hour: '2-digit', minute: '2-digit' })
-  });
+  appState.meals.push(createMealLogEntry(name, cal, p, c, f, sugar, fiber));
 
   saveCurrentUserData();
   updateDashboard();
@@ -2776,12 +2866,24 @@ async function lookupBarcode(barcode) {
   }
 }
 
-// ============ REMINDERS WHILE THE APP IS OPEN ============
+// ============ SMART LOCAL REMINDERS ============
 function updateReminderPreferences() {
   const val = parseInt(document.getElementById('water-reminder-interval-select').value) || 2;
   appState.waterIntervalHours = val;
+  // يبدأ العد من لحظة تغيير الخيار حتى لا يصل إشعار فوري غير متوقع.
+  appState.lastWaterIntakeTime = Date.now();
+  appState.lastWaterNotifTime = Date.now();
   saveCurrentUserData();
   showToast(`تم تحديث تذكير الماء ليكون كل ${val} ساعات 💧`, 'success');
+}
+
+async function registerNotificationServiceWorker() {
+  if (!('serviceWorker' in navigator)) return null;
+  try {
+    return await navigator.serviceWorker.register('./sw.js?v=1', { scope: './' });
+  } catch (error) {
+    return null;
+  }
 }
 
 function requestNotificationPermission() {
@@ -2794,7 +2896,8 @@ function requestNotificationPermission() {
     if (permission === "granted") {
       appState.notificationsEnabled = true;
       saveCurrentUserData();
-      showToast("فُعّلت تذكيرات التطبيق أثناء فتحه.", "success");
+      registerNotificationServiceWorker();
+      showToast("فُعّلت تذكيرات ميزانك الذكية.", "success");
       document.getElementById('notification-toggle-btn').innerHTML = "<span>✅ الإشعارات مفعلة بنجاح</span>";
       startNotificationScheduler();
     } else {
@@ -2803,56 +2906,91 @@ function requestNotificationPermission() {
   });
 }
 
-function triggerNotification(title, body) {
+async function triggerNotification(title, body, tag = 'mizank-reminder') {
+  let delivered = false;
   if ("Notification" in window && Notification.permission === "granted") {
-    try { new Notification(title, { body, icon: './icon-192.png' }); }
-    catch (e) { /* Some mobile browsers only support push notifications. */ }
+    const options = { body, icon: './icon-192.png?v=8', badge: './icon-192.png?v=8', tag, renotify: false, dir: 'rtl', lang: 'ar' };
+    try {
+      const registration = await registerNotificationServiceWorker();
+      if (registration?.showNotification) {
+        await registration.showNotification(title, options);
+        delivered = true;
+      } else {
+        new Notification(title, options);
+        delivered = true;
+      }
+    } catch (e) { /* يبقى التنبيه داخل التطبيق إن منع النظام إشعار الشاشة. */ }
   }
 
-  showToast(`🔔 [تذكير]: ${title} - ${body}`, 'info');
+  if (!delivered || document.visibilityState === 'visible') {
+    showToast(`🔔 ${title} — ${body}`, 'info');
+  }
 }
 
 function sendTestNotification() {
-  triggerNotification("ميزانك ⚖️", "إشعار تجريبي ناجح! تذكير شرب الماء والوجبة القادمة.");
+  triggerNotification("ميزانك ⚖️", "الإشعارات الذكية جاهزة للماء والوجبات.", 'mizank-test');
 }
 
 let notificationSchedulerInterval = null;
 
-// الفحص الفعلي: هل فيه تذكير "مستحق" الآن؟ (ماء أو وجبة)
-// مفصولة بدالة مستقلة حتى نقدر نستدعيها فوراً عند كل فتح/عودة للتطبيق،
-// بدل ما ننتظر أول دورة للمؤقّت (60 ثانية) — وهذا بالضبط سبب فوات بعض التذكيرات
-// لما يكون التطبيق مقفول أو بالخلفية، ثم يرجع المستخدم يفتحه بعد فوات الوقت.
+function ensureReminderState() {
+  const date = todayStr();
+  if (!appState.reminderState || appState.reminderState.date !== date) {
+    appState.reminderState = { date, sentMeals: {} };
+  }
+  if (!appState.reminderState.sentMeals) appState.reminderState.sentMeals = {};
+  return appState.reminderState;
+}
+
+function getLoggedMealTypesToday() {
+  return new Set(getTodaysMeals().map(meal => {
+    if (meal.mealType) return meal.mealType;
+    const timestamp = Number(meal.loggedAt || meal.id);
+    return inferMealType(meal.name, '', Number.isFinite(timestamp) ? timestamp : Date.now());
+  }));
+}
+
+// يفحص السجل أولاً، فلا يذكّر بشيء سجّله المستخدم بالفعل.
 function checkAndSendDueNotifications() {
   if (!appState.notificationsEnabled) return;
 
+  ensureTodayWater();
+  const reminderState = ensureReminderState();
   const now = Date.now();
   const currentHour = new Date().getHours();
   const intervalMs = (appState.waterIntervalHours || 2) * 60 * 60 * 1000;
+  let changed = false;
 
-  if (!appState.lastWaterNotifTime || (now - appState.lastWaterNotifTime >= intervalMs)) {
-    if (appState.water < (appState.profile?.water || 8)) {
-      triggerNotification("💧 تذكير شرب الماء", "حان وقت شرب كوب ماء جديد لترطيب جسمك والحفاظ على نشاطك!");
+  // الماء: العد يبدأ من آخر كوب مسجل أو آخر تنبيه، مع ساعات هدوء ليلية.
+  let waterBaseline = Math.max(Number(appState.lastWaterIntakeTime) || 0, Number(appState.lastWaterNotifTime) || 0);
+  if (!waterBaseline) {
+    waterBaseline = now;
+    appState.lastWaterIntakeTime = now;
+    changed = true;
+  }
+  const waterGoalReached = appState.water >= (appState.profile?.water || 8);
+  const waterQuietHours = currentHour < 7 || currentHour >= 22;
+  if (!waterGoalReached && !waterQuietHours && now - waterBaseline >= intervalMs) {
+      triggerNotification("💧 حان وقت الماء", "مرّ وقت كافٍ منذ آخر كوب سجلته. أضف كوبك التالي عند شربه.", 'mizank-water');
       appState.lastWaterNotifTime = now;
-      saveCurrentUserData();
-    }
+      changed = true;
   }
 
-  const mealIntervalMs = 4 * 60 * 60 * 1000;
-  if (!appState.lastMealNotifTime || (now - appState.lastMealNotifTime >= mealIntervalMs)) {
-    if (currentHour === 9) {
-      triggerNotification("🍳 وقت وجبة الإفطار", "لا تنسَ تسجيل وجبة الإفطار لضبط جدول السعرات!");
-      appState.lastMealNotifTime = now;
-      saveCurrentUserData();
-    } else if (currentHour === 14) {
-      triggerNotification("🍗 وقت الغداء الصحي", "تذكير بتسجيل وجبة الغداء بالصوت أو الصورة!");
-      appState.lastMealNotifTime = now;
-      saveCurrentUserData();
-    } else if (currentHour === 20) {
-      triggerNotification("🥗 وقت العشاء والخِتام", "سجل وجبة العشاء الأخيرة وقراءة الوزن للرسم البياني!");
-      appState.lastMealNotifTime = now;
-      saveCurrentUserData();
-    }
+  const mealSchedules = [
+    { type: 'breakfast', start: 8, end: 11, title: '🍳 هل سجّلت الإفطار؟', body: 'لم أجد إفطاراً مسجلاً اليوم. سجّله عندما تتناوله.' },
+    { type: 'lunch', start: 13, end: 16, title: '🍗 هل سجّلت الغداء؟', body: 'لم أجد غداءً مسجلاً اليوم. أضفه لتكتمل تغذيتك اليومية.' },
+    { type: 'dinner', start: 19, end: 22, title: '🥗 هل سجّلت العشاء؟', body: 'لم أجد عشاءً مسجلاً اليوم. أضفه إن كنت قد تناولته.' }
+  ];
+  const loggedTypes = getLoggedMealTypesToday();
+  const dueMeal = mealSchedules.find(meal => currentHour >= meal.start && currentHour < meal.end);
+  if (dueMeal && !loggedTypes.has(dueMeal.type) && !reminderState.sentMeals[dueMeal.type]) {
+    triggerNotification(dueMeal.title, dueMeal.body, `mizank-meal-${dueMeal.type}`);
+    reminderState.sentMeals[dueMeal.type] = now;
+    appState.lastMealNotifTime = now; // إبقاء الحقل القديم متوافقاً مع النسخ السابقة.
+    changed = true;
   }
+
+  if (changed) saveCurrentUserData();
 }
 
 // ============ سلسلة الالتزام (Streak) — الحساب الفعلي كان ناقصاً بالكامل ============
@@ -2885,6 +3023,8 @@ function updateLoginStreak() {
 
 function startNotificationScheduler() {
   if (notificationSchedulerInterval) clearInterval(notificationSchedulerInterval);
+
+  registerNotificationServiceWorker();
 
   // فحص فوري بمجرد فتح/دخول التطبيق — يلحق أي تذكير كان مستحقاً أثناء إغلاقه
   checkAndSendDueNotifications();
@@ -3278,10 +3418,7 @@ function confirmAiMeal(name, cal, p, c, f, sugar, fiber) {
   sugar = sugar || 0;
   fiber = fiber || 0;
 
-  appState.meals.push({
-    id: Date.now(), date: todayStr(), name, cal, protein: p, carbs: c, fat: f, sugar, fiber,
-    time: new Date().toLocaleTimeString('ar', { hour: '2-digit', minute: '2-digit' })
-  });
+  appState.meals.push(createMealLogEntry(name, cal, p, c, f, sugar, fiber));
 
   // احفظ الوجبة أيضاً في "وجباتي الخاصة" لتصبح متاحة للاختيار السريع لاحقاً بدون إعادة تحليلها
   if (!appState.customMeals) appState.customMeals = [];
@@ -3461,6 +3598,9 @@ function deleteWorkout(id) {
 function addWater(cups = 1) {
   ensureTodayWater();
   appState.water += cups;
+  // كل تسجيل ماء يبدأ دورة تذكير جديدة من هذه اللحظة.
+  appState.lastWaterIntakeTime = Date.now();
+  appState.lastWaterNotifTime = Date.now();
   saveCurrentUserData();
   updateWaterScreen();
   updateDashboard();
@@ -3647,7 +3787,8 @@ function editProfile() {
   const fields = {
     'setup-name': p.name, 'setup-age': p.age, 'setup-gender': p.gender,
     'setup-height': p.height, 'setup-current-weight': appState.weights?.at(-1)?.weight ?? p.currentWeight,
-    'setup-target-weight': p.targetWeight, 'setup-goal': p.goal,
+    'setup-target-weight': p.targetWeight, 'setup-body-fat': p.bodyFat,
+    'setup-goal': p.goal,
     'setup-activity': p.activityFactor || 1.375
   };
   for (const [id, value] of Object.entries(fields)) document.getElementById(id).value = value ?? '';

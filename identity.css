@@ -273,14 +273,24 @@ body:before {content:'';position:fixed;z-index:2000;pointer-events:none;top:0;le
 .body-visual {height:235px;position:relative;display:grid;place-items:center;color:#6267df;overflow:hidden;border-radius:18px;background:linear-gradient(180deg,#e7e9ff,#f4f5ff)}
 .body-visual svg {height:205px;width:120px;position:relative;z-index:2;overflow:visible}
 .body-halo {position:absolute;width:145px;height:145px;border-radius:50%;background:#daddff;filter:none;opacity:.6}
-.body-silhouette {fill:currentColor}.body-torso {transform-box:fill-box;transform-origin:center;transition:transform .25s ease}
-.body-arm,.body-leg {fill:none;stroke:currentColor;stroke-width:13;stroke-linecap:round}
-.body-focus {fill:#dcf66e;opacity:.8;mix-blend-mode:screen}
-.body-label {position:absolute;bottom:8px;z-index:3;background:#fff;color:#66718a;border-radius:20px;padding:4px 9px;font-size:9px;font-weight:700}
-.bmi-underweight .body-torso {transform:scaleX(.78)}.bmi-underweight .body-arm,.bmi-underweight .body-leg{stroke-width:10}
-.bmi-normal .body-torso {transform:scaleX(.96)}
-.bmi-overweight .body-torso {transform:scaleX(1.16)}.bmi-overweight .body-visual{color:#e49a31;background:linear-gradient(180deg,#fff1d8,#fff8ec)}
-.bmi-obese .body-torso {transform:scaleX(1.36)}.bmi-obese .body-arm{stroke-width:16}.bmi-obese .body-visual{color:#ef715e;background:linear-gradient(180deg,#ffe3dc,#fff3ef)}
+.body-person {filter:drop-shadow(0 8px 10px rgba(38,43,92,.15))}
+.body-skin {fill:#efc4a5;stroke:#9c6c62;stroke-width:1.2;stroke-linejoin:round}
+.body-limb {fill:none;stroke:#efc4a5;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 0 #9c6c62)}
+.body-top {fill:#fff;stroke:#5c5f82;stroke-width:1.2;stroke-linejoin:round}
+.body-bottom {fill:#5b60e5;stroke:#3c408f;stroke-width:1.2;stroke-linejoin:round}
+.body-figure-female .body-bottom {fill:#16a887;stroke:#0b725d}
+.body-detail {fill:none;stroke:#b57769;stroke-width:1.2;stroke-linecap:round;opacity:.7}
+.body-label {position:absolute;bottom:8px;z-index:3;background:#fff;color:#56647a;border-radius:20px;padding:4px 9px;font-size:9px;font-weight:800;box-shadow:0 4px 12px rgba(48,55,95,.08)}
+.body-gender-badge {position:absolute;top:9px;right:9px;z-index:3;background:#fff;color:#4f55d3;border-radius:20px;padding:4px 8px;font-size:9px;font-weight:900}
+.fat-defined .body-visual,.fat-lean .body-visual {background:linear-gradient(180deg,#e9edff,#f6f7ff)}
+.fat-fit .body-visual,.fat-average .body-visual {background:linear-gradient(180deg,#e5fbf4,#f5fffb)}
+.fat-high .body-visual {background:linear-gradient(180deg,#fff2da,#fffaf0)}
+.fat-very-high .body-visual {background:linear-gradient(180deg,#ffe8e1,#fff6f2)}
+.body-fat-reading {display:grid;grid-template-columns:auto auto;align-items:end;justify-content:start;column-gap:7px;margin:10px 0 8px;padding:8px 10px;border-radius:13px;background:rgba(255,255,255,.76);border:1px solid rgba(91,96,229,.1)}
+.body-fat-reading>span {grid-column:1/-1;color:#758196;font-size:10px;font-weight:700}
+.body-fat-reading>strong {color:#273653;font:800 20px/1.1 'Manrope'}
+.body-fat-reading>small {color:#77849a;font-size:9px;font-weight:700;padding-bottom:2px}
+.bmi-overweight .body-visual{color:#e49a31}.bmi-obese .body-visual{color:#ef715e}
 .bmi-reading>span {display:block;color:#68768b;font-size:12px;font-weight:700}.bmi-reading>strong {display:block;color:#293452;font:800 42px/1.2 'Manrope';margin:3px 0}.bmi-reading>b {color:#585dde;font-size:15px}.bmi-overweight .bmi-reading>b{color:#d5851c}.bmi-obese .bmi-reading>b{color:#e35f4e}
 .bmi-reading p {color:#68768b;font-size:12px;line-height:1.65;margin:7px 0 15px}
 .bmi-scale {height:8px;border-radius:10px;background:linear-gradient(90deg,#48b9e6 0 14%,#28bc92 14% 42%,#f0ae39 42% 65%,#ef6757 65%);position:relative;direction:ltr}

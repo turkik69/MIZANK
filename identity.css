@@ -235,6 +235,11 @@ body:before {content:'';position:fixed;z-index:2000;pointer-events:none;top:0;le
 .screen-title,.today-topline .screen-title {color:#16253d;font-weight:700;text-shadow:none;filter:none}
 .screen-subtitle {color:#66758b}
 .profile-trigger {background:linear-gradient(145deg,#6c6fec,#555bdc);color:#fff;border:0;box-shadow:0 8px 20px rgba(91,94,222,.24)}
+.welcome-art {background:linear-gradient(155deg,#31377e 0%,#555bdc 58%,#16a887 145%);box-shadow:0 22px 48px rgba(65,70,165,.2)}
+.welcome-art:before {background:#7377ee;opacity:.48;filter:none}
+.brand-symbol {background:#dcf66e;color:#303675}.welcome-art-foot{color:#eef0ff}.welcome-top i{color:#dcf66e}
+.art-orbit {border-color:rgba(255,255,255,.28)}.orbit-two{border-color:rgba(220,246,110,.55)}.orbit-two:before{background:#ff9a78}
+.welcome-panel h1 em {color:#545be0}.restore-inline{background:#eef0ff;color:#535f78}.restore-inline button{color:#4f55cf}
 
 .today-hero {background:linear-gradient(135deg,#333a80 0%,#5058d8 58%,#695ee5 100%);box-shadow:0 20px 42px rgba(72,74,177,.23);border:1px solid rgba(255,255,255,.14)}
 .today-hero:before {width:300px;height:300px;border:45px solid rgba(220,246,110,.09);left:-170px;top:-160px}
@@ -258,9 +263,11 @@ body:before {content:'';position:fixed;z-index:2000;pointer-events:none;top:0;le
 .dashboard-details summary,.meal-library summary,.routine-library summary,.settings-optional summary {border:0;background:#fff;color:#23314b;box-shadow:0 10px 25px rgba(48,61,118,.07)}
 .dashboard-details[open] summary,.meal-library[open] summary,.routine-library[open] summary,.settings-optional[open] summary {background:#eceeff;border:0;color:#444ac2}
 .meal-mode-tabs button.active,.btn-primary {background:linear-gradient(135deg,#5d61e7,#4a50cd);color:#fff;border-color:#555bda}
+.btn-cyan {background:linear-gradient(135deg,#2da9d7,#1686c4)}.btn-coral{background:linear-gradient(135deg,#ff816a,#ed6253)}.btn-purple{background:linear-gradient(135deg,#8a67df,#6950c3)}
 .meal-summary {background:linear-gradient(90deg,#eceeff,#e7fbf3);border:0;color:#39448c}
 .bottom-nav {bottom:0;width:100%;max-width:680px;height:calc(76px + env(safe-area-inset-bottom));padding:6px 9px env(safe-area-inset-bottom);border-radius:24px 24px 0 0;background:#fff;border:0;box-shadow:0 -10px 32px rgba(40,51,100,.11)}
 .nav-item {color:#758298}.nav-item.active {background:linear-gradient(135deg,#6266e9,#4f55d3);color:#fff;box-shadow:0 8px 18px rgba(83,88,215,.22)}
+.more-icon.water {background:#dff7fb;color:#168ca8}.more-icon.ai {background:#ece9ff;color:#6862d8}.more-icon.settings {background:#fff0df;color:#e07c35}
 
 .bmi-card {display:grid;grid-template-columns:145px 1fr;gap:18px;align-items:center;background:linear-gradient(145deg,#f0f1ff,#f8fffc);border:1px solid #e1e5f7;border-radius:22px;padding:17px}
 .body-visual {height:235px;position:relative;display:grid;place-items:center;color:#6267df;overflow:hidden;border-radius:18px;background:linear-gradient(180deg,#e7e9ff,#f4f5ff)}

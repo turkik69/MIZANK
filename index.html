@@ -245,7 +245,7 @@ body {
 }
 
 </style>
-<link rel="stylesheet" href="./review.css?v=1">
+<link rel="stylesheet" href="./review.css?v=2">
 </head>
 <body>
 
@@ -1724,7 +1724,8 @@ function updateDashboard() {
   const fiber = todaysMeals.reduce((s, m) => s + (m.fiber || 0), 0);
 
   document.getElementById('user-welcome').textContent = `مرحباً ${p.name || currentUsername} 👋`;
-  document.getElementById('streak-days').textContent = `${appState.streak || 1} أيام`;
+  const streakCount = appState.streak || 1;
+  document.getElementById('streak-days').textContent = streakCount === 1 ? 'يوم واحد' : `${streakCount} أيام`;
   document.getElementById('dashboard-calories').textContent = p.dailyCalories;
   document.getElementById('dashboard-consumed').textContent = `${netCals} (صافي)`;
   const remainingCalories = Math.max(0, Math.round(p.dailyCalories - netCals));

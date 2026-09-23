@@ -245,7 +245,7 @@ body {
 }
 
 </style>
-<link rel="stylesheet" href="./review.css?v=3">
+<link rel="stylesheet" href="./review.css?v=4">
 </head>
 <body>
 
@@ -594,18 +594,31 @@ body {
       </details>
     </div>
 
-    <details class="meal-library">
-      <summary><span class="meal-library-icon">⌕</span><span><b>استكشف مكتبة الوجبات</b><small>بحث واختيار سريع من قائمتك المحلية</small></span><i>⌄</i></summary>
-      <div class="meal-library-body">
-        <input type="text" id="meals-search-input" class="form-input" placeholder="ابحث عن وجبة..." oninput="handleMealsSearch()">
-        <div class="meal-library-controls" id="meals-pill-container">
-          <select id="meal-category-select" class="form-select" onchange="selectSuggestedCategory(this.value)">
-            <option value="breakfast">الإفطار والتوست</option><option value="lunch">الغداء والكبسات</option><option value="dinner">العشاء والخفيف</option><option value="grills">المشاكيك والفرن</option><option value="fastfood">المطاعم والوجبات السريعة</option><option value="bakery">المخبوزات والخبز</option><option value="vegetables">الخضروات</option><option value="snacks">السناكات</option><option value="custom">وجباتي الخاصة</option><option value="fruits">الفواكه والتمر</option><option value="sweets">الكيك والحلويات</option><option value="drinks">المشروبات والعصائر</option>
-          </select>
-        </div>
+    <section class="meal-library meal-library-boxes">
+      <div class="meal-library-heading">
+        <div><span>مكتبة الوجبات</span><small>اختر النوع ثم شاهد وجباته وتفاصيله</small></div>
+        <span class="meal-library-icon">⌕</span>
+      </div>
+      <input type="text" id="meals-search-input" class="form-input" placeholder="ابحث في جميع الوجبات..." oninput="handleMealsSearch()">
+      <div class="meal-category-grid" id="meals-pill-container">
+        <button class="meal-category-box breakfast" onclick="selectSuggestedCategory('breakfast', this, 'الإفطار والتوست')"><span>🍳</span><b>الإفطار</b><small>توست وبيض وفطور</small><i>‹</i></button>
+        <button class="meal-category-box lunch" onclick="selectSuggestedCategory('lunch', this, 'الغداء والكبسات')"><span>🍛</span><b>الغداء</b><small>أرز وكبسات وصالونات</small><i>‹</i></button>
+        <button class="meal-category-box dinner" onclick="selectSuggestedCategory('dinner', this, 'العشاء والخفيف')"><span>🥗</span><b>العشاء</b><small>وجبات خفيفة ومتوازنة</small><i>‹</i></button>
+        <button class="meal-category-box grills" onclick="selectSuggestedCategory('grills', this, 'المشاوي والفرن')"><span>🍢</span><b>المشاوي</b><small>مشاكيك وأطباق الفرن</small><i>‹</i></button>
+        <button class="meal-category-box fastfood" onclick="selectSuggestedCategory('fastfood', this, 'المطاعم والوجبات السريعة')"><span>🍔</span><b>المطاعم</b><small>وجبات سريعة ومختارة</small><i>‹</i></button>
+        <button class="meal-category-box bakery" onclick="selectSuggestedCategory('bakery', this, 'المخبوزات والخبز')"><span>🥖</span><b>المخبوزات</b><small>خبز ومعجنات</small><i>‹</i></button>
+        <button class="meal-category-box vegetables" onclick="selectSuggestedCategory('vegetables', this, 'الخضروات')"><span>🥦</span><b>الخضروات</b><small>طازجة ومطبوخة</small><i>‹</i></button>
+        <button class="meal-category-box snacks" onclick="selectSuggestedCategory('snacks', this, 'السناكات')"><span>🥜</span><b>السناكات</b><small>خيارات بين الوجبات</small><i>‹</i></button>
+        <button class="meal-category-box fruits" onclick="selectSuggestedCategory('fruits', this, 'الفواكه والتمر')"><span>🍎</span><b>الفواكه</b><small>فواكه طازجة وتمر</small><i>‹</i></button>
+        <button class="meal-category-box sweets" onclick="selectSuggestedCategory('sweets', this, 'الكيك والحلويات')"><span>🍰</span><b>الحلويات</b><small>كيك وحلى</small><i>‹</i></button>
+        <button class="meal-category-box drinks" onclick="selectSuggestedCategory('drinks', this, 'المشروبات والعصائر')"><span>☕</span><b>المشروبات</b><small>قهوة وعصائر</small><i>‹</i></button>
+        <button class="meal-category-box custom" onclick="selectSuggestedCategory('custom', this, 'وجباتي الخاصة')"><span>⭐</span><b>وجباتي</b><small>محفوظاتك الشخصية</small><i>‹</i></button>
+      </div>
+      <div id="meal-category-panel" class="meal-category-panel" hidden>
+        <div class="meal-category-panel-head"><div><small>النوع المختار</small><b id="meal-category-panel-title">الإفطار والتوست</b></div><button onclick="closeMealCategory()">إغلاق</button></div>
         <div id="suggested-meals-container"></div>
       </div>
-    </details>
+    </section>
   </div>
 
   <!-- FASTING TRACKER SCREEN -->
@@ -1380,16 +1393,21 @@ function handleMealsSearch() {
   const query = document.getElementById('meals-search-input').value.trim();
   const pillContainer = document.getElementById('meals-pill-container');
   const container = document.getElementById('suggested-meals-container');
+  const panel = document.getElementById('meal-category-panel');
+  const panelTitle = document.getElementById('meal-category-panel-title');
   if (!container) return;
 
   if (!query) {
     mealLibraryLimit = 6;
     if (pillContainer) pillContainer.style.display = 'grid';
-    renderSuggestedMeals();
+    if (panel) panel.hidden = true;
+    document.querySelectorAll('.meal-category-box').forEach(box => box.classList.remove('active'));
     return;
   }
 
   if (pillContainer) pillContainer.style.display = 'none';
+  if (panel) panel.hidden = false;
+  if (panelTitle) panelTitle.textContent = `نتائج البحث: ${query}`;
 
   const results = [];
   for (const category in suggestedMealsData) {
@@ -1442,14 +1460,29 @@ function removeCustomMeal(idx) {
   showToast('تم حذف الوجبة من قائمتك الخاصة', 'info');
 }
 
-function selectSuggestedCategory(cat, el) {
+function selectSuggestedCategory(cat, el, label) {
   currentSuggestedCategory = cat;
   mealLibraryLimit = 6;
-  document.querySelectorAll('#meals-screen .pill-container .pill').forEach(p => p.classList.remove('active'));
+  document.getElementById('meals-search-input').value = '';
+  document.getElementById('meals-pill-container').style.display = 'grid';
+  document.querySelectorAll('.meal-category-box').forEach(box => box.classList.remove('active'));
   if (el) el.classList.add('active');
-  const select = document.getElementById('meal-category-select');
-  if (select && select.value !== cat) select.value = cat;
+  const panel = document.getElementById('meal-category-panel');
+  const panelTitle = document.getElementById('meal-category-panel-title');
+  if (panel) panel.hidden = false;
+  if (panelTitle) panelTitle.textContent = label || el?.querySelector('b')?.textContent || 'الوجبات';
   renderSuggestedMeals();
+  requestAnimationFrame(() => panel?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+}
+
+function closeMealCategory() {
+  const panel = document.getElementById('meal-category-panel');
+  if (panel) panel.hidden = true;
+  const search = document.getElementById('meals-search-input');
+  if (search) search.value = '';
+  const grid = document.getElementById('meals-pill-container');
+  if (grid) grid.style.display = 'grid';
+  document.querySelectorAll('.meal-category-box').forEach(box => box.classList.remove('active'));
 }
 
 function addPresetCombo(name, cal, p, c, f, sugar, fiber) {

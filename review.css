@@ -347,3 +347,111 @@ body:before{
   .dashboard-grid{gap:7px!important}.metric-card{padding:14px!important}.nav-label{font-size:8px}
   .meal-category-grid{grid-template-columns:1fr}
 }
+
+/* ==========================================================
+   MIZANK BOLD — expressive 3D identity proposal
+   ========================================================== */
+:root{
+  --miz-bg:#f5f1ff;
+  --miz-surface:#fffdf8;
+  --miz-ink:#17132b;
+  --miz-muted:#706a86;
+  --miz-line:#ded6f0;
+  --miz-teal:#00b8a9;
+  --miz-teal-deep:#007f78;
+  --miz-cyan:#24d3ee;
+  --miz-navy:#17132b;
+  --miz-lime:#b9f227;
+  --miz-peach:#ff9f78;
+  --miz-coral:#ff5f6d;
+  --miz-violet:#7c3aed;
+  --miz-yellow:#ffcf4a;
+  --miz-shadow:0 7px 0 #ddd4ee,0 18px 32px rgba(52,36,94,.12);
+  --review-purple:#7c3aed;
+  --accent-purple:#7c3aed;
+  --accent-emerald:#00b8a9;
+  --accent-cyan:#24b9d7;
+  --accent-coral:#ff5f6d;
+  --accent-amber:#ffb82e;
+}
+html,body{background:#f5f1ff!important;color:var(--miz-ink)!important}
+body{background:
+  radial-gradient(circle at 92% 4%,rgba(255,207,74,.35),transparent 18rem),
+  radial-gradient(circle at 4% 28%,rgba(36,211,238,.22),transparent 22rem),
+  radial-gradient(circle at 90% 78%,rgba(124,58,237,.13),transparent 24rem),
+  linear-gradient(180deg,#fff8ee 0%,#f4f0ff 46%,#eefbff 100%)!important}
+body:before{background:#fff8ee}
+.screen-kicker{color:var(--miz-violet)}
+.brand-symbol{background:linear-gradient(145deg,#7c3aed,#ff5f6d);border:2px solid #17132b;box-shadow:4px 5px 0 #17132b}
+.header-avatar{background:var(--miz-yellow);color:#17132b;border:2px solid #17132b;box-shadow:4px 5px 0 #17132b}
+
+/* 3D surfaces */
+.glass-card,.metric-card,.review-dashboard-section,.meal-composer,.meal-tool,.meal-library,.more-grid>button,.chat-shell{
+  border:2px solid #241d3a!important;
+  box-shadow:var(--miz-shadow)!important
+}
+.glass-card,.review-dashboard-section,.meal-composer,.meal-library,.chat-shell{border-radius:25px!important}
+.btn{border:2px solid #211a36!important;box-shadow:0 5px 0 #211a36!important;font-weight:800!important;transition:transform .12s,box-shadow .12s}
+.btn:active{transform:translateY(4px);box-shadow:0 1px 0 #211a36!important}
+.btn-primary{background:linear-gradient(135deg,#7c3aed,#a855f7)!important}
+.btn-cyan{background:linear-gradient(135deg,#24d3ee,#00a4c2)!important;color:#17132b!important}
+.btn-coral{background:linear-gradient(135deg,#ff7d6e,#ff4d67)!important}
+.btn-secondary{background:#fffdf8!important;border-color:#241d3a!important;color:#241d3a!important}
+.icon-btn,.meal-manual-btn{border:2px solid #241d3a!important;box-shadow:0 3px 0 #241d3a!important}
+.form-input,.form-select,textarea{border:2px solid #241d3a!important;background:#fff!important}
+.form-input:focus,.form-select:focus,textarea:focus{border-color:#7c3aed!important;box-shadow:0 0 0 4px rgba(124,58,237,.15)!important}
+
+/* Dashboard: illustrated, bold and playful */
+.daily-hero{min-height:228px;background:linear-gradient(125deg,#6d28d9 0%,#8b3fe8 48%,#ff5f6d 120%);border:2px solid #17132b;box-shadow:0 8px 0 #17132b,0 24px 42px rgba(75,36,139,.26)}
+.daily-hero:before{border-color:rgba(255,255,255,.22);box-shadow:0 0 0 32px rgba(255,255,255,.045),0 0 0 64px rgba(255,255,255,.025)}
+.hero-orbit{width:116px;height:116px;flex-basis:116px;background:conic-gradient(var(--miz-lime) var(--progress),rgba(255,255,255,.2) 0);border:2px solid #17132b;box-shadow:4px 6px 0 rgba(23,19,43,.65)}
+.hero-orbit:before{background:#4d1d9c;border-color:rgba(255,255,255,.2)}
+.hero-streak{background:#ffcf4a;color:#17132b;border:2px solid #17132b;box-shadow:3px 4px 0 #17132b}.hero-streak>span{background:#b9f227}.hero-streak>small{color:#5a4715}
+.hero-illustration{position:absolute;width:89px;height:135px;left:34%;bottom:-4px;z-index:1;filter:drop-shadow(5px 8px 0 rgba(23,19,43,.25))}
+.review-quick-actions button{border:2px solid #241d3a;background:#fffdf8;box-shadow:0 5px 0 #241d3a,0 13px 22px rgba(52,36,94,.1);transition:transform .12s,box-shadow .12s}
+.review-quick-actions button:active{transform:translateY(4px);box-shadow:0 1px 0 #241d3a}
+.quick-action-icon{border:1.5px solid #241d3a}.meals-icon{background:#eadcff;color:#6d28d9}.water-icon{background:#d8f8ff;color:#007d98}.move-icon{background:#eaffb8;color:#4f7011}.weight-icon{background:#ffe0d2;color:#c34f31}
+.metric-card{border:2px solid #241d3a!important;box-shadow:0 6px 0 #241d3a!important}.metric-weight{background:#ffe3d5!important}.metric-water{background:#dff9ff!important}.metric-icon{border:1.5px solid #241d3a}
+.section-heading i{background:linear-gradient(90deg,#7c3aed,#ff5f6d,#ffcf4a)}
+.review-dashboard-section>summary i{background:#e9ddff;color:#6d28d9;border:1.5px solid #241d3a}
+
+/* Meals: colorful shelves and tactile categories */
+.meal-header-icon,.secondary-header-icon{border:2px solid #241d3a;box-shadow:4px 5px 0 #241d3a}
+.meal-header-icon{background:linear-gradient(145deg,#ff5f6d,#ff9f78);color:#fff}
+.meal-today-card{background:linear-gradient(135deg,#6d28d9,#ff5f6d)!important;border:2px solid #17132b;box-shadow:0 7px 0 #17132b,0 18px 30px rgba(82,37,136,.2)}
+.meal-composer{background:#ffed9e!important}.meal-main-input{background:#fffdf8!important;border:2px solid #241d3a!important}
+.meal-composer-mark{background:#b9f227;color:#17132b;border:2px solid #17132b;box-shadow:2px 3px 0 #17132b}
+.meal-tool{background:#fffdf8!important}.meal-tool-icon,.meal-library-icon{border:1.5px solid #241d3a;box-shadow:2px 3px 0 #241d3a}
+.meal-library-boxes{background:#fffdf8!important}
+.meal-category-box{border:2px solid #241d3a;box-shadow:0 5px 0 #241d3a;transition:transform .12s,box-shadow .12s}
+.meal-category-box:active{transform:translateY(4px);box-shadow:0 1px 0 #241d3a}.meal-category-box.active{border-color:#241d3a;box-shadow:0 5px 0 #241d3a,0 0 0 4px #b9f227}
+.meal-category-box>span{border:1.5px solid #241d3a;box-shadow:2px 3px 0 #241d3a}
+.meal-category-box.breakfast{background:#ffe9a8}.meal-category-box.lunch{background:#cffff0}.meal-category-box.dinner{background:#e4ffad}.meal-category-box.grills{background:#ffd7c8}.meal-category-box.fastfood{background:#ffc86b}.meal-category-box.bakery{background:#f2d5b8}.meal-category-box.vegetables{background:#c9f6c8}.meal-category-box.snacks{background:#f4dfa7}.meal-category-box.fruits{background:#ffc9c9}.meal-category-box.sweets{background:#ffcce8}.meal-category-box.drinks{background:#c8f4ff}.meal-category-box.custom{background:#dfd2ff}
+.meal-category-panel{border:2px solid #241d3a;background:#f2ecff;box-shadow:0 5px 0 #241d3a}
+
+/* Strong themed secondary pages */
+.fasting-head{background:#dcd2ff;color:#6d28d9}.activity-head{background:#dfff97;color:#456800}.water-head{background:#bff3ff;color:#007b98}.settings-head{background:#ffd3c2;color:#b84228}
+.fasting-main-card{background:linear-gradient(145deg,#17132b,#5630a2)!important;border:2px solid #17132b!important;box-shadow:0 7px 0 #17132b,0 20px 35px rgba(49,26,96,.25)!important}
+.fasting-circle-bar{stroke:url(#fastingGradient);filter:drop-shadow(0 0 6px #24d3ee)}
+.workout-today-card{background:linear-gradient(135deg,#ff5f6d,#ff9f78)!important;border:2px solid #17132b!important;box-shadow:0 7px 0 #17132b!important}
+.workout-entry-card{background:#efffc7!important}.workout-programs-card{background:#ffe4d7!important}
+.water-progress-card{background:linear-gradient(145deg,#00a7c5,#24d3ee)!important;border:2px solid #17132b!important;box-shadow:0 7px 0 #17132b!important}.weight-entry-card{background:#fff0c2!important}
+.chat-shell{background:#f1ebff}.chat-welcome{background:linear-gradient(135deg,#d8cbff,#ffd5e7);border:2px solid #241d3a}.chat-composer .btn{background:#b9f227!important;color:#17132b!important}
+.settings-profile-card{background:linear-gradient(135deg,#6d28d9,#a855f7)!important;border:2px solid #17132b!important;box-shadow:0 7px 0 #17132b!important}.settings-backup-card{background:#dcfff3!important}.settings-notifications-card{background:#e7dcff!important}.settings-ai-card{background:#ffe2d5!important}
+
+/* Tool dashboard + illustration */
+.more-visual-banner{min-height:145px;margin-bottom:15px;padding:20px;border-radius:26px;background:linear-gradient(135deg,#7c3aed,#ff5f6d);border:2px solid #17132b;box-shadow:0 7px 0 #17132b,0 18px 30px rgba(72,34,124,.2);color:#fff;display:flex;align-items:center;justify-content:space-between;overflow:hidden}
+.more-visual-banner>div{display:flex;flex-direction:column;gap:4px;position:relative;z-index:1}.more-visual-banner span{font-size:10px;color:#f1eaff}.more-visual-banner b{font-size:16px}.more-visual-banner small{font-size:9px;color:#ffe8eb}.more-visual-banner svg{width:145px;height:102px;flex:0 0 145px;filter:drop-shadow(5px 7px 0 rgba(23,19,43,.3))}
+#more-screen .more-grid>button:nth-child(1){background:#cff7ff!important}#more-screen .more-grid>button:nth-child(2){background:#e4d8ff!important}#more-screen .more-grid>button:nth-child(3){background:#ffe2d5!important}
+.local-data-note{background:#e8ffae;border:2px solid #241d3a;box-shadow:0 5px 0 #241d3a}
+
+/* Navigation */
+.bottom-nav{background:#fffdf8!important;border:2px solid #241d3a!important;border-bottom:0!important;box-shadow:0 -8px 0 #241d3a,0 -18px 35px rgba(52,36,94,.12)!important}
+.nav-item.active{background:#7c3aed!important;color:#fff!important;box-shadow:0 4px 0 #241d3a!important;border:1.5px solid #241d3a}
+
+@media(max-width:520px){
+  .hero-illustration{width:78px;left:33%;opacity:.95}
+  .daily-hero{min-height:218px}.hero-orbit{width:105px;height:105px;flex-basis:105px}
+  .more-visual-banner svg{width:118px;flex-basis:118px}.more-visual-banner b{font-size:14px}
+}
+@media(max-width:380px){.hero-illustration{display:none}.more-visual-banner svg{width:96px;flex-basis:96px}}

@@ -286,6 +286,51 @@ body:before{
 .meal-category-panel[hidden]{display:none!important}.meal-category-panel-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;padding:2px 2px 10px;border-bottom:1px solid #e5efee}.meal-category-panel-head>div{display:flex;flex-direction:column}.meal-category-panel-head small{font-size:8px;color:var(--miz-muted)}.meal-category-panel-head b{font-size:13px}.meal-category-panel-head button{border:0;background:#e6f5f2;color:#087a78;border-radius:11px;padding:7px 10px;font:700 9px 'IBM Plex Sans Arabic';cursor:pointer}
 .meal-category-panel .food-item{background:#fff!important;padding:12px!important;margin-bottom:8px!important}.meal-category-panel .food-info>div:first-child{font-size:12px!important}.meal-category-panel .food-info>div:not(:first-child){font-size:9px!important}.meal-category-panel .icon-btn{font-size:9px!important;padding:7px 9px!important;white-space:nowrap}
 
+/* Secondary screens — one shared visual system */
+.secondary-header-icon{width:45px;height:45px;border-radius:16px;display:grid;place-items:center;font:800 21px/1 'Manrope';box-shadow:0 10px 24px rgba(23,54,101,.13)}
+.fasting-head{background:#edf0ff;color:#4f5ab7}.activity-head{background:#eef7d9;color:#6b8c28}.water-head{background:#e4f6fd;color:#159fc7}.settings-head{background:#fff0e8;color:#d87042}
+#fasting-screen.active,#workouts-screen.active,#water-screen.active,#settings-screen.active{display:flex;flex-direction:column}
+
+/* Fasting */
+#fasting-screen .screen-header{order:0}.fasting-main-card{order:1;background:linear-gradient(145deg,#192f5e,#5059aa)!important;border:0!important;color:#fff!important;border-radius:29px!important;padding:22px!important}
+.fasting-main-card .form-label{color:#dce2ff!important}.fasting-main-card .form-select{background:#fff!important}.fasting-main-card .fasting-circle-bg{stroke:rgba(255,255,255,.13)!important}
+.fasting-main-card .fasting-time-display{font:800 27px 'Manrope';color:#fff!important}.fasting-main-card .fasting-status-label{color:#cad8ff!important}
+.fasting-main-card>div[style*="color:var(--text-secondary)"]{color:#dbe3ff!important}.fasting-main-card span[style*="color:#fff"]{color:#fff!important}
+.fasting-main-card #fasting-edit-start-toggle{color:#dbe3ff!important}.fasting-main-card #fasting-edit-start-wrap{background:rgba(255,255,255,.09)!important}
+.fasting-history-card{order:2;border-radius:23px!important}.fasting-history-card h3:before{content:'◷';display:inline-grid;place-items:center;width:30px;height:30px;border-radius:11px;background:#edf0ff;color:#5660b7;margin-left:8px}
+
+/* Activity */
+#workouts-screen .screen-header{order:0}.workout-today-card{order:1;background:linear-gradient(135deg,#153463,#087a78)!important;border:0!important;color:#fff!important;border-radius:25px!important}
+.workout-today-card h3{color:#fff!important}.workout-today-card .message-box{background:rgba(255,255,255,.1)!important;border-color:rgba(255,255,255,.15)!important;color:#fff!important}.workout-today-card .food-item{background:rgba(255,255,255,.1)!important;border-color:rgba(255,255,255,.14)!important}.workout-today-card .food-info>div:first-child{color:#fff!important}
+.workout-entry-card{order:2;border-radius:25px!important}.workout-entry-card h3:before{content:'＋';display:inline-grid;place-items:center;width:31px;height:31px;border-radius:11px;background:#e0f7f2;color:#008f85;margin-left:8px}
+.workout-entry-card .pill-container{background:#f3f8f7;border-radius:15px;padding:4px!important;overflow:visible}.workout-entry-card .pill{flex:1;text-align:center;border:0!important;border-radius:12px!important;padding:9px 5px!important}.workout-entry-card .pill.active{box-shadow:0 5px 14px rgba(0,169,157,.16)}
+.workout-programs-card{order:3;background:#f9fbfb!important;border:1px solid var(--miz-line)!important;border-radius:23px!important}.workout-programs-card h3:before{content:'✦';display:inline-grid;place-items:center;width:30px;height:30px;border-radius:11px;background:#fff0e8;color:#d87042;margin-left:8px}.workout-programs-card .food-item{background:#fff!important}
+
+/* Water and weight */
+#water-screen .screen-header{order:0}.water-progress-card{order:1;background:linear-gradient(145deg,#0c7797,#25b9dc)!important;border:0!important;border-radius:29px!important;color:#fff!important;position:relative;overflow:hidden}
+.water-progress-card:after{content:'';position:absolute;width:180px;height:180px;border-radius:50%;border:1px solid rgba(255,255,255,.14);left:-80px;top:-90px;box-shadow:0 0 0 28px rgba(255,255,255,.035)}
+.water-progress-card #water-display{color:#fff!important;font:800 48px/1 'Manrope'}.water-progress-card>div:nth-child(2){color:#d8f5fb!important}.water-progress-card #water-current{color:#fff!important}
+.water-progress-card .btn{position:relative;z-index:1}.water-progress-card .btn-cyan{background:#fff!important;color:#0b819f!important}.water-progress-card .btn-secondary{background:rgba(255,255,255,.13)!important;border-color:rgba(255,255,255,.2)!important;color:#fff!important}
+.weight-entry-card{order:2;border-radius:24px!important}.weight-entry-card h3:before{content:'↘';display:inline-grid;place-items:center;width:31px;height:31px;border-radius:11px;background:#fff0e8;color:#d87042;margin-left:8px}
+
+/* Assistant */
+#chat-screen{min-height:calc(100dvh - 100px)}.chat-clear-btn{border:0;background:#fff0ed;color:#c85d59;border-radius:13px;padding:9px 11px;font:700 9px 'IBM Plex Sans Arabic';cursor:pointer}
+.chat-shell{min-height:420px;height:calc(100dvh - 260px);background:#fff;border:1px solid var(--miz-line);border-radius:25px;padding:13px;box-shadow:var(--miz-shadow);display:flex;flex-direction:column}
+.chat-welcome{display:flex;align-items:center;gap:10px;padding:10px 11px;margin-bottom:8px;background:linear-gradient(135deg,#e2f7f3,#e9f5fb);border-radius:17px}.chat-welcome>span{width:34px;height:34px;border-radius:12px;background:#fff;color:#008f85;display:grid;place-items:center}.chat-welcome>div{display:flex;flex-direction:column}.chat-welcome b{font-size:12px}.chat-welcome small{font-size:9px;color:var(--miz-muted)}
+#chat-messages{flex:1;overflow-y:auto;padding:4px 2px}.chat-shell .message-box{max-width:88%;margin-bottom:8px!important;border-radius:17px!important;line-height:1.7}.chat-shell .message-box[style*="background: var(--accent-emerald)"]{margin-right:auto!important;background:#e0f7f2!important;color:#164d4a!important}
+.chat-composer{display:grid;grid-template-columns:1fr 52px;gap:8px;margin-top:10px}.chat-composer .form-input{height:52px}.chat-composer .btn{width:52px!important;min-width:52px;padding:0!important;border-radius:16px!important;font:800 22px/1 'Manrope'!important}
+
+/* Settings: personal first, technical last */
+#settings-screen .screen-header{order:0}.settings-profile-card{order:1;background:linear-gradient(135deg,#153463,#087a78)!important;border:0!important;color:#fff!important;border-radius:25px!important}.settings-profile-card h3{color:#fff!important}
+.settings-profile-card .message-box{background:rgba(255,255,255,.1)!important;border-color:rgba(255,255,255,.14)!important;color:#fff!important}.settings-profile-card .message-box strong{color:#fff!important}
+.settings-profile-card .btn-secondary{background:rgba(255,255,255,.12)!important;border-color:rgba(255,255,255,.18)!important;color:#fff!important}
+.settings-backup-card{order:2;border-right:4px solid var(--miz-teal)!important}.settings-notifications-card{order:3;border-right:4px solid #5863bb!important}.settings-ai-card{order:4;border-right:4px solid #d87042!important}
+.settings-backup-card h3:before,.settings-notifications-card h3:before,.settings-ai-card h3:before{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:11px;margin-left:8px}
+.settings-backup-card h3:before{content:'⇩';background:#e0f7f2;color:#008f85}.settings-notifications-card h3:before{content:'◉';background:#edf0ff;color:#5863bb}.settings-ai-card h3:before{content:'✦';background:#fff0e8;color:#d87042}
+
+/* More becomes a small tool dashboard */
+#more-screen .more-grid{grid-template-columns:repeat(2,1fr)}#more-screen .more-grid>button{min-height:130px;flex-direction:column;align-items:flex-start;position:relative;padding:16px}#more-screen .more-grid>button>span:nth-child(2){flex:0}#more-screen .more-grid>button>i{position:absolute;left:14px;top:17px}#more-screen .more-grid>button:last-child{grid-column:1/-1;min-height:96px;flex-direction:row;align-items:center}
+
 @media(max-width:520px){
   .screen{padding-inline:12px}.screen-title{font-size:22px!important}.glass-card{padding:16px!important}
   .daily-hero{min-height:202px;padding:21px 18px;border-radius:27px}.hero-number strong{font-size:35px}
@@ -294,6 +339,7 @@ body:before{
   .macro-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}.macro-item{padding-inline:4px!important}
   .meal-today-card,.meal-composer{border-radius:22px}.meal-section-label small{display:none}
   .meal-library-boxes{padding:14px!important}.meal-category-grid{gap:7px}.meal-category-box{min-height:88px;padding:10px}
+  .chat-shell{height:calc(100dvh - 250px);min-height:390px}
 }
 @media(max-width:380px){
   .daily-hero{padding-inline:15px}.hero-orbit{width:100px;height:100px;flex-basis:100px}

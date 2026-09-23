@@ -245,7 +245,7 @@ body {
 }
 
 </style>
-<link rel="stylesheet" href="./review.css?v=4">
+<link rel="stylesheet" href="./review.css?v=5">
 </head>
 <body>
 
@@ -625,12 +625,14 @@ body {
   <div id="fasting-screen" class="screen">
     <div class="screen-header">
       <div>
-        <div class="screen-title">مؤقت الصيام المتقطع ⏱️</div>
-        <div class="screen-subtitle">تتبع ساعات الصيام وتفعيل مرحلة حرق الدهون</div>
+        <div class="screen-kicker">روتينك اليومي</div>
+        <div class="screen-title">الصيام المتقطع</div>
+        <div class="screen-subtitle">وقت واضح، تقدم هادئ، وسجل مرتب</div>
       </div>
+      <span class="secondary-header-icon fasting-head">◷</span>
     </div>
 
-    <div class="glass-card" style="text-align:center;">
+    <div class="glass-card fasting-main-card" style="text-align:center;">
       <div class="form-group" style="max-width:260px; margin:0 auto 15px;">
         <label class="form-label">نظام الصيام المفضل</label>
         <select id="fasting-protocol-select" class="form-select" onchange="changeFastingProtocol()">
@@ -683,8 +685,8 @@ body {
       </div>
     </div>
 
-    <div class="glass-card">
-      <h3 style="color: #fff; margin-bottom: 12px; font-size:15px; font-weight:800;">📜 سجل جلسات الصيام السابقة</h3>
+    <div class="glass-card fasting-history-card">
+      <h3 style="color: #fff; margin-bottom: 12px; font-size:15px; font-weight:800;">سجل جلسات الصيام</h3>
       <div id="fasting-history-list"></div>
     </div>
   </div>
@@ -710,15 +712,17 @@ body {
   <div id="workouts-screen" class="screen">
     <div class="screen-header">
       <div>
-        <div class="screen-title">سجل التمارين واللياقة 🏋️‍♂️</div>
-        <div class="screen-subtitle">نط الحبل، تمارين المعدة والبطن، والعدات</div>
+        <div class="screen-kicker">حركتك اليوم</div>
+        <div class="screen-title">النشاط والتمارين</div>
+        <div class="screen-subtitle">سجّل الحركة وشاهد ما أنجزته</div>
       </div>
+      <span class="secondary-header-icon activity-head">↗</span>
     </div>
 
     <!-- Ready Abs & Core Routines -->
-    <div class="glass-card" style="border-color: var(--accent-coral);">
-      <h3 style="color: var(--accent-coral); margin-bottom: 8px; font-size:15px; font-weight:800;">🔥 برامج تمارين المعدة والبطن الموصى بها</h3>
-      <p style="font-size:12px; color:var(--text-secondary); margin-bottom:12px;">مجموعات تمارين محسوبة الجولات والعدات لنحت وتقوية البطن:</p>
+    <div class="glass-card workout-programs-card" style="border-color: var(--accent-coral);">
+      <h3 style="color: var(--accent-coral); margin-bottom: 8px; font-size:15px; font-weight:800;">برامج جاهزة</h3>
+      <p style="font-size:12px; color:var(--text-secondary); margin-bottom:12px;">اختر برنامجًا محسوب الوقت والسعرات:</p>
       
       <div class="food-item">
         <div class="food-info">
@@ -740,8 +744,8 @@ body {
     </div>
 
     <!-- Manual Workout Log Card -->
-    <div class="glass-card">
-      <h3 style="color: var(--accent-emerald); margin-bottom: 12px; font-size:15px; font-weight:800;">➕ إضافة نشاط أو تمرين مخصص</h3>
+    <div class="glass-card workout-entry-card">
+      <h3 style="color: var(--accent-emerald); margin-bottom: 12px; font-size:15px; font-weight:800;">سجّل نشاطًا جديدًا</h3>
       
       <div class="form-group">
         <label class="form-label">نوع التمرين</label>
@@ -806,8 +810,8 @@ body {
       <button class="btn btn-primary" onclick="addWorkoutLog()">💪 تسجيل التمرين باليوميات</button>
     </div>
 
-    <div class="glass-card">
-      <h3 style="color: #fff; margin-bottom: 12px; font-size:15px; font-weight:800;">🔥 تمارين اليوم المسجلة</h3>
+    <div class="glass-card workout-today-card">
+      <h3 style="color: #fff; margin-bottom: 12px; font-size:15px; font-weight:800;">إنجاز اليوم</h3>
       <div id="workouts-list"></div>
     </div>
   </div>
@@ -816,12 +820,14 @@ body {
   <div id="water-screen" class="screen">
     <div class="screen-header">
       <div>
-        <div class="screen-title">متابعة الماء والوزن 💧⚖️</div>
-        <div class="screen-subtitle">متابعة الترطيب وتتبع تغيرات الوزن</div>
+        <div class="screen-kicker">قياساتك اليومية</div>
+        <div class="screen-title">الماء والوزن</div>
+        <div class="screen-subtitle">حدّث الترطيب والقياس بخطوة واحدة</div>
       </div>
+      <span class="secondary-header-icon water-head">◒</span>
     </div>
 
-    <div class="glass-card" style="text-align:center; padding:25px 20px;">
+    <div class="glass-card water-progress-card" style="text-align:center; padding:25px 20px;">
       <div style="font-size: 42px; font-weight: 900; color: var(--accent-cyan);" id="water-display">0%</div>
       <div style="color: var(--text-secondary); font-size: 14px; font-weight: 700; margin:10px 0;">
         شربت <span id="water-current" style="color:#06b6d4; font-weight:900;">0</span> من <span id="water-target">8</span> أكواب اليوم
@@ -832,8 +838,8 @@ body {
       </div>
     </div>
 
-    <div class="glass-card">
-      <h3 style="color: var(--accent-emerald); margin-bottom: 12px; font-size:15px; font-weight:800;">تحديث الوزن اليوم</h3>
+    <div class="glass-card weight-entry-card">
+      <h3 style="color: var(--accent-emerald); margin-bottom: 12px; font-size:15px; font-weight:800;">قراءة الوزن</h3>
       <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
         <div class="form-group">
           <label class="form-label">الوزن (كغ)</label>
@@ -852,17 +858,18 @@ body {
   <div id="chat-screen" class="screen">
     <div class="screen-header">
       <div>
-        <div class="screen-title">المساعد الصحي الناطق 🤖🔊</div>
-        <div class="screen-subtitle">استشر الذكاء الاصطناعي مع دعم النطق الصوتي</div>
+        <div class="screen-kicker">مساعد ميزانك</div>
+        <div class="screen-title">اسأل عن يومك</div>
+        <div class="screen-subtitle">إجابات مرتبطة ببياناتك وسجلاتك</div>
       </div>
-      <button class="icon-btn" onclick="clearChat()">🗑️ مسح</button>
+      <button class="chat-clear-btn" onclick="clearChat()">مسح المحادثة</button>
     </div>
 
-    <div id="chat-messages" style="height: 380px; overflow-y: auto; margin-bottom: 15px; padding-right: 5px;"></div>
+    <div class="chat-shell"><div class="chat-welcome"><span>✦</span><div><b>أنا معك</b><small>اسألني عن وجباتك أو نشاطك أو تقدمك</small></div></div><div id="chat-messages"></div></div>
 
-    <div style="display: flex; gap: 8px;">
+    <div class="chat-composer">
       <input type="text" id="chat-input" class="form-input" placeholder="اسأل المساعد الذكي..." style="margin: 0;" onkeypress="if(event.key==='Enter') sendChat()">
-      <button class="btn btn-primary" style="width: auto; padding: 0 20px;" onclick="sendChat()">إرسال</button>
+      <button class="btn btn-primary" onclick="sendChat()">↑</button>
     </div>
   </div>
 
@@ -870,13 +877,15 @@ body {
   <div id="settings-screen" class="screen">
     <div class="screen-header">
       <div>
-        <div class="screen-title">الإعدادات والتنبيهات ⚙️🔔</div>
-        <div class="screen-subtitle">إدارة الإشعارات ومفاتيح الذكاء الاصطناعي</div>
+        <div class="screen-kicker">حسابك وخصوصيتك</div>
+        <div class="screen-title">الملف والإعدادات</div>
+        <div class="screen-subtitle">كل إعداد في مكانه الواضح</div>
       </div>
+      <span class="secondary-header-icon settings-head">⚙</span>
     </div>
 
-    <div class="glass-card" style="border-color: var(--accent-purple);">
-      <h3 style="color: var(--accent-purple); margin-bottom: 8px; font-size:15px; font-weight:800;">🔔 نظام التذكيرات والإشعارات الذكية</h3>
+    <div class="glass-card settings-notifications-card" style="border-color: var(--accent-purple);">
+      <h3 style="color: var(--accent-purple); margin-bottom: 8px; font-size:15px; font-weight:800;">التذكيرات الذكية</h3>
       <p style="font-size:12px; color:var(--text-secondary); margin-bottom:14px;">تفعيل التنبيهات الدورية لشرب الماء، إدخال الوجبات، وتنبيهات الصيام</p>
       
       <div class="form-group">
@@ -896,8 +905,8 @@ body {
       </div>
     </div>
 
-    <div class="glass-card">
-      <h3 style="color: var(--accent-emerald); margin-bottom: 12px; font-size:15px; font-weight:800;">🔑 مفتاح Google Gemini API</h3>
+    <div class="glass-card settings-ai-card">
+      <h3 style="color: var(--accent-emerald); margin-bottom: 12px; font-size:15px; font-weight:800;">إعدادات الذكاء الاصطناعي</h3>
       <div class="form-group">
         <label class="form-label">مفتاح API (مطلوب لتفعيل المساعد وتحليل الوجبات)</label>
         <input type="password" id="gemini-key-input" class="form-input" placeholder="AIzaSy... أو AQ...">
@@ -914,8 +923,8 @@ body {
       </div>
     </div>
 
-    <div class="glass-card">
-      <h3 style="color: var(--accent-emerald); margin-bottom: 4px; font-size:15px; font-weight:800;">💾 النسخة الاحتياطية</h3>
+    <div class="glass-card settings-backup-card">
+      <h3 style="color: var(--accent-emerald); margin-bottom: 4px; font-size:15px; font-weight:800;">النسخة الاحتياطية</h3>
       <p style="font-size:11px; color:var(--text-muted); margin-bottom:12px;">بياناتك محفوظة بمتصفحك فقط — خذ نسخة احتياطية بشكل دوري لتحفظها بمكان آمن (الملفات، iCloud، إلخ) تحسباً لأي مشكلة</p>
       <div id="backup-status-display" style="margin-bottom:12px;"></div>
       <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
@@ -925,8 +934,8 @@ body {
       <input type="file" id="backup-import-input" accept="application/json" style="display:none;" onchange="handleImportBackup(event)">
     </div>
 
-    <div class="glass-card">
-      <h3 style="color: #fff; margin-bottom: 12px; font-size:15px; font-weight:800;">👤 الملف الشخصي</h3>
+    <div class="glass-card settings-profile-card">
+      <h3 style="color: #fff; margin-bottom: 12px; font-size:15px; font-weight:800;">ملفي الشخصي</h3>
       <div id="profile-info"></div>
       <div style="display:flex; flex-direction:column; gap:10px; margin-top:15px;">
         <button class="btn btn-secondary" onclick="editProfile()">✏️ تعديل بيانات الحساب</button>

@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <!-- تثبيت الشاشة وحظر الزووم تماماً -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<meta name="theme-color" content="#10b981">
+<meta name="theme-color" content="#f7f8fc">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="مستشار صحتك">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="ميزانك">
 
 <!-- PWA Manifest مع أيقونة الميزان المخصصة للتثبيت على سطح المكتب -->
 <link rel="manifest" href="data:application/manifest+json;charset=utf-8,%7B%22name%22%3A%22%D9%85%D8%B3%D8%AA%D8%B4%D8%A7%D8%B1%20%D8%B5%D8%AD%D8%AA%D9%83%20%D8%A7%D9%84%D8%B0%D9%83%D9%8A%22%2C%22short_name%22%3A%22%D8%B5%D8%AD%D8%AA%D9%83%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23070a16%22%2C%22theme_color%22%3A%22%2310b981%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage%2Fsvg%2Bxml%3Butf8%2C%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%20512%20512%27%3E%3Crect%20width%3D%27512%27%20height%3D%27512%27%20rx%3D%27120%27%20fill%3D%27%2523070a16%27%2F%3E%3Crect%20x%3D%2770%27%20y%3D%2770%27%20width%3D%27372%27%20height%3D%27372%27%20rx%3D%2770%27%20fill%3D%27%2523111827%27%20stroke%3D%27%252310b981%27%20stroke-width%3D%2722%27%2F%3E%3Crect%20x%3D%27150%27%20y%3D%27115%27%20width%3D%27212%27%20height%3D%2780%27%20rx%3D%2720%27%20fill%3D%27%2523042f2e%27%20stroke%3D%27%252310b981%27%20stroke-width%3D%2710%27%2F%3E%3Ccircle%20cx%3D%27180%27%20cy%3D%27155%27%20r%3D%278%27%20fill%3D%27%252310b981%27%2F%3E%3Cpath%20d%3D%27M210%20155h90%27%20stroke%3D%27%252310b981%27%20stroke-width%3D%2714%27%20stroke-linecap%3D%27round%27%20stroke-dasharray%3D%2715%2010%27%2F%3E%3Cpath%20d%3D%27M150%20360%20a130%20130%200%200%201%20212%200%27%20fill%3D%27none%27%20stroke%3D%27%252306b6d4%27%20stroke-width%3D%2724%27%20stroke-linecap%3D%27round%27%2F%3E%3Cpath%20d%3D%27M256%20360%20l45%20-70%27%20stroke%3D%27%2523f43f5e%27%20stroke-width%3D%2716%27%20stroke-linecap%3D%27round%27%2F%3E%3Ccircle%20cx%3D%27256%27%20cy%3D%27360%27%20r%3D%2722%27%20fill%3D%27%2523f43f5e%27%20%2F%3E%3C%2Fsvg%3E%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%22%2C%22purpose%22%3A%22any%20maskable%22%7D%5D%7D">
@@ -17,48 +17,16 @@
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='120' fill='%23070a16'/><rect x='70' y='70' width='372' height='372' rx='70' fill='%23111827' stroke='%2310b981' stroke-width='22'/><rect x='150' y='115' width='212' height='80' rx='20' fill='%23042f2e' stroke='%2310b981' stroke-width='10'/><circle cx='180' cy='155' r='8' fill='%2310b981'/><path d='M210 155h90' stroke='%2310b981' stroke-width='14' stroke-linecap='round' stroke-dasharray='15 10'/><path d='M150 360 a130 130 0 0 1 212 0' fill='none' stroke='%2306b6d4' stroke-width='24' stroke-linecap='round'/><path d='M256 360 l45 -70' stroke='%23f43f5e' stroke-width='16' stroke-linecap='round'/><circle cx='256' cy='360' r='22' fill='%23f43f5e'/></svg>">
 <link rel="apple-touch-icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='120' fill='%23070a16'/><rect x='70' y='70' width='372' height='372' rx='70' fill='%23111827' stroke='%2310b981' stroke-width='22'/><rect x='150' y='115' width='212' height='80' rx='20' fill='%23042f2e' stroke='%2310b981' stroke-width='10'/><circle cx='180' cy='155' r='8' fill='%2310b981'/><path d='M210 155h90' stroke='%2310b981' stroke-width='14' stroke-linecap='round' stroke-dasharray='15 10'/><path d='M150 360 a130 130 0 0 1 212 0' fill='none' stroke='%2306b6d4' stroke-width='24' stroke-linecap='round'/><path d='M256 360 l45 -70' stroke='%23f43f5e' stroke-width='16' stroke-linecap='round'/><circle cx='256' cy='360' r='22' fill='%23f43f5e'/></svg>">
 
-<title>مستشار صحتك الذكي المتطور</title>
+<title>مِيزانك | يومك الصحي</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@500;700;800&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
 
 <!-- Chart.js for analytics -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <!-- Html5Qrcode Barcode Scanner CDN -->
 <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
-
-<!-- Firebase Module Script -->
-<script type="module">
-  import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js';
-  import { getAuth, signInWithCustomToken, signInAnonymously } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js';
-  import { getFirestore, collection, doc, setDoc, getDocs } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js';
-
-  window.initFirebaseServices = async function() {
-    try {
-      if (typeof __firebase_config === 'undefined') return null;
-      const firebaseConfig = JSON.parse(__firebase_config);
-      const app = initializeApp(firebaseConfig);
-      const auth = getAuth(app);
-      const db = getFirestore(app);
-      const appId = typeof __app_id !== 'undefined' ? __app_id : 'health-app-default';
-
-      if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-        await signInWithCustomToken(auth, __initial_auth_token);
-      } else {
-        await signInAnonymously(auth);
-      }
-
-      window.firebaseDb = db;
-      window.firebaseAuth = auth;
-      window.firebaseAppId = appId;
-      return { db, auth, appId };
-    } catch (e) {
-      console.warn("Firebase Init fallback:", e);
-      return null;
-    }
-  };
-</script>
 
 <style>
 /* ================= GLOBAL STYLES & RESET ================= */
@@ -277,6 +245,7 @@ body {
 }
 
 </style>
+<link rel="stylesheet" href="./review.css?v=1">
 </head>
 <body>
 
@@ -382,10 +351,18 @@ body {
   <div id="dashboard-screen" class="screen">
     <div class="screen-header">
       <div>
+        <div class="screen-kicker">ملخص اليوم</div>
         <div class="screen-title" id="user-welcome">مرحباً بك 👋</div>
-        <div class="screen-subtitle">مؤشراتك اليومية ورحلة التزامك</div>
+        <div class="screen-subtitle">خطوة صغيرة اليوم تصنع فرقًا كبيرًا</div>
       </div>
-      <button class="icon-btn" onclick="shareProgressModal()">✨ مشاركة التقدم</button>
+      <button class="header-avatar" onclick="switchScreen('settings')" aria-label="فتح ملفي">م</button>
+    </div>
+
+    <div class="review-quick-actions" aria-label="إجراءات سريعة">
+      <button onclick="switchScreen('meals')"><span class="quick-action-icon meals-icon">＋</span><b>وجبة</b></button>
+      <button onclick="addWater(1)"><span class="quick-action-icon water-icon">💧</span><b>كوب ماء</b></button>
+      <button onclick="switchScreen('workouts')"><span class="quick-action-icon move-icon">↗</span><b>نشاط</b></button>
+      <button onclick="switchScreen('water')"><span class="quick-action-icon weight-icon">◎</span><b>وزن</b></button>
     </div>
 
     <div id="backup-reminder-banner" style="display:none; align-items:center; justify-content:space-between; gap:10px; background:rgba(245,158,11,0.15); border:1px solid var(--accent-amber); border-radius:12px; padding:12px 16px; margin-bottom:16px;">
@@ -398,25 +375,25 @@ body {
 
     <!-- Metric Cards -->
     <div class="dashboard-grid">
-      <div class="metric-card">
+      <div class="metric-card metric-calories">
         <div style="font-size:11px; color:var(--text-secondary); font-weight:700;">السعرات اليومية 🔥</div>
         <div class="metric-value" id="dashboard-calories">0</div>
         <div style="font-size:11px; color:var(--text-muted);">المستهلك: <span id="dashboard-consumed" style="color:#fff;">0</span></div>
       </div>
 
-      <div class="metric-card">
+      <div class="metric-card metric-weight">
         <div style="font-size:11px; color:var(--text-secondary); font-weight:700;">الوزن الحالي ⚖️</div>
         <div class="metric-value" id="dashboard-weight">0</div>
         <div style="font-size:11px; color:var(--text-muted);">الهدف: <span id="dashboard-target" style="color:#fff;">0</span> كغ</div>
       </div>
 
-      <div class="metric-card">
+      <div class="metric-card metric-water">
         <div style="font-size:11px; color:var(--text-secondary); font-weight:700;">ترطيب الجسم 💧</div>
         <div class="metric-value" id="dashboard-water">0</div>
         <div style="font-size:11px; color:var(--text-muted);">من <span id="dashboard-water-target" style="color:#fff;">8</span> أكواب</div>
       </div>
 
-      <div class="metric-card">
+      <div class="metric-card metric-streak">
         <div style="font-size:11px; color:var(--text-secondary); font-weight:700;">سلسلة الالتزام 🔥</div>
         <div class="metric-value" id="streak-days" style="color:var(--accent-amber);">1 يوم</div>
         <div style="font-size:11px; color:var(--text-muted);">تفاعل يومي متواصل</div>
@@ -974,42 +951,29 @@ body {
     </div>
   </div>
 
+  <!-- MORE SCREEN: secondary destinations only -->
+  <div id="more-screen" class="screen">
+    <div class="screen-header">
+      <div><div class="screen-kicker">أدواتك</div><div class="screen-title">المزيد</div><div class="screen-subtitle">كل ما تحتاجه بعيدًا عن ازدحام الشريط الرئيسي</div></div>
+      <span class="header-avatar static-avatar">م</span>
+    </div>
+    <div class="more-grid">
+      <button onclick="switchScreen('water')"><span class="more-tile-icon water-tile"><svg viewBox="0 0 24 24"><path d="M12 3S6 10 6 15a6 6 0 0 0 12 0c0-5-6-12-6-12Z"/><path d="M9 16a3 3 0 0 0 3 2"/></svg></span><span><b>الماء والوزن</b><small>الترطيب والقياسات اليومية</small></span><i>‹</i></button>
+      <button onclick="switchScreen('chat')"><span class="more-tile-icon ai-tile"><svg viewBox="0 0 24 24"><path d="M12 3a7 7 0 0 0-7 7v1a4 4 0 0 0 4 4h1l2 3 2-3h1a4 4 0 0 0 4-4v-1a7 7 0 0 0-7-7Z"/><path d="M9 10h.01M15 10h.01"/></svg></span><span><b>مساعد ميزانك</b><small>اسأل عن سجلات يومك</small></span><i>‹</i></button>
+      <button onclick="switchScreen('settings')"><span class="more-tile-icon settings-tile"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1l2-1.5-2-3.5-2.5 1a7 7 0 0 0-1.8-1L14 3h-4l-.6 3a7 7 0 0 0-1.8 1L5 6 3 9.5 5.1 11a7 7 0 0 0 0 2L3 14.5 5 18l2.6-1a7 7 0 0 0 1.8 1l.6 3h4l.6-3a7 7 0 0 0 1.8-1l2.6 1 2-3.5-2.1-1.5a7 7 0 0 0 .1-1Z"/></svg></span><span><b>ملفي والإعدادات</b><small>الأهداف والتنبيهات والنسخ</small></span><i>‹</i></button>
+    </div>
+    <div class="local-data-note"><span>✓</span><div><b>خصوصيتك أولًا</b><p>بياناتك الصحية محفوظة في هذا الهاتف. تذكّر تصدير نسخة احتياطية دورية.</p></div></div>
+  </div>
+
 </div>
 
-<!-- FLOATING GLASS BOTTOM NAV -->
+<!-- PRIMARY MOBILE NAV: five destinations only -->
 <div class="bottom-nav" id="bottom-nav" style="display: none;">
-  <div class="nav-item active" onclick="switchScreen('dashboard', this)">
-    <svg class="nav-icon" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
-    <div class="nav-label">الرئيسية</div>
-  </div>
-  <div class="nav-item" onclick="switchScreen('meals', this)">
-    <svg class="nav-icon" viewBox="0 0 24 24"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-    <div class="nav-label">الوجبات</div>
-  </div>
-  <div class="nav-item" onclick="switchScreen('fasting', this)">
-    <svg class="nav-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-    <div class="nav-label">الصيام</div>
-  </div>
-  <div class="nav-item" onclick="switchScreen('community', this)">
-    <svg class="nav-icon" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-    <div class="nav-label">المجتمع</div>
-  </div>
-  <div class="nav-item" onclick="switchScreen('workouts', this)">
-    <svg class="nav-icon" viewBox="0 0 24 24"><path d="m6.5 6.5 11 11"/><path d="m18 22 4-4"/><path d="m2 6 4-4"/></svg>
-    <div class="nav-label">التمارين</div>
-  </div>
-  <div class="nav-item" onclick="switchScreen('water', this)">
-    <svg class="nav-icon" viewBox="0 0 24 24"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/></svg>
-    <div class="nav-label">الماء</div>
-  </div>
-  <div class="nav-item" onclick="switchScreen('chat', this)">
-    <svg class="nav-icon" viewBox="0 0 24 24"><path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v5z"/></svg>
-    <div class="nav-label">المساعد</div>
-  </div>
-  <div class="nav-item" onclick="switchScreen('settings', this)">
-    <svg class="nav-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-    <div class="nav-label">الإعدادات</div>
-  </div>
+  <button class="nav-item active" data-tab="dashboard" onclick="switchScreen('dashboard', this)"><svg class="nav-icon" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V21H3z"/><path d="M9 21v-7h6v7"/></svg><span class="nav-label">اليوم</span></button>
+  <button class="nav-item" data-tab="meals" onclick="switchScreen('meals', this)"><svg class="nav-icon" viewBox="0 0 24 24"><path d="M4 3v8a3 3 0 0 0 6 0V3M7 3v18M17 3v18M17 3c-5 4-5 9 0 9h3"/></svg><span class="nav-label">الوجبات</span></button>
+  <button class="nav-item" data-tab="workouts" onclick="switchScreen('workouts', this)"><svg class="nav-icon" viewBox="0 0 24 24"><path d="m3 14 4-4 4 4 6-8 4 3"/><path d="M3 21h18"/></svg><span class="nav-label">النشاط</span></button>
+  <button class="nav-item" data-tab="fasting" onclick="switchScreen('fasting', this)"><svg class="nav-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span class="nav-label">الصيام</span></button>
+  <button class="nav-item" data-tab="more" onclick="switchScreen('more', this)"><svg class="nav-icon" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg><span class="nav-label">المزيد</span></button>
 </div>
 
 <script>
@@ -1555,7 +1519,6 @@ function saveCurrentUserData() {
   const db = loadUsersDB();
   db[currentUsername] = appState;
   localStorage.setItem('healthAppUsers', JSON.stringify(db));
-  syncLeaderboardToFirestore();
 }
 
 function todayStr() { return new Date().toISOString().split('T')[0]; }
@@ -1570,9 +1533,7 @@ function ensureTodayWater() {
 }
 
 // ============ INIT ============
-window.addEventListener('load', async () => {
-  if (window.initFirebaseServices) await window.initFirebaseServices();
-
+window.addEventListener('load', () => {
   const savedUsername = localStorage.getItem('healthAppCurrentUser');
   if (savedUsername) {
     const db = loadUsersDB();
@@ -1684,8 +1645,12 @@ function switchScreen(screenName, navElement) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
 
-  document.getElementById(screenName + '-screen').classList.add('active');
-  if (navElement) navElement.classList.add('active');
+  const targetScreen = document.getElementById(screenName + '-screen');
+  if (!targetScreen) return;
+  targetScreen.classList.add('active');
+  const primaryTab = ['dashboard', 'meals', 'workouts', 'fasting'].includes(screenName) ? screenName : 'more';
+  (navElement || document.querySelector(`.nav-item[data-tab="${primaryTab}"]`))?.classList.add('active');
+  window.scrollTo(0, 0);
 
   if (screenName === 'dashboard') { updateDashboard(); updateChartData(); }
   if (screenName === 'meals') { updateMealsList(); renderSuggestedMeals(); }
@@ -1702,10 +1667,38 @@ function showScreen(screenId) {
   document.getElementById(screenId).classList.add('active');
 }
 
+function organizeReviewDashboard() {
+  const dashboard = document.getElementById('dashboard-screen');
+  if (!dashboard || dashboard.dataset.organized === 'true') return;
+  const cards = [...dashboard.children].filter(el => el.classList.contains('glass-card'));
+  const groups = [
+    { title: 'تفاصيل التغذية اليوم', subtitle: 'السعرات، المغذيات والتوصيات', open: true, match: /الماكروز|الفائض|توصياتك/ },
+    { title: 'التقدم والتقارير', subtitle: 'الوزن، المقارنات والأرشيف', open: false, match: /أمس مقابل|متى تصل|شارات|معدل ونمط|سجل الوزن|التقرير الأسبوعي|مقارنة هذا الأسبوع|أرشيف/ },
+    { title: 'إرشادات الحرق الصحي', subtitle: 'نصائح عملية مختصرة', open: false, match: /دعم عملية الحرق/ }
+  ];
+
+  groups.forEach(group => {
+    const matches = cards.filter(card => group.match.test(card.querySelector('h3')?.textContent || ''));
+    if (!matches.length) return;
+    const details = document.createElement('details');
+    details.className = 'review-dashboard-section';
+    details.open = group.open;
+    details.innerHTML = `<summary><span><b>${group.title}</b><small>${group.subtitle}</small></span><i>⌄</i></summary><div class="review-section-content"></div>`;
+    const content = details.querySelector('.review-section-content');
+    matches.forEach(card => content.appendChild(card));
+    dashboard.appendChild(details);
+  });
+  dashboard.dataset.organized = 'true';
+}
+
+document.addEventListener('DOMContentLoaded', organizeReviewDashboard);
+
 // ============ DASHBOARD ============
 function updateDashboard() {
   const p = appState.profile;
   if (!p) return;
+  const avatarLetter = String(p.name || currentUsername || 'م').trim().charAt(0) || 'م';
+  document.querySelectorAll('.header-avatar').forEach(avatar => { avatar.textContent = avatarLetter; });
   ensureTodayWater();
 
   const todaysMeals = getTodaysMeals();

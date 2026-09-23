@@ -61,6 +61,9 @@ body:before {content:'';position:fixed;z-index:3000;top:0;left:0;right:0;height:
 .metric-water {background:linear-gradient(145deg,#e9faff,#f8fdff)!important}.metric-water:after{background:#9ce4f3}
 .metric-streak {background:linear-gradient(145deg,#e7faf2,#f8fffb)!important}.metric-streak:after{background:#9de1c8}
 #streak-days {color:#178b70!important;font-size:24px!important}
+#backup-reminder-banner {background:#fff4dc!important;border-color:#f0ba57!important;box-shadow:0 8px 20px rgba(171,117,27,.08)}
+#backup-reminder-banner>span {color:#76551f!important;font-weight:700}
+#backup-reminder-banner .icon-btn:first-child {background:#f0b64f!important;color:#513708!important;border:0!important}
 
 .macro-grid {gap:8px!important}.macro-item {background:#f7f8fc!important;border:1px solid #eceef4!important;border-radius:15px!important;padding:11px 6px!important}
 .macro-item div:first-child {color:#758196!important}.macro-item div:last-child {color:#929bab!important}

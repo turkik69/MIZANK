@@ -350,19 +350,35 @@ body {
   <!-- DASHBOARD SCREEN -->
   <div id="dashboard-screen" class="screen">
     <div class="screen-header">
-      <div>
-        <div class="screen-kicker">ملخص اليوم</div>
+      <div class="brand-lockup">
+        <span class="brand-symbol" aria-hidden="true"><i></i><b></b></span>
+        <div>
+        <div class="screen-kicker">مِيزانك · يومك الصحي</div>
         <div class="screen-title" id="user-welcome">مرحباً بك 👋</div>
-        <div class="screen-subtitle">خطوة صغيرة اليوم تصنع فرقًا كبيرًا</div>
+        <div class="screen-subtitle">تقدّم هادئ، نتيجة تدوم</div>
+        </div>
       </div>
       <button class="header-avatar" onclick="switchScreen('settings')" aria-label="فتح ملفي">م</button>
     </div>
 
+    <section class="daily-hero" aria-label="ملخص هدف اليوم">
+      <div class="hero-copy">
+        <span class="hero-eyebrow">هدفك اليومي</span>
+        <div class="hero-number"><strong id="dashboard-calories">0</strong><small>سعرة</small></div>
+        <p>الصافي المسجل <b id="dashboard-consumed">0</b></p>
+        <div class="hero-streak"><span>✦</span><b id="streak-days">1 يوم</b><small>سلسلة الالتزام</small></div>
+      </div>
+      <div class="hero-orbit" id="dashboard-calorie-progress" style="--progress:0deg">
+        <div><b id="dashboard-remaining">0</b><small>متبقية</small></div>
+      </div>
+      <span class="hero-bubble bubble-one"></span><span class="hero-bubble bubble-two"></span>
+    </section>
+
     <div class="review-quick-actions" aria-label="إجراءات سريعة">
-      <button onclick="switchScreen('meals')"><span class="quick-action-icon meals-icon">＋</span><b>وجبة</b></button>
-      <button onclick="addWater(1)"><span class="quick-action-icon water-icon">💧</span><b>كوب ماء</b></button>
-      <button onclick="switchScreen('workouts')"><span class="quick-action-icon move-icon">↗</span><b>نشاط</b></button>
-      <button onclick="switchScreen('water')"><span class="quick-action-icon weight-icon">◎</span><b>وزن</b></button>
+      <button onclick="switchScreen('meals')"><span class="quick-action-icon meals-icon"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span><b>سجّل وجبة</b></button>
+      <button onclick="addWater(1)"><span class="quick-action-icon water-icon"><svg viewBox="0 0 24 24"><path d="M12 3S6.5 10 6.5 15a5.5 5.5 0 0 0 11 0C17.5 10 12 3 12 3Z"/><path d="M9.5 16.5a3 3 0 0 0 2.5 1"/></svg></span><b>أضف ماء</b></button>
+      <button onclick="switchScreen('workouts')"><span class="quick-action-icon move-icon"><svg viewBox="0 0 24 24"><path d="m4 16 5-5 4 4 7-8"/><path d="M15 7h5v5"/></svg></span><b>سجّل نشاط</b></button>
+      <button onclick="switchScreen('water')"><span class="quick-action-icon weight-icon"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="5"/><path d="M9 10a3 3 0 0 1 6 0M12 10l2-2"/></svg></span><b>حدّث وزنك</b></button>
     </div>
 
     <div id="backup-reminder-banner" style="display:none; align-items:center; justify-content:space-between; gap:10px; background:rgba(245,158,11,0.15); border:1px solid var(--accent-amber); border-radius:12px; padding:12px 16px; margin-bottom:16px;">
@@ -373,30 +389,22 @@ body {
       </div>
     </div>
 
+    <div class="section-heading"><div><span>نظرة سريعة</span><small>مؤشراتك تتحدث مع كل تسجيل</small></div><i></i></div>
+
     <!-- Metric Cards -->
     <div class="dashboard-grid">
-      <div class="metric-card metric-calories">
-        <div style="font-size:11px; color:var(--text-secondary); font-weight:700;">السعرات اليومية 🔥</div>
-        <div class="metric-value" id="dashboard-calories">0</div>
-        <div style="font-size:11px; color:var(--text-muted);">المستهلك: <span id="dashboard-consumed" style="color:#fff;">0</span></div>
-      </div>
-
       <div class="metric-card metric-weight">
-        <div style="font-size:11px; color:var(--text-secondary); font-weight:700;">الوزن الحالي ⚖️</div>
+        <span class="metric-icon">↘</span>
+        <div style="font-size:11px; color:var(--text-secondary); font-weight:700;">الوزن الحالي</div>
         <div class="metric-value" id="dashboard-weight">0</div>
         <div style="font-size:11px; color:var(--text-muted);">الهدف: <span id="dashboard-target" style="color:#fff;">0</span> كغ</div>
       </div>
 
       <div class="metric-card metric-water">
-        <div style="font-size:11px; color:var(--text-secondary); font-weight:700;">ترطيب الجسم 💧</div>
+        <span class="metric-icon">◒</span>
+        <div style="font-size:11px; color:var(--text-secondary); font-weight:700;">ترطيب الجسم</div>
         <div class="metric-value" id="dashboard-water">0</div>
         <div style="font-size:11px; color:var(--text-muted);">من <span id="dashboard-water-target" style="color:#fff;">8</span> أكواب</div>
-      </div>
-
-      <div class="metric-card metric-streak">
-        <div style="font-size:11px; color:var(--text-secondary); font-weight:700;">سلسلة الالتزام 🔥</div>
-        <div class="metric-value" id="streak-days" style="color:var(--accent-amber);">1 يوم</div>
-        <div style="font-size:11px; color:var(--text-muted);">تفاعل يومي متواصل</div>
       </div>
     </div>
 
@@ -1719,6 +1727,10 @@ function updateDashboard() {
   document.getElementById('streak-days').textContent = `${appState.streak || 1} أيام`;
   document.getElementById('dashboard-calories').textContent = p.dailyCalories;
   document.getElementById('dashboard-consumed').textContent = `${netCals} (صافي)`;
+  const remainingCalories = Math.max(0, Math.round(p.dailyCalories - netCals));
+  const calorieRatio = p.dailyCalories > 0 ? Math.min(1, Math.max(0, netCals / p.dailyCalories)) : 0;
+  document.getElementById('dashboard-remaining').textContent = remainingCalories;
+  document.getElementById('dashboard-calorie-progress').style.setProperty('--progress', `${Math.round(calorieRatio * 360)}deg`);
   document.getElementById('dashboard-weight').textContent = currentWeight.toFixed(1);
   document.getElementById('dashboard-target').textContent = p.targetWeight;
   document.getElementById('dashboard-water').textContent = appState.water;

@@ -245,7 +245,7 @@ body {
 }
 
 </style>
-<link rel="stylesheet" href="./review.css?v=2">
+<link rel="stylesheet" href="./review.css?v=3">
 </head>
 <body>
 
@@ -543,105 +543,69 @@ body {
   <div id="meals-screen" class="screen">
     <div class="screen-header">
       <div>
-        <div class="screen-title">سجل الوجبات والتغذية 🍽️</div>
-        <div class="screen-subtitle">توست + كبسات وصالونات + فواكه ومشروبات وحلويات</div>
+        <div class="screen-kicker">تغذيتك اليومية</div>
+        <div class="screen-title">وجبات اليوم</div>
+        <div class="screen-subtitle">سجّل ما أكلته بأسرع طريقة تناسبك</div>
       </div>
+      <span class="meal-header-icon" aria-hidden="true">⌁</span>
     </div>
 
-    <!-- DEDICATED TEXT WRITING CARD -->
-    <div class="glass-card" style="border-color: var(--accent-emerald); background: linear-gradient(135deg, rgba(16, 185, 129, 0.12) 0%, rgba(17, 24, 48, 0.8) 100%);">
-      <h3 style="color: var(--accent-emerald); margin-bottom: 4px; font-size:16px; font-weight:800; display:flex; align-items:center; gap:8px;">
-        ✍️ كتابة ما أكلته (إدخال نصي للوجبة)
-      </h3>
-      <p style="font-size:12px; color:var(--text-secondary); margin-bottom:12px;">
-        اكتب وصف وجبتك هنا وسيقوم الذكاء الاصطناعي بحساب سعراتها ومكوناتها تلقائياً:
-      </p>
-
-      <div class="form-group" style="margin-bottom:10px;">
-        <input type="text" id="meal-text-input" class="form-input" placeholder="مثال: صحن أرز أبيض وصالونة دجاج، تفاح وموز، قهوة أمريكية..." onkeypress="if(event.key==='Enter') handleMealText()">
+    <section class="meal-today-card">
+      <div class="meal-today-head">
+        <div><span>المسجل اليوم</span><b id="meals-today-count">0 وجبات</b></div>
+        <div class="meal-today-energy"><strong id="meals-today-calories">0</strong><small>سعرة</small></div>
       </div>
-
-      <div style="display:grid; grid-template-columns: 2fr 1fr; gap:10px;">
-        <button class="btn btn-primary" onclick="handleMealText()">🤖 تحليل التغذية بالذكاء الاصطناعي</button>
-        <button class="btn btn-secondary" onclick="openManualMealModal()">➕ إدخال سريع</button>
-      </div>
-
-      <div id="meal-text-preview"></div>
-    </div>
-
-    <!-- Voice Input Card -->
-    <div class="glass-card" style="border-color: var(--accent-emerald);">
-      <h3 style="color: var(--accent-emerald); margin-bottom: 4px; font-size:15px; font-weight:800;">🎙️ تسجيل الوجبة بالتحدث الصوتي</h3>
-      <p style="font-size:12px; color:var(--text-secondary); margin-bottom:12px;">انقر وتحدث بما أكلته (مثال: "أكلت توست أسمر بالبيض مع موزة وشربت قهوة أمريكية")</p>
-      
-      <button class="btn btn-primary" id="voice-record-btn" onclick="toggleVoiceRecognition()">
-        <span id="voice-btn-text">🎙️ ابدأ التسجيل الصوتي</span>
-      </button>
-      <div id="voice-transcript-preview"></div>
-    </div>
-
-    <!-- Barcode Scanner Card -->
-    <div class="glass-card" style="border-color: var(--accent-cyan);">
-      <h3 style="color: var(--accent-cyan); margin-bottom: 4px; font-size:15px; font-weight:800;">📲 ماسح الباركود الذكي (Barcode)</h3>
-      <p style="font-size:12px; color:var(--text-secondary); margin-bottom:12px;">توجيه الكاميرا المباشرة أو التقاط صورة للباركود مباشرة</p>
-      
-      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:10px;">
-        <button class="btn btn-cyan" onclick="startBarcodeScanner()">📹 فتح الكاميرا المباشرة</button>
-        <button class="btn btn-secondary" onclick="triggerBarcodeCameraPhoto()">📸 التقاط صورة الباركود</button>
-        <input type="file" id="barcode-file-input" accept="image/*" capture="environment" style="display:none;" onchange="handleBarcodeImageUpload(event)">
-      </div>
-
-      <div style="display:grid; grid-template-columns: 2fr 1fr; gap:10px;">
-        <input type="text" id="barcode-input" class="form-input" placeholder="أو أدخل رقم الباركود يدوياً...">
-        <button class="btn btn-secondary" onclick="lookupBarcodeManual()">بحث</button>
-      </div>
-
-      <div id="barcode-scanner-container" style="display:none; margin-top:12px; background:#000; border-radius:16px; padding:10px; text-align:center;">
-        <div id="barcode-reader" style="width:100%; border-radius:12px; overflow:hidden;"></div>
-        <button class="btn btn-coral" style="margin-top:10px;" onclick="stopBarcodeScanner()">إغلاق الكاميرا ✕</button>
-      </div>
-
-      <div id="barcode-result-preview"></div>
-    </div>
-
-    <!-- AI Photo Card -->
-    <div class="glass-card">
-      <h3 style="color: var(--accent-emerald); margin-bottom: 4px; font-size:15px; font-weight:800;">📸 تحليل الصورة بالذكاء الاصطناعي</h3>
-      <input type="file" id="meal-photo-input" accept="image/*" capture="environment" style="display:none;" onchange="handleMealPhoto(event)">
-      <button class="btn btn-secondary" onclick="document.getElementById('meal-photo-input').click()">📷 التقاط صورة الوجبة</button>
-      <div id="meal-photo-preview"></div>
-    </div>
-
-    <!-- CATEGORIZED MEALS & DRINKS & FRUITS -->
-    <div class="glass-card" style="border-color: var(--accent-amber);">
-      <h3 style="color: var(--accent-amber); margin-bottom: 8px; font-size:15px; font-weight:800;">💡 قائمتك المحلية: توست، صالونات، فواكه، حلويات ومشروبات</h3>
-      <p style="font-size:12px; color:var(--text-secondary); margin-bottom:12px;">اختر التصنيف واضغط لإضافة الوجبة فوراً لمفكرتك اليومية:</p>
-
-      <input type="text" id="meals-search-input" class="form-input" placeholder="🔍 ابحث عن أي وجبة بكل التصنيفات..." style="margin-bottom:12px;" oninput="handleMealsSearch()">
-
-      <div class="pill-container" id="meals-pill-container">
-        <div class="pill active" onclick="selectSuggestedCategory('breakfast', this)">🍳 الإفطار والتوست</div>
-        <div class="pill" onclick="selectSuggestedCategory('lunch', this)">🍗 الغداء (كبسات وصالونات)</div>
-        <div class="pill" onclick="selectSuggestedCategory('dinner', this)">🥗 العشاء والخفيف</div>
-        <div class="pill" onclick="selectSuggestedCategory('grills', this)">🍢 المشاكيك والفرن</div>
-        <div class="pill" onclick="selectSuggestedCategory('fastfood', this)">🍔 المطاعم والوجبات السريعة</div>
-        <div class="pill" onclick="selectSuggestedCategory('bakery', this)">🥖 المخبوزات وأنواع الخبز</div>
-        <div class="pill" onclick="selectSuggestedCategory('vegetables', this)">🥦 الخضروات</div>
-        <div class="pill" onclick="selectSuggestedCategory('snacks', this)">🥜 السناكات</div>
-        <div class="pill" onclick="selectSuggestedCategory('custom', this)">🌟 وجباتي الخاصة</div>
-        <div class="pill" onclick="selectSuggestedCategory('fruits', this)">🍎 الفواكه الطازجة والتمر</div>
-        <div class="pill" onclick="selectSuggestedCategory('sweets', this)">🍰 الكيك والحلويات</div>
-        <div class="pill" onclick="selectSuggestedCategory('drinks', this)">☕ المشروبات والعصائر</div>
-      </div>
-
-      <div id="suggested-meals-container"></div>
-    </div>
-
-    <!-- Today's Meals -->
-    <div class="glass-card">
-      <h3 style="color: #fff; margin-bottom: 12px; font-size:15px; font-weight:800;">📋 وجبات اليوم المسجلة</h3>
       <div id="meals-list"></div>
+    </section>
+
+    <section class="meal-composer">
+      <div class="meal-composer-title"><span class="meal-composer-mark">✦</span><div><h3>ماذا أكلت؟</h3><p>اكتبها بطريقتك، وميزانك يحللها لك</p></div></div>
+      <div class="form-group" style="margin-bottom:10px;">
+        <input type="text" id="meal-text-input" class="form-input meal-main-input" placeholder="مثال: أرز مع دجاج وسلطة..." onkeypress="if(event.key==='Enter') handleMealText()">
+      </div>
+      <div class="meal-primary-actions">
+        <button class="btn btn-primary" onclick="handleMealText()">تحليل وتسجيل <span>←</span></button>
+        <button class="meal-manual-btn" onclick="openManualMealModal()">إدخال يدوي</button>
+      </div>
+      <div id="meal-text-preview"></div>
+    </section>
+
+    <div class="meal-section-label"><span>طرق تسجيل أخرى</span><small>افتح الطريقة التي تحتاجها فقط</small></div>
+    <div class="meal-tools">
+      <details class="meal-tool">
+        <summary><span class="meal-tool-icon voice">◉</span><span><b>بالصوت</b><small>تحدث بما أكلته</small></span><i>⌄</i></summary>
+        <div class="meal-tool-body"><button class="btn btn-primary" id="voice-record-btn" onclick="toggleVoiceRecognition()"><span id="voice-btn-text">ابدأ التسجيل الصوتي</span></button><div id="voice-transcript-preview"></div></div>
+      </details>
+      <details class="meal-tool">
+        <summary><span class="meal-tool-icon photo">▣</span><span><b>صورة الوجبة</b><small>تحليل محتوى الطبق</small></span><i>⌄</i></summary>
+        <div class="meal-tool-body">
+          <input type="file" id="meal-photo-input" accept="image/*" capture="environment" style="display:none;" onchange="handleMealPhoto(event)">
+          <button class="btn btn-secondary" onclick="document.getElementById('meal-photo-input').click()">التقط صورة الوجبة</button><div id="meal-photo-preview"></div>
+        </div>
+      </details>
+      <details class="meal-tool">
+        <summary><span class="meal-tool-icon barcode">⌗</span><span><b>الباركود</b><small>للمنتجات المعلبة</small></span><i>⌄</i></summary>
+        <div class="meal-tool-body">
+          <div class="meal-two-buttons"><button class="btn btn-cyan" onclick="startBarcodeScanner()">فتح الكاميرا</button><button class="btn btn-secondary" onclick="triggerBarcodeCameraPhoto()">التقاط صورة</button><input type="file" id="barcode-file-input" accept="image/*" capture="environment" style="display:none;" onchange="handleBarcodeImageUpload(event)"></div>
+          <div class="meal-barcode-manual"><input type="text" id="barcode-input" class="form-input" placeholder="أدخل رقم الباركود"><button class="btn btn-secondary" onclick="lookupBarcodeManual()">بحث</button></div>
+          <div id="barcode-scanner-container" style="display:none; margin-top:12px; background:#000; border-radius:16px; padding:10px; text-align:center;"><div id="barcode-reader" style="width:100%; border-radius:12px; overflow:hidden;"></div><button class="btn btn-coral" style="margin-top:10px;" onclick="stopBarcodeScanner()">إغلاق الكاميرا</button></div>
+          <div id="barcode-result-preview"></div>
+        </div>
+      </details>
     </div>
+
+    <details class="meal-library">
+      <summary><span class="meal-library-icon">⌕</span><span><b>استكشف مكتبة الوجبات</b><small>بحث واختيار سريع من قائمتك المحلية</small></span><i>⌄</i></summary>
+      <div class="meal-library-body">
+        <input type="text" id="meals-search-input" class="form-input" placeholder="ابحث عن وجبة..." oninput="handleMealsSearch()">
+        <div class="meal-library-controls" id="meals-pill-container">
+          <select id="meal-category-select" class="form-select" onchange="selectSuggestedCategory(this.value)">
+            <option value="breakfast">الإفطار والتوست</option><option value="lunch">الغداء والكبسات</option><option value="dinner">العشاء والخفيف</option><option value="grills">المشاكيك والفرن</option><option value="fastfood">المطاعم والوجبات السريعة</option><option value="bakery">المخبوزات والخبز</option><option value="vegetables">الخضروات</option><option value="snacks">السناكات</option><option value="custom">وجباتي الخاصة</option><option value="fruits">الفواكه والتمر</option><option value="sweets">الكيك والحلويات</option><option value="drinks">المشروبات والعصائر</option>
+          </select>
+        </div>
+        <div id="suggested-meals-container"></div>
+      </div>
+    </details>
   </div>
 
   <!-- FASTING TRACKER SCREEN -->
@@ -1366,6 +1330,8 @@ function renderFoodItemCard(item, category, idx) {
 `;
 }
 
+let mealLibraryLimit = 6;
+
 function renderSuggestedMeals() {
   const container = document.getElementById('suggested-meals-container');
   if (!container) return;
@@ -1376,7 +1342,7 @@ function renderSuggestedMeals() {
       container.innerHTML = '<div class="message-box">لسا ما أضفت أي وجبة مخصصة — حلّل أي وجبة بالكتابة أو الصوت أو الصورة، وستُحفظ هنا تلقائياً بعد اعتمادها ⭐</div>';
       return;
     }
-    container.innerHTML = list.map((item, idx) => `
+    container.innerHTML = list.slice(0, mealLibraryLimit).map((item, idx) => `
       <div class="food-item">
         <div class="food-info">
           <div style="font-weight:800; font-size:14px; color:#fff;">${item.name}</div>
@@ -1389,12 +1355,24 @@ function renderSuggestedMeals() {
           <button class="icon-btn" style="background:var(--accent-coral); color:#fff; font-weight:800; border:none;" onclick="removeCustomMeal(${idx})">🗑️ حذف</button>
         </div>
       </div>
-    `).join('');
+    `).join('') + renderMealLibraryMore(list.length);
     return;
   }
 
   const list = suggestedMealsData[currentSuggestedCategory] || [];
-  container.innerHTML = list.map((item, idx) => renderFoodItemCard(item, currentSuggestedCategory, idx)).join('');
+  container.innerHTML = list.slice(0, mealLibraryLimit).map((item, idx) => renderFoodItemCard(item, currentSuggestedCategory, idx)).join('') + renderMealLibraryMore(list.length);
+}
+
+function renderMealLibraryMore(total) {
+  if (total <= mealLibraryLimit) return '';
+  return `<button class="meal-load-more" onclick="loadMoreMeals()">عرض المزيد <span>${Math.min(6, total - mealLibraryLimit)}</span></button>`;
+}
+
+function loadMoreMeals() {
+  mealLibraryLimit += 6;
+  const query = document.getElementById('meals-search-input')?.value.trim();
+  if (query) handleMealsSearch();
+  else renderSuggestedMeals();
 }
 
 // ============ البحث عبر كل التصنيفات دفعة وحدة — يظهر النتائج فور الكتابة ============
@@ -1405,7 +1383,8 @@ function handleMealsSearch() {
   if (!container) return;
 
   if (!query) {
-    if (pillContainer) pillContainer.style.display = 'flex';
+    mealLibraryLimit = 6;
+    if (pillContainer) pillContainer.style.display = 'grid';
     renderSuggestedMeals();
     return;
   }
@@ -1426,7 +1405,7 @@ function handleMealsSearch() {
     return;
   }
 
-  container.innerHTML = results.map(r => renderFoodItemCard(r.item, r.category, r.idx)).join('');
+  container.innerHTML = results.slice(0, mealLibraryLimit).map(r => renderFoodItemCard(r.item, r.category, r.idx)).join('') + renderMealLibraryMore(results.length);
 }
 
 function updateScaledPreview(category, idx, inputId) {
@@ -1465,8 +1444,11 @@ function removeCustomMeal(idx) {
 
 function selectSuggestedCategory(cat, el) {
   currentSuggestedCategory = cat;
+  mealLibraryLimit = 6;
   document.querySelectorAll('#meals-screen .pill-container .pill').forEach(p => p.classList.remove('active'));
-  el.classList.add('active');
+  if (el) el.classList.add('active');
+  const select = document.getElementById('meal-category-select');
+  if (select && select.value !== cat) select.value = cat;
   renderSuggestedMeals();
 }
 
@@ -3254,9 +3236,13 @@ function updateMealsList() {
   const todaysMeals = getTodaysMeals();
   const container = document.getElementById('meals-list');
   if (!container) return;
+  const count = document.getElementById('meals-today-count');
+  const calories = document.getElementById('meals-today-calories');
+  if (count) count.textContent = todaysMeals.length === 1 ? 'وجبة واحدة' : `${todaysMeals.length} وجبات`;
+  if (calories) calories.textContent = Math.round(todaysMeals.reduce((sum, meal) => sum + meal.cal, 0));
 
   if (todaysMeals.length === 0) {
-    container.innerHTML = '<div class="message-box">لم تسجل أي وجبات لليوم بعد</div>';
+    container.innerHTML = '<div class="meal-empty"><span>＋</span><div><b>يومك جاهز</b><small>أول وجبة ستظهر هنا بعد تسجيلها</small></div></div>';
     return;
   }
 

@@ -236,12 +236,50 @@ body:before{
 #backup-reminder-banner>span{color:#76551f!important;font-weight:700}
 #backup-reminder-banner .icon-btn:first-child{background:#efb957!important;color:#513708!important;border:0!important}
 
+/* Meals — task-first, calm and progressively disclosed */
+#meals-screen{padding-bottom:36px}
+.meal-header-icon{width:45px;height:45px;border-radius:16px;background:linear-gradient(145deg,#173665,#087a78);color:#c9ed77;display:grid;place-items:center;font:900 25px/1 sans-serif;box-shadow:0 10px 24px rgba(23,54,101,.17)}
+.meal-today-card{background:linear-gradient(135deg,#153463,#087a78);border-radius:25px;padding:18px;margin-bottom:12px;color:#fff;box-shadow:0 16px 35px rgba(19,72,85,.15)}
+.meal-today-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.meal-today-head>div:first-child{display:flex;flex-direction:column;gap:3px}.meal-today-head span{font-size:10px;color:#c8e7e7}.meal-today-head b{font-size:16px}
+.meal-today-energy{min-width:82px;padding:8px 11px;border-radius:14px;background:rgba(255,255,255,.11);text-align:center;display:flex;align-items:baseline;justify-content:center;gap:4px}
+.meal-today-energy strong{font:800 23px/1 'Manrope';color:#fff}.meal-today-energy small{font-size:8px;color:#cbe5e6}
+.meal-today-card .food-item{background:rgba(255,255,255,.1)!important;border-color:rgba(255,255,255,.14)!important;margin-bottom:7px!important;padding:11px!important}
+.meal-today-card .food-item:last-child{margin-bottom:0!important}.meal-today-card .food-item .food-info>div:first-child{color:#fff!important}
+.meal-today-card .food-item .food-info>div:not(:first-child){color:#d3e8e9!important}.meal-today-card .delete-btn{background:rgba(248,117,114,.18)!important;color:#ffd7d5!important;border-color:rgba(255,215,213,.28)!important}
+.meal-empty{display:flex;align-items:center;gap:10px;padding:10px 0 2px}.meal-empty>span{width:36px;height:36px;border-radius:13px;background:var(--miz-lime);color:#274d45;display:grid;place-items:center;font:800 22px/1 sans-serif}
+.meal-empty>div{display:flex;flex-direction:column;gap:2px}.meal-empty b{font-size:12px}.meal-empty small{font-size:9px;color:#cbe5e6}
+
+.meal-composer{background:#fff;border:1px solid var(--miz-line);border-radius:25px;padding:18px;margin-bottom:20px;box-shadow:var(--miz-shadow)}
+.meal-composer-title{display:flex;align-items:center;gap:11px;margin-bottom:15px}.meal-composer-mark{width:38px;height:38px;border-radius:14px;background:#e0f7f2;color:#008d84;display:grid;place-items:center;font-size:17px}
+.meal-composer-title h3{font-size:15px;color:var(--miz-ink);margin:0}.meal-composer-title p{font-size:9px;color:var(--miz-muted);margin-top:2px}
+.meal-main-input{height:56px!important;background:#f3f9f8!important;border:0!important;padding-inline:17px!important}
+.meal-primary-actions{display:grid;grid-template-columns:1fr auto;gap:9px;align-items:center}.meal-primary-actions .btn{justify-content:space-between;padding-inline:17px}
+.meal-primary-actions .btn span{font:700 20px/1 sans-serif}.meal-manual-btn{height:50px;padding:0 15px;border-radius:15px;background:transparent;border:1px solid var(--miz-line);color:#567077;font:700 11px 'IBM Plex Sans Arabic';cursor:pointer}
+.meal-section-label{display:flex;align-items:flex-end;justify-content:space-between;margin:0 2px 9px}.meal-section-label span{font-size:14px;font-weight:800}.meal-section-label small{font-size:9px;color:var(--miz-muted)}
+
+.meal-tools{display:grid;gap:8px;margin-bottom:12px}.meal-tool,.meal-library{background:#fff;border:1px solid var(--miz-line);border-radius:20px;overflow:hidden;box-shadow:0 9px 24px rgba(17,72,78,.055)}
+.meal-tool>summary,.meal-library>summary{list-style:none;display:flex;align-items:center;gap:11px;min-height:68px;padding:10px 13px;cursor:pointer}.meal-tool>summary::-webkit-details-marker,.meal-library>summary::-webkit-details-marker{display:none}
+.meal-tool>summary>span:nth-child(2),.meal-library>summary>span:nth-child(2){display:flex;flex:1;flex-direction:column;gap:2px}.meal-tool summary b,.meal-library summary b{font-size:12px;color:var(--miz-ink)}.meal-tool summary small,.meal-library summary small{font-size:9px;color:var(--miz-muted)}
+.meal-tool summary i,.meal-library summary i{font-style:normal;color:#91a8ab;font-size:18px;transition:transform .2s}.meal-tool[open] summary i,.meal-library[open] summary i{transform:rotate(180deg)}
+.meal-tool-icon,.meal-library-icon{width:39px;height:39px;border-radius:14px;display:grid;place-items:center;font:800 18px/1 sans-serif;flex:0 0 auto}
+.meal-tool-icon.voice{background:#e0f7f2;color:#008f85}.meal-tool-icon.photo{background:#fff0e8;color:#d87042}.meal-tool-icon.barcode{background:#e5f6fc;color:#159fc7}.meal-library-icon{background:#eef4dc;color:#6d8e28}
+.meal-tool-body,.meal-library-body{padding:12px 13px 14px;border-top:1px solid #edf4f3;background:#fafdfc}
+.meal-two-buttons,.meal-barcode-manual{display:grid;grid-template-columns:1fr 1fr;gap:8px}.meal-barcode-manual{grid-template-columns:2fr 1fr;margin-top:8px}
+
+.meal-library{margin-top:10px}.meal-library>summary{min-height:74px;padding:12px 14px}.meal-library-body>.form-input{margin-bottom:9px}
+.meal-library-controls{display:grid;margin-bottom:10px}.meal-library-controls .form-select{height:48px}
+.meal-library-body .food-item{padding:12px!important;margin-bottom:8px!important;background:#fff!important}.meal-library-body .food-info>div:first-child{font-size:12px!important}.meal-library-body .food-info>div:not(:first-child){font-size:9px!important}
+.meal-library-body .icon-btn{padding:7px 9px!important;font-size:9px!important;white-space:nowrap}
+.meal-load-more{width:100%;height:45px;border:1px dashed #b9d9d5;border-radius:14px;background:#f0faf8;color:#087a78;font:800 11px 'IBM Plex Sans Arabic';cursor:pointer}.meal-load-more span{display:inline-grid;place-items:center;min-width:22px;height:22px;border-radius:8px;background:#fff;margin-right:4px}
+
 @media(max-width:520px){
   .screen{padding-inline:12px}.screen-title{font-size:22px!important}.glass-card{padding:16px!important}
   .daily-hero{min-height:202px;padding:21px 18px;border-radius:27px}.hero-number strong{font-size:35px}
   .hero-orbit{width:112px;height:112px;flex-basis:112px}.hero-orbit b{font-size:23px}
   .review-quick-actions{gap:7px}.review-quick-actions button{min-height:82px;font-size:9px}.quick-action-icon{width:37px;height:37px}
   .macro-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}.macro-item{padding-inline:4px!important}
+  .meal-today-card,.meal-composer{border-radius:22px}.meal-section-label small{display:none}
 }
 @media(max-width:380px){
   .daily-hero{padding-inline:15px}.hero-orbit{width:100px;height:100px;flex-basis:100px}

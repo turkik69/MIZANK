@@ -1,12 +1,20 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="مِيزانك">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="أيقونة ميزانك">
   <defs>
-    <linearGradient id="bg" x1="70" y1="55" x2="445" y2="465" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#353B91"/><stop offset=".68" stop-color="#5B60E5"/><stop offset="1" stop-color="#17A987"/>
+    <linearGradient id="bg" x1="58" y1="42" x2="454" y2="474" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#9b5cff"/>
+      <stop offset="0.52" stop-color="#7c3aed"/>
+      <stop offset="1" stop-color="#ff5f6d"/>
     </linearGradient>
   </defs>
-  <rect width="512" height="512" rx="118" fill="url(#bg)"/>
-  <circle cx="368" cy="139" r="43" fill="#DCF66E"/>
-  <path d="M112 337c76-116 151-116 226 0" fill="none" stroke="#FFFFFF" stroke-width="43" stroke-linecap="round"/>
-  <path d="M181 338c49-73 98-73 146 0" fill="none" stroke="#DCF66E" stroke-width="33" stroke-linecap="round"/>
-  <path d="M120 405h272" stroke="#8FE6CF" stroke-width="24" stroke-linecap="round"/>
+  <rect width="512" height="512" rx="118" fill="#17132b"/>
+  <rect x="28" y="28" width="456" height="456" rx="104" fill="url(#bg)"/>
+  <circle cx="401" cy="107" r="34" fill="#ffcf4a"/>
+  <circle cx="103" cy="399" r="25" fill="#24d3ee"/>
+  <g>
+    <path d="M124 329V183c0-33 27-60 60-60h144c33 0 60 27 60 60v146c0 33-27 60-60 60H184c-33 0-60-27-60-60Z" fill="#fffdf8" stroke="#17132b" stroke-width="18"/>
+    <path d="M174 195c17-25 45-40 82-40s65 15 82 40" fill="none" stroke="#7c3aed" stroke-width="20" stroke-linecap="round"/>
+    <path d="m256 196 42-27" stroke="#ff5f6d" stroke-width="15" stroke-linecap="round"/>
+    <circle cx="256" cy="196" r="17" fill="#17132b"/>
+    <path d="M178 300h45l23-50 31 91 24-41h35" fill="none" stroke="#73bd1f" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
 </svg>

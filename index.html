@@ -4,20 +4,17 @@
 <meta charset="UTF-8">
 <!-- تثبيت الشاشة وحظر الزووم تماماً -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<meta name="theme-color" content="#f7f8fc">
+<meta name="theme-color" content="#7c3aed">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="ميزانك">
+<meta name="apple-mobile-web-app-title" content="ميزانك الجديد">
 
-<!-- PWA Manifest مع أيقونة الميزان المخصصة للتثبيت على سطح المكتب -->
-<link rel="manifest" href="data:application/manifest+json;charset=utf-8,%7B%22name%22%3A%22%D9%85%D8%B3%D8%AA%D8%B4%D8%A7%D8%B1%20%D8%B5%D8%AD%D8%AA%D9%83%20%D8%A7%D9%84%D8%B0%D9%83%D9%8A%22%2C%22short_name%22%3A%22%D8%B5%D8%AD%D8%AA%D9%83%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23070a16%22%2C%22theme_color%22%3A%22%2310b981%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage%2Fsvg%2Bxml%3Butf8%2C%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%20512%20512%27%3E%3Crect%20width%3D%27512%27%20height%3D%27512%27%20rx%3D%27120%27%20fill%3D%27%2523070a16%27%2F%3E%3Crect%20x%3D%2770%27%20y%3D%2770%27%20width%3D%27372%27%20height%3D%27372%27%20rx%3D%2770%27%20fill%3D%27%2523111827%27%20stroke%3D%27%252310b981%27%20stroke-width%3D%2722%27%2F%3E%3Crect%20x%3D%27150%27%20y%3D%27115%27%20width%3D%27212%27%20height%3D%2780%27%20rx%3D%2720%27%20fill%3D%27%2523042f2e%27%20stroke%3D%27%252310b981%27%20stroke-width%3D%2710%27%2F%3E%3Ccircle%20cx%3D%27180%27%20cy%3D%27155%27%20r%3D%278%27%20fill%3D%27%252310b981%27%2F%3E%3Cpath%20d%3D%27M210%20155h90%27%20stroke%3D%27%252310b981%27%20stroke-width%3D%2714%27%20stroke-linecap%3D%27round%27%20stroke-dasharray%3D%2715%2010%27%2F%3E%3Cpath%20d%3D%27M150%20360%20a130%20130%200%200%201%20212%200%27%20fill%3D%27none%27%20stroke%3D%27%252306b6d4%27%20stroke-width%3D%2724%27%20stroke-linecap%3D%27round%27%2F%3E%3Cpath%20d%3D%27M256%20360%20l45%20-70%27%20stroke%3D%27%2523f43f5e%27%20stroke-width%3D%2716%27%20stroke-linecap%3D%27round%27%2F%3E%3Ccircle%20cx%3D%27256%27%20cy%3D%27360%27%20r%3D%2722%27%20fill%3D%27%2523f43f5e%27%20%2F%3E%3C%2Fsvg%3E%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%22%2C%22purpose%22%3A%22any%20maskable%22%7D%5D%7D">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" type="image/svg+xml" href="./icon.svg">
+<link rel="apple-touch-icon" href="./icon-180.png">
 
-<!-- أيقونات الميزان للمتصفح وأجهزة iOS -->
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='120' fill='%23070a16'/><rect x='70' y='70' width='372' height='372' rx='70' fill='%23111827' stroke='%2310b981' stroke-width='22'/><rect x='150' y='115' width='212' height='80' rx='20' fill='%23042f2e' stroke='%2310b981' stroke-width='10'/><circle cx='180' cy='155' r='8' fill='%2310b981'/><path d='M210 155h90' stroke='%2310b981' stroke-width='14' stroke-linecap='round' stroke-dasharray='15 10'/><path d='M150 360 a130 130 0 0 1 212 0' fill='none' stroke='%2306b6d4' stroke-width='24' stroke-linecap='round'/><path d='M256 360 l45 -70' stroke='%23f43f5e' stroke-width='16' stroke-linecap='round'/><circle cx='256' cy='360' r='22' fill='%23f43f5e'/></svg>">
-<link rel="apple-touch-icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='120' fill='%23070a16'/><rect x='70' y='70' width='372' height='372' rx='70' fill='%23111827' stroke='%2310b981' stroke-width='22'/><rect x='150' y='115' width='212' height='80' rx='20' fill='%23042f2e' stroke='%2310b981' stroke-width='10'/><circle cx='180' cy='155' r='8' fill='%2310b981'/><path d='M210 155h90' stroke='%2310b981' stroke-width='14' stroke-linecap='round' stroke-dasharray='15 10'/><path d='M150 360 a130 130 0 0 1 212 0' fill='none' stroke='%2306b6d4' stroke-width='24' stroke-linecap='round'/><path d='M256 360 l45 -70' stroke='%23f43f5e' stroke-width='16' stroke-linecap='round'/><circle cx='256' cy='360' r='22' fill='%23f43f5e'/></svg>">
-
-<title>مِيزانك | يومك الصحي</title>
+<title>مِيزانك الجديد | يومك الصحي</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
@@ -264,35 +261,8 @@ body {
 
 <div class="main-container">
 
-  <!-- LOGIN SCREEN -->
-  <div id="login-screen" class="screen active">
-    <div style="max-width: 440px; margin: 40px auto 0; text-align: center;">
-      <div class="glass-card" style="padding: 40px 25px;">
-        <div style="width: 80px; height: 80px; margin: 0 auto 15px; border-radius: 24px; background: rgba(16, 185, 129, 0.1); border: 2px solid var(--accent-emerald); display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 30px var(--accent-emerald-glow);">
-          <svg width="48" height="48" viewBox="0 0 512 512">
-            <rect x="70" y="70" width="372" height="372" rx="70" fill="#111827" stroke="#10b981" stroke-width="22"/>
-            <rect x="150" y="115" width="212" height="80" rx="20" fill="#042f2e" stroke="#10b981" stroke-width="10"/>
-            <circle cx="180" cy="155" r="8" fill="#10b981"/>
-            <path d="M210 155h90" stroke="#10b981" stroke-width="14" stroke-linecap="round" stroke-dasharray="15 10"/>
-            <path d="M150 360 a130 130 0 0 1 212 0" fill="none" stroke="#06b6d4" stroke-width="24" stroke-linecap="round"/>
-            <path d="M256 360 l45 -70" stroke="#f43f5e" stroke-width="16" stroke-linecap="round"/>
-            <circle cx="256" cy="360" r="22" fill="#f43f5e"/>
-          </svg>
-        </div>
-        <h1 style="font-size: 26px; font-weight: 900; font-family: 'El Messiri', serif; margin-bottom: 6px;">مستشارك الصحي الذكي</h1>
-        <p style="color: var(--text-secondary); font-size: 13px; margin-bottom: 25px;">رحلتك الشاملة للصحة والتغذية والصيام والرياضة</p>
-        
-        <div class="form-group">
-          <label class="form-label">اسم المستخدم أو اللقب</label>
-          <input type="text" id="username" class="form-input" placeholder="مثال: الكابتن أحمد" onkeypress="if(event.key==='Enter') handleLogin()">
-        </div>
-        <button type="button" id="login-discover-btn" class="btn btn-primary" onclick="handleLogin()">⚡ دخول واكتشاف التطبيق</button>
-      </div>
-    </div>
-  </div>
-
   <!-- SETUP SCREEN -->
-  <div id="setup-screen" class="screen">
+  <div id="setup-screen" class="screen active">
     <div class="glass-card" style="max-width:580px; margin:0 auto;">
       <div style="text-align:center; margin-bottom:20px;">
         <h1 class="screen-title" style="justify-content: center;">📝 بيانات ملفك الشخصي</h1>
@@ -371,16 +341,6 @@ body {
       <div class="hero-orbit" id="dashboard-calorie-progress" style="--progress:0deg">
         <div><b id="dashboard-remaining">0</b><small>متبقية</small></div>
       </div>
-      <svg class="hero-illustration" viewBox="0 0 130 170" aria-hidden="true">
-        <defs><linearGradient id="shirtBold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffcf4a"/><stop offset="1" stop-color="#b9f227"/></linearGradient></defs>
-        <circle cx="67" cy="28" r="17" fill="#ffb38a"/>
-        <path d="M52 48c9-7 24-7 32 1l13 44-22 12-31-7z" fill="url(#shirtBold)"/>
-        <path d="M51 55 29 81l-12-8M84 57l20 25 12-9" fill="none" stroke="#ffb38a" stroke-width="12" stroke-linecap="round"/>
-        <path d="m54 98-11 49M78 102l15 45" fill="none" stroke="#6e43d9" stroke-width="15" stroke-linecap="round"/>
-        <path d="m34 151 18 1M87 152h20" fill="none" stroke="#17132b" stroke-width="8" stroke-linecap="round"/>
-        <path d="M58 20c7-12 21-7 24 3-7-2-13-4-24-3Z" fill="#17132b"/>
-        <circle cx="63" cy="28" r="2" fill="#17132b"/><circle cx="73" cy="28" r="2" fill="#17132b"/>
-      </svg>
       <span class="hero-bubble bubble-one"></span><span class="hero-bubble bubble-two"></span>
     </section>
 
@@ -949,7 +909,6 @@ body {
       <div id="profile-info"></div>
       <div style="display:flex; flex-direction:column; gap:10px; margin-top:15px;">
         <button class="btn btn-secondary" onclick="editProfile()">✏️ تعديل بيانات الحساب</button>
-        <button class="btn btn-coral" onclick="logout()">🚪 تسجيل الخروج</button>
         <button class="btn btn-secondary" style="color:var(--accent-coral);" onclick="clearAllData()">🗑️ إعادة ضبط السجلات</button>
       </div>
     </div>
@@ -1048,10 +1007,10 @@ if ('serviceWorker' in navigator) {
 const apiKey = ""; // Runtime provided key by host execution environment
 
 async function fetchGeminiWithRetry(payload) {
-  const customKey = safeStorage.getItem('healthAppGeminiKey');
+  const customKey = safeStorage.getItem('mizankV2GeminiKey') || safeStorage.getItem('healthAppGeminiKey');
   const keysToTry = (customKey && customKey.trim() !== "") ? [customKey.trim(), apiKey] : [apiKey];
   const delays = [1000, 2000, 4000, 8000, 16000];
-  const model = safeStorage.getItem('healthAppGeminiModel') || 'gemini-3.5-flash';
+  const model = safeStorage.getItem('mizankV2GeminiModel') || safeStorage.getItem('healthAppGeminiModel') || 'gemini-3.5-flash';
 
   let lastError = null;
 
@@ -1537,7 +1496,8 @@ function addPresetCombo(name, cal, p, c, f, sugar, fiber) {
 }
 
 // ============ APP STATE ============
-let currentUsername = null;
+const LOCAL_PROFILE_ID = 'mizank-v2-local-user';
+let currentUsername = LOCAL_PROFILE_ID;
 let appState = {
   profile: null,
   meals: [],
@@ -1573,14 +1533,25 @@ function showModal(title, contentHtml) {
 function closeModal() { document.getElementById('app-modal').classList.remove('active'); }
 
 function loadUsersDB() {
-  try { return JSON.parse(safeStorage.getItem('healthAppUsers') || '{}'); }
-  catch (e) { return {}; }
+  try {
+    const v2Users = JSON.parse(safeStorage.getItem('mizankV2Users') || '{}');
+    if (v2Users[LOCAL_PROFILE_ID]) return v2Users;
+
+    // ترحيل آمن لمستخدمي نسخة المعاينة السابقة مرة واحدة، من دون حذف المصدر.
+    const legacyUsers = JSON.parse(safeStorage.getItem('healthAppUsers') || '{}');
+    const legacyId = safeStorage.getItem('healthAppCurrentUser');
+    if (legacyId && legacyUsers[legacyId]?.profile) {
+      v2Users[LOCAL_PROFILE_ID] = legacyUsers[legacyId];
+      safeStorage.setItem('mizankV2Users', JSON.stringify(v2Users));
+    }
+    return v2Users;
+  } catch (e) { return {}; }
 }
 function saveCurrentUserData() {
   if (!currentUsername) return;
   const db = loadUsersDB();
   db[currentUsername] = appState;
-  safeStorage.setItem('healthAppUsers', JSON.stringify(db));
+  safeStorage.setItem('mizankV2Users', JSON.stringify(db));
 }
 
 function todayStr() { return new Date().toISOString().split('T')[0]; }
@@ -1596,39 +1567,10 @@ function ensureTodayWater() {
 
 // ============ INIT ============
 window.addEventListener('load', () => {
-  const savedUsername = safeStorage.getItem('healthAppCurrentUser');
-  if (savedUsername) {
-    const db = loadUsersDB();
-    if (db[savedUsername] && db[savedUsername].profile) {
-      currentUsername = savedUsername;
-      appState = Object.assign({ meals: [], workouts: [], weights: [], water: 0, waterDate: null, chat: [], streak: 1, waterIntervalHours: 2, lastWaterNotifTime: 0, lastMealNotifTime: 0, fasting: { active: false, startTime: null, targetHours: 16, logs: [], lastEndTime: null } }, db[savedUsername]);
-      document.getElementById('bottom-nav').style.display = 'flex';
-      showScreen('dashboard-screen');
-      updateLoginStreak();
-      checkAndShowBackupReminder();
-      updateDashboard();
-      initChart();
-      initFastingTimer();
-      renderSuggestedMeals();
-      fetchLeaderboard();
-      startNotificationScheduler();
-      return;
-    }
-  }
-  showScreen('login-screen');
-});
-
-// ============ AUTH ============
-function handleLogin() {
-  const username = document.getElementById('username').value.trim();
-  if (!username) { showToast('يرجى إدخال اسم المستخدم', 'warning'); return; }
-
-  currentUsername = username;
-  safeStorage.setItem('healthAppCurrentUser', username);
-
+  currentUsername = LOCAL_PROFILE_ID;
   const db = loadUsersDB();
-  if (db[username] && db[username].profile) {
-    appState = Object.assign({ meals: [], workouts: [], weights: [], water: 0, waterDate: null, chat: [], streak: 1, waterIntervalHours: 2, lastWaterNotifTime: 0, lastMealNotifTime: 0, fasting: { active: false, startTime: null, targetHours: 16, logs: [], lastEndTime: null } }, db[username]);
+  if (db[LOCAL_PROFILE_ID] && db[LOCAL_PROFILE_ID].profile) {
+    appState = Object.assign({ meals: [], workouts: [], weights: [], water: 0, waterDate: null, chat: [], streak: 1, waterIntervalHours: 2, lastWaterNotifTime: 0, lastMealNotifTime: 0, fasting: { active: false, startTime: null, targetHours: 16, logs: [], lastEndTime: null } }, db[LOCAL_PROFILE_ID]);
     document.getElementById('bottom-nav').style.display = 'flex';
     showScreen('dashboard-screen');
     updateLoginStreak();
@@ -1637,16 +1579,14 @@ function handleLogin() {
     initChart();
     initFastingTimer();
     renderSuggestedMeals();
-    fetchLeaderboard();
     startNotificationScheduler();
-  } else {
-    appState = db[username] || { profile: null, meals: [], workouts: [], weights: [], water: 0, chat: [], streak: 1, waterIntervalHours: 2, lastWaterNotifTime: 0, lastMealNotifTime: 0, fasting: { active: false, startTime: null, targetHours: 16, logs: [], lastEndTime: null } };
-    showScreen('setup-screen');
+    return;
   }
-}
+  showScreen('setup-screen');
+});
 
 function completeSetup() {
-  const name = document.getElementById('setup-name').value.trim() || currentUsername;
+  const name = document.getElementById('setup-name').value.trim() || 'مستخدم ميزانك';
   const age = parseInt(document.getElementById('setup-age').value);
   const gender = document.getElementById('setup-gender').value;
   const height = parseInt(document.getElementById('setup-height').value);
@@ -3619,25 +3559,25 @@ function editProfile() { showScreen('setup-screen'); }
 
 function saveApiSettings() {
   const geminiKey = document.getElementById('gemini-key-input').value.trim();
-  if (geminiKey) safeStorage.setItem('healthAppGeminiKey', geminiKey);
-  else safeStorage.removeItem('healthAppGeminiKey');
+  if (geminiKey) safeStorage.setItem('mizankV2GeminiKey', geminiKey);
+  else safeStorage.removeItem('mizankV2GeminiKey');
 
   const geminiModel = document.getElementById('gemini-model-input').value.trim();
-  if (geminiModel) safeStorage.setItem('healthAppGeminiModel', geminiModel);
-  else safeStorage.removeItem('healthAppGeminiModel');
+  if (geminiModel) safeStorage.setItem('mizankV2GeminiModel', geminiModel);
+  else safeStorage.removeItem('mizankV2GeminiModel');
 
   showToast('تم حفظ الإعدادات بنجاح', 'success');
 }
 
 function clearCustomApiKey() {
-  safeStorage.removeItem('healthAppGeminiKey');
+  safeStorage.removeItem('mizankV2GeminiKey');
   document.getElementById('gemini-key-input').value = '';
   showToast('تمت العودة لمفتاح النظام الافتراضي بنجاح ✅', 'success');
 }
 
 function loadApiSettingsUI() {
-  document.getElementById('gemini-key-input').value = safeStorage.getItem('healthAppGeminiKey') || '';
-  document.getElementById('gemini-model-input').value = safeStorage.getItem('healthAppGeminiModel') || 'gemini-3.5-flash';
+  document.getElementById('gemini-key-input').value = safeStorage.getItem('mizankV2GeminiKey') || safeStorage.getItem('healthAppGeminiKey') || '';
+  document.getElementById('gemini-model-input').value = safeStorage.getItem('mizankV2GeminiModel') || safeStorage.getItem('healthAppGeminiModel') || 'gemini-3.5-flash';
 }
 
 // ============ النسخة الاحتياطية — تصدير/استيراد ملف JSON كامل، وتذكير عند دخول يوم جديد ============
@@ -3653,7 +3593,8 @@ function exportBackup() {
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `نسخة_احتياطية_${currentUsername}_${todayStr()}.json`;
+  const profileLabel = (appState.profile?.name || 'ميزانك').replace(/[^\p{L}\p{N}_-]+/gu, '_');
+  a.download = `نسخة_احتياطية_${profileLabel}_${todayStr()}.json`;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
@@ -3728,11 +3669,6 @@ function hideBackupReminderBanner() {
 
 function dismissBackupReminder() {
   hideBackupReminderBanner();
-}
-
-function logout() {
-  safeStorage.removeItem('healthAppCurrentUser');
-  location.reload();
 }
 
 function clearAllData() {

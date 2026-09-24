@@ -218,19 +218,22 @@ body:before{
 .chart-container canvas{filter:none}
 #community-screen{display:none!important}
 
-/* Onboarding becomes its own identity moment */
-#login-screen>div{margin-top:18px!important}
-#login-screen .glass-card{
-  min-height:610px;background:
-    radial-gradient(circle at 80% 5%,rgba(201,237,119,.22),transparent 16rem),
-    linear-gradient(150deg,#153463 0%,#126f87 52%,#00a99d 100%)!important;
-  border:0!important;padding:52px 23px 30px!important;color:#fff!important;border-radius:32px!important
+/* First launch: direct, focused personal setup */
+#setup-screen{padding-top:24px;min-height:100dvh}
+#setup-screen>.glass-card{
+  max-width:580px!important;padding:26px 20px 22px!important;border:2px solid #241d3a!important;
+  background:linear-gradient(160deg,#fffdf8 0%,#f7f0ff 58%,#e6fbff 100%)!important;
+  box-shadow:0 8px 0 #241d3a,0 28px 55px rgba(74,43,128,.18)!important
 }
-#login-screen .glass-card>div:first-child{background:rgba(255,255,255,.12)!important;border:1px solid rgba(255,255,255,.28)!important;box-shadow:none!important}
-#login-screen .glass-card svg rect:first-child{fill:transparent!important;stroke:#c9ed77!important}
-#login-screen .glass-card svg rect:nth-child(2){fill:rgba(255,255,255,.08)!important;stroke:#fff!important}
-#login-screen h1,#login-screen p,#login-screen .form-label{color:#fff!important}
-#login-screen .form-input{background:rgba(255,255,255,.97)!important}
+#setup-screen>.glass-card:before{
+  content:'م';display:grid;place-items:center;width:70px;height:70px;margin:0 auto 17px;border-radius:23px;
+  background:linear-gradient(145deg,#7c3aed,#ff5f6d);border:2px solid #17132b;box-shadow:4px 5px 0 #17132b;
+  color:#fff;font:900 34px/1 'IBM Plex Sans Arabic',sans-serif;transform:rotate(-3deg)
+}
+#setup-screen .screen-title{font-size:25px!important}
+#setup-screen .screen-subtitle{font-size:12px!important;margin-top:5px}
+#setup-screen .form-label{color:#392d56!important}
+#setup-screen .btn-primary{min-height:54px;border:2px solid #17132b!important;box-shadow:0 5px 0 #17132b!important}
 
 #backup-reminder-banner{background:#fff5dc!important;border-color:#efbd62!important;box-shadow:0 8px 20px rgba(171,117,27,.08)}
 #backup-reminder-banner>span{color:#76551f!important;font-weight:700}
@@ -407,7 +410,6 @@ body:before{background:#fff8ee}
 .hero-orbit{width:116px;height:116px;flex-basis:116px;background:conic-gradient(var(--miz-lime) var(--progress),rgba(255,255,255,.2) 0);border:2px solid #17132b;box-shadow:4px 6px 0 rgba(23,19,43,.65)}
 .hero-orbit:before{background:#4d1d9c;border-color:rgba(255,255,255,.2)}
 .hero-streak{background:#ffcf4a;color:#17132b;border:2px solid #17132b;box-shadow:3px 4px 0 #17132b}.hero-streak>span{background:#b9f227}.hero-streak>small{color:#5a4715}
-.hero-illustration{position:absolute;width:89px;height:135px;left:34%;bottom:-4px;z-index:1;filter:drop-shadow(5px 8px 0 rgba(23,19,43,.25))}
 .review-quick-actions button{border:2px solid #241d3a;background:#fffdf8;box-shadow:0 5px 0 #241d3a,0 13px 22px rgba(52,36,94,.1);transition:transform .12s,box-shadow .12s}
 .review-quick-actions button:active{transform:translateY(4px);box-shadow:0 1px 0 #241d3a}
 .quick-action-icon{border:1.5px solid #241d3a}.meals-icon{background:#eadcff;color:#6d28d9}.water-icon{background:#d8f8ff;color:#007d98}.move-icon{background:#eaffb8;color:#4f7011}.weight-icon{background:#ffe0d2;color:#c34f31}
@@ -450,8 +452,7 @@ body:before{background:#fff8ee}
 .nav-item.active{background:#7c3aed!important;color:#fff!important;box-shadow:0 4px 0 #241d3a!important;border:1.5px solid #241d3a}
 
 @media(max-width:520px){
-  .hero-illustration{width:78px;left:33%;opacity:.95}
   .daily-hero{min-height:218px}.hero-orbit{width:105px;height:105px;flex-basis:105px}
   .more-visual-banner svg{width:118px;flex-basis:118px}.more-visual-banner b{font-size:14px}
 }
-@media(max-width:380px){.hero-illustration{display:none}.more-visual-banner svg{width:96px;flex-basis:96px}}
+@media(max-width:380px){.more-visual-banner svg{width:96px;flex-basis:96px}}

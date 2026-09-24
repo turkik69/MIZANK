@@ -8,13 +8,13 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="ميزانك">
+<meta name="apple-mobile-web-app-title" content="ميزانك الجديد">
 
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" type="image/svg+xml" href="./icon.svg">
 <link rel="apple-touch-icon" href="./icon-180.png">
 
-<title>مِيزانك | يومك الصحي</title>
+<title>مِيزانك الجديد | يومك الصحي</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
@@ -858,7 +858,7 @@ body {
 
     <div class="glass-card settings-notifications-card" style="border-color: var(--accent-purple);">
       <h3 style="color: var(--accent-purple); margin-bottom: 8px; font-size:15px; font-weight:800;">التذكيرات الذكية</h3>
-      <p style="font-size:12px; color:var(--text-secondary); margin-bottom:14px;">تفعيل التنبيهات الدورية لشرب الماء، إدخال الوجبات، وتنبيهات الصيام</p>
+      <p style="font-size:12px; color:var(--text-secondary); margin-bottom:14px;">تعمل حتى عند إغلاق التطبيق، وتتوقف تلقائياً عن تذكيرك بالوجبة التي سجلتها أو بالماء بعد إضافة كوب. في الآيفون ثبّت التطبيق على الشاشة الرئيسية أولاً.</p>
       
       <div class="form-group">
         <label class="form-label">تكرار تذكير شرب الماء</label>
@@ -871,7 +871,7 @@ body {
 
       <div style="display:flex; flex-direction:column; gap:10px;">
         <button class="btn btn-purple" id="notification-toggle-btn" onclick="requestNotificationPermission()">
-          <span>🔔 تفعيل إشعارات المتصفح والجهاز</span>
+          <span>🔔 تفعيل الإشعارات الذكية بالخلفية</span>
         </button>
         <button class="btn btn-secondary" onclick="sendTestNotification()">⚡ تجربة إرسال إشعار فوراً</button>
       </div>
@@ -983,27 +983,15 @@ const safeStorage = {
   }
 };
 
-// ============ INLINE SERVICE WORKER FOR RELIABLE NOTIFICATIONS ============
+// ============ SERVICE WORKER FOR BACKGROUND NOTIFICATIONS ============
 let swRegistration = null;
 if ('serviceWorker' in navigator) {
-  const swCode = `
-    self.addEventListener('install', (e) => self.skipWaiting());
-    self.addEventListener('activate', (e) => e.waitUntil(self.clients.claim()));
-    self.addEventListener('message', (e) => {
-      if (e.data && e.data.type === 'SHOW_NOTIFICATION') {
-        self.registration.showNotification(e.data.title, {
-          body: e.data.body,
-          icon: e.data.icon,
-          badge: e.data.icon
-        });
-      }
-    });
-  `;
-  const blob = new Blob([swCode], { type: 'application/javascript' });
-  navigator.serviceWorker.register(URL.createObjectURL(blob))
+  navigator.serviceWorker.register('./sw.js')
     .then(reg => { swRegistration = reg; })
     .catch(() => {});
 }
+
+const NOTIFICATION_RELAY_URL = 'https://mizank-notify.turki-k69.chatgpt.site';
 
 // ============ GEMINI API CORE WITH EXPONENTIAL BACKOFF ============
 const apiKey = ""; // Runtime provided key by host execution environment
@@ -1486,9 +1474,11 @@ function closeMealCategory() {
 }
 
 function addPresetCombo(name, cal, p, c, f, sugar, fiber) {
+  const now = Date.now();
   appState.meals.push({
-    id: Date.now(), date: todayStr(), name, cal, protein: p, carbs: c, fat: f,
+    id: now, date: todayStr(), name, cal, protein: p, carbs: c, fat: f,
     sugar: sugar || 0, fiber: fiber || 0,
+    timestamp: now, mealType: inferMealType(name, now),
     time: new Date().toLocaleTimeString('ar', { hour: '2-digit', minute: '2-digit' })
   });
   saveCurrentUserData();
@@ -1554,9 +1544,59 @@ function saveCurrentUserData() {
   const db = loadUsersDB();
   db[currentUsername] = appState;
   safeStorage.setItem('mizankV2Users', JSON.stringify(db));
+  syncNotificationState();
 }
 
-function todayStr() { return new Date().toISOString().split('T')[0]; }
+function todayStr(date = new Date()) {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, '0');
+  const d = String(date.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+}
+
+function inferMealType(name = '', timestamp = Date.now()) {
+  const text = String(name).toLowerCase();
+  if (/فطور|إفطار|افطار|breakfast/.test(text)) return 'breakfast';
+  if (/غداء|غدا|lunch/.test(text)) return 'lunch';
+  if (/عشاء|عشا|dinner/.test(text)) return 'dinner';
+  const hour = new Date(timestamp || Date.now()).getHours();
+  if (hour >= 5 && hour < 11) return 'breakfast';
+  if (hour >= 11 && hour < 17) return 'lunch';
+  if (hour >= 17 && hour < 23) return 'dinner';
+  return 'snack';
+}
+
+function writeNotificationSnapshot(snapshot) {
+  if (!('indexedDB' in window)) return Promise.resolve();
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open('mizank-notifications', 1);
+    request.onupgradeneeded = () => {
+      if (!request.result.objectStoreNames.contains('state')) request.result.createObjectStore('state');
+    };
+    request.onerror = () => reject(request.error);
+    request.onsuccess = () => {
+      const tx = request.result.transaction('state', 'readwrite');
+      tx.objectStore('state').put(snapshot, 'snapshot');
+      tx.oncomplete = resolve;
+      tx.onerror = () => reject(tx.error);
+    };
+  });
+}
+
+function syncNotificationState() {
+  const snapshot = {
+    notificationsEnabled: !!appState.notificationsEnabled,
+    water: Number(appState.water || 0),
+    waterTarget: Number(appState.profile?.water || 8),
+    waterIntervalHours: Number(appState.waterIntervalHours || 2),
+    lastWaterAt: Number(appState.lastWaterAt || 0),
+    meals: (appState.meals || []).slice(-80).map(meal => ({
+      day: meal.date,
+      mealType: meal.mealType || inferMealType(meal.name, meal.timestamp || meal.id),
+    })),
+  };
+  writeNotificationSnapshot(snapshot).catch(() => {});
+}
 function getTodaysMeals() { return appState.meals.filter(m => m.date === todayStr()); }
 function getTodaysWorkouts() { return (appState.workouts || []).filter(w => w.date === todayStr()); }
 
@@ -2467,8 +2507,10 @@ function saveManualMealFromModal() {
 
   if (!name) { showToast('يرجى إدخال اسم الوجبة على الأقل', 'warning'); return; }
 
+  const now = Date.now();
   appState.meals.push({
-    id: Date.now(), date: todayStr(), name, cal, protein: p, carbs: c, fat: f, sugar, fiber,
+    id: now, date: todayStr(), name, cal, protein: p, carbs: c, fat: f, sugar, fiber,
+    timestamp: now, mealType: inferMealType(name, now),
     time: new Date().toLocaleTimeString('ar', { hour: '2-digit', minute: '2-digit' })
   });
 
@@ -2685,23 +2727,59 @@ function updateReminderPreferences() {
   showToast(`تم تحديث تذكير الماء ليكون كل ${val} ساعات 💧`, 'success');
 }
 
-function requestNotificationPermission() {
+function urlBase64ToUint8Array(base64String) {
+  const padding = '='.repeat((4 - base64String.length % 4) % 4);
+  const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+  const rawData = atob(base64);
+  return Uint8Array.from([...rawData].map(char => char.charCodeAt(0)));
+}
+
+async function requestNotificationPermission() {
   if (!("Notification" in window)) {
     showToast("متصفحك لا يدعم إشعارات النظام المباشرة", "warning");
     return;
   }
 
-  Notification.requestPermission().then(permission => {
-    if (permission === "granted") {
-      appState.notificationsEnabled = true;
-      saveCurrentUserData();
-      showToast("تم تفعيل التنبيهات بنجاح! 🔔", "success");
-      document.getElementById('notification-toggle-btn').innerHTML = "<span>✅ الإشعارات مفعلة بنجاح</span>";
-      startNotificationScheduler();
-    } else {
+  try {
+    const permission = await Notification.requestPermission();
+    if (permission !== 'granted') {
       showToast("لم يتم منح الإذن للإشعارات في إعدادات جهازك", "warning");
+      return;
     }
-  });
+    if (!('PushManager' in window) || !('serviceWorker' in navigator)) {
+      showToast("ثبّت التطبيق على الشاشة الرئيسية أولاً لتعمل الإشعارات وهو مغلق", "warning");
+      return;
+    }
+
+    swRegistration = await navigator.serviceWorker.ready;
+    const configResponse = await fetch(`${NOTIFICATION_RELAY_URL}/api/config`);
+    if (!configResponse.ok) throw new Error('تعذر تحميل إعداد الإشعارات');
+    const { publicKey } = await configResponse.json();
+    let subscription = await swRegistration.pushManager.getSubscription();
+    if (!subscription) {
+      subscription = await swRegistration.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: urlBase64ToUint8Array(publicKey),
+      });
+    }
+    const subscribeResponse = await fetch(`${NOTIFICATION_RELAY_URL}/api/subscribe`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(subscription.toJSON()),
+    });
+    if (!subscribeResponse.ok) throw new Error('تعذر حفظ اشتراك الإشعارات');
+
+    appState.notificationsEnabled = true;
+    appState.lastWaterNotifTime = Date.now();
+    appState.lastWaterAt = appState.lastWaterAt || Date.now();
+    saveCurrentUserData();
+    showToast("تم تفعيل الإشعارات الذكية حتى عند إغلاق التطبيق 🔔", "success");
+    document.getElementById('notification-toggle-btn').innerHTML = "<span>✅ تعمل حتى عند إغلاق التطبيق</span>";
+    startNotificationScheduler();
+  } catch (error) {
+    console.error('Push subscription failed', error);
+    showToast("تعذر تشغيل إشعارات الخلفية. في الآيفون ثبّت التطبيق على الشاشة الرئيسية ثم حاول مجدداً.", "warning");
+  }
 }
 
 function triggerNotification(title, body) {
@@ -2746,18 +2824,20 @@ function checkAndSendDueNotifications() {
     }
   }
 
-  const mealIntervalMs = 4 * 60 * 60 * 1000;
-  if (!appState.lastMealNotifTime || (now - appState.lastMealNotifTime >= mealIntervalMs)) {
-    if (currentHour === 9) {
-      triggerNotification("🍳 وقت وجبة الإفطار", "لا تنسَ تسجيل وجبة الإفطار لضبط جدول السعرات!");
-      appState.lastMealNotifTime = now;
-      saveCurrentUserData();
-    } else if (currentHour === 14) {
-      triggerNotification("🍗 وقت الغداء الصحي", "تذكير بتسجيل وجبة الغداء بالصوت أو الصورة!");
-      appState.lastMealNotifTime = now;
-      saveCurrentUserData();
-    } else if (currentHour === 20) {
-      triggerNotification("🥗 وقت العشاء والخِتام", "سجل وجبة العشاء الأخيرة وقراءة الوزن للرسم البياني!");
+  const slots = currentHour >= 8 && currentHour < 11
+    ? ['breakfast', '🍳 وقت وجبة الإفطار', 'لا تنسَ تسجيل وجبة الإفطار لضبط جدول السعرات!']
+    : currentHour >= 13 && currentHour < 16
+      ? ['lunch', '🍗 وقت الغداء الصحي', 'سجّل وجبة الغداء بالصوت أو الصورة!']
+      : currentHour >= 19 && currentHour < 22
+        ? ['dinner', '🥗 وقت العشاء', 'سجّل وجبة العشاء لتكتمل صورة يومك!']
+        : null;
+  if (slots) {
+    const [mealType, title, body] = slots;
+    const hasLoggedMeal = getTodaysMeals().some(meal => (meal.mealType || inferMealType(meal.name, meal.timestamp || meal.id)) === mealType);
+    appState.mealReminderSent = appState.mealReminderSent?.day === todayStr() ? appState.mealReminderSent : { day: todayStr() };
+    if (!hasLoggedMeal && !appState.mealReminderSent[mealType]) {
+      triggerNotification(title, body);
+      appState.mealReminderSent[mealType] = now;
       appState.lastMealNotifTime = now;
       saveCurrentUserData();
     }
@@ -3231,8 +3311,10 @@ function confirmAiMeal(name, cal, p, c, f, sugar, fiber) {
   sugar = sugar || 0;
   fiber = fiber || 0;
 
+  const now = Date.now();
   appState.meals.push({
-    id: Date.now(), date: todayStr(), name, cal, protein: p, carbs: c, fat: f, sugar, fiber,
+    id: now, date: todayStr(), name, cal, protein: p, carbs: c, fat: f, sugar, fiber,
+    timestamp: now, mealType: inferMealType(name, now),
     time: new Date().toLocaleTimeString('ar', { hour: '2-digit', minute: '2-digit' })
   });
 
@@ -3418,6 +3500,8 @@ function deleteWorkout(id) {
 function addWater(cups = 1) {
   ensureTodayWater();
   appState.water += cups;
+  appState.lastWaterAt = Date.now();
+  appState.lastWaterNotifTime = appState.lastWaterAt;
   saveCurrentUserData();
   updateWaterScreen();
   updateDashboard();
@@ -3557,7 +3641,9 @@ function updateProfileUI() {
 
   const notifBtn = document.getElementById('notification-toggle-btn');
   if (notifBtn && "Notification" in window && Notification.permission === "granted") {
-    notifBtn.innerHTML = "<span>✅ الإشعارات مفعلة بنجاح</span>";
+    notifBtn.innerHTML = appState.notificationsEnabled
+      ? "<span>✅ تعمل حتى عند إغلاق التطبيق</span>"
+      : "<span>🔔 أكمل تفعيل إشعارات الخلفية</span>";
   }
 
   const intervalSelect = document.getElementById('water-reminder-interval-select');

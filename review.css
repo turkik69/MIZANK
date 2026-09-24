@@ -456,3 +456,91 @@ body:before{background:#fff8ee}
   .more-visual-banner svg{width:118px;flex-basis:118px}.more-visual-banner b{font-size:14px}
 }
 @media(max-width:380px){.more-visual-banner svg{width:96px;flex-basis:96px}}
+
+/* ==========================================================
+   MIZANK V2 — complete identity pass
+   ========================================================== */
+body[data-view="meals"]{background:radial-gradient(circle at 90% 4%,rgba(255,95,109,.23),transparent 18rem),linear-gradient(180deg,#fff8ee,#f7f0ff 55%,#fff7ef)!important}
+body[data-view="workouts"]{background:radial-gradient(circle at 9% 8%,rgba(185,242,39,.28),transparent 18rem),linear-gradient(180deg,#fbffe8,#f5f1ff 62%,#fff4ee)!important}
+body[data-view="fasting"]{background:radial-gradient(circle at 92% 7%,rgba(124,58,237,.21),transparent 19rem),linear-gradient(180deg,#f3edff,#f8f4ff 60%,#eefbff)!important}
+body[data-view="water"]{background:radial-gradient(circle at 8% 9%,rgba(36,211,238,.28),transparent 19rem),linear-gradient(180deg,#ebfbff,#f4f0ff 65%,#fff8ee)!important}
+body[data-view="settings"],body[data-view="more"],body[data-view="chat"]{background:radial-gradient(circle at 91% 5%,rgba(255,207,74,.3),transparent 18rem),linear-gradient(180deg,#fff8e9,#f5f1ff 58%,#eefbff)!important}
+
+/* First-use setup */
+.setup-badge{display:inline-flex;align-items:center;min-height:29px;padding:5px 11px;margin-bottom:9px;border-radius:999px;background:#e9ffac;color:#314709;border:1.5px solid #241d3a;box-shadow:2px 3px 0 #241d3a;font-size:9px;font-weight:800}
+.setup-grid{display:grid;gap:11px}.setup-grid-two{grid-template-columns:repeat(2,minmax(0,1fr))}.setup-grid-three{grid-template-columns:repeat(3,minmax(0,1fr))}
+#setup-screen .form-group{position:relative}
+#setup-screen .form-input,#setup-screen .form-select{min-height:51px;border-radius:16px!important}
+.setup-submit{min-height:56px;margin-top:14px!important;display:flex!important;justify-content:space-between!important;padding-inline:20px!important}
+.setup-submit b{font:900 22px/1 'Manrope';transition:transform .18s}.setup-submit:active b{transform:translateX(-5px)}
+.setup-cancel{margin-top:11px}.setup-cancel[hidden]{display:none!important}
+
+/* Unified illustrated headers */
+.secondary-header-icon svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.screen-header{position:relative}
+.screen-header:after{content:'';position:absolute;right:0;bottom:7px;width:42px;height:4px;border-radius:99px;background:linear-gradient(90deg,#7c3aed,#ff5f6d,#ffcf4a)}
+#dashboard-screen .screen-header:after{background:linear-gradient(90deg,#7c3aed,#ff5f6d)}
+#meals-screen .screen-header:after{background:linear-gradient(90deg,#ff5f6d,#ffcf4a)}
+#workouts-screen .screen-header:after{background:linear-gradient(90deg,#73bd1f,#b9f227)}
+#fasting-screen .screen-header:after{background:linear-gradient(90deg,#4d1d9c,#24d3ee)}
+#water-screen .screen-header:after{background:linear-gradient(90deg,#00a7c5,#24d3ee)}
+
+/* Dashboard sections now read as distinct destinations */
+.review-dashboard-section>summary{gap:11px;justify-content:flex-start!important}
+.review-dashboard-section>summary em{width:39px;height:39px;border-radius:13px;display:grid;place-items:center;flex:0 0 39px;font-style:normal;font-size:17px;border:1.5px solid #241d3a;box-shadow:2px 3px 0 #241d3a}
+.review-dashboard-section>summary span{flex:1}.review-dashboard-section>summary i{margin-right:auto}
+.review-dashboard-section[data-section="nutrition"]>summary{background:#fff3bb}.review-dashboard-section[data-section="nutrition"]>summary em{background:#b9f227}
+.review-dashboard-section[data-section="progress"]>summary{background:#e8ddff}.review-dashboard-section[data-section="progress"]>summary em{background:#ffcf4a}
+.review-dashboard-section[data-section="guidance"]>summary{background:#d9f9ff}.review-dashboard-section[data-section="guidance"]>summary em{background:#24d3ee}
+.review-section-content{background:#fffdf8!important;padding:11px!important}
+.review-section-content>.glass-card{border:1.5px solid #241d3a!important;box-shadow:0 3px 0 #241d3a!important;background:#fff!important}
+.review-section-content>.glass-card:nth-child(3n+1){background:#fff8d9!important}.review-section-content>.glass-card:nth-child(3n+2){background:#f0eaff!important}.review-section-content>.glass-card:nth-child(3n){background:#e9fbff!important}
+.review-section-content>.glass-card h3{display:flex;align-items:center;gap:7px}
+
+/* Fasting */
+.fasting-time-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin:0 auto 16px;max-width:330px}
+.fasting-time-stats>div{padding:10px 8px;border:1.5px solid rgba(255,255,255,.28);border-radius:14px;background:rgba(255,255,255,.1);display:flex;flex-direction:column;gap:2px}
+.fasting-time-stats small{font-size:9px;color:#d9d0ff}.fasting-time-stats span{font:800 15px 'Manrope';color:#fff}
+.fasting-ring-container{filter:drop-shadow(0 13px 20px rgba(0,0,0,.17))}
+.fasting-history-card{background:#f0eaff!important}
+
+/* Activity */
+.workout-programs-card .food-item{border:1.5px solid #241d3a!important;box-shadow:0 3px 0 #241d3a!important}
+.workout-programs-card .food-item:first-of-type{background:#fff5c8!important}.workout-programs-card .food-item:nth-of-type(2){background:#ffe8df!important}
+.workout-programs-card .food-info>div:first-child,.workout-entry-card .food-info>div:first-child{color:#17132b!important}
+.workout-today-card .delete-btn{border:1.5px solid #17132b;background:#fff;color:#d8374b;box-shadow:0 3px 0 #17132b;border-radius:11px;padding:7px 10px;font-weight:800}
+.pill-container .pill{cursor:pointer;user-select:none}
+
+/* Hydration gauge */
+.water-gauge{width:150px;height:150px;margin:0 auto 13px;border-radius:50%;padding:11px;display:grid;place-items:center;position:relative;background:conic-gradient(#b9f227 var(--water-level),rgba(255,255,255,.2) 0);border:2px solid #17132b;box-shadow:5px 7px 0 rgba(23,19,43,.55)}
+.water-gauge:before{content:'';position:absolute;inset:12px;border-radius:50%;background:linear-gradient(145deg,#047f9d,#20b9d9);border:1.5px solid rgba(255,255,255,.3)}
+.water-gauge span,.water-gauge small{position:relative;z-index:1}.water-gauge span{align-self:end;font:900 39px/1 'Manrope';color:#fff}.water-gauge small{align-self:start;margin-top:5px;font-size:9px;color:#d9f8ff}
+.weight-entry-card .form-input{background:#fffdf8!important}
+
+/* Assistant, settings, modal and feedback */
+.chat-welcome>span{border:1.5px solid #241d3a;box-shadow:2px 3px 0 #241d3a;background:#b9f227!important;color:#17132b!important}
+.chat-clear-btn{border:1.5px solid #241d3a!important;box-shadow:0 3px 0 #241d3a!important;background:#ffe0da!important;color:#9a3329!important}
+.settings-profile-card,.settings-backup-card,.settings-notifications-card,.settings-ai-card{overflow:visible!important}
+.settings-profile-card h3,.settings-backup-card h3,.settings-notifications-card h3,.settings-ai-card h3{display:flex;align-items:center}
+.settings-notifications-card .btn-purple{background:linear-gradient(135deg,#7c3aed,#a855f7)!important;color:#fff;border:2px solid #211a36!important;box-shadow:0 5px 0 #211a36!important}
+.modal-overlay{padding:14px}.modal-card{border:2px solid #241d3a!important;box-shadow:0 8px 0 #241d3a,0 28px 65px rgba(23,19,43,.28)!important}
+.modal-card>div:first-child{padding-bottom:11px;border-bottom:1px solid #e4dcee}.modal-card #modal-title{color:#6d28d9!important}
+.toast{border:2px solid #17132b!important;box-shadow:0 5px 0 #17132b,0 15px 30px rgba(23,19,43,.2)!important;border-radius:15px!important}
+.toast.success{background:#b9f227!important;color:#17132b!important}.toast.warning{background:#ffcf4a!important;color:#17132b!important}.toast.info{background:#24d3ee!important;color:#17132b!important}
+.message-box{line-height:1.75}.message-box:only-child{min-height:52px;display:flex;align-items:center}
+
+/* More and navigation */
+.more-grid>button b{font-size:13px!important}.more-grid>button small{font-size:9px!important;line-height:1.55}
+.bottom-nav{padding-inline:8px!important}.nav-item{transition:transform .15s,background .15s,color .15s}.nav-item:active{transform:translateY(3px)}
+.nav-icon{width:23px!important;height:23px!important}.nav-item.active .nav-icon{stroke-width:2.2}
+
+@media(max-width:520px){
+  .setup-grid-three{grid-template-columns:repeat(2,minmax(0,1fr))}.setup-grid-three>.form-group:last-child{grid-column:1/-1}
+  #setup-screen{padding-top:15px}.water-gauge{width:138px;height:138px}.water-gauge span{font-size:35px}
+  .review-dashboard-section>summary{padding:13px!important}.review-dashboard-section>summary em{width:36px;height:36px;flex-basis:36px}
+}
+@media(max-width:360px){
+  .setup-grid-two,.setup-grid-three{grid-template-columns:1fr}.setup-grid-three>.form-group:last-child{grid-column:auto}
+  .fasting-time-stats{grid-template-columns:1fr}.water-progress-card>div:last-child{grid-template-columns:1fr!important}
+}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}

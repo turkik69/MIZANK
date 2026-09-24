@@ -242,9 +242,9 @@ body {
 }
 
 </style>
-<link rel="stylesheet" href="./review.css?v=6">
+<link rel="stylesheet" href="./review.css?v=7">
 </head>
-<body>
+<body data-view="setup">
 
 <div id="toast-container" class="toast-container"></div>
 
@@ -265,8 +265,9 @@ body {
   <div id="setup-screen" class="screen active">
     <div class="glass-card" style="max-width:580px; margin:0 auto;">
       <div style="text-align:center; margin-bottom:20px;">
-        <h1 class="screen-title" style="justify-content: center;">📝 بيانات ملفك الشخصي</h1>
-        <p class="screen-subtitle">حساب الاحتياجات وفق المعادلات العلمية</p>
+        <span class="setup-badge">إعداد شخصي · مرة واحدة</span>
+        <h1 class="screen-title" id="setup-title" style="justify-content: center;">لنضبط ميزانك</h1>
+        <p class="screen-subtitle" id="setup-subtitle">أدخل قياساتك لنحسب هدفك اليومي ونبني تجربتك الخاصة</p>
       </div>
 
       <div class="form-group">
@@ -274,7 +275,7 @@ body {
         <input type="text" id="setup-name" class="form-input" placeholder="اسمك الكريم">
       </div>
       
-      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+      <div class="setup-grid setup-grid-two">
         <div class="form-group">
           <label class="form-label">العمر (سنة)</label>
           <input type="number" id="setup-age" class="form-input" min="12" max="100" placeholder="25">
@@ -289,7 +290,7 @@ body {
         </div>
       </div>
 
-      <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:10px;">
+      <div class="setup-grid setup-grid-three">
         <div class="form-group">
           <label class="form-label">الطول (سم)</label>
           <input type="number" id="setup-height" class="form-input" min="100" max="230" placeholder="175">
@@ -313,7 +314,8 @@ body {
         </select>
       </div>
 
-      <button class="btn btn-primary" style="margin-top:15px;" onclick="completeSetup()">✅ انطلاق وتحديد الأهداف</button>
+      <button class="btn btn-primary setup-submit" id="setup-submit-btn" onclick="completeSetup()"><span>ابدأ رحلتي الصحية</span><b>←</b></button>
+      <button class="btn btn-secondary setup-cancel" id="setup-cancel-btn" hidden onclick="cancelProfileEdit()">إلغاء والعودة للإعدادات</button>
     </div>
   </div>
 
@@ -599,7 +601,7 @@ body {
         <div class="screen-title">الصيام المتقطع</div>
         <div class="screen-subtitle">وقت واضح، تقدم هادئ، وسجل مرتب</div>
       </div>
-      <span class="secondary-header-icon fasting-head">◷</span>
+      <span class="secondary-header-icon fasting-head" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 7v5l3 2M8 3h8"/></svg></span>
     </div>
 
     <div class="glass-card fasting-main-card" style="text-align:center;">
@@ -631,9 +633,9 @@ body {
         </div>
       </div>
 
-      <div style="display:flex; justify-content:center; gap:15px; margin-bottom:15px; font-size:12px; color:var(--text-secondary);">
-        <div>⏰ الوقت المنقضي: <span id="fasting-elapsed" style="color:#fff; font-weight:800;">00:00</span></div>
-        <div>🏁 المتبقي: <span id="fasting-remaining" style="color:#fff; font-weight:800;">00:00</span></div>
+      <div class="fasting-time-stats">
+        <div><small>الوقت المنقضي</small><span id="fasting-elapsed">00:00</span></div>
+        <div><small>الوقت المتبقي</small><span id="fasting-remaining">00:00</span></div>
       </div>
 
       <button id="fasting-edit-start-toggle" style="display:none; background:none; border:none; color:var(--accent-cyan); font-size:11px; text-decoration:underline; cursor:pointer; margin:0 auto 12px; display:block;" onclick="toggleFastingStartEdit()">✏️ نسيت تفعّل الصيام بوقته الصحيح؟ عدّله من هنا</button>
@@ -686,7 +688,7 @@ body {
         <div class="screen-title">النشاط والتمارين</div>
         <div class="screen-subtitle">سجّل الحركة وشاهد ما أنجزته</div>
       </div>
-      <span class="secondary-header-icon activity-head">↗</span>
+      <span class="secondary-header-icon activity-head" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m4 16 5-5 4 4 7-8"/><path d="M15 7h5v5"/></svg></span>
     </div>
 
     <!-- Ready Abs & Core Routines -->
@@ -794,11 +796,11 @@ body {
         <div class="screen-title">الماء والوزن</div>
         <div class="screen-subtitle">حدّث الترطيب والقياس بخطوة واحدة</div>
       </div>
-      <span class="secondary-header-icon water-head">◒</span>
+      <span class="secondary-header-icon water-head" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3S6 10 6 15a6 6 0 0 0 12 0c0-5-6-12-6-12Z"/><path d="M9 16a3 3 0 0 0 3 2"/></svg></span>
     </div>
 
-    <div class="glass-card water-progress-card" style="text-align:center; padding:25px 20px;">
-      <div style="font-size: 42px; font-weight: 900; color: var(--accent-cyan);" id="water-display">0%</div>
+    <div class="glass-card water-progress-card" id="water-progress-card" style="text-align:center; padding:25px 20px; --water-level:0%;">
+      <div class="water-gauge"><span id="water-display">0%</span><small>ترطيب اليوم</small></div>
       <div style="color: var(--text-secondary); font-size: 14px; font-weight: 700; margin:10px 0;">
         شربت <span id="water-current" style="color:#06b6d4; font-weight:900;">0</span> من <span id="water-target">8</span> أكواب اليوم
       </div>
@@ -851,7 +853,7 @@ body {
         <div class="screen-title">الملف والإعدادات</div>
         <div class="screen-subtitle">كل إعداد في مكانه الواضح</div>
       </div>
-      <span class="secondary-header-icon settings-head">⚙</span>
+      <span class="secondary-header-icon settings-head" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1l2-1.5-2-3.5-2.5 1a7 7 0 0 0-1.8-1L14 3h-4l-.6 3a7 7 0 0 0-1.8 1L5 6 3 9.5 5.1 11a7 7 0 0 0 0 2L3 14.5 5 18l2.6-1a7 7 0 0 0 1.8 1l.6 3h4l.6-3a7 7 0 0 0 1.8-1l2.6 1 2-3.5-2.1-1.5a7 7 0 0 0 .1-1Z"/></svg></span>
     </div>
 
     <div class="glass-card settings-notifications-card" style="border-color: var(--accent-purple);">
@@ -1640,6 +1642,10 @@ function completeSetup() {
   initFastingTimer();
   renderSuggestedMeals();
   startNotificationScheduler();
+  document.getElementById('setup-cancel-btn').hidden = true;
+  document.getElementById('setup-title').textContent = 'لنضبط ميزانك';
+  document.getElementById('setup-subtitle').textContent = 'أدخل قياساتك لنحسب هدفك اليومي ونبني تجربتك الخاصة';
+  document.querySelector('#setup-submit-btn span').textContent = 'ابدأ رحلتي الصحية';
   showToast('تم إعداد حسابك بنجاح! 🚀', 'success');
 }
 
@@ -1650,6 +1656,7 @@ function switchScreen(screenName, navElement) {
   const targetScreen = document.getElementById(screenName + '-screen');
   if (!targetScreen) return;
   targetScreen.classList.add('active');
+  document.body.dataset.view = screenName;
   const primaryTab = ['dashboard', 'meals', 'workouts', 'fasting'].includes(screenName) ? screenName : 'more';
   (navElement || document.querySelector(`.nav-item[data-tab="${primaryTab}"]`))?.classList.add('active');
   window.scrollTo(0, 0);
@@ -1667,6 +1674,8 @@ function switchScreen(screenName, navElement) {
 function showScreen(screenId) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(screenId).classList.add('active');
+  document.body.dataset.view = screenId.replace('-screen', '');
+  window.scrollTo(0, 0);
 }
 
 function organizeReviewDashboard() {
@@ -1674,9 +1683,9 @@ function organizeReviewDashboard() {
   if (!dashboard || dashboard.dataset.organized === 'true') return;
   const cards = [...dashboard.children].filter(el => el.classList.contains('glass-card'));
   const groups = [
-    { title: 'تفاصيل التغذية اليوم', subtitle: 'السعرات، المغذيات والتوصيات', open: true, match: /الماكروز|الفائض|توصياتك/ },
-    { title: 'التقدم والتقارير', subtitle: 'الوزن، المقارنات والأرشيف', open: false, match: /أمس مقابل|متى تصل|شارات|معدل ونمط|سجل الوزن|التقرير الأسبوعي|مقارنة هذا الأسبوع|أرشيف/ },
-    { title: 'إرشادات الحرق الصحي', subtitle: 'نصائح عملية مختصرة', open: false, match: /دعم عملية الحرق/ }
+    { key: 'nutrition', icon: '✦', title: 'تفاصيل التغذية اليوم', subtitle: 'السعرات، المغذيات والتوصيات', open: true, match: /الماكروز|الفائض|توصياتك/ },
+    { key: 'progress', icon: '↗', title: 'التقدم والتقارير', subtitle: 'الوزن، المقارنات والأرشيف', open: false, match: /أمس مقابل|متى تصل|شارات|معدل ونمط|سجل الوزن|التقرير الأسبوعي|مقارنة هذا الأسبوع|أرشيف/ },
+    { key: 'guidance', icon: '⚡', title: 'إرشادات الحرق الصحي', subtitle: 'نصائح عملية مختصرة', open: false, match: /دعم عملية الحرق/ }
   ];
 
   groups.forEach(group => {
@@ -1684,8 +1693,9 @@ function organizeReviewDashboard() {
     if (!matches.length) return;
     const details = document.createElement('details');
     details.className = 'review-dashboard-section';
+    details.dataset.section = group.key;
     details.open = group.open;
-    details.innerHTML = `<summary><span><b>${group.title}</b><small>${group.subtitle}</small></span><i>⌄</i></summary><div class="review-section-content"></div>`;
+    details.innerHTML = `<summary><em>${group.icon}</em><span><b>${group.title}</b><small>${group.subtitle}</small></span><i>⌄</i></summary><div class="review-section-content"></div>`;
     const content = details.querySelector('.review-section-content');
     matches.forEach(card => content.appendChild(card));
     dashboard.appendChild(details);
@@ -3419,6 +3429,7 @@ function updateWaterScreen() {
   const target = appState.profile?.water || 8;
   const pct = Math.min(100, Math.round((appState.water / target) * 100));
   document.getElementById('water-display').textContent = pct + '%';
+  document.getElementById('water-progress-card')?.style.setProperty('--water-level', pct + '%');
   document.getElementById('water-current').textContent = appState.water;
   document.getElementById('water-target').textContent = target;
 }
@@ -3555,7 +3566,24 @@ function updateProfileUI() {
   }
 }
 
-function editProfile() { showScreen('setup-screen'); }
+function editProfile() {
+  const p = appState.profile;
+  if (!p) return;
+  document.getElementById('setup-name').value = p.name || '';
+  document.getElementById('setup-age').value = p.age || '';
+  document.getElementById('setup-gender').value = p.gender || '';
+  document.getElementById('setup-height').value = p.height || '';
+  document.getElementById('setup-current-weight').value = appState.weights.at(-1)?.weight ?? p.currentWeight ?? '';
+  document.getElementById('setup-target-weight').value = p.targetWeight || '';
+  document.getElementById('setup-goal').value = p.goal || 'lose';
+  document.getElementById('setup-title').textContent = 'تحديث بياناتك';
+  document.getElementById('setup-subtitle').textContent = 'عدّل قياساتك وسنعيد حساب أهدافك تلقائيًا';
+  document.querySelector('#setup-submit-btn span').textContent = 'حفظ التحديثات';
+  document.getElementById('setup-cancel-btn').hidden = false;
+  showScreen('setup-screen');
+}
+
+function cancelProfileEdit() { switchScreen('settings'); }
 
 function saveApiSettings() {
   const geminiKey = document.getElementById('gemini-key-input').value.trim();

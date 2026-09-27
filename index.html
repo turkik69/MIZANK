@@ -241,6 +241,37 @@ body {
   .screen { padding: 10px; }
 }
 
+
+/* ================= 12-WEEK CUTTING PLAN ================= */
+.cutting-plan-card{
+  border-color:rgba(185,242,39,.42); background:linear-gradient(135deg,rgba(124,58,237,.18),rgba(16,185,129,.10));
+  cursor:pointer; padding:18px; position:relative;
+}
+.cutting-plan-card:after{content:"";position:absolute;inset:auto -35px -45px auto;width:120px;height:120px;border-radius:50%;background:rgba(185,242,39,.08)}
+.cutting-plan-head,.cutting-row{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.cutting-plan-head b{font-size:15px}.cutting-plan-head span{font-size:11px;color:#b9f227;font-weight:800}
+.cutting-progress{height:8px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden;margin:12px 0}
+.cutting-progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,#7c3aed,#b9f227);border-radius:inherit;transition:width .4s ease}
+.cutting-mini-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.cutting-mini{background:rgba(4,8,20,.42);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:10px;text-align:center}
+.cutting-mini small{display:block;color:var(--text-secondary);font-size:9px}.cutting-mini b{display:block;margin-top:4px;font-size:13px}
+.cutting-hero{background:linear-gradient(140deg,rgba(124,58,237,.28),rgba(16,185,129,.14));border:1px solid rgba(185,242,39,.28);border-radius:24px;padding:20px;margin-bottom:16px}
+.cutting-week-ring{width:116px;height:116px;border-radius:50%;display:grid;place-items:center;margin:12px auto;background:conic-gradient(#b9f227 var(--cut-progress),rgba(255,255,255,.08) 0);position:relative}
+.cutting-week-ring:after{content:"";position:absolute;inset:9px;border-radius:50%;background:#0c1225}
+.cutting-week-ring div{position:relative;z-index:1;text-align:center}.cutting-week-ring b{display:block;font-size:25px}.cutting-week-ring small{font-size:10px;color:var(--text-secondary)}
+.cutting-goal-line{display:flex;align-items:center;gap:8px;font-size:12px}.cutting-goal-line i{height:7px;background:rgba(255,255,255,.08);border-radius:999px;flex:1;overflow:hidden}.cutting-goal-line i:after{content:"";display:block;height:100%;width:var(--goal-progress);background:#b9f227;border-radius:inherit}
+.cutting-section-title{font-size:14px;font-weight:900;margin-bottom:10px}
+.cutting-food-grid{display:grid;grid-template-columns:1fr;gap:10px}.cutting-food-box{border-radius:16px;padding:14px;border:1px solid var(--border-glass);background:rgba(9,14,28,.66)}
+.cutting-food-box h4{font-size:13px;margin-bottom:7px}.cutting-food-box p{font-size:11px;line-height:1.8;color:var(--text-secondary)}
+.cutting-food-box.good{border-right:4px solid #10b981}.cutting-food-box.limit{border-right:4px solid #f59e0b}.cutting-food-box.avoid{border-right:4px solid #f43f5e}
+.cutting-kpi-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.cutting-kpi{padding:13px;border-radius:15px;background:rgba(255,255,255,.045);border:1px solid var(--border-glass)}
+.cutting-kpi small{display:block;font-size:10px;color:var(--text-secondary)}.cutting-kpi b{display:block;font-size:17px;margin-top:4px}
+.cutting-checkin-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.cutting-stage{padding:11px;border-radius:14px;border:1px solid var(--border-glass);background:rgba(255,255,255,.04);font-size:11px}.cutting-stage.active{border-color:#b9f227;background:rgba(185,242,39,.08)}
+.cutting-stage b{display:block;margin-bottom:4px}.cutting-stage small{color:var(--text-secondary)}
+.cutting-analysis{padding:14px;border-radius:16px;background:rgba(6,182,212,.08);border:1px solid rgba(6,182,212,.24);font-size:12px;line-height:1.8}
+@media(min-width:640px){.cutting-food-grid{grid-template-columns:repeat(3,1fr)}.cutting-kpi-grid{grid-template-columns:repeat(4,1fr)}}
+
 </style>
 <link rel="stylesheet" href="./review.css?v=7">
 </head>
@@ -380,6 +411,18 @@ body {
       </div>
     </div>
 
+
+    <div class="glass-card cutting-plan-card" id="cutting-plan-card" onclick="switchScreen('cutting')">
+      <div class="cutting-plan-head"><b>🔥 خطة التنشيف · 12 أسبوعًا</b><span id="cutting-summary-week">الأسبوع 1 / 12</span></div>
+      <div class="cutting-progress"><i id="cutting-summary-progress"></i></div>
+      <div class="cutting-mini-grid">
+        <div class="cutting-mini"><small>السعرات</small><b id="cutting-summary-cal">2050</b></div>
+        <div class="cutting-mini"><small>البروتين</small><b id="cutting-summary-protein">150 غ</b></div>
+        <div class="cutting-mini"><small>الهدف</small><b id="cutting-summary-goal">75–77 كغ</b></div>
+      </div>
+      <div style="margin-top:11px;font-size:10px;color:var(--text-secondary);">اضغط لفتح الخطة اليومية والتحليل الأسبوعي ‹</div>
+    </div>
+
     <!-- Macros Card -->
     <div class="glass-card">
       <h3 style="font-size:14px; font-weight:800; color:#fff; margin-bottom:12px;">🥗 الماكروز اليومية (Macros)</h3>
@@ -508,6 +551,81 @@ body {
       <h3 style="font-size:14px; font-weight:800; color:#fff; margin-bottom:4px;">📅 أرشيف الأيام السابقة</h3>
       <p style="font-size:11px; color:var(--text-secondary); margin-bottom:12px;">سجلاتك محفوظة دائماً ولا تُحذف — كل يوم يُقفل تلقائياً ويُؤرشف عند دخول يوم جديد</p>
       <div id="daily-archive-display"></div>
+    </div>
+  </div>
+
+
+  <!-- 12-WEEK CUTTING PLAN SCREEN -->
+  <div id="cutting-screen" class="screen">
+    <div class="screen-header">
+      <div>
+        <div class="screen-kicker">خطة شخصية متدرجة</div>
+        <div class="screen-title">🔥 خطة التنشيف</div>
+        <div class="screen-subtitle">خفض الدهون مع الحفاظ على الكتلة العضلية</div>
+      </div>
+      <button class="icon-btn" onclick="switchScreen('dashboard')">← اليوم</button>
+    </div>
+
+    <section class="cutting-hero">
+      <div class="cutting-row"><div><small style="color:#b9f227;font-weight:800;" id="cutting-stage-name">مرحلة التهيئة</small><h2 style="font-size:20px;margin-top:3px;">12 أسبوعًا بخطوات ثابتة</h2></div><b id="cutting-status-badge" style="font-size:11px;color:#10b981;">المسار مناسب</b></div>
+      <div class="cutting-week-ring" id="cutting-week-ring" style="--cut-progress:8.3%"><div><b id="cutting-week-number">1</b><small>من 12 أسبوعًا</small></div></div>
+      <div class="cutting-goal-line"><b id="cutting-current-weight">79.7</b><i style="--goal-progress:0%" id="cutting-goal-progress"></i><b id="cutting-target-weight">76</b><small>كغ</small></div>
+    </section>
+
+    <div class="glass-card">
+      <div class="cutting-section-title">هدف اليوم</div>
+      <div class="cutting-kpi-grid">
+        <div class="cutting-kpi"><small>السعرات</small><b id="cutting-calories">2050</b></div>
+        <div class="cutting-kpi"><small>البروتين</small><b id="cutting-protein">150 غ</b></div>
+        <div class="cutting-kpi"><small>الكربوهيدرات</small><b id="cutting-carbs">220 غ</b></div>
+        <div class="cutting-kpi"><small>الدهون</small><b id="cutting-fats">65 غ</b></div>
+      </div>
+      <div style="margin-top:12px;font-size:11px;color:var(--text-secondary);" id="cutting-today-note">يُعدل الهدف فقط بعد تحليل أسبوعي، وليس بسبب تغير يوم واحد.</div>
+    </div>
+
+    <div class="glass-card">
+      <div class="cutting-section-title">مراحل الـ 12 أسبوعًا</div>
+      <div class="cutting-checkin-grid" id="cutting-stages"></div>
+    </div>
+
+    <div class="glass-card">
+      <div class="cutting-section-title">اختيارات الطعام</div>
+      <div class="cutting-food-grid">
+        <div class="cutting-food-box good"><h4>🟢 مفضل يوميًا</h4><p>دجاج وسمك وبيض وزبادي عالي البروتين، خضار، فاكهة كاملة، شوفان، عدس وفاصوليا.</p></div>
+        <div class="cutting-food-box limit"><h4>🟡 محسوب بالكمية</h4><p>الأرز والخبز والبطاطا والتمر والمكسرات وزيت الزيتون. ليست ممنوعة؛ تدخل ضمن الماكروز.</p></div>
+        <div class="cutting-food-box avoid"><h4>🔴 خارج الخطة قدر الإمكان</h4><p>المشروبات المحلاة، الحلويات المتكررة، المقليات، الوجبات السريعة الكبيرة والصوصات عالية السعرات.</p></div>
+      </div>
+      <button class="btn btn-secondary" style="margin-top:12px;" onclick="switchScreen('meals')">سجّل وجبتك الآن</button>
+    </div>
+
+    <div class="glass-card">
+      <div class="cutting-section-title">نشاط الأسبوع</div>
+      <div class="cutting-kpi-grid">
+        <div class="cutting-kpi"><small>مقاومة</small><b>3–4</b><small>حصص</small></div>
+        <div class="cutting-kpi"><small>كارديو</small><b>2–3</b><small>حصص</small></div>
+        <div class="cutting-kpi"><small>الخطوات</small><b>8–10K</b><small>يوميًا</small></div>
+        <div class="cutting-kpi"><small>الوجبة المرنة</small><b>1</b><small>أسبوعيًا ومحسوبة</small></div>
+      </div>
+    </div>
+
+    <div class="glass-card">
+      <div class="cutting-section-title">التقييم الأسبوعي</div>
+      <p style="font-size:11px;color:var(--text-secondary);margin-bottom:12px;">سجّل القياسات مرة أسبوعيًا في نفس الظروف. الدهون الحشوية من الميزان تُستخدم لمتابعة الاتجاه، لا كقياس طبي مباشر.</p>
+      <div class="cutting-checkin-grid">
+        <div class="form-group"><label class="form-label">الوزن (كغ)</label><input id="cutting-check-weight" type="number" step="0.1" class="form-input"></div>
+        <div class="form-group"><label class="form-label">محيط الخصر (سم)</label><input id="cutting-check-waist" type="number" step="0.1" class="form-input"></div>
+        <div class="form-group"><label class="form-label">دهون الجسم %</label><input id="cutting-check-fat" type="number" step="0.1" class="form-input"></div>
+        <div class="form-group"><label class="form-label">الدهون الحشوية</label><input id="cutting-check-visceral" type="number" step="0.1" class="form-input"></div>
+      </div>
+      <button class="btn btn-primary" onclick="saveCuttingCheckin()">حفظ تقييم هذا الأسبوع</button>
+    </div>
+
+    <div class="glass-card">
+      <div class="cutting-section-title">تحليل الأسبوع</div>
+      <div class="cutting-analysis" id="cutting-analysis">أكمل أول تقييم أسبوعي ليبدأ التحليل الذكي.</div>
+      <div id="cutting-adjust-wrap" style="display:none;margin-top:12px;">
+        <button class="btn btn-cyan" id="cutting-adjust-btn" onclick="acceptCuttingAdjustment()">اعتماد التعديل المقترح</button>
+      </div>
     </div>
   </div>
 
@@ -1709,6 +1827,7 @@ function switchScreen(screenName, navElement) {
   if (screenName === 'water') updateWaterScreen();
   if (screenName === 'chat') renderChatHistory();
   if (screenName === 'settings') { updateProfileUI(); loadApiSettingsUI(); renderBackupStatus(); }
+  if (screenName === 'cutting') renderCuttingPlan();
 }
 
 function showScreen(screenId) {
@@ -1800,6 +1919,7 @@ function updateDashboard() {
   renderWeeklyReport();
   renderWeekComparison();
   renderDailyArchive();
+  renderCuttingSummary();
 }
 
 // ============ توازن السعرات اليومي (فائض/عجز) وتقدير التغير في الوزن ============
@@ -3795,6 +3915,186 @@ function clearAllData() {
     showToast('تمت إعادة ضبط السجلات', 'info');
   }
 }
+
+
+// ============ SMART 12-WEEK CUTTING PLAN ============
+function ensureCuttingPlan() {
+  if (!appState.profile) return null;
+  if (!appState.cuttingPlan) {
+    const w = Number(appState.weights?.[appState.weights.length - 1]?.weight ?? appState.profile.currentWeight ?? 79.7);
+    const estimated = Math.round(Number(appState.profile.tdee || 2500) - 450);
+    const calories = Math.max(1800, Math.min(2300, (w >= 75 && w <= 85) ? 2050 : estimated));
+    const protein = Math.round(Math.max(140, Math.min(170, w * 1.9)));
+    const fats = Math.round(Math.max(55, Math.min(75, w * 0.8)));
+    const carbs = Math.max(120, Math.round((calories - protein * 4 - fats * 9) / 4));
+    appState.cuttingPlan = {
+      active: true,
+      startDate: todayStr(),
+      durationWeeks: 12,
+      startWeight: w,
+      targetMin: 75,
+      targetMax: 77,
+      calories,
+      protein,
+      carbs,
+      fats,
+      checkins: [],
+      adjustments: []
+    };
+    // اربط أهداف لوحة اليوم بالخطة من دون حذف بيانات المستخدم
+    appState.profile.dailyCalories = calories;
+    appState.profile.protein = protein;
+    appState.profile.carbs = carbs;
+    appState.profile.fats = fats;
+    saveCurrentUserData();
+  }
+  return appState.cuttingPlan;
+}
+
+function cuttingWeekNumber() {
+  const plan = ensureCuttingPlan();
+  if (!plan) return 1;
+  const start = new Date(plan.startDate + 'T00:00:00');
+  const days = Math.max(0, Math.floor((new Date() - start) / 86400000));
+  return Math.max(1, Math.min(12, Math.floor(days / 7) + 1));
+}
+
+function cuttingStageForWeek(week) {
+  if (week <= 2) return {name:'مرحلة التهيئة', desc:'تنظيم الغذاء وتثبيت العادات'};
+  if (week <= 6) return {name:'التنشيف الأساسي', desc:'خفض الدهون تدريجيًا مع ثبات البروتين'};
+  if (week <= 10) return {name:'التنشيف المتقدم', desc:'استمرار محسوب مع حماية الأداء والعضلات'};
+  return {name:'التثبيت والتقييم', desc:'تثبيت النتيجة والاستعداد لما بعد الخطة'};
+}
+
+function renderCuttingSummary() {
+  const plan = ensureCuttingPlan();
+  const card = document.getElementById('cutting-plan-card');
+  if (!plan || !card) return;
+  const week = cuttingWeekNumber();
+  const current = Number(appState.weights?.[appState.weights.length - 1]?.weight ?? appState.profile.currentWeight ?? plan.startWeight);
+  document.getElementById('cutting-summary-week').textContent = 'الأسبوع ' + week + ' / 12';
+  document.getElementById('cutting-summary-progress').style.width = ((week / 12) * 100) + '%';
+  document.getElementById('cutting-summary-cal').textContent = plan.calories;
+  document.getElementById('cutting-summary-protein').textContent = plan.protein + ' غ';
+  document.getElementById('cutting-summary-goal').textContent = plan.targetMin + '–' + plan.targetMax + ' كغ';
+}
+
+function renderCuttingPlan() {
+  const plan = ensureCuttingPlan();
+  if (!plan) return;
+  const week = cuttingWeekNumber();
+  const stage = cuttingStageForWeek(week);
+  const current = Number(appState.weights?.[appState.weights.length - 1]?.weight ?? appState.profile.currentWeight ?? plan.startWeight);
+  const targetMid = (plan.targetMin + plan.targetMax) / 2;
+  const totalDrop = Math.max(.1, plan.startWeight - targetMid);
+  const progress = Math.max(0, Math.min(100, ((plan.startWeight - current) / totalDrop) * 100));
+
+  document.getElementById('cutting-stage-name').textContent = stage.name;
+  document.getElementById('cutting-week-number').textContent = week;
+  document.getElementById('cutting-week-ring').style.setProperty('--cut-progress', ((week / 12) * 100) + '%');
+  document.getElementById('cutting-current-weight').textContent = current.toFixed(1);
+  document.getElementById('cutting-target-weight').textContent = targetMid.toFixed(1);
+  document.getElementById('cutting-goal-progress').style.setProperty('--goal-progress', progress + '%');
+  document.getElementById('cutting-calories').textContent = plan.calories;
+  document.getElementById('cutting-protein').textContent = plan.protein + ' غ';
+  document.getElementById('cutting-carbs').textContent = plan.carbs + ' غ';
+  document.getElementById('cutting-fats').textContent = plan.fats + ' غ';
+  document.getElementById('cutting-check-weight').value = current.toFixed(1);
+
+  const stages = [
+    ['1–2','التهيئة','تنظيم الغذاء'],
+    ['3–6','التنشيف الأساسي','نزول تدريجي'],
+    ['7–10','التنشيف المتقدم','حماية العضلات'],
+    ['11–12','التثبيت','تقييم النتيجة']
+  ];
+  document.getElementById('cutting-stages').innerHTML = stages.map((s,i)=>{
+    const active = (week<=2&&i===0)||(week>=3&&week<=6&&i===1)||(week>=7&&week<=10&&i===2)||(week>=11&&i===3);
+    return '<div class="cutting-stage '+(active?'active':'')+'"><b>الأسبوع '+s[0]+' · '+s[1]+'</b><small>'+s[2]+'</small></div>';
+  }).join('');
+
+  renderCuttingAnalysis();
+}
+
+function saveCuttingCheckin() {
+  const plan = ensureCuttingPlan(); if (!plan) return;
+  const weight = parseFloat(document.getElementById('cutting-check-weight').value);
+  const waist = parseFloat(document.getElementById('cutting-check-waist').value);
+  const fat = parseFloat(document.getElementById('cutting-check-fat').value);
+  const visceral = parseFloat(document.getElementById('cutting-check-visceral').value);
+  if (!weight) { showToast('أدخل الوزن أولًا', 'warning'); return; }
+  const week = cuttingWeekNumber();
+  const row = {date:todayStr(), week, weight, waist:waist||null, bodyFat:fat||null, visceral:visceral||null};
+  const idx = plan.checkins.findIndex(x=>x.week===week);
+  if (idx >= 0) plan.checkins[idx] = row; else plan.checkins.push(row);
+  const wi = appState.weights.findIndex(x=>x.date===todayStr());
+  if (wi>=0) appState.weights[wi].weight=weight; else appState.weights.push({date:todayStr(),weight});
+  appState.weights.sort((a,b)=>new Date(a.date)-new Date(b.date));
+  appState.profile.currentWeight = weight;
+  saveCurrentUserData();
+  updateDashboard();
+  renderCuttingPlan();
+  showToast('تم حفظ تقييم الأسبوع وتحليل المسار ✅','success');
+}
+
+function renderCuttingAnalysis() {
+  const plan=ensureCuttingPlan(); if(!plan) return;
+  const box=document.getElementById('cutting-analysis'), wrap=document.getElementById('cutting-adjust-wrap');
+  if(!box||!wrap)return;
+  const arr=[...(plan.checkins||[])].sort((a,b)=>a.week-b.week);
+  wrap.style.display='none';
+  document.getElementById('cutting-status-badge').textContent='المسار مناسب';
+  document.getElementById('cutting-status-badge').style.color='#10b981';
+  if(!arr.length){box.textContent='أكمل أول تقييم أسبوعي ليبدأ التحليل الذكي.';return;}
+  if(arr.length===1){
+    const a=arr[0]; box.innerHTML='تم تسجيل نقطة البداية للأسبوع '+a.week+'. '+(a.waist?'محيط الخصر '+a.waist+' سم. ':'')+'استمر على '+plan.calories+' سعرة يوميًا حتى تتوفر مقارنة أسبوعية.';
+    return;
+  }
+  const a=arr[arr.length-2], b=arr[arr.length-1], loss=a.weight-b.weight;
+  const waistDelta=(a.waist&&b.waist)?(a.waist-b.waist):null;
+  let msg='من الأسبوع '+a.week+' إلى '+b.week+': تغيّر الوزن '+(loss>=0?'−':'＋')+Math.abs(loss).toFixed(1)+' كغ';
+  if(waistDelta!==null) msg+='، ومحيط الخصر '+(waistDelta>=0?'−':'＋')+Math.abs(waistDelta).toFixed(1)+' سم';
+  msg+='. ';
+
+  if(loss>=0.25 && loss<=0.65){
+    msg+='المعدل مناسب؛ استمر من دون تغيير.';
+  }else if(loss>0.65){
+    msg+='النزول أسرع من الهدف. لا نخفض السعرات أكثر الآن، وراقب الأداء والجوع.';
+    document.getElementById('cutting-status-badge').textContent='نزول سريع';
+    document.getElementById('cutting-status-badge').style.color='#f59e0b';
+  }else{
+    const stalled = arr.length>=3 && (arr[arr.length-3].weight-a.weight)<0.2 && loss<0.2;
+    if(stalled){
+      const suggested=Math.max(1700,plan.calories-100);
+      plan.pendingCalories=suggested;
+      msg+='يوجد ثبات يقارب أسبوعين. الاقتراح: خفض الهدف إلى '+suggested+' سعرة يوميًا، ولا يطبق إلا بموافقتك.';
+      wrap.style.display='block';
+      document.getElementById('cutting-adjust-btn').textContent='اعتماد '+suggested+' سعرة';
+      document.getElementById('cutting-status-badge').textContent='يحتاج مراجعة';
+      document.getElementById('cutting-status-badge').style.color='#f59e0b';
+    }else{
+      msg+='التغير محدود هذا الأسبوع؛ ننتظر أسبوعًا إضافيًا قبل تعديل السعرات لتجنب التفاعل مع تقلبات الوزن الطبيعية.';
+    }
+  }
+  box.textContent=msg;
+}
+
+function acceptCuttingAdjustment() {
+  const plan=ensureCuttingPlan(); if(!plan||!plan.pendingCalories)return;
+  const old=plan.calories, next=plan.pendingCalories;
+  plan.calories=next;
+  plan.carbs=Math.max(100,Math.round((next-plan.protein*4-plan.fats*9)/4));
+  plan.adjustments.push({date:todayStr(),from:old,to:next,reason:'ثبات أسبوعين'});
+  delete plan.pendingCalories;
+  appState.profile.dailyCalories=plan.calories;
+  appState.profile.protein=plan.protein;
+  appState.profile.carbs=plan.carbs;
+  appState.profile.fats=plan.fats;
+  saveCurrentUserData();
+  updateDashboard();
+  renderCuttingPlan();
+  showToast('تم اعتماد التعديل الجديد للخطة','success');
+}
+
 </script>
 </body>
 </html>

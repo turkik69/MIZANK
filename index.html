@@ -261,9 +261,28 @@ body {
 .cutting-week-ring div{position:relative;z-index:1;text-align:center}.cutting-week-ring b{display:block;font-size:25px}.cutting-week-ring small{font-size:10px;color:var(--text-secondary)}
 .cutting-goal-line{display:flex;align-items:center;gap:8px;font-size:12px}.cutting-goal-line i{height:7px;background:rgba(255,255,255,.08);border-radius:999px;flex:1;overflow:hidden}.cutting-goal-line i:after{content:"";display:block;height:100%;width:var(--goal-progress);background:#b9f227;border-radius:inherit}
 .cutting-section-title{font-size:14px;font-weight:900;margin-bottom:10px}
-.cutting-food-grid{display:grid;grid-template-columns:1fr;gap:10px}.cutting-food-box{border-radius:16px;padding:14px;border:1px solid var(--border-glass);background:rgba(9,14,28,.66)}
-.cutting-food-box h4{font-size:13px;margin-bottom:7px}.cutting-food-box p{font-size:11px;line-height:1.8;color:var(--text-secondary)}
-.cutting-food-box.good{border-right:4px solid #10b981}.cutting-food-box.limit{border-right:4px solid #f59e0b}.cutting-food-box.avoid{border-right:4px solid #f43f5e}
+.cutting-food-grid{display:grid;grid-template-columns:1fr;gap:10px}.cutting-food-box{
+  border-radius:16px;
+  padding:14px;
+  border:1px solid rgba(255,255,255,.16);
+  background:linear-gradient(135deg,rgba(43,49,65,.98),rgba(34,39,53,.98));
+  box-shadow:0 10px 24px rgba(4,8,20,.18);
+}
+.cutting-food-box h4{
+  font-size:13px;
+  margin-bottom:7px;
+  color:#ffffff;
+  font-weight:900;
+}
+.cutting-food-box p{
+  font-size:11px;
+  line-height:1.85;
+  color:#ffffff;
+  opacity:.96;
+}
+.cutting-food-box.good{border-right:5px solid #10b981}
+.cutting-food-box.limit{border-right:5px solid #f59e0b}
+.cutting-food-box.avoid{border-right:5px solid #f43f5e}
 .cutting-kpi-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.cutting-kpi{padding:13px;border-radius:15px;background:rgba(255,255,255,.045);border:1px solid var(--border-glass)}
 .cutting-kpi small{display:block;font-size:10px;color:var(--text-secondary)}.cutting-kpi b{display:block;font-size:17px;margin-top:4px}
 .cutting-checkin-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}

@@ -708,7 +708,7 @@ body {
         <div><span>مكتبة الوجبات</span><small>اختر النوع ثم شاهد وجباته وتفاصيله</small></div>
         <span class="meal-library-icon">⌕</span>
       </div>
-      <input type="text" id="meals-search-input" class="form-input" placeholder="ابحث في جميع الوجبات..." oninput="handleMealsSearch()">
+      <input type="text" id="meals-search-input" class="form-input" placeholder="ابحث في المكتبة وصندوق وجباتي..." oninput="handleMealsSearch()">
       <div class="meal-category-grid" id="meals-pill-container">
         <button class="meal-category-box breakfast" onclick="selectSuggestedCategory('breakfast', this, 'الإفطار والتوست')"><span>🍳</span><b>الإفطار</b><small>توست وبيض وفطور</small><i>‹</i></button>
         <button class="meal-category-box lunch" onclick="selectSuggestedCategory('lunch', this, 'الغداء والكبسات')"><span>🍛</span><b>الغداء</b><small>أرز وكبسات وصالونات</small><i>‹</i></button>
@@ -1470,6 +1470,33 @@ function renderFoodItemCard(item, category, idx) {
 
 let mealLibraryLimit = 6;
 
+function escapeMealText(value) {
+  return String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
+}
+
+function renderCustomMealCard(item, idx, showSource = false) {
+  return `
+    <div class="food-item">
+      <div class="food-info">
+        ${showSource ? '<div style="font-size:10px; color:var(--accent-amber); margin-bottom:4px;">⭐ من صندوق وجباتي</div>' : ''}
+        <div style="font-weight:800; font-size:14px; color:#fff;">${escapeMealText(item.name)}</div>
+        <div style="font-size:11px; color:var(--text-secondary);">${escapeMealText(item.desc)}</div>
+        <div style="font-size:11px; color:var(--accent-emerald); margin-top:2px;">🔥 ${Number(item.cal) || 0} سعرة | 🥩 ${Number(item.protein) || 0}g بروتين | 🌾 ${Number(item.carbs) || 0}g كربوهيدرات</div>
+        <div style="font-size:10px; color:var(--text-secondary); margin-top:1px;">🍬 ${Number(item.sugar) || 0}g سكر | 🌿 ${Number(item.fiber) || 0}g ألياف</div>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:6px;">
+        <button class="icon-btn" style="background:var(--accent-emerald); color:#042f2e; font-weight:800; border:none;" onclick="addCustomMealToLog(${idx})">➕ إضافة</button>
+        <button class="icon-btn" style="background:var(--accent-coral); color:#fff; font-weight:800; border:none;" onclick="removeCustomMeal(${idx})">🗑️ حذف</button>
+      </div>
+    </div>`;
+}
+
+function addCustomMealToLog(idx) {
+  const item = appState.customMeals?.[idx];
+  if (!item) return;
+  addPresetCombo(item.name, item.cal, item.protein, item.carbs, item.fat, item.sugar, item.fiber);
+}
+
 function renderSuggestedMeals() {
   const container = document.getElementById('suggested-meals-container');
   if (!container) return;
@@ -1480,20 +1507,7 @@ function renderSuggestedMeals() {
       container.innerHTML = '<div class="message-box">لسا ما أضفت أي وجبة مخصصة — حلّل أي وجبة بالكتابة أو الصوت أو الصورة، وستُحفظ هنا تلقائياً بعد اعتمادها ⭐</div>';
       return;
     }
-    container.innerHTML = list.slice(0, mealLibraryLimit).map((item, idx) => `
-      <div class="food-item">
-        <div class="food-info">
-          <div style="font-weight:800; font-size:14px; color:#fff;">${item.name}</div>
-          <div style="font-size:11px; color:var(--text-secondary);">${item.desc}</div>
-          <div style="font-size:11px; color:var(--accent-emerald); margin-top:2px;">🔥 ${item.cal} سعرة | 🥩 ${item.protein}g بروتين | 🌾 ${item.carbs}g كربوهيدرات</div>
-          <div style="font-size:10px; color:var(--text-secondary); margin-top:1px;">🍬 ${item.sugar ?? 0}g سكر | 🌿 ${item.fiber ?? 0}g ألياف</div>
-        </div>
-        <div style="display:flex; flex-direction:column; gap:6px;">
-          <button class="icon-btn" style="background:var(--accent-emerald); color:#042f2e; font-weight:800; border:none;" onclick="addPresetCombo('${item.name.replace(/'/g, "\\'")}', ${item.cal}, ${item.protein}, ${item.carbs}, ${item.fat}, ${item.sugar ?? 0}, ${item.fiber ?? 0})">➕ إضافة</button>
-          <button class="icon-btn" style="background:var(--accent-coral); color:#fff; font-weight:800; border:none;" onclick="removeCustomMeal(${idx})">🗑️ حذف</button>
-        </div>
-      </div>
-    `).join('') + renderMealLibraryMore(list.length);
+    container.innerHTML = list.slice(0, mealLibraryLimit).map((item, idx) => renderCustomMealCard(item, idx)).join('') + renderMealLibraryMore(list.length);
     return;
   }
 
@@ -1514,6 +1528,11 @@ function loadMoreMeals() {
 }
 
 // ============ البحث عبر كل التصنيفات دفعة وحدة — يظهر النتائج فور الكتابة ============
+function normalizeMealSearch(value) {
+  return String(value ?? '').normalize('NFKC').toLocaleLowerCase('ar')
+    .replace(/[\u064B-\u065F\u0670]/g, '').replace(/[أإآ]/g, 'ا').replace(/ى/g, 'ي').replace(/ة/g, 'ه').trim();
+}
+
 function handleMealsSearch() {
   const query = document.getElementById('meals-search-input').value.trim();
   const pillContainer = document.getElementById('meals-pill-container');
@@ -1535,9 +1554,15 @@ function handleMealsSearch() {
   if (panelTitle) panelTitle.textContent = `نتائج البحث: ${query}`;
 
   const results = [];
+  const searchTerm = normalizeMealSearch(query);
+  (appState.customMeals || []).forEach((item, idx) => {
+    if (normalizeMealSearch(`${item.name ?? ''} ${item.desc ?? ''}`).includes(searchTerm)) {
+      results.push({ item, category: 'custom', idx });
+    }
+  });
   for (const category in suggestedMealsData) {
     suggestedMealsData[category].forEach((item, idx) => {
-      if (item.name.includes(query)) {
+      if (normalizeMealSearch(`${item.name} ${item.desc ?? ''}`).includes(searchTerm)) {
         results.push({ item, category, idx });
       }
     });
@@ -1548,7 +1573,9 @@ function handleMealsSearch() {
     return;
   }
 
-  container.innerHTML = results.slice(0, mealLibraryLimit).map(r => renderFoodItemCard(r.item, r.category, r.idx)).join('') + renderMealLibraryMore(results.length);
+  container.innerHTML = results.slice(0, mealLibraryLimit).map(r => r.category === 'custom'
+    ? renderCustomMealCard(r.item, r.idx, true)
+    : renderFoodItemCard(r.item, r.category, r.idx)).join('') + renderMealLibraryMore(results.length);
 }
 
 function updateScaledPreview(category, idx, inputId) {
@@ -1581,7 +1608,8 @@ function removeCustomMeal(idx) {
   if (!appState.customMeals) return;
   appState.customMeals.splice(idx, 1);
   saveCurrentUserData();
-  renderSuggestedMeals();
+  if (document.getElementById('meals-search-input')?.value.trim()) handleMealsSearch();
+  else renderSuggestedMeals();
   showToast('تم حذف الوجبة من قائمتك الخاصة', 'info');
 }
 

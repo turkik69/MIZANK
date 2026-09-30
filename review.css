@@ -404,6 +404,17 @@ body:before{background:#fff8ee}
 .form-input,.form-select,textarea{border:2px solid #241d3a!important;background:#fff!important}
 .form-input:focus,.form-select:focus,textarea:focus{border-color:#7c3aed!important;box-shadow:0 0 0 4px rgba(124,58,237,.15)!important}
 
+/* Keep entered numbers and text readable on every light form surface, including iOS autofill. */
+.form-input,.form-select,textarea{
+  color:#17243b!important;-webkit-text-fill-color:#17243b!important;caret-color:#6d28d9!important;
+  opacity:1!important
+}
+.form-input:focus,.form-select:focus,textarea:focus{background:#fff!important;color:#17243b!important;-webkit-text-fill-color:#17243b!important}
+.form-input::placeholder,textarea::placeholder{color:#66758a!important;opacity:1!important;-webkit-text-fill-color:#66758a!important}
+.form-input:disabled,.form-select:disabled,textarea:disabled{color:#526174!important;-webkit-text-fill-color:#526174!important;opacity:1!important}
+.form-input:-webkit-autofill,.form-input:-webkit-autofill:focus{-webkit-text-fill-color:#17243b!important;-webkit-box-shadow:0 0 0 1000px #fff inset!important}
+.compact-number-input{min-height:42px!important;border-radius:11px!important;font:800 16px 'Manrope','IBM Plex Sans Arabic',sans-serif!important}
+
 /* Dashboard: illustrated, bold and playful */
 .daily-hero{min-height:228px;background:linear-gradient(125deg,#6d28d9 0%,#8b3fe8 48%,#ff5f6d 120%);border:2px solid #17132b;box-shadow:0 8px 0 #17132b,0 24px 42px rgba(75,36,139,.26)}
 .daily-hero:before{border-color:rgba(255,255,255,.22);box-shadow:0 0 0 32px rgba(255,255,255,.045),0 0 0 64px rgba(255,255,255,.025)}
@@ -496,6 +507,14 @@ body[data-view="settings"],body[data-view="more"],body[data-view="chat"]{backgro
 .review-section-content>.glass-card{border:1.5px solid #241d3a!important;box-shadow:0 3px 0 #241d3a!important;background:#fff!important}
 .review-section-content>.glass-card:nth-child(3n+1){background:#fff8d9!important}.review-section-content>.glass-card:nth-child(3n+2){background:#f0eaff!important}.review-section-content>.glass-card:nth-child(3n){background:#e9fbff!important}
 .review-section-content>.glass-card h3{display:flex;align-items:center;gap:7px}
+
+/* Progress cards use pale surfaces; legacy white values and badge titles need dark ink. */
+.review-dashboard-section[data-section="progress"] .review-section-content [style*="color:#fff"]:not(button):not(.btn){color:#17243b!important}
+.review-dashboard-section[data-section="progress"] .review-section-content [style*="color:var(--text-muted)"]{color:#526174!important}
+.review-dashboard-section[data-section="progress"] .macro-item div:first-child{color:#526174!important}
+.review-dashboard-section[data-section="progress"] .macro-item div:last-child{color:#526174!important}
+#badges-display [style*="font-size:10px"]{font-size:12px!important;line-height:1.5}
+#badges-display [style*="font-size:9px"]{font-size:11px!important;line-height:1.5;color:#526174!important}
 
 /* Fasting */
 .fasting-time-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin:0 auto 16px;max-width:330px}

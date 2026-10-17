@@ -26,4 +26,52 @@
 .meal-guidance>.mizo-card{margin-bottom:0;background:#fffdf8}.mizo-settings-form{line-height:1.8;font-size:13px;color:#3f3351}.mizo-settings-form label{display:flex;align-items:flex-start;gap:10px;margin:16px 0 7px;cursor:pointer}.mizo-settings-form input{appearance:auto!important;-webkit-appearance:checkbox!important;width:19px;height:19px;flex:0 0 19px;margin-top:3px}
 .mizo-settings-form small{display:block;color:#766483;font-size:11px;margin-bottom:10px}.mizo-settings-preview{width:110px;margin:0 auto}.mizo-settings-form .meal-review-actions{margin-top:20px}
 @media(prefers-reduced-motion:reduce){.mizo-card *{animation:none!important;transition:none!important}}
-@media(max-width:380px){.mizo-card{padding:10px}.mizo-character{width:74px;flex-basis:74px}.mizo-card-main{gap:7px}.mizo-copy .mizo-message{font-size:11px}.mizo-name b{font-size:14px}.mizo-name span{font-size:9px}.mizo-settings-button{width:28px;height:28px;flex-basis:28px}}
+@media(max-width:380px){.mizo-card{padding:10px}.mizo-character{width:88px;flex-basis:88px}.mizo-card-main{gap:7px}.mizo-copy .mizo-message{font-size:11px}.mizo-name b{font-size:14px}.mizo-name span{font-size:9px}.mizo-settings-button{width:28px;height:28px;flex-basis:28px}}
+
+/* Give the companion the actual middle column, so it never covers a calorie value. */
+.daily-hero.has-mizo{display:grid;grid-template-columns:minmax(0,1fr) clamp(120px,27vw,182px) 116px;gap:10px;padding-inline:20px;isolation:isolate}
+.daily-hero.has-mizo>.hero-copy{grid-column:1;min-width:0}.daily-hero.has-mizo>.hero-orbit{grid-column:3}
+.daily-hero>.mizo-hero-slot{grid-column:2;grid-row:1;border:0;background:transparent;padding:0;margin:0;min-width:0;text-align:center;z-index:2;align-self:center;overflow:visible}
+.mizo-hero-slot .mizo-hero-character{width:100%;max-width:182px;display:block;margin:0 auto;line-height:0;filter:drop-shadow(0 5px 0 rgba(30,13,58,.16))}
+.mizo-hero-caption{font-size:10px;font-weight:700;color:#fff;display:block;margin-top:-3px;line-height:1.5;white-space:nowrap;text-shadow:0 1px 2px #52228e}
+.mizo-character{width:108px;flex-basis:108px}
+[data-motion="on"][data-state] .mizo-body{animation:mizo-alive 4.5s ease-in-out infinite}
+[data-motion="on"] .mizo-shadow{transform-box:fill-box;transform-origin:center;animation:mizo-shadow-breathe 4.5s ease-in-out infinite}
+[data-motion="on"][data-state="welcome"] .mizo-arm-left{animation:mizo-greet 5.5s ease-in-out infinite}
+[data-motion="on"][data-state="calm"] .mizo-eyes-open{animation:mizo-blink 4s ease-in-out infinite}
+[data-motion="on"][data-state="thinking"] .mizo-thinking-dots{animation:mizo-thought 1.2s ease-in-out infinite}
+[data-motion="on"][data-dance]:not([data-dance="none"]) .mizo-eyes-open{display:none}
+[data-motion="on"][data-dance]:not([data-dance="none"]) .mizo-eyes-happy,[data-motion="on"][data-dance]:not([data-dance="none"]) .mizo-sparkles{display:block}
+[data-motion="on"][data-dance="sway"] .mizo-body{animation:mizo-dance-sway .65s ease-in-out infinite}
+[data-motion="on"][data-dance="bounce"] .mizo-body{animation:mizo-dance-bounce .55s ease-in-out infinite}
+[data-motion="on"][data-dance="twist"] .mizo-body{animation:mizo-dance-twist .75s ease-in-out infinite}
+[data-motion="on"][data-dance]:not([data-dance="none"]) .mizo-arm-left{animation:mizo-dance-arm .55s ease-in-out infinite alternate}
+[data-motion="on"][data-dance]:not([data-dance="none"]) .mizo-arm-right{animation:mizo-dance-arm .55s ease-in-out -.3s infinite alternate-reverse}
+[data-motion="on"][data-dance]:not([data-dance="none"]) .mizo-legs path{transform-box:fill-box;transform-origin:50% 10%;animation:mizo-dance-step .55s ease-in-out infinite alternate}
+[data-motion="on"][data-dance]:not([data-dance="none"]) .mizo-legs path:last-child{animation-delay:-.28s}
+@keyframes mizo-alive{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-3px) rotate(1deg)}}
+@keyframes mizo-shadow-breathe{0%,100%{transform:scaleX(1);opacity:.9}50%{transform:scaleX(.9);opacity:.65}}
+@keyframes mizo-greet{0%,12%,24%,100%{transform:rotate(0)}6%,18%{transform:rotate(-24deg)}}
+@keyframes mizo-dance-sway{0%,100%{transform:translate(-3px,0) rotate(-7deg)}50%{transform:translate(3px,-5px) rotate(7deg)}}
+@keyframes mizo-dance-bounce{0%,100%{transform:translateY(1px) rotate(-3deg)}50%{transform:translateY(-10px) rotate(3deg)}}
+@keyframes mizo-dance-twist{0%,100%{transform:translateX(-4px) rotate(-8deg) scaleX(.97)}50%{transform:translateX(4px) rotate(8deg) scaleX(1.03)}}
+@keyframes mizo-dance-arm{from{transform:rotate(-28deg)}to{transform:rotate(24deg)}}
+@keyframes mizo-dance-step{from{transform:rotate(-9deg) translateY(0)}to{transform:rotate(10deg) translateY(-4px)}}
+@media(max-width:520px){
+  .daily-hero.has-mizo{grid-template-columns:minmax(0,1fr) clamp(94px,25vw,125px) 86px;gap:6px;padding:20px 12px;min-height:220px}
+  .daily-hero.has-mizo .hero-orbit{width:86px;height:86px;min-width:0;flex-basis:86px;box-shadow:3px 4px 0 rgba(23,19,43,.65)}
+  .daily-hero.has-mizo .hero-orbit:before{inset:7px}.daily-hero.has-mizo .hero-orbit b{font-size:22px}
+  .daily-hero.has-mizo .hero-number{flex-wrap:wrap;gap:3px}.daily-hero.has-mizo .hero-number strong{font-size:32px;letter-spacing:-1px}
+  .daily-hero.has-mizo .hero-number small{font-size:9px}.daily-hero.has-mizo .hero-copy>p{font-size:9px;line-height:1.7}
+  .daily-hero.has-mizo .hero-copy>p b{font-size:10px}.daily-hero.has-mizo .hero-streak{margin-top:13px;padding:7px 6px;column-gap:4px;grid-template-columns:20px auto}
+  .daily-hero.has-mizo .hero-streak>span{width:20px;height:20px}.daily-hero.has-mizo .hero-streak>b{font-size:10px}.daily-hero.has-mizo .hero-streak>small{font-size:7px}
+  .mizo-hero-caption{font-size:8px}.mizo-card:not(.mizo-hero-slot) .mizo-character{width:102px;flex-basis:102px}
+}
+@media(max-width:360px){
+  .daily-hero.has-mizo{grid-template-columns:minmax(0,1fr) 92px 76px;gap:4px;padding-inline:9px}
+  .daily-hero.has-mizo .hero-number strong{font-size:28px}.daily-hero.has-mizo .hero-orbit{width:76px;height:76px;flex-basis:76px}.daily-hero.has-mizo .hero-orbit b{font-size:20px}
+  .daily-hero.has-mizo .hero-streak{column-gap:3px;padding-inline:4px}.mizo-card:not(.mizo-hero-slot) .mizo-character{width:90px;flex-basis:90px}
+}
+/* Last in the file to cover the hero and the stronger dance selectors too. */
+[data-motion="off"] .mizo-art *{animation:none!important}
+@media(prefers-reduced-motion:reduce){.mizo-card *{animation:none!important;transition:none!important}}

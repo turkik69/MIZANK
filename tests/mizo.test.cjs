@@ -59,3 +59,26 @@ test('transient water card disappears when event expires',()=>{
 test('profile text is escaped and repeated renders do not restart animations',()=>{
  const e=create(),h=host(e);e.run(`appState.profile.name='<img src=x>';renderMizoCards()`);assert.ok(!h.innerHTML.includes('<img src=x>'));const signature=h.dataset.signature;e.run('renderMizoCards()');assert.equal(h.dataset.signature,signature);
 });
+test('hero avatar occupies its own slot between calorie target and ring',()=>{
+ const fs=require('node:fs'),html=fs.readFileSync('index.html','utf8');const target=html.indexOf('id="dashboard-calories"'),hero=html.indexOf('id="mizo-hero"'),ring=html.indexOf('id="dashboard-calorie-progress"');assert.ok(target<hero && hero<ring);
+ const e=create(),h=host(e,'hero');const toggles=[];h.parentElement={classList:{toggle:(...args)=>toggles.push(args)}};e.run('renderMizoCards()');assert.equal(h.hidden,false);assert.match(h.innerHTML,/mizo-hero-character/);assert.deepEqual(toggles.at(-1),['has-mizo',true]);
+ e.run('appState.mizoPreferences={enabled:false};renderMizoCards()');assert.equal(h.hidden,true);assert.deepEqual(toggles.at(-1),['has-mizo',false]);
+});
+test('pressing hero rotates dance variants and preserves nutrition records',()=>{
+ const e=create(),h=host(e,'hero');e.run('renderMizoCards()');const before=e.run('JSON.stringify([appState.profile,appState.meals,appState.water,appState.weights,appState.cuttingPlan])');
+ h.querySelector('[data-mizo-dance]').events.click();assert.equal(h.dataset.dance,'sway');e.run('mizoDance()');assert.equal(h.dataset.dance,'bounce');e.run('mizoDance()');assert.equal(h.dataset.dance,'twist');assert.equal(e.run('JSON.stringify([appState.profile,appState.meals,appState.water,appState.weights,appState.cuttingPlan])'),before);
+});
+test('repeated taps replace the dance timer and expiry returns to idle',()=>{
+ const e=create(),h=host(e,'hero');e.run('mizoDance()');const old=e.run('mizoRuntime.danceTimer');e.run('mizoDance()');assert.equal(e.timers.has(old),false);const timer=e.run('mizoRuntime.danceTimer');e.timers.get(timer)();assert.equal(h.dataset.dance,'none');assert.equal(e.run('mizoRuntime.danceUntil'),0);
+});
+test('dance respects motion setting, reduced motion and background visibility',()=>{
+ for(const mode of ['off','reduced','background']){
+  const e=create({reducedMotion:mode==='reduced'}),h=host(e,'hero');if(mode==='off')e.run('appState.mizoPreferences={motion:false}');if(mode==='background')e.doc.hidden=true;e.run('mizoDance()');assert.equal(h.dataset.dance,'none');assert.equal(e.run('mizoRuntime.danceCount'),0);
+ }
+});
+test('thinking takes priority over dance and does not lose a pending request',()=>{
+ const e=create(),h=host(e,'hero');e.run('mizoDance();var task=beginMizoAnalysis();mizoDance()');assert.equal(h.dataset.dance,'none');assert.equal(h.dataset.state,'thinking');assert.equal(e.run('mizoRuntime.pending.size'),1);e.run('endMizoAnalysis(task)');assert.equal(e.run('mizoRuntime.pending.size'),0);
+});
+test('meal save and weekly check-in trigger short celebration dances',()=>{
+ const e=create(),h=host(e,'hero');e.run('mizoReact("meal")');assert.notEqual(h.dataset.dance,'none');const count=e.run('mizoRuntime.danceCount');e.run('mizoReact("checkin")');assert.equal(e.run('mizoRuntime.danceCount'),count+1);assert.equal(h.dataset.state,'celebrate');
+});

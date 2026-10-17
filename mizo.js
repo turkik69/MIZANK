@@ -1,7 +1,7 @@
 /* Mizo: an optional, local companion. Reactions never change health goals or records. */
 'use strict';
 
-const mizoRuntime = { initialized: false, previousVisit: null, event: null, until: 0, timer: null, pending: new Set(), openCards: new Set() };
+const mizoRuntime = { initialized: false, previousVisit: null, event: null, until: 0, timer: null, pending: new Set(), openCards: new Set(), danceUntil: 0, danceTimer: null, danceCount: 0, danceVariant: 'none' };
 const mizoReducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)');
 
 function mizoPreferences(state = appState) {
@@ -51,7 +51,7 @@ function mizoView(state, { today = todayStr(), now = Date.now(), previousVisit =
 
 function mizoSvg() {
   return `<svg class="mizo-art" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
-    <ellipse cx="90" cy="161" rx="49" ry="8" fill="#e4dcec"/>
+    <ellipse class="mizo-shadow" cx="90" cy="161" rx="49" ry="8" fill="#e4dcec"/>
     <g class="mizo-body">
       <g class="mizo-sparkles" fill="#b9f227" stroke="#352449" stroke-width="2.2" stroke-linejoin="round">
         <path d="m25 22 3 8 8 3-8 3-3 8-3-8-8-3 8-3Z"/>
@@ -98,12 +98,24 @@ function renderMizoCards() {
     const transient = location === 'water' || location === 'checkin';
     const visible = preferences.enabled && (!transient || (mizoRuntime.event?.type === location && Date.now() < mizoRuntime.until));
     host.hidden = !visible;
+    if (location === 'hero') host.parentElement?.classList.toggle('has-mizo', visible);
     if (!visible) { host.innerHTML = ''; delete host.dataset.signature; return; }
     const isOpen = mizoRuntime.openCards.has(location);
-    const signature = JSON.stringify([view, motion, isOpen]);
+    const dance = motion && mizoRuntime.pending.size === 0 && Date.now() < mizoRuntime.danceUntil ? mizoRuntime.danceVariant : 'none';
+    const signature = JSON.stringify([view, motion, isOpen, dance]);
     if (host.dataset.signature === signature) return;
     host.dataset.signature = signature;
     host.dataset.state = view.state; host.dataset.motion = motion ? 'on' : 'off'; host.dataset.cup = view.cup ? 'on' : 'off';
+    host.dataset.dance = dance;
+    if (location === 'hero') {
+      host.innerHTML = `<button type="button" class="mizo-character mizo-hero-character" data-mizo-dance aria-label="تفاعل مع مِيزو وشغّل رقصته">${mizoSvg()}</button>
+        <span class="mizo-hero-caption">${dance !== 'none' ? 'مِيزو يرقص معك ✦' : motion ? 'مِيزو · اضغط وتفاعل' : 'مِيزو · الحركة متوقفة'}</span>`;
+      host.querySelector('[data-mizo-dance]').addEventListener('click', () => {
+        mizoDance();
+        host.querySelector('[data-mizo-dance]')?.focus({ preventScroll: true });
+      });
+      return;
+    }
     host.innerHTML = `<div class="mizo-card-main">
       <button type="button" class="mizo-character" data-mizo-toggle aria-label="مِيزو: ${isOpen ? 'إغلاق' : 'فتح'} الاختصارات" aria-expanded="${isOpen}" aria-controls="mizo-actions-${location}">${mizoSvg()}</button>
       <div class="mizo-copy"><div class="mizo-name"><b>مِيزو</b><span>رفيق ميزانك</span></div><p class="mizo-message">${escapeMealText(view.message)}</p>
@@ -112,16 +124,38 @@ function renderMizoCards() {
       <button type="button" class="mizo-settings-button" data-mizo-settings aria-label="إعدادات مِيزو">⋯</button>
     </div>
     <div id="mizo-actions-${location}" class="mizo-shortcuts" ${isOpen ? '' : 'hidden'}>
-      <button type="button" data-mizo-action="meals">سجّل وجبتي</button><button type="button" data-mizo-action="suggest">اقترح وجبتي</button><button type="button" data-mizo-action="progress">اعرض تقدمي</button>
+      <button type="button" data-mizo-action="meals">سجّل وجبتي</button><button type="button" data-mizo-action="suggest">اقترح وجبتي</button><button type="button" data-mizo-action="progress">اعرض تقدمي</button><button type="button" data-mizo-dance>ارقص يا مِيزو</button>
     </div>`;
     host.querySelector('[data-mizo-toggle]').addEventListener('click', () => {
       if (mizoRuntime.openCards.has(location)) mizoRuntime.openCards.delete(location); else mizoRuntime.openCards.add(location);
-      renderMizoCards();
+      mizoDance();
       host.querySelector('[data-mizo-toggle]')?.focus({ preventScroll: true });
     });
     host.querySelector('[data-mizo-settings]').addEventListener('click', openMizoSettings);
+    host.querySelector('[data-mizo-dance]').addEventListener('click', () => {
+      mizoDance();
+      host.querySelector('[data-mizo-dance]')?.focus({ preventScroll: true });
+    });
     host.querySelectorAll('[data-mizo-action]').forEach(button => button.addEventListener('click', () => mizoAction(button.dataset.mizoAction)));
   });
+}
+
+function queueMizoDance(duration = 5000) {
+  const preferences = mizoPreferences();
+  if (!preferences.enabled || !preferences.motion || mizoReducedMotion?.matches || document.hidden || mizoRuntime.pending.size) return;
+  mizoRuntime.danceCount += 1;
+  mizoRuntime.danceVariant = ['sway', 'bounce', 'twist'][(mizoRuntime.danceCount - 1) % 3];
+  mizoRuntime.danceUntil = Date.now() + duration;
+  if (mizoRuntime.danceTimer) clearTimeout(mizoRuntime.danceTimer);
+  mizoRuntime.danceTimer = setTimeout(() => {
+    mizoRuntime.danceUntil = 0; mizoRuntime.danceTimer = null; renderMizoCards();
+  }, duration);
+}
+
+function mizoDance() {
+  queueMizoDance();
+  renderMizoCards();
+  if (!mizoPreferences().motion || mizoReducedMotion?.matches) showToast('الحركة متوقفة حسب إعدادات مِيزو أو تقليل الحركة في الهاتف', 'info');
 }
 
 function mizoAction(action) {
@@ -149,6 +183,7 @@ function mizoReact(type, detail = {}) {
   const crossedTarget = type === 'water' && target > 0 && mealNumber(detail.previousWater) < target && mealNumber(appState.water) >= target;
   mizoRuntime.event = { type, crossedTarget }; mizoRuntime.until = Date.now() + 14000;
   if (mizoRuntime.timer) clearTimeout(mizoRuntime.timer);
+  if (type === 'meal' || type === 'checkin' || crossedTarget) queueMizoDance(4200);
   renderMizoCards();
   if (type === 'checkin' || crossedTarget) playMizoChime();
   mizoRuntime.timer = setTimeout(() => { mizoRuntime.event = null; mizoRuntime.timer = null; renderMizoCards(); }, 14000);

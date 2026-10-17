@@ -2,7 +2,7 @@ const fs=require('node:fs'),vm=require('node:vm');
 function environment(options={}){
  const nodes=new Map(),timers=new Map();let timerId=0;
  class Node{
-  constructor(id=''){this.id=id;this.value='';this.dataset={};this.events={};this.children=[];this.checked=false;this.hidden=false;this.disabled=false;this.classList={add(){},remove(){},contains(){return true}};this.style={setProperty(){}};this.isConnected=true;}
+  constructor(id=''){this.id=id;this.value='';this.dataset={};this.events={};this.children=[];this.checked=false;this.hidden=false;this.disabled=false;this.classList={add(){},remove(){},contains(){return true},toggle(){}};this.style={setProperty(){}};this.isConnected=true;}
   set innerHTML(html){this.html=html;const children=[];
    for(const m of html.matchAll(/<(input|form|button|div|p|fieldset|section|svg)\b([^>]*)>/g)){
     const el=new Node();

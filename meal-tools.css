@@ -1,0 +1,21 @@
+/* Match the existing MIZANK palette; additions stay inside the meal flow. */
+.meal-analysis-result{display:block!important}.meal-analysis-result p{margin:8px 0}.meal-analysis-result small{display:block;line-height:1.8;margin-bottom:12px}
+.meal-review-form{color:var(--text-primary);line-height:1.7}.meal-review-note{font-size:12px;color:var(--text-secondary);margin:8px 0 14px}
+.meal-review-parts{margin:14px 0}.meal-review-part{min-width:0;border:1px solid #ddd5ed;border-radius:14px;padding:12px;margin-bottom:12px}
+.meal-review-part legend{font-size:12px;font-weight:700;padding:0 6px}.meal-review-part>.form-input{margin-bottom:10px}
+.meal-review-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:10px 0}
+.meal-review-grid label{font-size:12px;min-width:0}.meal-review-grid input{margin-top:4px;min-width:0}
+.meal-review-values summary,.meal-review-assumptions summary{cursor:pointer;font-size:12px;font-weight:700;padding:8px 0}
+.meal-review-assumptions ul{padding-right:22px;font-size:12px}.meal-review-total{padding:12px;border-radius:12px;background:#f3eefb;font-size:13px;font-weight:700;margin:14px 0;color:#39275a}
+.meal-review-actions{display:flex;gap:8px;padding-bottom:env(safe-area-inset-bottom)}.meal-review-actions .btn{flex:1;min-width:0;padding-inline:10px}
+.meal-review-error{font-size:12px;color:#a3203c}.meal-log-actions{display:flex;flex-direction:column;gap:6px}.meal-log-actions button{min-height:36px}
+.meal-today-card .meal-log-edit{background:#fff!important;color:#39275a!important;border:1px solid #ddd5ed!important;padding:6px 10px!important;border-radius:10px;cursor:pointer;font-family:inherit}
+#app-modal:has(.meal-review-form) .modal-card{max-height:calc(100dvh - 32px - env(safe-area-inset-top) - env(safe-area-inset-bottom));overscroll-behavior:contain;scroll-padding:16px}
+@media(max-width:360px){.meal-review-actions{flex-direction:column}.meal-review-part{padding:9px}.meal-review-grid{gap:7px}}
+.meal-guidance{padding:16px;margin:14px 0;border:1px solid #d9cfeb;border-radius:18px;background:#f8f5ff;color:var(--miz-ink,#241d3a)}
+.meal-guidance-heading{display:flex;align-items:center;gap:8px;font-size:14px}.meal-guidance-heading span{color:#7c3aed}
+.meal-guidance p{font-size:13px;line-height:1.9;margin:9px 0}.meal-guidance small{display:block;font-size:10px;line-height:1.8;color:#625773;margin-bottom:10px}
+.next-meal-option{border:1px solid #ddd5ed;border-radius:14px;padding:13px;margin:12px 0;color:var(--miz-ink,#241d3a)}
+.next-meal-option b{font-size:14px}.next-meal-option p{font-size:13px;margin:7px 0}.next-meal-option small{font-size:11px;display:block;line-height:1.8;color:#625773;margin-bottom:8px}
+.next-meal-option button{margin-top:5px}.next-meal-saved{display:flex;align-items:center;gap:9px;font-size:12px;margin-bottom:10px}
+.next-meal-saved input{appearance:auto!important;-webkit-appearance:checkbox!important;width:18px;height:18px}

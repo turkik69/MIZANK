@@ -293,6 +293,7 @@ body {
 
 </style>
 <link rel="stylesheet" href="./review.css?v=8">
+<link rel="stylesheet" href="./meal-tools.css?v=1">
 </head>
 <body data-view="setup">
 
@@ -666,6 +667,8 @@ body {
       </div>
       <div id="meals-list"></div>
     </section>
+
+    <section id="meal-guidance" class="meal-guidance" aria-label="التوجيه بعد الوجبة"></section>
 
     <section class="meal-composer">
       <div class="meal-composer-title"><span class="meal-composer-mark">✦</span><div><h3>ماذا أكلت؟</h3><p>اكتبها بطريقتك، وميزانك يحللها لك</p></div></div>
@@ -1493,8 +1496,7 @@ function renderCustomMealCard(item, idx, showSource = false) {
 
 function addCustomMealToLog(idx) {
   const item = appState.customMeals?.[idx];
-  if (!item) return;
-  addPresetCombo(item.name, item.cal, item.protein, item.carbs, item.fat, item.sugar, item.fiber);
+  if (item) openMealReview(item, item.source || 'library');
 }
 
 function renderSuggestedMeals() {
@@ -1639,17 +1641,7 @@ function closeMealCategory() {
 }
 
 function addPresetCombo(name, cal, p, c, f, sugar, fiber) {
-  const now = Date.now();
-  appState.meals.push({
-    id: now, date: todayStr(), name, cal, protein: p, carbs: c, fat: f,
-    sugar: sugar || 0, fiber: fiber || 0,
-    timestamp: now, mealType: inferMealType(name, now),
-    time: new Date().toLocaleTimeString('ar', { hour: '2-digit', minute: '2-digit' })
-  });
-  saveCurrentUserData();
-  updateDashboard();
-  updateMealsList();
-  showToast(`تمت إضافة ${name} لسجل وجبات اليوم! 🥗`, 'success');
+  openMealReview({ name, cal, protein: p, carbs: c, fat: f, sugar, fiber }, 'library');
 }
 
 // ============ APP STATE ============
@@ -1687,7 +1679,14 @@ function showModal(title, contentHtml) {
   document.getElementById('modal-body').innerHTML = contentHtml;
   document.getElementById('app-modal').classList.add('active');
 }
-function closeModal() { document.getElementById('app-modal').classList.remove('active'); }
+function closeModal() {
+  document.getElementById('app-modal').classList.remove('active');
+  if (typeof mealReviewDraft !== 'undefined') mealReviewDraft = null;
+  if (typeof mealReviewFocus !== 'undefined' && mealReviewFocus?.isConnected) {
+    mealReviewFocus.focus({ preventScroll: true });
+    mealReviewFocus = null;
+  }
+}
 
 function loadUsersDB() {
   try {
@@ -1967,6 +1966,7 @@ function updateDashboard() {
   renderWeekComparison();
   renderDailyArchive();
   renderCuttingSummary();
+  if (typeof renderMealGuidance === 'function') renderMealGuidance();
 }
 
 // ============ توازن السعرات اليومي (فائض/عجز) وتقدير التغير في الوزن ============
@@ -2611,81 +2611,14 @@ async function handleMealText() {
   try {
     const result = await analyzeMealTextGemini(text);
 
-    previewDiv.innerHTML = `
-      <div class="message-box success" style="margin-top:10px;">
-        <strong>🍽️ التقدير المكتشف:</strong> ${result.name}<br>
-        🔥 ${result.calories} سعرة | 🥩 بروتين: ${result.protein}g | 🌾 كربوهيدرات: ${result.carbs}g | 🫒 دهون: ${result.fat}g
-      </div>
-      <button class="btn btn-primary" onclick="confirmAiMeal('${result.name.replace(/'/g, "\\'")}', ${result.calories}, ${result.protein}, ${result.carbs}, ${result.fat}, ${result.sugar}, ${result.fiber})">✅ اعتماد وإضافة للسجل</button>
-    `;
+    showMealAnalysis('meal-text-preview', result, 'text');
   } catch (e) {
     previewDiv.innerHTML = `<div class="message-box error" style="margin-top:10px;">تعذر التحليل: ${e.message}</div>`;
   }
 }
 
 function openManualMealModal() {
-  showModal('✍️ إدخال وجبة يدوية سريعة', `
-    <div style="text-align:right;">
-      <div class="form-group">
-        <label class="form-label">اسم الوجبة</label>
-        <input type="text" id="manual-meal-name" class="form-input" placeholder="مثال: صالونة سمك، قهوة أمريكية...">
-      </div>
-      <div class="form-group">
-        <label class="form-label">السعرات الحرارية (سعرة)</label>
-        <input type="number" id="manual-meal-cal" class="form-input" placeholder="150">
-      </div>
-      <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:8px;">
-        <div class="form-group">
-          <label class="form-label">بروتين (غ)</label>
-          <input type="number" id="manual-meal-p" class="form-input" value="0">
-        </div>
-        <div class="form-group">
-          <label class="form-label">كربوهيدرات (غ)</label>
-          <input type="number" id="manual-meal-c" class="form-input" value="0">
-        </div>
-        <div class="form-group">
-          <label class="form-label">دهون (غ)</label>
-          <input type="number" id="manual-meal-f" class="form-input" value="0">
-        </div>
-      </div>
-      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px;">
-        <div class="form-group">
-          <label class="form-label">سكر (غ) — اختياري</label>
-          <input type="number" id="manual-meal-sugar" class="form-input" value="0">
-        </div>
-        <div class="form-group">
-          <label class="form-label">ألياف (غ) — اختياري</label>
-          <input type="number" id="manual-meal-fiber" class="form-input" value="0">
-        </div>
-      </div>
-      <button class="btn btn-primary" onclick="saveManualMealFromModal()">✅ حفظ الوجبة بالسجل</button>
-    </div>
-  `);
-}
-
-function saveManualMealFromModal() {
-  const name = document.getElementById('manual-meal-name').value.trim();
-  const cal = parseInt(document.getElementById('manual-meal-cal').value) || 0;
-  const p = parseInt(document.getElementById('manual-meal-p').value) || 0;
-  const c = parseInt(document.getElementById('manual-meal-c').value) || 0;
-  const f = parseInt(document.getElementById('manual-meal-f').value) || 0;
-  const sugar = parseInt(document.getElementById('manual-meal-sugar').value) || 0;
-  const fiber = parseInt(document.getElementById('manual-meal-fiber').value) || 0;
-
-  if (!name) { showToast('يرجى إدخال اسم الوجبة على الأقل', 'warning'); return; }
-
-  const now = Date.now();
-  appState.meals.push({
-    id: now, date: todayStr(), name, cal, protein: p, carbs: c, fat: f, sugar, fiber,
-    timestamp: now, mealType: inferMealType(name, now),
-    time: new Date().toLocaleTimeString('ar', { hour: '2-digit', minute: '2-digit' })
-  });
-
-  saveCurrentUserData();
-  updateDashboard();
-  updateMealsList();
-  closeModal();
-  showToast(`تم حفظ ${name} يدوياً بنجاح! 🥗`, 'success');
+  openMealReview({ name: '', cal: 0, protein: 0, carbs: 0, fat: 0, sugar: 0, fiber: 0 }, 'manual');
 }
 
 // ============ VOICE LOGGING FOR MEALS ============
@@ -2719,20 +2652,14 @@ function toggleVoiceRecognition() {
     document.getElementById('voice-btn-text').textContent = '🎙️ ابدأ التسجيل الصوتي';
     document.getElementById('voice-transcript-preview').innerHTML = `
       <div class="message-box" style="margin-top:10px;">
-        <strong>الصوت الملتقط:</strong> "${transcript}"<br>
+        <strong>الصوت الملتقط:</strong> "${escapeMealText(transcript)}"<br>
         🤖 جاري التقدير بالذكاء الاصطناعي...
       </div>
     `;
 
     try {
       const result = await analyzeMealTextGemini(transcript);
-      document.getElementById('voice-transcript-preview').innerHTML = `
-        <div class="message-box success" style="margin-top:10px;">
-          <strong>🍽️ التقدير من الصوت:</strong> ${result.name}<br>
-          🔥 ${result.calories} سعرة | 🥩 بروتين: ${result.protein}g | 🌾 كربوهيدرات: ${result.carbs}g | 🫒 دهون: ${result.fat}g
-        </div>
-        <button class="btn btn-primary" onclick="confirmAiMeal('${result.name.replace(/'/g, "\\'")}', ${result.calories}, ${result.protein}, ${result.carbs}, ${result.fat}, ${result.sugar}, ${result.fiber})">✅ اعتماد وإضافة للسجل</button>
-      `;
+      showMealAnalysis('voice-transcript-preview', result, 'voice');
     } catch (e) {
       document.getElementById('voice-transcript-preview').innerHTML = `<div class="message-box error" style="margin-top:10px;">تعذر تحليل الصوت: ${e.message}</div>`;
     }
@@ -2867,20 +2794,19 @@ async function lookupBarcode(barcode) {
     const p = data.product;
     const name = p.product_name_ar || p.product_name || 'منتج غذائي';
     const nutriments = p.nutriments || {};
-    const calories = Math.round(nutriments['energy-kcal_100g'] || nutriments['energy-kcal'] || 150);
-    const protein = Math.round(nutriments.proteins_100g || 0);
-    const carbs = Math.round(nutriments.carbohydrates_100g || 0);
-    const fat = Math.round(nutriments.fat_100g || 0);
-    const sugar = Math.round(nutriments.sugars_100g || 0);
-    const fiber = Math.round(nutriments.fiber_100g || 0);
-
-    preview.innerHTML = `
-      <div class="message-box success" style="margin-top:10px;">
-        <strong>📦 المنتج:</strong> ${name}<br>
-        🔥 ${calories} سعرة /100g | 🥩 بروتين: ${protein}g | 🌾 كربوهيدرات: ${carbs}g | 🫒 دهون: ${fat}g
-      </div>
-      <button class="btn btn-cyan" onclick="confirmAiMeal('${name.replace(/'/g, "\\'")}', ${calories}, ${protein}, ${carbs}, ${fat}, ${sugar}, ${fiber})">✅ إضافة الوجبة للسجل</button>
-    `;
+    const energy = Number(nutriments['energy-kcal_100g']);
+    if (!Number.isFinite(energy) || energy < 0) {
+      preview.innerHTML = '<div class="message-box">عُثر على المنتج، لكن سعراته لكل 100 غ غير متوفرة. أدخل بيانات الملصق يدويًا بدل استخدام قيمة افتراضية.</div>';
+      return;
+    }
+    showMealAnalysis('barcode-result-preview', {
+      name, calories: energy, protein: mealNumber(nutriments.proteins_100g),
+      carbs: mealNumber(nutriments.carbohydrates_100g), fat: mealNumber(nutriments.fat_100g),
+      sugar: mealNumber(nutriments.sugars_100g), fiber: mealNumber(nutriments.fiber_100g),
+      components: [{ name, quantity: 100, unit: 'غ', cal: energy,
+        protein: mealNumber(nutriments.proteins_100g), carbs: mealNumber(nutriments.carbohydrates_100g),
+        fat: mealNumber(nutriments.fat_100g), sugar: mealNumber(nutriments.sugars_100g), fiber: mealNumber(nutriments.fiber_100g) }]
+    }, 'barcode');
   } catch (e) {
     preview.innerHTML = `<div class="message-box error" style="margin-top:10px;">فشل الاتصال: ${e.message}</div>`;
   }
@@ -3356,27 +3282,14 @@ async function handleMealPhoto(event) {
         {
           role: "user",
           parts: [
-            { text: "أنت خبير تغذية يقدّر حجم حصص الطعام بصرياً بدون ميزان. حلل صورة الوجبة وقدّر: اسمها، وزنها التقريبي بالجرام (استناداً لحجم الطبق والمقارنات البصرية المعتادة كحجم كف اليد أو الأدوات الظاهرة بالصورة)، ثم احسب السعرات والماكروز (بروتين وكربوهيدرات ودهون وسكر وألياف) بناءً على هذا الوزن التقديري، كل هذا باللغة العربية." },
+            { text: "أنت خبير تغذية يقدّر حجم حصص الطعام بصرياً بدون ميزان. حلل صورة الوجبة وقدّر: اسمها، وزنها التقريبي بالجرام (استناداً لحجم الطبق والمقارنات البصرية المعتادة كحجم كف اليد أو الأدوات الظاهرة بالصورة)، ثم احسب السعرات والماكروز (بروتين وكربوهيدرات ودهون وسكر وألياف) بناءً على هذا الوزن التقديري، كل هذا باللغة العربية. أعد المكونات في components؛ لكل مكوّن اسم وكمية ووحدة وقيم لهذه الكمية. يجب أن يساوي مجموع المكونات إجمالي الوجبة. اذكر الكميات أو الزيوت المفترضة ضمن assumptions، ولا تدّع دقة القياس من الصورة." },
             { inlineData: { mimeType: "image/jpeg", data: base64Data } }
           ]
         }
       ],
       generationConfig: {
         responseMimeType: "application/json",
-        responseSchema: {
-          type: "OBJECT",
-          properties: {
-            name: { type: "STRING" },
-            estimatedWeight: { type: "NUMBER" },
-            calories: { type: "NUMBER" },
-            protein: { type: "NUMBER" },
-            carbs: { type: "NUMBER" },
-            fat: { type: "NUMBER" },
-            sugar: { type: "NUMBER" },
-            fiber: { type: "NUMBER" }
-          },
-          required: ["name", "estimatedWeight", "calories", "protein", "carbs", "fat", "sugar", "fiber"]
-        }
+        responseSchema: mealAnalysisSchema(true)
       }
     };
 
@@ -3392,79 +3305,21 @@ async function handleMealPhoto(event) {
 }
 
 function renderPhotoAnalysisResult(result) {
-  const previewDiv = document.getElementById('meal-photo-preview');
-  previewDiv.innerHTML = `
-    <div class="message-box success" style="margin-top:10px;">
-      <strong>🍽️ الوجبة:</strong> ${result.name}<br>
-      ⚖️ الوزن التقديري: <strong>${result.estimatedWeight}</strong> غرام (تقدير بصري تقريبي، وليس وزناً دقيقاً)
-    </div>
-    <div style="display:flex; align-items:center; gap:8px; margin-top:10px;">
-      <label style="font-size:12px; color:var(--text-secondary); white-space:nowrap;">عدّل الوزن لو حسّيت التقدير مو دقيق (غرام):</label>
-      <input type="number" id="photo-weight-input" class="form-input compact-number-input" value="${result.estimatedWeight}" min="1" step="5"
-        style="width:80px; padding:6px; text-align:center;"
-        oninput="updatePhotoAnalysisPreview()">
-    </div>
-    <div id="photo-nutrition-preview" style="font-size:12px; color:var(--accent-emerald); margin-top:8px;">
-      🔥 ${result.calories} سعرة | 🥩 ${result.protein}g بروتين | 🌾 ${result.carbs}g كارب | 🍬 ${result.sugar}g سكر | 🌿 ${result.fiber}g ألياف
-    </div>
-    <button class="btn btn-primary" style="margin-top:10px; width:100%;" onclick="confirmPhotoMeal()">✅ اعتماد وإضافة للسجل</button>
-  `;
+  showMealAnalysis('meal-photo-preview', result, 'photo');
 }
 
-function updatePhotoAnalysisPreview() {
-  if (!lastPhotoAnalysisResult) return;
-  const newWeight = parseFloat(document.getElementById('photo-weight-input').value) || lastPhotoAnalysisResult.estimatedWeight;
-  const ratio = newWeight / lastPhotoAnalysisResult.estimatedWeight;
-  const r = lastPhotoAnalysisResult;
-
-  document.getElementById('photo-nutrition-preview').innerHTML =
-    `🔥 ${Math.round(r.calories * ratio)} سعرة | 🥩 ${(r.protein * ratio).toFixed(1)}g بروتين | 🌾 ${(r.carbs * ratio).toFixed(1)}g كارب | 🍬 ${(r.sugar * ratio).toFixed(1)}g سكر | 🌿 ${(r.fiber * ratio).toFixed(1)}g ألياف`;
-}
-
-function confirmPhotoMeal() {
-  if (!lastPhotoAnalysisResult) return;
-  const newWeight = parseFloat(document.getElementById('photo-weight-input').value) || lastPhotoAnalysisResult.estimatedWeight;
-  const ratio = newWeight / lastPhotoAnalysisResult.estimatedWeight;
-  const r = lastPhotoAnalysisResult;
-
-  confirmAiMeal(
-    `${r.name} (~${Math.round(newWeight)}غ)`,
-    Math.round(r.calories * ratio),
-    Math.round(r.protein * ratio * 10) / 10,
-    Math.round(r.carbs * ratio * 10) / 10,
-    Math.round(r.fat * ratio * 10) / 10,
-    Math.round(r.sugar * ratio * 10) / 10,
-    Math.round(r.fiber * ratio * 10) / 10
-  );
-
-  document.getElementById('meal-photo-preview').innerHTML = '';
-  document.getElementById('meal-photo-input').value = '';
-  lastPhotoAnalysisResult = null;
-}
 
 async function analyzeMealTextGemini(descriptionText) {
   const payload = {
     contents: [
       {
         role: "user",
-        parts: [{ text: `قدر قيم السعرات والماكروز (بما فيها السكر والألياف) للوجبة التالية: "${descriptionText}".` }]
+        parts: [{ text: `قدر قيم السعرات والماكروز (بما فيها السكر والألياف) للوجبة التالية: "${descriptionText}". أعد components لكل مكوّن مع quantity وunit والقيم لهذه الكمية. يجب أن تتطابق المجاميع مع إجمالي الوجبة. ضع الكميات المفترضة أو المكونات غير المؤكدة في assumptions ولا تقدّمها كحقائق.` }]
       }
     ],
     generationConfig: {
       responseMimeType: "application/json",
-      responseSchema: {
-        type: "OBJECT",
-        properties: {
-          name: { type: "STRING" },
-          calories: { type: "NUMBER" },
-          protein: { type: "NUMBER" },
-          carbs: { type: "NUMBER" },
-          fat: { type: "NUMBER" },
-          sugar: { type: "NUMBER" },
-          fiber: { type: "NUMBER" }
-        },
-        required: ["name", "calories", "protein", "carbs", "fat", "sugar", "fiber"]
-      }
+      responseSchema: mealAnalysisSchema(false)
     }
   };
 
@@ -3475,35 +3330,11 @@ async function analyzeMealTextGemini(descriptionText) {
 }
 
 function confirmAiMeal(name, cal, p, c, f, sugar, fiber) {
-  sugar = sugar || 0;
-  fiber = fiber || 0;
-
-  const now = Date.now();
-  appState.meals.push({
-    id: now, date: todayStr(), name, cal, protein: p, carbs: c, fat: f, sugar, fiber,
-    timestamp: now, mealType: inferMealType(name, now),
-    time: new Date().toLocaleTimeString('ar', { hour: '2-digit', minute: '2-digit' })
-  });
-
-  // احفظ الوجبة أيضاً في "وجباتي الخاصة" لتصبح متاحة للاختيار السريع لاحقاً بدون إعادة تحليلها
-  if (!appState.customMeals) appState.customMeals = [];
-  const alreadyExists = appState.customMeals.some(m => m.name === name);
-  if (!alreadyExists) {
-    appState.customMeals.push({ name, cal, protein: p, carbs: c, fat: f, sugar, fiber, desc: 'وجبة أضفتها وحلّلتها بنفسك' });
-  }
-
-  saveCurrentUserData();
-  updateDashboard();
-  updateMealsList();
-  document.getElementById('meal-photo-preview').innerHTML = '';
-  document.getElementById('voice-transcript-preview').innerHTML = '';
-  document.getElementById('barcode-result-preview').innerHTML = '';
-  document.getElementById('meal-text-preview').innerHTML = '';
-  document.getElementById('meal-text-input').value = '';
-  showToast('تم تسجيل الوجبة وحفظها بقوائمك الخاصة 🥗⭐', 'success');
+  openMealReview({ name, cal, protein: p, carbs: c, fat: f, sugar, fiber }, 'text', { remember: true });
 }
 
 function updateMealsList() {
+  if (typeof renderMealGuidance === 'function') renderMealGuidance();
   const todaysMeals = getTodaysMeals();
   const container = document.getElementById('meals-list');
   if (!container) return;
@@ -3517,13 +3348,14 @@ function updateMealsList() {
     return;
   }
 
-  container.innerHTML = todaysMeals.map(m => `
+  container.innerHTML = todaysMeals.map((m, index) => `
     <div class="food-item">
       <div class="food-info">
-        <div style="font-weight:800; font-size:14px; color:#fff;">${m.name}</div>
+        <div style="font-weight:800; font-size:14px; color:#fff;">${escapeMealText(m.name)}</div>
+        <div style="font-size:10px;">${escapeMealText(mealSourceLabel(m.source))}${m.sourceEdited ? ' · عُدّل يدويًا' : ''}</div>
         <div style="font-size:11px; color:var(--text-secondary);">🔥 ${m.cal} سعرة | 🥩 بروتين: ${m.protein}غ | 🌾 كربوهيدرات: ${m.carbs}غ | 🫒 دهون: ${m.fat}غ</div>
       </div>
-      <button class="delete-btn" onclick="deleteMeal(${m.id})">حذف</button>
+      <div class="meal-log-actions"><button type="button" class="meal-log-edit" onclick="openLoggedMealReview(${index})">تعديل</button><button class="delete-btn" onclick="deleteLoggedMeal(${index})">حذف</button></div>
     </div>
   `).join('');
 }
@@ -4143,5 +3975,7 @@ function acceptCuttingAdjustment() {
 }
 
 </script>
+<script src="./meal-tools.js?v=1"></script>
 </body>
 </html>
+

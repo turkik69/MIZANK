@@ -2,28 +2,7 @@ const {test}=require('node:test');
 const assert=require('node:assert/strict');
 const fs=require('node:fs');
 const vm=require('node:vm');
-function environment(){
- const nodes=new Map();
- class Node{
-  constructor(id=''){this.id=id;this.value='';this.dataset={};this.events={};this.classList={add(){},remove(){},contains(){return true}};this.style={setProperty(){}};this.isConnected=true;}
-  set innerHTML(html){this.html=html;for(const m of html.matchAll(/<(input|form|button|div|p|fieldset)\b([^>]*)>/g)){
-   const id=m[2].match(/\bid="([^"]+)"/)?.[1];if(!id)continue;const el=new Node(id);el.value=m[2].match(/\bvalue="([^"]*)"/)?.[1]||'';
-   for(const a of m[2].matchAll(/\bdata-([\w-]+)="([^"]*)"/g))el.dataset[a[1].replace(/-([a-z])/g,(_,c)=>c.toUpperCase())]=a[2];
-   nodes.set(id,el);
-  }}
-  get innerHTML(){return this.html||'';}
-  querySelectorAll(selector){if(selector==='[data-quantity]')return [...nodes.values()].filter(n=>n.dataset.quantity!==undefined);if(selector==='[data-nutrient]')return [...nodes.values()].filter(n=>n.dataset.nutrient!==undefined);return [];}
-  querySelector(){return new Node();}addEventListener(name,fn){this.events[name]=fn;}setAttribute(){}focus(){}reportValidity(){return true;}getClientRects(){return [1];}appendChild(){}
- }
- const get=id=>nodes.get(id)|| (nodes.set(id,new Node(id)),nodes.get(id));
- const doc={getElementById:get,querySelectorAll:()=>[],addEventListener(){},activeElement:new Node()};
- const ctx=vm.createContext({document:doc,navigator:{},window:{addEventListener(){}},Element:Node,Map,Date,Math,JSON,Number,Object,String,Array,Set,console,crypto:require('node:crypto').webcrypto,setTimeout(){},clearInterval(){},setInterval(){},localStorage:{},structuredClone});
- const html=fs.readFileSync('index.html','utf8');
- vm.runInContext([...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(m=>m[1]).join('\n'),ctx);
- vm.runInContext(fs.readFileSync('meal-tools.js','utf8'),ctx);
- vm.runInContext(`var realSaveCurrentUserData=saveCurrentUserData;saveCurrentUserData=()=>{};updateDashboard=()=>{};updateMealsList=()=>{};showToast=()=>{};appState.profile={dailyCalories:2000,protein:140};`,ctx);
- return {ctx,get,run:s=>vm.runInContext(s,ctx)};
-}
+const {environment}=require('./helpers/meal-env.cjs');
 test('review and cancellation do not change stored meals',()=>{
  const e=environment();e.run(`openMealReview({name:'غداء',cal:500,protein:30},'library')`);assert.equal(e.run('appState.meals.length'),0);e.run('closeModal()');assert.equal(e.run('appState.meals.length'),0);
 });
@@ -49,7 +28,6 @@ test('untrusted meal names are escaped in review markup',()=>{
 test('legacy logs and unmodified AI entries retain source honesty',()=>{
  const e=environment();e.run(`openMealReview({name:'غداء',cal:400},'text');saveMealReview()`);assert.equal(e.run('appState.meals[0].sourceEdited'),false);assert.equal(e.run(`mealSourceLabel('unknown')`),'سجل سابق — المصدر غير محدد');
 });
-module.exports={environment};
 test('daily guidance matches dashboard net convention and actual protein',()=>{
  const e=environment();assert.equal(e.run(`mealDayBalance({dailyCalories:2000,protein:140},[{cal:900,protein:60}],[{cal:200}]).remaining`),1300);
  assert.equal(e.run(`mealDayBalance({dailyCalories:2000,protein:140},[{cal:900,protein:60}],[{cal:200}]).proteinRemaining`),80);

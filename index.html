@@ -293,7 +293,8 @@ body {
 
 </style>
 <link rel="stylesheet" href="./review.css?v=8">
-<link rel="stylesheet" href="./meal-tools.css?v=1">
+<link rel="stylesheet" href="./meal-tools.css?v=2">
+<link rel="stylesheet" href="./mizo.css?v=1">
 </head>
 <body data-view="setup">
 
@@ -396,6 +397,8 @@ body {
       </div>
       <span class="hero-bubble bubble-one"></span><span class="hero-bubble bubble-two"></span>
     </section>
+
+    <section id="mizo-dashboard" class="mizo-card" data-mizo-card="dashboard" aria-label="مِيزو رفيق ميزانك" hidden></section>
 
     <div class="review-quick-actions" aria-label="إجراءات سريعة">
       <button onclick="switchScreen('meals')"><span class="quick-action-icon meals-icon"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span><b>سجّل وجبة</b></button>
@@ -638,6 +641,7 @@ body {
         <div class="form-group"><label class="form-label">الدهون الحشوية</label><input id="cutting-check-visceral" type="number" step="0.1" class="form-input"></div>
       </div>
       <button class="btn btn-primary" onclick="saveCuttingCheckin()">حفظ تقييم هذا الأسبوع</button>
+      <section class="mizo-card" data-mizo-card="checkin" aria-label="مِيزو وتقييم الأسبوع" hidden></section>
     </div>
 
     <div class="glass-card">
@@ -950,6 +954,8 @@ body {
       </div>
     </div>
 
+    <section class="mizo-card" data-mizo-card="water" aria-label="مِيزو وسجل الماء" hidden></section>
+
     <div class="glass-card weight-entry-card">
       <h3 style="color: var(--accent-emerald); margin-bottom: 12px; font-size:15px; font-weight:800;">قراءة الوزن</h3>
       <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
@@ -994,6 +1000,12 @@ body {
         <div class="screen-subtitle">كل إعداد في مكانه الواضح</div>
       </div>
       <span class="secondary-header-icon settings-head" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1l2-1.5-2-3.5-2.5 1a7 7 0 0 0-1.8-1L14 3h-4l-.6 3a7 7 0 0 0-1.8 1L5 6 3 9.5 5.1 11a7 7 0 0 0 0 2L3 14.5 5 18l2.6-1a7 7 0 0 0 1.8 1l.6 3h4l.6-3a7 7 0 0 0 1.8-1l2.6 1 2-3.5-2.1-1.5a7 7 0 0 0 .1-1Z"/></svg></span>
+    </div>
+
+    <div class="glass-card settings-mizo-card">
+      <h3 style="color:var(--accent-purple);margin-bottom:8px;font-size:15px;">مِيزو · رفيق ميزانك</h3>
+      <p style="font-size:12px;color:var(--text-secondary);margin-bottom:14px;">تحكّم في ظهور الشخصية وحركتها وصوت الاحتفال.</p>
+      <button type="button" class="btn btn-secondary" onclick="openMizoSettings()">إعدادات مِيزو</button>
     </div>
 
     <div class="glass-card settings-notifications-card" style="border-color: var(--accent-purple);">
@@ -1874,6 +1886,7 @@ function switchScreen(screenName, navElement) {
   if (screenName === 'chat') renderChatHistory();
   if (screenName === 'settings') { updateProfileUI(); loadApiSettingsUI(); renderBackupStatus(); }
   if (screenName === 'cutting') renderCuttingPlan();
+  if (typeof renderMizoCards === 'function') renderMizoCards();
 }
 
 function showScreen(screenId) {
@@ -2782,6 +2795,7 @@ async function lookupBarcode(barcode) {
   const preview = document.getElementById('barcode-result-preview');
   preview.innerHTML = `<div class="message-box" style="margin-top:10px;">🔍 جاري البحث في Open Food Facts... (${barcode})</div>`;
 
+  const mizoTask = typeof beginMizoAnalysis === 'function' ? beginMizoAnalysis() : null;
   try {
     const res = await fetch(`https://world.openfoodfacts.org/api/v0/product/${barcode}.json`);
     const data = await res.json();
@@ -2809,6 +2823,8 @@ async function lookupBarcode(barcode) {
     }, 'barcode');
   } catch (e) {
     preview.innerHTML = `<div class="message-box error" style="margin-top:10px;">فشل الاتصال: ${e.message}</div>`;
+  } finally {
+    if (typeof endMizoAnalysis === 'function') endMizoAnalysis(mizoTask);
   }
 }
 
@@ -3274,6 +3290,7 @@ async function handleMealPhoto(event) {
   const previewDiv = document.getElementById('meal-photo-preview');
   previewDiv.innerHTML = '<div class="message-box" style="margin-top:10px;">🔍 جاري تحليل الصورة وتقدير الكمية بصرياً...</div>';
 
+  const mizoTask = typeof beginMizoAnalysis === 'function' ? beginMizoAnalysis() : null;
   try {
     const base64Data = await compressAndResizeImage(file, 1024);
 
@@ -3301,6 +3318,8 @@ async function handleMealPhoto(event) {
     renderPhotoAnalysisResult(result);
   } catch (e) {
     previewDiv.innerHTML = `<div class="message-box error" style="margin-top:10px;">تعذر التحليل: ${e.message}</div>`;
+  } finally {
+    if (typeof endMizoAnalysis === 'function') endMizoAnalysis(mizoTask);
   }
 }
 
@@ -3310,6 +3329,8 @@ function renderPhotoAnalysisResult(result) {
 
 
 async function analyzeMealTextGemini(descriptionText) {
+  const mizoTask = typeof beginMizoAnalysis === 'function' ? beginMizoAnalysis() : null;
+  try {
   const payload = {
     contents: [
       {
@@ -3327,6 +3348,10 @@ async function analyzeMealTextGemini(descriptionText) {
   const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
   if (!text) throw new Error("استجابة غير مكتملة");
   return JSON.parse(text);
+
+  } finally {
+    if (typeof endMizoAnalysis === 'function') endMizoAnalysis(mizoTask);
+  }
 }
 
 function confirmAiMeal(name, cal, p, c, f, sugar, fiber) {
@@ -3498,6 +3523,7 @@ function deleteWorkout(id) {
 // ============ WATER & WEIGHT ============
 function addWater(cups = 1) {
   ensureTodayWater();
+  const previousWater = appState.water;
   appState.water += cups;
   appState.lastWaterAt = Date.now();
   appState.lastWaterNotifTime = appState.lastWaterAt;
@@ -3505,6 +3531,7 @@ function addWater(cups = 1) {
   updateWaterScreen();
   updateDashboard();
   showToast(`تمت إضافة ${cups} كوب ماء 💧`, 'info');
+  if (typeof mizoReact === 'function') mizoReact('water', { previousWater });
 }
 
 function updateWaterScreen() {
@@ -3913,6 +3940,7 @@ function saveCuttingCheckin() {
   updateDashboard();
   renderCuttingPlan();
   showToast('تم حفظ تقييم الأسبوع وتحليل المسار ✅','success');
+  if (typeof mizoReact === 'function') mizoReact('checkin');
 }
 
 function renderCuttingAnalysis() {
@@ -3975,7 +4003,8 @@ function acceptCuttingAdjustment() {
 }
 
 </script>
-<script src="./meal-tools.js?v=1"></script>
+<script src="./meal-tools.js?v=2"></script>
+<script src="./mizo.js?v=1"></script>
 </body>
 </html>
 

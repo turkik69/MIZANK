@@ -50,6 +50,7 @@ function showMealAnalysis(containerId, result, source) {
   const host = document.getElementById(containerId);
   if (!host) return;
   pendingMealAnalyses.set(containerId, { result, source });
+  if (typeof mizoReact === 'function') mizoReact('review');
   const quantity = mealNumber(result.estimatedWeight);
   host.innerHTML = `<div class="message-box meal-analysis-result">
     <b>${escapeMealText(result.name)}</b>
@@ -224,6 +225,7 @@ function saveMealReview(event) {
   closeModal();
   updateDashboard(); updateMealsList();
   showToast(draft.reference ? 'تم تعديل الوجبة وتحديث مجموع اليوم' : 'تم حفظ الوجبة', 'success');
+  if (typeof mizoReact === 'function') mizoReact(draft.reference ? 'edit' : 'meal');
 }
 
 document.addEventListener('keydown', event => {
@@ -263,7 +265,9 @@ function renderMealGuidance() {
   host.innerHTML = `<div class="meal-guidance-heading"><span>✦</span><b>خطوتك التالية</b></div>
     <p id="meal-guidance-text" aria-live="polite">${escapeMealText(mealGuidanceText(balance))}</p>
     <small>المتبقي حسب صافي اليوم، مثل لوحة اليوم. يتحدث عند الحفظ والتعديل والحذف.</small>
-    <button type="button" class="btn btn-secondary" onclick="openNextMealSuggestions()">اقترح وجبتي التالية</button>`;
+    <button type="button" class="btn btn-secondary" onclick="openNextMealSuggestions()">اقترح وجبتي التالية</button>
+    <section id="mizo-meals" class="mizo-card" data-mizo-card="meals" aria-label="مِيزو ووجباتك" hidden></section>`;
+  if (typeof renderMizoCards === 'function') renderMizoCards();
 }
 
 let nextMealCandidates = [];

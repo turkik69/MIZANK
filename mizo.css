@@ -1,0 +1,29 @@
+.mizo-card{border:1.5px solid #d9ceeb;border-radius:20px;background:#fffaf1;color:#241d3a;margin:14px 0;padding:10px 12px;position:relative}
+.mizo-card[hidden],.mizo-shortcuts[hidden]{display:none!important}.mizo-card-main{display:flex;align-items:center;gap:10px;min-width:0}
+#water-screen>.mizo-card{order:1}.settings-mizo-card{order:3}
+.mizo-character{width:92px;flex:0 0 92px;padding:0;border:0;background:none;cursor:pointer;border-radius:18px;line-height:0;align-self:center;touch-action:manipulation}
+.mizo-art{width:100%;height:auto;display:block;overflow:visible}.mizo-copy{flex:1;min-width:0;text-align:right}.mizo-name{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.mizo-name b{font-size:16px;color:#6d28d9}.mizo-name span{font-size:10px;color:#675775}.mizo-copy .mizo-message{font-size:12px;line-height:1.8;margin:5px 0 7px;color:#3f3351;overflow-wrap:anywhere}
+.mizo-primary-action{border:0;border-bottom:1px solid #9870d0;background:none;padding:3px 0;font-size:11px;font-weight:700;font-family:inherit;color:#6d28d9;cursor:pointer;min-height:30px;text-align:right}
+.mizo-settings-button{border:1px solid #e4d9ee;background:#fff;border-radius:10px;font-size:21px;line-height:1;width:32px;height:32px;flex:0 0 32px;align-self:flex-start;color:#614a7b;cursor:pointer}
+.mizo-shortcuts{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px;border-top:1px solid #e8deef;padding-top:10px}
+.mizo-shortcuts button{flex:1;min-width:85px;min-height:38px;border:1px solid #d9cbe9;border-radius:10px;background:#fff;font-family:inherit;font-size:11px;font-weight:700;color:#4d326c;cursor:pointer}
+.mizo-character:focus-visible,.mizo-card button:focus-visible{outline:3px solid #7c3aed;outline-offset:3px}
+.mizo-eyes-happy,.mizo-think-mouth,.mizo-thinking-dots,.mizo-sparkles,.mizo-cup{display:none}
+[data-state="celebrate"] .mizo-eyes-open{display:none}[data-state="celebrate"] .mizo-eyes-happy,[data-state="celebrate"] .mizo-sparkles{display:block}
+[data-state="thinking"] .mizo-smile{display:none}[data-state="thinking"] .mizo-think-mouth,[data-state="thinking"] .mizo-thinking-dots{display:block}
+[data-cup="on"] .mizo-cup{display:block}.mizo-arm{transform-box:fill-box;transform-origin:90% 85%}.mizo-arm-right{transform-origin:10% 85%}.mizo-body{transform-origin:90px 145px}
+[data-motion="on"][data-state="welcome"] .mizo-arm-left{animation:mizo-wave .65s ease-in-out 3}
+[data-motion="on"][data-state="encourage"] .mizo-body{animation:mizo-nod .55s ease-in-out 2}
+[data-motion="on"][data-state="celebrate"] .mizo-body{animation:mizo-hop .65s ease-in-out 3}
+[data-motion="on"][data-state="thinking"] .mizo-thinking-dots{animation:mizo-thought 1.2s ease-in-out 5}
+[data-motion="on"][data-state="calm"] .mizo-eyes-open{transform-box:fill-box;transform-origin:center;animation:mizo-blink 4s ease-in-out 2}
+@keyframes mizo-wave{0%,100%{transform:rotate(0)}50%{transform:rotate(-22deg)}}
+@keyframes mizo-nod{0%,100%{transform:translateY(0)}50%{transform:translateY(3px)}}
+@keyframes mizo-hop{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px) rotate(-3deg)}}
+@keyframes mizo-thought{0%,100%{opacity:.3}50%{opacity:1}}
+@keyframes mizo-blink{0%,43%,47%,100%{transform:scaleY(1)}45%{transform:scaleY(.12)}}
+.meal-guidance>.mizo-card{margin-bottom:0;background:#fffdf8}.mizo-settings-form{line-height:1.8;font-size:13px;color:#3f3351}.mizo-settings-form label{display:flex;align-items:flex-start;gap:10px;margin:16px 0 7px;cursor:pointer}.mizo-settings-form input{appearance:auto!important;-webkit-appearance:checkbox!important;width:19px;height:19px;flex:0 0 19px;margin-top:3px}
+.mizo-settings-form small{display:block;color:#766483;font-size:11px;margin-bottom:10px}.mizo-settings-preview{width:110px;margin:0 auto}.mizo-settings-form .meal-review-actions{margin-top:20px}
+@media(prefers-reduced-motion:reduce){.mizo-card *{animation:none!important;transition:none!important}}
+@media(max-width:380px){.mizo-card{padding:10px}.mizo-character{width:74px;flex-basis:74px}.mizo-card-main{gap:7px}.mizo-copy .mizo-message{font-size:11px}.mizo-name b{font-size:14px}.mizo-name span{font-size:9px}.mizo-settings-button{width:28px;height:28px;flex-basis:28px}}

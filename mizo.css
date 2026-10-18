@@ -26,6 +26,27 @@
 .meal-guidance>.mizo-card{margin-bottom:0;background:#fffdf8}.mizo-settings-form{line-height:1.8;font-size:13px;color:#3f3351}.mizo-settings-form label{display:flex;align-items:flex-start;gap:10px;margin:16px 0 7px;cursor:pointer}.mizo-settings-form input{appearance:auto!important;-webkit-appearance:checkbox!important;width:19px;height:19px;flex:0 0 19px;margin-top:3px}
 .mizo-settings-form small{display:block;color:#766483;font-size:11px;margin-bottom:10px}.mizo-settings-preview{width:110px;margin:0 auto}.mizo-settings-form .meal-review-actions{margin-top:20px}
 @media(prefers-reduced-motion:reduce){.mizo-card *{animation:none!important;transition:none!important}}
+
+/* Preserve the selected 3D puppy artwork; animate its placement without redrawing it. */
+.mizo-puppy{object-fit:contain;aspect-ratio:1;user-select:none;-webkit-user-drag:none;transform-origin:50% 88%;filter:drop-shadow(0 3px 3px rgba(31,16,48,.12))}
+[data-motion="on"] .mizo-puppy{animation:puppy-breathe 4s ease-in-out infinite}
+[data-motion="on"][data-state="thinking"] .mizo-puppy{animation:puppy-think 2.5s ease-in-out infinite}
+[data-motion="on"][data-dance="sway"] .mizo-puppy{animation:mizo-dance-sway .7s ease-in-out infinite}
+[data-motion="on"][data-dance="bounce"] .mizo-puppy{animation:mizo-dance-bounce .65s ease-in-out infinite}
+[data-motion="on"][data-dance="twist"] .mizo-puppy{animation:mizo-dance-twist .8s ease-in-out infinite}
+.puppy-roamer{position:fixed;left:0;top:0;width:var(--puppy-width,96px);z-index:5100;transform:translate3d(var(--puppy-x,12px),var(--puppy-y,80px),0);transition:transform 2.2s ease-in-out;pointer-events:none!important;contain:layout style;display:flex;flex-direction:column;align-items:center;gap:4px}
+.puppy-roamer[hidden],.puppy-roamer-bubble[hidden]{display:none!important}.puppy-roamer *{pointer-events:none!important}
+#puppy-safe-area{position:fixed;visibility:hidden;pointer-events:none;width:0;height:0;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
+.puppy-roamer .mizo-puppy{width:90px;height:90px;flex:none}
+.puppy-roamer-bubble{background:#fffdf8;border:1.5px solid #7c3aed;border-radius:14px 14px 14px 4px;color:#452960;box-shadow:0 3px 8px rgba(40,16,65,.1);font:600 10px/1.65 'IBM Plex Sans Arabic',sans-serif;text-align:center;padding:7px 9px;max-height:64px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;width:100%}
+.puppy-roamer[data-editing="true"],.puppy-roamer[data-motion="off"]{transition:none}
+body[data-puppy-roaming="true"] .mizo-hero-slot .mizo-puppy{visibility:hidden}
+body[data-puppy-roaming="true"] .mizo-card:not(.mizo-hero-slot) .mizo-character{display:none}
+body[data-puppy-roaming="true"] .mizo-hero-caption{visibility:hidden}
+@keyframes puppy-breathe{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-3px) rotate(1deg)}}
+@keyframes puppy-think{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(2deg) translateY(-2px)}}
+[data-motion="off"] .mizo-puppy{animation:none!important}
+@media(prefers-reduced-motion:reduce){.puppy-roamer,.mizo-puppy{animation:none!important;transition:none!important}}
 @media(max-width:380px){.mizo-card{padding:10px}.mizo-character{width:88px;flex-basis:88px}.mizo-card-main{gap:7px}.mizo-copy .mizo-message{font-size:11px}.mizo-name b{font-size:14px}.mizo-name span{font-size:9px}.mizo-settings-button{width:28px;height:28px;flex-basis:28px}}
 
 /* Give the companion the actual middle column, so it never covers a calorie value. */

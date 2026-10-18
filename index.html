@@ -294,11 +294,16 @@ body {
 </style>
 <link rel="stylesheet" href="./review.css?v=8">
 <link rel="stylesheet" href="./meal-tools.css?v=2">
-<link rel="stylesheet" href="./mizo.css?v=2">
+<link rel="stylesheet" href="./mizo.css?v=3">
 </head>
 <body data-view="setup">
 
 <div id="toast-container" class="toast-container"></div>
+<div id="puppy-safe-area" aria-hidden="true"></div>
+<div id="puppy-roamer" class="puppy-roamer" hidden aria-hidden="true">
+  <div class="puppy-roamer-bubble" id="puppy-roamer-message"></div>
+  <img class="mizo-art mizo-puppy" src="./assets/puppy.webp" alt="" width="1280" height="1280" decoding="async" draggable="false">
+</div>
 
 <!-- Modal Overlay -->
 <div id="app-modal" class="modal-overlay">
@@ -1683,15 +1688,18 @@ function showToast(message, type = 'info') {
   toast.innerHTML = `<span>${message}</span>`;
   container.appendChild(toast);
   setTimeout(() => toast.remove(), 4000);
+  if (typeof puppyOnToast === 'function') puppyOnToast(type);
 }
 
 function showModal(title, contentHtml) {
   document.getElementById('modal-title').textContent = title;
   document.getElementById('modal-body').innerHTML = contentHtml;
   document.getElementById('app-modal').classList.add('active');
+  if (typeof renderPuppyFromCurrentState === 'function') renderPuppyFromCurrentState();
 }
 function closeModal() {
   document.getElementById('app-modal').classList.remove('active');
+  if (typeof renderPuppyFromCurrentState === 'function') renderPuppyFromCurrentState();
   if (typeof mealReviewDraft !== 'undefined') mealReviewDraft = null;
   if (typeof mealReviewFocus !== 'undefined' && mealReviewFocus?.isConnected) {
     mealReviewFocus.focus({ preventScroll: true });
@@ -1862,6 +1870,7 @@ function completeSetup() {
   document.getElementById('setup-subtitle').textContent = 'أدخل قياساتك لنحسب هدفك اليومي ونبني تجربتك الخاصة';
   document.querySelector('#setup-submit-btn span').textContent = 'ابدأ رحلتي الصحية';
   showToast('تم إعداد حسابك بنجاح! 🚀', 'success');
+  if (typeof mizoReact === 'function') mizoReact('profile');
 }
 
 function switchScreen(screenName, navElement) {
@@ -3004,6 +3013,7 @@ function changeFastingProtocol() {
   appState.fasting.targetHours = target;
   saveCurrentUserData();
   updateFastingUI();
+  if (typeof mizoReact === 'function') mizoReact('saved');
 }
 
 function startFasting() {
@@ -3039,6 +3049,7 @@ function stopFasting() {
   saveCurrentUserData();
   initFastingTimer();
   renderFastingHistory();
+  if (typeof mizoReact === 'function') mizoReact('saved');
   triggerNotification("🎉 مبارك أكتمال الصيام!", `أتممت ${elapsedHours} ساعة صيام بنجاح.`);
 }
 
@@ -3469,6 +3480,7 @@ function addWorkoutLog() {
   updateDashboard();
   updateWorkoutsList();
   showToast('تم تسجيل التمرين باليوميات بنجاح 💪', 'success');
+  if (typeof mizoReact === 'function') mizoReact('workout');
 }
 
 function addPresetWorkoutLog(name, durationMins, cal, details) {
@@ -3557,6 +3569,7 @@ function addWeight() {
   updateDashboard();
   updateChartData();
   showToast('تم تحديث قراءة الوزن ⚖️', 'success');
+  if (typeof mizoReact === 'function') mizoReact('weight');
 }
 
 // ============ AI CHAT WITH SPEECH OUTPUT ============
@@ -4003,7 +4016,8 @@ function acceptCuttingAdjustment() {
 
 </script>
 <script src="./meal-tools.js?v=2"></script>
-<script src="./mizo.js?v=2"></script>
+<script src="./mizo.js?v=3"></script>
+<script src="./puppy.js?v=1"></script>
 </body>
 </html>
 

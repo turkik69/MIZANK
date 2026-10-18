@@ -35,6 +35,12 @@ function mizoView(state, { today = todayStr(), now = Date.now(), previousVisit =
       message: `تم التسجيل؛ وصلت إلى هدف الماء المحدد لليوم (${waterTarget} أكواب).`, action: 'water' };
     return { state: 'encourage', cup: true, message: `تم تسجيل الماء${waterTarget > 0 ? `: ${water} من ${waterTarget} أكواب اليوم` : ''}. شكرًا لمتابعتك.`, action: 'water' };
   }
+  if (currentEvent?.type === 'input') return { state: 'encourage', message: 'أتابع معك… أكمل بياناتك على راحتك، ثم احفظ عندما تكون مستعدًا.', action: 'meals' };
+  if (currentEvent?.type === 'saved') return { state: 'celebrate', message: 'تم حفظ إدخالك. خطوة جديدة في متابعة يومك!', action: 'progress' };
+  if (currentEvent?.type === 'profile') return { state: 'welcome', message: 'أهلًا بك! بياناتك محفوظة، وسأرافقك في صفحات ميزانك.', action: 'meals' };
+  if (currentEvent?.type === 'workout') return { state: 'celebrate', message: 'سجّلت نشاطك! أحسنت في متابعة يومك.', action: 'progress' };
+  if (currentEvent?.type === 'weight') return { state: 'encourage', message: 'تم حفظ قراءتك. نتابع التقدم بهدوء، خطوة خطوة.', action: 'progress' };
+  if (currentEvent?.type === 'retry') return { state: 'calm', message: 'خذ وقتك، راجع الإدخال أو حاول مجددًا عندما تكون جاهزًا.', action: 'meals' };
   if (currentEvent?.type === 'review') return { state: 'encourage', message: 'التحليل جاهز. راجع الكمية والمكونات، ثم احفظ الوجبة عندما تكون مستعدًا.', action: 'meals' };
   if (currentEvent?.type === 'meal' || currentEvent?.type === 'edit') return {
     state: 'encourage', message: `${currentEvent.type === 'edit' ? 'تم تحديث وجبتك ومجموع اليوم.' : 'تم تسجيل وجبتك، خطوة جميلة في متابعة يومك.'}${proteinLeft > 0 ? ` بقي من هدف البروتين ${proteinLeft} غ.` : mealNumber(profile.protein) > 0 ? ' اكتمل هدف البروتين المسجل.' : ''}`,
@@ -50,44 +56,10 @@ function mizoView(state, { today = todayStr(), now = Date.now(), previousVisit =
 }
 
 function mizoSvg() {
-  return `<svg class="mizo-art" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
-    <ellipse class="mizo-shadow" cx="90" cy="161" rx="49" ry="8" fill="#e4dcec"/>
-    <g class="mizo-body">
-      <g class="mizo-sparkles" fill="#b9f227" stroke="#352449" stroke-width="2.2" stroke-linejoin="round">
-        <path d="m25 22 3 8 8 3-8 3-3 8-3-8-8-3 8-3Z"/>
-        <path d="m153 33 3 7 7 3-7 3-3 7-3-7-7-3 7-3Z"/>
-        <path d="m142 8 2 5 5 2-5 2-2 5-2-5-5-2 5-2Z"/>
-      </g>
-      <g class="mizo-legs" fill="#7c3aed" stroke="#352449" stroke-width="3.5">
-        <path d="M62 139v13q-13 0-13 7 0 5 16 4 11 0 11-6v-18Z"/>
-        <path d="M104 139v13q13 0 13 7 0 5-16 4-11 0-11-6v-18Z"/>
-      </g>
-      <g class="mizo-arm mizo-arm-left" fill="none" stroke="#352449" stroke-width="5" stroke-linecap="round">
-        <path d="M43 97q-18 0-21-17"/><path d="m22 80-7-4m7 4 1-10m-1 10-8 3"/>
-      </g>
-      <g class="mizo-arm mizo-arm-right" fill="none" stroke="#352449" stroke-width="5" stroke-linecap="round">
-        <path d="M137 97q15 3 18-12"/><path d="m155 85-1-9m1 9 7-5m-7 5 8 2"/>
-      </g>
-      <rect x="39" y="35" width="102" height="108" rx="32" fill="#fff9ec" stroke="#352449" stroke-width="4"/>
-      <path d="M48 114q42 19 84 0v8q-2 13-23 15H73q-22-2-25-15Z" fill="#eee0ff"/>
-      <path d="M73 35q1-19 19-22-1 17-19 22Z" fill="#b9f227" stroke="#352449" stroke-width="3"/>
-      <path d="M87 29q9-13 21-8-7 13-21 8Z" fill="#a78bfa" stroke="#352449" stroke-width="2.5"/>
-      <rect x="53" y="50" width="74" height="54" rx="20" fill="#b9f227" stroke="#352449" stroke-width="3"/>
-      <g class="mizo-eyes-open" fill="#352449"><ellipse class="mizo-eye" cx="73" cy="73" rx="5" ry="7"/><ellipse class="mizo-eye" cx="107" cy="73" rx="5" ry="7"/></g>
-      <g class="mizo-eyes-happy" fill="none" stroke="#352449" stroke-width="3.5" stroke-linecap="round"><path d="M67 75q6-10 12 0m22 0q6-10 12 0"/></g>
-      <g fill="#f5a4b8"><ellipse cx="62" cy="85" rx="6" ry="3.5"/><ellipse cx="118" cy="85" rx="6" ry="3.5"/></g>
-      <path class="mizo-smile" d="M81 86q9 11 18 0" fill="none" stroke="#352449" stroke-width="3.3" stroke-linecap="round"/>
-      <circle class="mizo-think-mouth" cx="91" cy="88" r="3.5" fill="#352449"/>
-      <circle cx="90" cy="122" r="9" fill="#7c3aed" stroke="#352449" stroke-width="2"/>
-      <path d="m85 122 3 3 7-7" fill="none" stroke="#fff9ec" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-      <g class="mizo-cup"><path d="m131 103 3 24h17l3-24Z" fill="#bdefff" stroke="#352449" stroke-width="2.5"/><path d="m135 112 2 12h11l2-12Z" fill="#32bde3"/><path d="m141 102 4-13h10" fill="none" stroke="#352449" stroke-width="3" stroke-linecap="round"/></g>
-      <g class="mizo-thinking-dots" fill="#7c3aed"><circle cx="145" cy="29" r="3"/><circle cx="157" cy="24" r="4"/><circle cx="169" cy="16" r="5"/></g>
-    </g>
-  </svg>`;
+  return '<img class="mizo-art mizo-puppy" src="./assets/puppy.webp" alt="" width="1280" height="1280" decoding="async" draggable="false">';
 }
 
 function renderMizoCards() {
-  if (!appState.profile) return;
   initializeMizoVisit();
   const preferences = mizoPreferences();
   const view = mizoView(appState, { today: todayStr(), now: Date.now(), previousVisit: mizoRuntime.previousVisit,
@@ -138,6 +110,7 @@ function renderMizoCards() {
     });
     host.querySelectorAll('[data-mizo-action]').forEach(button => button.addEventListener('click', () => mizoAction(button.dataset.mizoAction)));
   });
+  if (typeof renderPuppyRoamer === 'function') renderPuppyRoamer(view, motion);
 }
 
 function queueMizoDance(duration = 5000) {
@@ -183,7 +156,9 @@ function mizoReact(type, detail = {}) {
   const crossedTarget = type === 'water' && target > 0 && mealNumber(detail.previousWater) < target && mealNumber(appState.water) >= target;
   mizoRuntime.event = { type, crossedTarget }; mizoRuntime.until = Date.now() + 14000;
   if (mizoRuntime.timer) clearTimeout(mizoRuntime.timer);
-  if (type === 'meal' || type === 'checkin' || crossedTarget) queueMizoDance(4200);
+  if (['meal', 'checkin', 'saved', 'profile', 'workout', 'weight'].includes(type) || type === 'water') queueMizoDance(4200);
+  if (type === 'input') queueMizoDance(1100);
+  if (typeof puppyReact === 'function') puppyReact(type);
   renderMizoCards();
   if (type === 'checkin' || crossedTarget) playMizoChime();
   mizoRuntime.timer = setTimeout(() => { mizoRuntime.event = null; mizoRuntime.timer = null; renderMizoCards(); }, 14000);
@@ -212,9 +187,9 @@ function openMizoSettings() {
   const preferences = mizoPreferences();
   showModal('مِيزو · رفيق ميزانك', `<form id="mizo-settings-form" class="mizo-settings-form">
     <div class="mizo-settings-preview" data-state="welcome" data-motion="off">${mizoSvg()}</div>
-    <p>رفيق صغير يشجعك على التسجيل والمتابعة، ويتفاعل مع وجباتك والماء وتقييمك الأسبوعي.</p>
+    <p>الجرو الذي اخترته يرافقك تلقائيًا في جميع الصفحات، وبيته داخل بطاقة السعرات. يتفاعل مع الإدخال والحفظ والوجبات والماء.</p>
     <label><input type="checkbox" id="mizo-enabled" ${preferences.enabled ? 'checked' : ''}> إظهار مِيزو</label>
-    <label><input type="checkbox" id="mizo-motion" ${preferences.motion ? 'checked' : ''}> الحركات والتعبيرات المتحركة</label>
+    <label><input type="checkbox" id="mizo-motion" ${preferences.motion ? 'checked' : ''}> الحركات والرقص والتجول التلقائي</label>
     <small>يُراعى إعداد تقليل الحركة في هاتفك تلقائيًا.</small>
     <label><input type="checkbox" id="mizo-sound" ${preferences.sound ? 'checked' : ''}> صوت احتفال قصير عند إكمال التقييم أو هدف الماء</label>
     <small>الصوت مغلق افتراضيًا، ويعمل بعد تفاعلك مع التطبيق إذا سمح المتصفح.</small>

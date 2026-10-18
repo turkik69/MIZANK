@@ -67,3 +67,16 @@ test('barcode missing energy never invents a calorie value',async()=>{
 test('barcode lookup carries the 100g serving basis into review',async()=>{
  const e=environment();e.ctx.fetch=async()=>({json:async()=>({status:1,product:{product_name:'منتج',nutriments:{'energy-kcal_100g':120,proteins_100g:7.5}}})});await e.run("lookupBarcode('1234567890123')");assert.equal(e.run("pendingMealAnalyses.get('barcode-result-preview').result.components[0].quantity"),100);assert.equal(e.run("pendingMealAnalyses.get('barcode-result-preview').source"),'barcode');
 });
+test('library and saved meals add immediately without opening a review form',()=>{
+ const e=environment();e.run("addPresetCombo('فطور',300,20,25,10,2,3);appState.customMeals=[{name:'عشاء',cal:450,protein:35}];addCustomMealToLog(0)");assert.equal(e.run('appState.meals.length'),2);assert.equal(e.run('mealReviewDraft'),null);assert.equal(e.get('modal-body').innerHTML,'');assert.equal(e.run('appState.meals[0].cal'),300);
+});
+test('analysis adds once on confirmation and keeps later editing available',()=>{
+ const e=environment();e.run("showMealAnalysis('meal-text-preview',{name:'غداء',calories:500,protein:30},'text')");assert.equal(e.run('appState.meals.length'),0);assert.doesNotMatch(e.get('meal-text-preview').innerHTML,/مراجعة وتعديل ثم حفظ/);const add=e.get('meal-text-preview').querySelector('[data-review-analysis]');add.events.click();add.events.click();assert.equal(e.run('appState.meals.length'),1);assert.equal(e.run('mealReviewDraft'),null);assert.equal(e.run('appState.meals[0].source'),'text');
+ const id=e.run('appState.meals[0].id');e.run('openLoggedMealReview(0)');e.get('meal-part-0-cal').value='480';e.run('saveMealReview()');assert.equal(e.run('appState.meals.length'),1);assert.equal(e.run('appState.meals[0].id'),id);assert.equal(e.run('appState.meals[0].cal'),480);
+});
+test('barcode keeps a simple gram amount and scales without a second editor',()=>{
+ const e=environment();e.run("showMealAnalysis('barcode-result-preview',{name:'زبادي',calories:120,protein:8},'barcode')");const add=e.get('barcode-result-preview').querySelector('[data-review-analysis]');e.get('barcode-result-preview-quantity').value='-2';add.events.click();assert.equal(e.run('appState.meals.length'),0);e.get('barcode-result-preview-quantity').value='50';add.events.click();assert.equal(e.run('appState.meals[0].cal'),60);assert.equal(e.run('appState.meals[0].protein'),4);assert.equal(e.run('appState.meals[0].components[0].quantity'),50);assert.equal(e.run('mealReviewDraft'),null);
+});
+test('direct entry rejects invalid data and preserves unrelated progress',()=>{
+ const e=environment();const before=e.run('JSON.stringify([appState.profile,appState.water,appState.weights,appState.fasting])');assert.equal(e.run("addMealDirect({name:'',cal:200},'text')"),false);assert.equal(e.run("addMealDirect({name:'وجبة',cal:-1},'library')"),false);e.run("addMealDirect({name:'عشاء',cal:350},'library')");assert.equal(e.run('appState.meals.length'),1);assert.equal(e.run('JSON.stringify([appState.profile,appState.water,appState.weights,appState.fasting])'),before);
+});

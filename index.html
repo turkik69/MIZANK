@@ -1513,7 +1513,7 @@ function renderCustomMealCard(item, idx, showSource = false) {
 
 function addCustomMealToLog(idx) {
   const item = appState.customMeals?.[idx];
-  if (item) openMealReview(item, item.source || 'library');
+  if (item) addMealDirect(item, item.source || 'library');
 }
 
 function renderSuggestedMeals() {
@@ -1658,7 +1658,7 @@ function closeMealCategory() {
 }
 
 function addPresetCombo(name, cal, p, c, f, sugar, fiber) {
-  openMealReview({ name, cal, protein: p, carbs: c, fat: f, sugar, fiber }, 'library');
+  addMealDirect({ name, cal, protein: p, carbs: c, fat: f, sugar, fiber }, 'library');
 }
 
 // ============ APP STATE ============
@@ -3366,7 +3366,7 @@ async function analyzeMealTextGemini(descriptionText) {
 }
 
 function confirmAiMeal(name, cal, p, c, f, sugar, fiber) {
-  openMealReview({ name, cal, protein: p, carbs: c, fat: f, sugar, fiber }, 'text', { remember: true });
+  addMealDirect({ name, cal, protein: p, carbs: c, fat: f, sugar, fiber }, 'text', { remember: true });
 }
 
 function updateMealsList() {
@@ -4016,7 +4016,7 @@ function acceptCuttingAdjustment() {
 }
 
 </script>
-<script src="./meal-tools.js?v=2"></script>
+<script src="./meal-tools.js?v=3"></script>
 <script src="./mizo.js?v=4"></script>
 <script src="./puppy.js?v=4"></script>
 </body>

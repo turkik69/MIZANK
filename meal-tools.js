@@ -56,16 +56,25 @@ function showMealAnalysis(containerId, result, source) {
     <b>${escapeMealText(result.name)}</b>
     <p>${Math.round(mealNumber(result.calories ?? result.cal))} سعرة · ${mealRound(mealNumber(result.protein))} غ بروتين</p>
     <small>${escapeMealText(mealSourceLabel(source))}${source === 'barcode' ? ' · القيم لكل 100 غ؛ حدّد الكمية التي تناولتها.' : quantity > 0 ? ` · الوزن التقديري ${quantity} غ` : ' · راجع الحصة والمكونات.'}</small>
-    <button type="button" class="btn btn-primary" data-review-analysis="${containerId}">مراجعة وتعديل ثم حفظ</button>
+    ${source === 'barcode' ? `<label class="form-label">الكمية التي تناولتها (غ)<input class="form-input" type="number" inputmode="decimal" min="0.1" step="any" value="100" id="${containerId}-quantity"></label>` : ''}
+    <button type="button" class="btn btn-primary" data-review-analysis="${containerId}">إضافة الوجبة</button>
   </div>`;
   host.querySelector('[data-review-analysis]').addEventListener('click', () => {
     const pending = pendingMealAnalyses.get(containerId);
-    if (pending) openMealReview(pending.result, pending.source, { previewId: containerId, remember: source !== 'barcode' });
+    if (!pending) return;
+    let item = pending.result;
+    if (pending.source === 'barcode') {
+      const quantity = Number(document.getElementById(`${containerId}-quantity`).value);
+      if (!Number.isFinite(quantity) || quantity <= 0) { showToast('أدخل الكمية التي تناولتها بالغرام', 'warning'); return; }
+      const part = mealPart(item);
+      mealNutrients.forEach(([key]) => { part[key] = mealRound(part[key]*quantity/100); });
+      item = { ...part, quantity, unit:'غ', components:[{...part,quantity,unit:'غ'}] };
+    }
+    addMealDirect(item, pending.source, { previewId: containerId, remember: pending.source !== 'barcode' });
   });
 }
 
-function openMealReview(item, source = 'manual', options = {}) {
-  mealReviewFocus = document.activeElement;
+function prepareMealDraft(item, source = 'manual', options = {}) {
   const total = mealPart(item);
   let components = Array.isArray(item.components) && item.components.length ? item.components.map(mealPart) : [total];
   const assumptions = Array.isArray(item.assumptions) ? item.assumptions.map(String).slice(0, 6) : [];
@@ -80,12 +89,25 @@ function openMealReview(item, source = 'manual', options = {}) {
     components[0].quantity = Number(item.estimatedWeight);
     components[0].unit = 'غ';
   }
-  mealReviewDraft = {
+  const draft = {
     name: String(item.name || ''), source, components,
     assumptions,
     options, sourceEdited: !!item.sourceEdited, reference: options.reference || null
   };
-  mealReviewDraft.initialValues = mealReviewSignature(mealReviewDraft.name, components);
+  draft.initialValues = mealReviewSignature(draft.name, components);
+  return draft;
+}
+
+function addMealDirect(item, source = 'manual', options = {}) {
+  const draft = prepareMealDraft(item,source,options);
+  if (mealDraftInvalid(draft)) { showToast('راجع اسم الوجبة والكمية والقيم المدخلة', 'warning'); return false; }
+  persistMealDraft(draft);
+  return true;
+}
+
+function openMealReview(item, source = 'manual', options = {}) {
+  mealReviewFocus = document.activeElement;
+  mealReviewDraft = prepareMealDraft(item,source,options);
   renderMealReview();
 }
 
@@ -193,9 +215,16 @@ function saveMealReview(event) {
   if (!mealReviewDraft || !form || !form.reportValidity()) return;
   syncMealReviewDraft();
   const draft = mealReviewDraft;
-  const invalid = !draft.name || draft.components.some(part => !part.name || !part.unit || !Number.isFinite(part.quantity) || part.quantity <= 0 || mealNutrients.some(([key]) => !Number.isFinite(part[key]) || part[key] < 0));
-  if (invalid) { document.getElementById('meal-review-error').textContent = 'راجع الأسماء والكميات؛ أدخل أرقامًا صالحة دون قيم سالبة.'; return; }
+  if (mealDraftInvalid(draft)) { document.getElementById('meal-review-error').textContent = 'راجع الأسماء والكميات؛ أدخل أرقامًا صالحة دون قيم سالبة.'; return; }
   if (draft.reference && !appState.meals.includes(draft.reference)) { document.getElementById('meal-review-error').textContent = 'هذه الوجبة لم تعد موجودة. أغلق النافذة وافتح السجل مجددًا.'; return; }
+  persistMealDraft(draft);
+}
+
+function mealDraftInvalid(draft) {
+  return !draft.name.trim() || draft.components.some(part => !part.name.trim() || !part.unit || !Number.isFinite(part.quantity) || part.quantity <= 0 || mealNutrients.some(([key]) => !Number.isFinite(part[key]) || part[key] < 0));
+}
+
+function persistMealDraft(draft) {
   const totals = mealPartTotals(draft.components);
   const now = Date.now();
   const record = draft.reference || {
@@ -211,7 +240,7 @@ function saveMealReview(event) {
     appState.customMeals ||= [];
     if (!appState.customMeals.some(meal => meal.name === record.name)) {
       appState.customMeals.push({ ...totals, name: record.name, source: record.source, sourceEdited: record.sourceEdited,
-        components: record.components.map(part => ({ ...part })), desc: 'وجبة راجعتها وحفظتها بنفسك' });
+        components: record.components.map(part => ({ ...part })), desc: 'وجبة حفظتها بنفسك' });
     }
   }
   saveCurrentUserData();
@@ -309,7 +338,7 @@ function openNextMealSuggestions() {
   nextMealOptions = { slot: nextMealSlot(), exclude: appState.mealPreferences?.exclude || '', useSaved: appState.mealPreferences?.useSaved !== false };
   showModal('اقتراح وجبتك التالية', `
     <div class="next-meal-panel">
-      <p class="meal-review-note">اقتراحات من مكتبتك ووجباتك المحفوظة حسب المتبقي اليوم. اختيار اقتراح يفتح المراجعة؛ لا يُسجّل تلقائيًا.</p>
+      <p class="meal-review-note">اقتراحات من مكتبتك ووجباتك المحفوظة حسب المتبقي اليوم. اضغط إضافة لتسجيل الحصة المعروضة؛ يمكنك تعديلها لاحقًا من سجل الوجبات.</p>
       <div class="meal-review-grid"><label for="next-meal-slot">نوع الوجبة<select id="next-meal-slot" class="form-select">
         <option value="breakfast">إفطار</option><option value="lunch">غداء</option><option value="dinner">عشاء</option><option value="snack">وجبة خفيفة</option><option value="all">كل الوجبات</option></select></label>
         <label for="next-meal-exclude">استبعاد كلمات، اختياري<input id="next-meal-exclude" class="form-input" placeholder="مثل: تونة، بيض" maxlength="240" value="${escapeMealText(nextMealOptions.exclude)}"></label></div>
@@ -342,12 +371,12 @@ function renderNextMealSuggestions() {
       <b>${escapeMealText(item.name)}</b><p>${Math.round(item.cal)} سعرة · ${mealRound(mealNumber(item.protein))} غ بروتين</p>
       <small>${escapeMealText(item.desc || '')}</small>
       <small>${item.fits ? 'ضمن السعرات المتبقية للحصة المعروضة' : 'راجع الكمية قبل الاعتماد'} · ${escapeMealText(mealSourceLabel(item.source))}</small>
-      <button type="button" class="btn btn-primary" data-next-meal="${index}">مراجعة هذه الوجبة</button>
+      <button type="button" class="btn btn-primary" data-next-meal="${index}">إضافة هذه الوجبة</button>
     </article>`).join('') : '<p>لا توجد اقتراحات مطابقة. جرّب تغيير نوع الوجبة أو الكلمات المستبعدة.</p>'}`;
   host.querySelectorAll('[data-next-meal]').forEach(button => button.addEventListener('click', () => {
     const item = nextMealCandidates[Number(button.dataset.nextMeal)];
     if (!item) return;
     closeModal();
-    openMealReview(item, item.source, { recipe: item.category === 'custom' });
+    addMealDirect(item, item.source, { recipe: item.category === 'custom' });
   }));
 }

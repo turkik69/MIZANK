@@ -1,6 +1,44 @@
 /* One puppy, one home, and a non-interactive roaming layer shared by every page. */
 'use strict';
-const puppyRuntime = { step: 0, interval: null, returnTimer: null, layoutTimer: null, awayUntil: 0, lastInput: 0, lastReaction: 0 };
+const puppyRuntime = { step: 0, interval: null, returnTimer: null, layoutTimer: null, awayUntil: 0, lastInput: 0, lastReaction: 0,
+  position: null, travelUntil: 0, travelTimer: null, facing: 'right' };
+
+// Poses change the legs and body in the atlas, independently of position changes.
+function puppyPose(motion, now = Date.now()) {
+  if (!motion || document.hidden || mizoRuntime.pending.size) return 'stand';
+  if (now < puppyRuntime.travelUntil) return 'walk';
+  if (now < mizoRuntime.danceUntil) return 'jump';
+  return 'idle';
+}
+
+function syncPuppyPose(motion) {
+  const pose = puppyPose(motion);
+  document.querySelectorAll('[data-mizo-card]').forEach(host => { host.dataset.pose = pose; });
+  const roamer = document.getElementById('puppy-roamer');
+  if (roamer) { roamer.dataset.pose = pose; roamer.dataset.facing = puppyRuntime.facing; }
+}
+
+function stopPuppyTravel() {
+  if (puppyRuntime.travelTimer) clearTimeout(puppyRuntime.travelTimer);
+  puppyRuntime.travelTimer = null;
+  puppyRuntime.travelUntil = 0;
+  puppyRuntime.position = null;
+}
+
+function trackPuppyTravel(position, moving, wasHidden) {
+  const previous = puppyRuntime.position;
+  const changed = previous && Math.hypot(position.x - previous.x, position.y - previous.y) > 2;
+  if (moving && !wasHidden && changed) {
+    if (position.x !== previous.x) puppyRuntime.facing = position.x < previous.x ? 'left' : 'right';
+    puppyRuntime.travelUntil = Date.now() + 2200;
+    if (puppyRuntime.travelTimer) clearTimeout(puppyRuntime.travelTimer);
+    puppyRuntime.travelTimer = setTimeout(() => {
+      puppyRuntime.travelUntil = 0; puppyRuntime.travelTimer = null;
+      syncPuppyPose(mizoPreferences().motion && !mizoReducedMotion?.matches && !document.hidden);
+    }, 2200);
+  } else if (!moving || wasHidden) stopPuppyTravel();
+  puppyRuntime.position = position;
+}
 
 function puppyOverlap(a, b) {
   return Math.max(0, Math.min(a.x + a.width, b.x + b.width) - Math.max(a.x, b.x)) *
@@ -62,21 +100,25 @@ function renderPuppyRoamer(view, motion) {
   if (!roamer || !document.body) return;
   const preferences = mizoPreferences();
   syncPuppyLoop(preferences.enabled && motion && !document.hidden);
+  syncPuppyPose(motion);
   if (!preferences.enabled || document.hidden) {
+    stopPuppyTravel();
     roamer.hidden = true; document.body.dataset.puppyRoaming = 'false'; return;
   }
   const viewport = puppyViewport();
   const atHome = puppyHomeVisible(viewport.height) && Date.now() >= puppyRuntime.awayUntil && !document.querySelector?.('.modal-overlay.active');
-  if (atHome) { roamer.hidden = true; document.body.dataset.puppyRoaming = 'false'; return; }
+  if (atHome) { stopPuppyTravel(); syncPuppyPose(motion); roamer.hidden = true; document.body.dataset.puppyRoaming = 'false'; return; }
   const hasMessage = mizoRuntime.pending.size > 0 || Date.now() < mizoRuntime.until;
   const size = hasMessage ? { width: 170, height: 166 } : { width: 96, height: 108 };
   const blocked = puppyBlockedRects().map(rect => ({ ...rect, x: rect.x - viewport.offsetX, y: rect.y - viewport.offsetY }));
   const position = puppyChooseSpot({ ...viewport, size, blocked, preferred: puppyRuntime.step % 4 });
-  if (!position) { roamer.hidden = true; document.body.dataset.puppyRoaming = 'false'; return; }
+  if (!position) { stopPuppyTravel(); syncPuppyPose(motion); roamer.hidden = true; document.body.dataset.puppyRoaming = 'false'; return; }
+  const editing = ['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement?.tagName);
+  trackPuppyTravel({ x: position.x + viewport.offsetX, y: position.y + viewport.offsetY }, motion && !editing, roamer.hidden);
+  syncPuppyPose(motion);
   roamer.hidden = false; document.body.dataset.puppyRoaming = 'true';
   roamer.dataset.state = view.state; roamer.dataset.motion = motion ? 'on' : 'off';
   roamer.dataset.dance = motion && !mizoRuntime.pending.size && Date.now() < mizoRuntime.danceUntil ? mizoRuntime.danceVariant : 'none';
-  const editing = ['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement?.tagName);
   roamer.dataset.editing = editing ? 'true' : 'false';
   roamer.style.setProperty('--puppy-x', `${position.x + viewport.offsetX}px`);
   roamer.style.setProperty('--puppy-y', `${position.y + viewport.offsetY}px`);

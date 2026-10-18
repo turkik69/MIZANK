@@ -56,7 +56,7 @@ function mizoView(state, { today = todayStr(), now = Date.now(), previousVisit =
 }
 
 function mizoSvg() {
-  return '<img class="mizo-art mizo-puppy" src="./assets/puppy.webp" alt="" width="1280" height="1280" decoding="async" draggable="false">';
+  return '<span class="mizo-art mizo-puppy" aria-hidden="true"><span class="puppy-frames"></span></span>';
 }
 
 function renderMizoCards() {

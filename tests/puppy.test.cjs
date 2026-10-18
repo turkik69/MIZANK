@@ -45,7 +45,7 @@ test('idle roaming does not run while a user types into a field',()=>{
  const e=create();e.doc.body.dataset.view='meals';e.doc.activeElement.tagName='INPUT';e.run('puppyRuntime.step=1;puppyTick()');assert.equal(e.run('puppyRuntime.step'),1);
 });
 test('all companion instances use the selected 3D asset instead of an SVG redraw',()=>{
- const e=create();const markup=e.run('mizoSvg()');assert.match(markup,/assets\/puppy\.webp/);assert.ok(!markup.includes('<svg'));assert.ok(!markup.includes('path d='));
+ const e=create();const markup=e.run('mizoSvg()');assert.match(markup,/puppy-frames/);assert.ok(!markup.includes('<svg'));assert.ok(!markup.includes('path d='));
 });
 test('normal body focus does not falsely block the entire roaming viewport',()=>{
  const e=create();e.doc.body.dataset.view='meals';e.doc.activeElement.tagName='BODY';e.doc.activeElement.getBoundingClientRect=()=>({left:0,top:0,width:390,height:844,bottom:844,right:390});e.run('renderMizoCards()');assert.equal(e.get('puppy-roamer').hidden,false);assert.equal(e.run('puppyBlockedRects().length'),0);
@@ -55,4 +55,24 @@ test('roaming respects iPhone safe areas in portrait and landscape',()=>{
   const p=e.run(`puppyChooseSpot({width:390,height:844,size:{width:96,height:108},safeTop:59,safeBottom:34,preferred:${preferred}})`);assert.ok(p.y>=67);assert.ok(p.y+108<=844-114);
   const l=e.run(`puppyChooseSpot({width:844,height:390,size:{width:96,height:108},safeLeft:59,safeRight:59,preferred:${preferred}})`);assert.ok(l.x>=67 && l.x+96<=844-67);
  }
+});
+
+test('poses follow travel, reaction, and rest in order, then stop after arrival',()=>{
+ const e=create();e.run('mizoRuntime.danceUntil=Date.now()+5000;trackPuppyTravel({x:10,y:100},true,true)');assert.equal(e.run('puppyPose(true)'), 'jump');
+ e.run('trackPuppyTravel({x:200,y:100},true,false)');assert.equal(e.run('puppyPose(true)'), 'walk');assert.equal(e.run('puppyRuntime.facing'), 'right');
+ const timer=e.run('puppyRuntime.travelTimer');e.timers.get(timer)();assert.equal(e.run('puppyPose(true)'), 'jump');
+ e.run('mizoRuntime.danceUntil=0');assert.equal(e.run('puppyPose(true)'), 'idle');
+});
+test('walk reverses direction and coalesces its completion timer',()=>{
+ const e=create();e.run('trackPuppyTravel({x:200,y:100},true,true);trackPuppyTravel({x:100,y:100},true,false)');const old=e.run('puppyRuntime.travelTimer');assert.equal(e.run('puppyRuntime.facing'),'left');
+ e.run('trackPuppyTravel({x:20,y:100},true,false)');assert.equal(e.timers.has(old),false);const current=e.run('puppyRuntime.travelTimer');e.run('trackPuppyTravel({x:20,y:100},true,false)');assert.equal(e.run('puppyRuntime.travelTimer'),current);
+});
+test('typing, reduce motion, background and pending analysis stop articulated motion',()=>{
+ const e=create();e.run('trackPuppyTravel({x:10,y:100},true,true);trackPuppyTravel({x:200,y:100},true,false)');assert.equal(e.run('puppyPose(true)'), 'walk');
+ e.run('trackPuppyTravel({x:30,y:100},false,false)');assert.equal(e.run('puppyRuntime.travelUntil'),0);assert.equal(e.run('puppyRuntime.travelTimer'),null);
+ e.run('mizoRuntime.danceUntil=Date.now()+5000');assert.equal(e.run('puppyPose(false)'), 'stand');e.doc.hidden=true;assert.equal(e.run('puppyPose(true)'), 'stand');e.doc.hidden=false;e.run("mizoRuntime.pending.add('analysis')");assert.equal(e.run('puppyPose(true)'), 'stand');
+});
+test('visible hosts and roaming copy share pose updates without replacing their markup',()=>{
+ const e=create();const host=new e.Node();host.dataset.mizoCard='hero';e.doc.mizoHosts=[host];const previous=host.innerHTML;e.run('mizoRuntime.danceUntil=Date.now()+5000;syncPuppyPose(true)');assert.equal(host.dataset.pose,'jump');assert.equal(e.get('puppy-roamer').dataset.pose,'jump');assert.equal(host.innerHTML,previous);
+ e.run('syncPuppyPose(false)');assert.equal(host.dataset.pose,'stand');assert.equal(e.get('puppy-roamer').dataset.pose,'stand');
 });

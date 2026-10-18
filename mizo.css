@@ -27,7 +27,7 @@
 .mizo-settings-form small{display:block;color:#766483;font-size:11px;margin-bottom:10px}.mizo-settings-preview{width:110px;margin:0 auto}.mizo-settings-form .meal-review-actions{margin-top:20px}
 @media(prefers-reduced-motion:reduce){.mizo-card *{animation:none!important;transition:none!important}}
 
-/* Preserve the selected 3D puppy artwork; animate its placement without redrawing it. */
+/* Preserve the selected puppy identity while articulating its body in six poses. */
 .mizo-puppy{object-fit:contain;aspect-ratio:1;user-select:none;-webkit-user-drag:none;transform-origin:50% 88%;filter:drop-shadow(0 3px 3px rgba(31,16,48,.12))}
 [data-motion="on"] .mizo-puppy{animation:puppy-breathe 4s ease-in-out infinite}
 [data-motion="on"][data-state="thinking"] .mizo-puppy{animation:puppy-think 2.5s ease-in-out infinite}
@@ -96,3 +96,19 @@ body[data-puppy-roaming="true"] .mizo-hero-caption{visibility:hidden}
 /* Last in the file to cover the hero and the stronger dance selectors too. */
 [data-motion="off"] .mizo-art *{animation:none!important}
 @media(prefers-reduced-motion:reduce){.mizo-card *{animation:none!important;transition:none!important}}
+
+/* Equal square cells: stand, left/right strides; crouch, airborne, landing. */
+.mizo-puppy{position:relative;overflow:hidden;height:auto}
+.puppy-frames{display:block;width:100%;height:100%;aspect-ratio:1;background-image:url('./assets/puppy-poses.webp');background-size:300% 200%;background-repeat:no-repeat;background-position:0 0;transform:scaleX(var(--puppy-facing,1))}
+[data-motion="on"][data-pose="idle"] .puppy-frames{animation:puppy-idle-poses 9s steps(1,end) infinite}
+[data-motion="on"][data-pose="walk"] .puppy-frames{animation:puppy-walk-poses .68s steps(1,end) infinite}
+[data-motion="on"][data-pose="jump"] .puppy-frames{animation:puppy-jump-poses 1.15s steps(1,end) infinite}
+[data-motion="on"][data-pose="walk"] .mizo-puppy{animation:puppy-walk-bob .34s ease-in-out infinite}
+[data-motion="on"][data-pose="jump"] .mizo-puppy{animation:none}
+.puppy-roamer[data-facing="left"]{--puppy-facing:-1}
+@keyframes puppy-idle-poses{0%,78%,96%,100%{background-position:0 0}84%,90%{background-position:100% 100%}}
+@keyframes puppy-walk-poses{0%,100%{background-position:50% 0}25%,75%{background-position:0 0}50%{background-position:100% 0}}
+@keyframes puppy-jump-poses{0%,100%{background-position:0 0}12%{background-position:0 100%}28%,55%{background-position:50% 100%}72%,85%{background-position:100% 100%}}
+@keyframes puppy-walk-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-2px)}}
+[data-motion="off"] .puppy-frames{animation:none!important;background-position:0 0!important}
+@media(prefers-reduced-motion:reduce){.puppy-frames{animation:none!important;background-position:0 0!important}}

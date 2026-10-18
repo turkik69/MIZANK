@@ -76,3 +76,16 @@ test('visible hosts and roaming copy share pose updates without replacing their 
  const e=create();const host=new e.Node();host.dataset.mizoCard='hero';e.doc.mizoHosts=[host];const previous=host.innerHTML;e.run('mizoRuntime.danceUntil=Date.now()+5000;syncPuppyPose(true)');assert.equal(host.dataset.pose,'jump');assert.equal(e.get('puppy-roamer').dataset.pose,'jump');assert.equal(host.innerHTML,previous);
  e.run('syncPuppyPose(false)');assert.equal(host.dataset.pose,'stand');assert.equal(e.get('puppy-roamer').dataset.pose,'stand');
 });
+
+test('open screens prefer interior positions and take bounded steps through the center',()=>{
+ const e=create();const spot=e.run('puppyChooseSpot({width:390,height:844,size:{width:96,height:108}})');assert.ok(spot.x>60 && spot.x<230);assert.ok(spot.y>200 && spot.y<600);
+ const next=e.run(`puppyChooseSpot({width:390,height:844,size:{width:96,height:108},from:{x:${spot.x},y:${spot.y}},preferred:3})`);const distance=Math.hypot(next.x-spot.x,next.y-spot.y);assert.ok(distance>10 && distance<=132.001);
+});
+test('a walk never sweeps across a control between clear endpoints',()=>{
+ const e=create();const from={x:20,y:300};const blocker={x:145,y:270,width:45,height:180};const p=e.run(`puppyChooseSpot({width:500,height:844,size:{width:96,height:108},from:${JSON.stringify(from)},blocked:[${JSON.stringify(blocker)}]})`);assert.ok(p);
+ const swept={x:Math.min(from.x,p.x)-16,y:Math.min(from.y,p.y)-16,width:128+Math.abs(p.x-from.x),height:140+Math.abs(p.y-from.y)};assert.equal(e.run(`puppyOverlap(${JSON.stringify(swept)},${JSON.stringify(blocker)})`),0);
+});
+test('walking speed scales with distance and layout refreshes keep the same destination',()=>{
+ const e=create();assert.equal(e.run('puppyTravelDuration({x:0,y:0},{x:90,y:0})'),1000);assert.equal(e.run('puppyTravelDuration({x:0,y:0},{x:180,y:0})'),2000);
+ e.doc.body.dataset.view='meals';e.run('renderMizoCards();puppyTick()');const before=e.run('JSON.stringify(puppyRuntime.position)');const deadline=e.run('puppyRuntime.travelUntil');e.run('renderPuppyFromCurrentState();renderPuppyFromCurrentState()');assert.equal(e.run('JSON.stringify(puppyRuntime.position)'),before);assert.equal(e.run('puppyRuntime.travelUntil'),deadline);
+});

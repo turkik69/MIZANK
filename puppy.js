@@ -1,7 +1,7 @@
 /* One puppy, one home, and a non-interactive roaming layer shared by every page. */
 'use strict';
 const puppyRuntime = { step: 0, interval: null, returnTimer: null, layoutTimer: null, awayUntil: 0, lastInput: 0, lastReaction: 0,
-  position: null, travelUntil: 0, travelTimer: null, facing: 'right' };
+  position: null, placedStep: null, travelUntil: 0, travelTimer: null, facing: 'right' };
 
 // Poses change the legs and body in the atlas, independently of position changes.
 function puppyPose(motion, now = Date.now()) {
@@ -30,14 +30,21 @@ function trackPuppyTravel(position, moving, wasHidden) {
   const changed = previous && Math.hypot(position.x - previous.x, position.y - previous.y) > 2;
   if (moving && !wasHidden && changed) {
     if (position.x !== previous.x) puppyRuntime.facing = position.x < previous.x ? 'left' : 'right';
-    puppyRuntime.travelUntil = Date.now() + 2200;
+    // A fixed walking speed avoids slow glides across short distances.
+    const duration = puppyTravelDuration(previous, position);
+    document.getElementById('puppy-roamer')?.style.setProperty('--puppy-travel-ms', `${duration}ms`);
+    puppyRuntime.travelUntil = Date.now() + duration;
     if (puppyRuntime.travelTimer) clearTimeout(puppyRuntime.travelTimer);
     puppyRuntime.travelTimer = setTimeout(() => {
       puppyRuntime.travelUntil = 0; puppyRuntime.travelTimer = null;
       syncPuppyPose(mizoPreferences().motion && !mizoReducedMotion?.matches && !document.hidden);
-    }, 2200);
+    }, duration);
   } else if (!moving || wasHidden) stopPuppyTravel();
   puppyRuntime.position = position;
+}
+
+function puppyTravelDuration(from, to) {
+  return Math.max(240, Math.round(Math.hypot(to.x - from.x, to.y - from.y) / 90 * 1000));
 }
 
 function puppyOverlap(a, b) {
@@ -45,18 +52,39 @@ function puppyOverlap(a, b) {
     Math.max(0, Math.min(a.y + a.height, b.y + b.height) - Math.max(a.y, b.y));
 }
 
-function puppyChooseSpot({ width, height, size, blocked = [], preferred = 0, safeTop = 0, safeBottom = 0, safeLeft = 0, safeRight = 0 }) {
+function puppyChooseSpot({ width, height, size, blocked = [], preferred = 0, from = null, stay = false, safeTop = 0, safeBottom = 0, safeLeft = 0, safeRight = 0 }) {
   if (width < size.width + 24 || height < size.height + 110) return null;
   const left = Math.max(12, safeLeft + 8), right = width - size.width - Math.max(12, safeRight + 8), top = Math.max(20, safeTop + 8);
   const bottom = height - size.height - Math.max(94, safeBottom + 80);
   if (right < left || bottom < top) return null;
   const middle = Math.max(top, Math.round((top + bottom) / 2));
-  const candidates = [{ x: right, y: top }, { x: right, y: bottom }, { x: left, y: bottom }, { x: left, y: top }, { x: left, y: middle }, { x: right, y: middle }];
+  const center = (left + right) / 2;
+  const candidates = [
+    { x: center, y: middle }, { x: left + (right-left)*.25, y: middle },
+    { x: left + (right-left)*.75, y: middle }, { x: center, y: top + (bottom-top)*.3 },
+    { x: center, y: top + (bottom-top)*.7 },
+    { x: right, y: top }, { x: right, y: bottom }, { x: left, y: bottom },
+    { x: left, y: top }, { x: left, y: middle }, { x: right, y: middle }
+  ];
+  const inside = p => p.x >= left && p.x <= right && p.y >= top && p.y <= bottom;
+  const start = from && inside(from) ? from : null;
+  if (stay && start && blocked.every(rect => puppyOverlap({x:start.x-16,y:start.y-16,width:size.width+32,height:size.height+32},rect) === 0)) return start;
   for (let offset = 0; offset < candidates.length; offset++) {
-    const position = candidates[(preferred + offset) % candidates.length];
-    const padded = { x: position.x - 16, y: position.y - 16, width: size.width + 32, height: size.height + 32 };
+    let position = candidates[(preferred + offset) % candidates.length];
+    if (start) {
+      const distance = Math.hypot(position.x-start.x,position.y-start.y);
+      if (distance < 10) continue;
+      const fraction = Math.min(1, 132 / distance);
+      position = { x:start.x+(position.x-start.x)*fraction, y:start.y+(position.y-start.y)*fraction };
+    }
+    // The complete swept rectangle is clear, including every point during the walk.
+    const padded = { x: Math.min(position.x,start?.x ?? position.x)-16,
+      y: Math.min(position.y,start?.y ?? position.y)-16,
+      width: size.width+32+Math.abs(position.x-(start?.x ?? position.x)),
+      height: size.height+32+Math.abs(position.y-(start?.y ?? position.y)) };
     if (blocked.every(rect => puppyOverlap(padded, rect) === 0)) return position;
   }
+  if (start && blocked.every(rect => puppyOverlap({x:start.x-16,y:start.y-16,width:size.width+32,height:size.height+32},rect) === 0)) return start;
   return null; // A busy form takes priority over the decorative character.
 }
 
@@ -91,7 +119,7 @@ function puppyBlockedRects() {
 }
 
 function syncPuppyLoop(moving) {
-  if (moving && !puppyRuntime.interval) puppyRuntime.interval = setInterval(puppyTick, 9000);
+  if (moving && !puppyRuntime.interval) puppyRuntime.interval = setInterval(puppyTick, 4000);
   if (!moving && puppyRuntime.interval) { clearInterval(puppyRuntime.interval); puppyRuntime.interval = null; }
 }
 
@@ -111,9 +139,15 @@ function renderPuppyRoamer(view, motion) {
   const hasMessage = mizoRuntime.pending.size > 0 || Date.now() < mizoRuntime.until;
   const size = hasMessage ? { width: 170, height: 166 } : { width: 96, height: 108 };
   const blocked = puppyBlockedRects().map(rect => ({ ...rect, x: rect.x - viewport.offsetX, y: rect.y - viewport.offsetY }));
-  const position = puppyChooseSpot({ ...viewport, size, blocked, preferred: puppyRuntime.step % 4 });
-  if (!position) { stopPuppyTravel(); syncPuppyPose(motion); roamer.hidden = true; document.body.dataset.puppyRoaming = 'false'; return; }
   const editing = ['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement?.tagName);
+  const previous = !roamer.hidden && puppyRuntime.position;
+  const from = previous ? { x:previous.x-viewport.offsetX,y:previous.y-viewport.offsetY } : null;
+  // Layout-only refreshes keep the destination; each tick selects the next short walk.
+  const preferred = puppyRuntime.step % 5;
+  const position = puppyChooseSpot({ ...viewport, size, blocked, preferred, from,
+    stay: !motion || editing || puppyRuntime.placedStep === puppyRuntime.step });
+  if (!position) { stopPuppyTravel(); syncPuppyPose(motion); roamer.hidden = true; document.body.dataset.puppyRoaming = 'false'; return; }
+  puppyRuntime.placedStep = puppyRuntime.step;
   trackPuppyTravel({ x: position.x + viewport.offsetX, y: position.y + viewport.offsetY }, motion && !editing, roamer.hidden);
   syncPuppyPose(motion);
   roamer.hidden = false; document.body.dataset.puppyRoaming = 'true';
@@ -139,9 +173,9 @@ function puppyTick() {
   if (editing) return;
   puppyRuntime.step += 1;
   if (puppyHomeVisible() && puppyRuntime.step % 3 === 0) {
-    puppyRuntime.awayUntil = Date.now() + 6500;
+    puppyRuntime.awayUntil = Date.now() + 8500;
     if (puppyRuntime.returnTimer) clearTimeout(puppyRuntime.returnTimer);
-    puppyRuntime.returnTimer = setTimeout(() => { puppyRuntime.awayUntil = 0; renderPuppyFromCurrentState(); }, 6500);
+    puppyRuntime.returnTimer = setTimeout(() => { puppyRuntime.awayUntil = 0; renderPuppyFromCurrentState(); }, 8500);
   }
   renderPuppyFromCurrentState();
 }

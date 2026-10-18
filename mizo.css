@@ -112,3 +112,20 @@ body[data-puppy-roaming="true"] .mizo-hero-caption{visibility:hidden}
 @keyframes puppy-walk-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-2px)}}
 [data-motion="off"] .puppy-frames{animation:none!important;background-position:0 0!important}
 @media(prefers-reduced-motion:reduce){.puppy-frames{animation:none!important;background-position:0 0!important}}
+
+/* A ground-contact shadow stays below the body while the puppy lifts its paws. */
+.mizo-puppy{isolation:isolate;overflow:visible}
+.mizo-puppy:before{content:"";position:absolute;left:24%;width:52%;height:9%;bottom:1%;border-radius:50%;background:radial-gradient(ellipse,rgba(34,19,48,.3),rgba(34,19,48,.11) 50%,transparent 73%);transform-origin:center;z-index:-1;pointer-events:none}
+.puppy-frames{position:relative;z-index:1}
+[data-motion="on"][data-pose="walk"] .mizo-puppy{animation:none}
+[data-motion="on"][data-pose="walk"] .puppy-frames{animation:puppy-walk-poses .48s steps(1,end) infinite,puppy-footfall .24s ease-in-out infinite}
+[data-motion="on"][data-pose="walk"] .mizo-puppy:before{animation:puppy-ground-contact .24s ease-in-out infinite}
+[data-motion="on"][data-pose="jump"] .mizo-puppy:before{animation:puppy-jump-shadow 1.15s ease-in-out infinite}
+@keyframes puppy-footfall{0%,100%{transform:scaleX(var(--puppy-facing,1)) translateY(0)}50%{transform:scaleX(var(--puppy-facing,1)) translateY(-2px)}}
+@keyframes puppy-ground-contact{0%,100%{transform:scaleX(1);opacity:.85}50%{transform:scaleX(.88);opacity:.65}}
+@keyframes puppy-jump-shadow{0%,12%,85%,100%{transform:scale(1);opacity:.9}28%,55%{transform:scale(.6);opacity:.35}72%{transform:scale(1.12,.8);opacity:1}}
+#puppy-footprints{position:fixed;inset:0;z-index:5099;pointer-events:none!important;overflow:hidden}
+.puppy-pawprint{position:absolute;width:15px;height:18px;pointer-events:none!important;transform:translate(-50%,-50%) rotate(var(--paw-angle));opacity:0;color:#674278;background:radial-gradient(ellipse at 50% 71%,currentColor 0 25%,transparent 29%),radial-gradient(ellipse at 15% 42%,currentColor 0 11%,transparent 14%),radial-gradient(ellipse at 37% 20%,currentColor 0 12%,transparent 15%),radial-gradient(ellipse at 66% 20%,currentColor 0 12%,transparent 15%),radial-gradient(ellipse at 88% 43%,currentColor 0 10%,transparent 13%);animation:puppy-print-fade 1.6s ease-out both}
+@keyframes puppy-print-fade{0%{opacity:0}8%,28%{opacity:.24}100%{opacity:0}}
+[data-motion="off"] .mizo-puppy:before{animation:none!important}
+@media(prefers-reduced-motion:reduce){#puppy-footprints{display:none}.mizo-puppy:before{animation:none!important}.puppy-frames{animation:none!important}}

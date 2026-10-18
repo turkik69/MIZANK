@@ -1,7 +1,41 @@
 /* One puppy, one home, and a non-interactive roaming layer shared by every page. */
 'use strict';
 const puppyRuntime = { step: 0, interval: null, returnTimer: null, layoutTimer: null, awayUntil: 0, lastInput: 0, lastReaction: 0,
-  position: null, placedStep: null, travelUntil: 0, travelTimer: null, facing: 'right' };
+  position: null, placedStep: null, travelUntil: 0, travelTimer: null, trailTimer: null, facing: 'right' };
+
+function clearPuppyFootprints() {
+  if (puppyRuntime.trailTimer) clearTimeout(puppyRuntime.trailTimer);
+  puppyRuntime.trailTimer = null;
+  const layer = document.getElementById('puppy-footprints');
+  if (layer) layer.innerHTML = '';
+}
+
+function puppyFootprintPlan(from, to, duration, anchor = {x:48,y:86}) {
+  const dx = to.x-from.x, dy = to.y-from.y, distance = Math.hypot(dx,dy);
+  if (distance < 20 || duration <= 0) return [];
+  const angle = Math.atan2(dy,dx)*180/Math.PI+90;
+  const steps = [];
+  // Match the 240ms footfalls of the walking cycle, with alternating paw tracks.
+  for (let delay=240, i=0; delay<duration && i<8; delay+=240,i++) {
+    const fraction = Math.max(0,(delay-65)/duration), side = i%2 ? 5 : -5;
+    steps.push({x:from.x+dx*fraction+anchor.x-dy/distance*side,
+      y:from.y+dy*fraction+anchor.y+dx/distance*side, angle, delay});
+  }
+  return steps;
+}
+
+function showPuppyFootprints(from, to, duration) {
+  clearPuppyFootprints();
+  const layer = document.getElementById('puppy-footprints');
+  const roamer = document.getElementById('puppy-roamer');
+  if (!layer || !roamer || document.hidden || !mizoPreferences().motion || mizoReducedMotion?.matches) return;
+  const body = roamer.querySelector('.mizo-puppy')?.getBoundingClientRect();
+  const root = roamer.getBoundingClientRect();
+  const anchor = body?.width ? {x:body.left-root.left+body.width/2,y:body.bottom-root.top-5} : undefined;
+  const marks = puppyFootprintPlan(from,to,duration,anchor);
+  layer.innerHTML = marks.map(mark => `<span class="puppy-pawprint" style="left:${mark.x.toFixed(1)}px;top:${mark.y.toFixed(1)}px;--paw-angle:${mark.angle.toFixed(1)}deg;animation-delay:${mark.delay}ms"></span>`).join('');
+  if (marks.length) puppyRuntime.trailTimer = setTimeout(clearPuppyFootprints,duration+1700);
+}
 
 // Poses change the legs and body in the atlas, independently of position changes.
 function puppyPose(motion, now = Date.now()) {
@@ -19,6 +53,7 @@ function syncPuppyPose(motion) {
 }
 
 function stopPuppyTravel() {
+  clearPuppyFootprints();
   if (puppyRuntime.travelTimer) clearTimeout(puppyRuntime.travelTimer);
   puppyRuntime.travelTimer = null;
   puppyRuntime.travelUntil = 0;
@@ -32,6 +67,7 @@ function trackPuppyTravel(position, moving, wasHidden) {
     if (position.x !== previous.x) puppyRuntime.facing = position.x < previous.x ? 'left' : 'right';
     // A fixed walking speed avoids slow glides across short distances.
     const duration = puppyTravelDuration(previous, position);
+    showPuppyFootprints(previous, position, duration);
     document.getElementById('puppy-roamer')?.style.setProperty('--puppy-travel-ms', `${duration}ms`);
     puppyRuntime.travelUntil = Date.now() + duration;
     if (puppyRuntime.travelTimer) clearTimeout(puppyRuntime.travelTimer);

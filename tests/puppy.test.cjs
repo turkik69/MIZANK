@@ -89,3 +89,15 @@ test('walking speed scales with distance and layout refreshes keep the same dest
  const e=create();assert.equal(e.run('puppyTravelDuration({x:0,y:0},{x:90,y:0})'),1000);assert.equal(e.run('puppyTravelDuration({x:0,y:0},{x:180,y:0})'),2000);
  e.doc.body.dataset.view='meals';e.run('renderMizoCards();puppyTick()');const before=e.run('JSON.stringify(puppyRuntime.position)');const deadline=e.run('puppyRuntime.travelUntil');e.run('renderPuppyFromCurrentState();renderPuppyFromCurrentState()');assert.equal(e.run('JSON.stringify(puppyRuntime.position)'),before);assert.equal(e.run('puppyRuntime.travelUntil'),deadline);
 });
+test('footprints alternate behind actual footfalls and stay bounded on long routes',()=>{
+ const e=create();const marks=e.run('puppyFootprintPlan({x:0,y:0},{x:90,y:0},1000,{x:45,y:85})');assert.equal(marks.length,4);
+ assert.equal(marks[0].delay,240);assert.equal(marks[1].delay,480);assert.ok(marks[0].y<85 && marks[1].y>85);assert.ok(marks[0].x<45+90*.24);assert.equal(marks[0].angle,90);
+ const vertical=e.run('puppyFootprintPlan({x:0,y:0},{x:0,y:90},1000)');assert.equal(vertical[0].angle,180);assert.ok(e.run('puppyFootprintPlan({x:0,y:0},{x:900,y:0},10000).length')<=8);assert.equal(e.run('puppyFootprintPlan({x:0,y:0},{x:1,y:0},1000).length'),0);
+});
+test('trail markup is temporary and disappearing or stopping the puppy removes it',()=>{
+ const e=create();e.run('showPuppyFootprints({x:0,y:0},{x:90,y:0},1000)');assert.match(e.get('puppy-footprints').innerHTML,/puppy-pawprint/);const timer=e.run('puppyRuntime.trailTimer');e.timers.get(timer)();assert.equal(e.get('puppy-footprints').innerHTML,'');assert.equal(e.run('puppyRuntime.trailTimer'),null);
+ e.run('showPuppyFootprints({x:0,y:0},{x:90,y:0},1000);stopPuppyTravel()');assert.equal(e.get('puppy-footprints').innerHTML,'');assert.equal(e.run('puppyRuntime.trailTimer'),null);
+});
+test('motion preferences and background state suppress all new footprints',()=>{
+ for(const mode of ['disabled','reduced','background']){const e=create({reducedMotion:mode==='reduced'});if(mode==='disabled')e.run('appState.mizoPreferences={motion:false}');if(mode==='background')e.doc.hidden=true;e.run('showPuppyFootprints({x:0,y:0},{x:90,y:0},1000)');assert.equal(e.get('puppy-footprints').innerHTML,'');assert.equal(e.run('puppyRuntime.trailTimer'),null);}
+});

@@ -53,6 +53,7 @@ function syncPuppyPose(motion) {
 }
 
 function stopPuppyTravel() {
+  if (typeof stopMizoSteps === 'function') stopMizoSteps();
   clearPuppyFootprints();
   if (puppyRuntime.travelTimer) clearTimeout(puppyRuntime.travelTimer);
   puppyRuntime.travelTimer = null;
@@ -68,6 +69,7 @@ function trackPuppyTravel(position, moving, wasHidden) {
     // A fixed walking speed avoids slow glides across short distances.
     const duration = puppyTravelDuration(previous, position);
     showPuppyFootprints(previous, position, duration);
+    if (typeof queueMizoSteps === 'function') queueMizoSteps(duration);
     document.getElementById('puppy-roamer')?.style.setProperty('--puppy-travel-ms', `${duration}ms`);
     puppyRuntime.travelUntil = Date.now() + duration;
     if (puppyRuntime.travelTimer) clearTimeout(puppyRuntime.travelTimer);

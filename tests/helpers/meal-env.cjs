@@ -27,6 +27,7 @@ function environment(options={}){
  vm.runInContext([...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(m=>m[1]).join('\n'),ctx);
  vm.runInContext(fs.readFileSync('meal-tools.js','utf8'),ctx);
  if(options.mizo)vm.runInContext(fs.readFileSync('mizo.js','utf8'),ctx);
+ if(options.audio)vm.runInContext(fs.readFileSync('mizo-audio.js','utf8'),ctx);
  if(options.puppy)vm.runInContext(fs.readFileSync('puppy.js','utf8'),ctx);
  vm.runInContext(`var realSaveCurrentUserData=saveCurrentUserData;saveCurrentUserData=()=>{};updateDashboard=()=>{};updateMealsList=()=>{};showToast=()=>{};appState.profile={name:'مستخدم تجريبي',dailyCalories:2000,protein:140,water:8};`,ctx);
  return {ctx,get,doc,Node,media,timers,intervals,run:s=>vm.runInContext(s,ctx)};

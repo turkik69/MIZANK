@@ -160,26 +160,13 @@ function mizoReact(type, detail = {}) {
   if (type === 'input') queueMizoDance(1100);
   if (typeof puppyReact === 'function') puppyReact(type);
   renderMizoCards();
-  if (type === 'checkin' || crossedTarget) playMizoChime();
+  if (typeof playMizoSound === 'function' && (type === 'water' || type === 'meal')) playMizoSound(type);
+  else if (type === 'checkin') playMizoChime();
   mizoRuntime.timer = setTimeout(() => { mizoRuntime.event = null; mizoRuntime.timer = null; renderMizoCards(); }, 14000);
 }
 
 function playMizoChime() {
-  const preferences = mizoPreferences();
-  if (!preferences.enabled || !preferences.sound || document.hidden) return;
-  const Audio = window.AudioContext || window.webkitAudioContext;
-  if (!Audio) return;
-  try {
-    const context = new Audio();
-    [523.25, 659.25].forEach((frequency, index) => {
-      const oscillator = context.createOscillator(), gain = context.createGain();
-      const start = context.currentTime + index * .12;
-      oscillator.frequency.value = frequency;
-      gain.gain.setValueAtTime(0, start); gain.gain.linearRampToValueAtTime(.035, start + .015); gain.gain.exponentialRampToValueAtTime(.001, start + .16);
-      oscillator.connect(gain); gain.connect(context.destination); oscillator.start(start); oscillator.stop(start + .18);
-    });
-    setTimeout(() => context.close().catch(() => {}), 600);
-  } catch (_) { /* Optional audio must never interrupt recording. */ }
+  if (typeof playMizoSound === 'function') playMizoSound('celebrate');
 }
 
 function openMizoSettings() {
@@ -191,8 +178,8 @@ function openMizoSettings() {
     <label><input type="checkbox" id="mizo-enabled" ${preferences.enabled ? 'checked' : ''}> إظهار مِيزو</label>
     <label><input type="checkbox" id="mizo-motion" ${preferences.motion ? 'checked' : ''}> الحركات والرقص والتجول التلقائي</label>
     <small>يُراعى إعداد تقليل الحركة في هاتفك تلقائيًا.</small>
-    <label><input type="checkbox" id="mizo-sound" ${preferences.sound ? 'checked' : ''}> صوت احتفال قصير عند إكمال التقييم أو هدف الماء</label>
-    <small>الصوت مغلق افتراضيًا، ويعمل بعد تفاعلك مع التطبيق إذا سمح المتصفح.</small>
+    <label><input type="checkbox" id="mizo-sound" ${preferences.sound ? 'checked' : ''}> أصوات ميزو الخفيفة: المشي وشرب الماء والأكل والاحتفال</label>
+    <small>فعّل الخيار لسماع الأصوات بمستوى خفيف. تعمل بعد لمس التطبيق، ويمكنك كتمها في أي وقت.</small>
     <div class="meal-review-actions"><button class="btn btn-primary" type="submit">حفظ الإعدادات</button><button class="btn btn-secondary" type="button" id="mizo-cancel">إلغاء</button></div>
   </form>`);
   document.getElementById('mizo-settings-form').addEventListener('submit', event => {
@@ -200,6 +187,8 @@ function openMizoSettings() {
     appState.mizoPreferences = { ...(appState.mizoPreferences || {}), enabled: document.getElementById('mizo-enabled').checked,
       motion: document.getElementById('mizo-motion').checked, sound: document.getElementById('mizo-sound').checked };
     saveCurrentUserData(); closeModal(); renderMizoCards();
+    if (typeof stopMizoAudio === 'function' && (!appState.mizoPreferences.enabled || !appState.mizoPreferences.sound)) stopMizoAudio();
+    else if (typeof unlockMizoAudio === 'function') unlockMizoAudio().then(ready => { if (ready) playMizoSound('celebrate'); });
     showToast('تم حفظ إعدادات مِيزو', 'success');
   });
   document.getElementById('mizo-cancel').addEventListener('click', closeModal);

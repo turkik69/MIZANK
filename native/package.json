@@ -1,0 +1,27 @@
+{
+  "name": "mizank-native",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Native iOS and Android shell for MIZANK",
+  "scripts": {
+    "build:web": "node scripts/build-web.mjs",
+    "sync": "npm run build:web && cap sync",
+    "add:android": "npm run build:web && cap add android",
+    "add:ios": "npm run build:web && cap add ios",
+    "check": "npm run build:web && cap doctor"
+  },
+  "dependencies": {
+    "@capacitor/android": "8.6.0",
+    "@capacitor/core": "8.6.0",
+    "@capacitor/filesystem": "^8.1.5",
+    "@capacitor/ios": "8.6.0",
+    "@capacitor/local-notifications": "8.3.1",
+    "@capacitor/share": "^8.0.3",
+    "chart.js": "4.6.1",
+    "html5-qrcode": "2.3.8"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "8.6.0",
+    "esbuild": "0.28.2"
+  }
+}

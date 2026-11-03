@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">ميزانك</string>
+    <string name="title_activity_main">ميزانك</string>
+    <string name="package_name">com.turkik69.mizank</string>
+    <string name="custom_url_scheme">com.turkik69.mizank</string>
+</resources>

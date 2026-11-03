@@ -1,0 +1,26 @@
+name: Android native build
+on:
+  push:
+    paths: ['index.html', 'privacy.html', 'review.css', 'identity.css', 'meal-tools.css', 'meal-tools.js', 'mizo.css', 'mizo.js', 'mizo-audio.js', 'puppy.js', 'assets/**', 'icon*', 'native/**', '.github/workflows/native-android.yml']
+  pull_request:
+    paths: ['index.html', 'privacy.html', 'review.css', 'identity.css', 'meal-tools.css', 'meal-tools.js', 'mizo.css', 'mizo.js', 'mizo-audio.js', 'puppy.js', 'assets/**', 'icon*', 'native/**', '.github/workflows/native-android.yml']
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: native/package-lock.json
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: android-actions/setup-android@v3
+      - run: node --test tests/*.test.cjs
+      - run: npm ci && npm run sync
+        working-directory: native
+      - run: ./gradlew :app:assembleDebug --no-daemon
+        working-directory: native/android

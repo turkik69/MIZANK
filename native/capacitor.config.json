@@ -1,0 +1,11 @@
+{
+  "appId": "com.turkik69.mizank",
+  "appName": "ميزانك",
+  "webDir": "www",
+  "bundledWebRuntime": false,
+  "server": {
+    "hostname": "localhost",
+    "iosScheme": "capacitor",
+    "androidScheme": "https"
+  }
+}

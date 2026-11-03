@@ -1018,7 +1018,7 @@ body {
 
     <div class="glass-card settings-notifications-card" style="border-color: var(--accent-purple);">
       <h3 style="color: var(--accent-purple); margin-bottom: 8px; font-size:15px; font-weight:800;">التذكيرات الذكية</h3>
-      <p style="font-size:12px; color:var(--text-secondary); margin-bottom:14px;">التذكيرات بالخلفية تستخدم اشتراك إشعارات يُرسل لخدمة ميزانك؛ محتوى وجباتك وقياساتك لا يُرسل معها. في الآيفون ثبّت التطبيق على الشاشة الرئيسية أولاً.</p>
+      <p id="notification-description" style="font-size:12px; color:var(--text-secondary); margin-bottom:14px;">التذكيرات بالخلفية تستخدم اشتراك إشعارات يُرسل لخدمة ميزانك؛ محتوى وجباتك وقياساتك لا يُرسل معها. في الآيفون ثبّت التطبيق على الشاشة الرئيسية أولاً.</p>
       
       <div class="form-group">
         <label class="form-label">تكرار تذكير شرب الماء</label>
@@ -1079,7 +1079,7 @@ body {
     <div class="glass-card settings-privacy-card">
       <h3>الخصوصية والمعلومات الصحية</h3>
       <p style="font-size:12px;line-height:1.8;color:var(--text-secondary);margin:8px 0;">القياسات والسعرات تقديرات للتتبع الشخصي، وليست تشخيصًا أو علاجًا أو جهازًا طبيًا. استشر مختصًا صحيًا للنصيحة الطبية.</p>
-      <button type="button" class="btn btn-secondary" onclick="showPrivacySummary()">كيف تُستخدم بياناتي؟</button>
+      <a href="./privacy.html" class="btn btn-secondary" onclick="openPrivacyPolicy(event)">سياسة الخصوصية وكيف تُستخدم بياناتي</a>
     </div>
   </div>
 
@@ -1152,7 +1152,7 @@ const safeStorage = {
 
 // ============ SERVICE WORKER FOR BACKGROUND NOTIFICATIONS ============
 let swRegistration = null;
-if ('serviceWorker' in navigator) {
+if (!window.MizankNative && 'serviceWorker' in navigator) {
   navigator.serviceWorker.register('./sw.js')
     .then(reg => { swRegistration = reg; })
     .catch(() => {});
@@ -1750,6 +1750,7 @@ function saveCurrentUserData() {
   const db = loadUsersDB();
   db[currentUsername] = appState;
   safeStorage.setItem('mizankV2Users', JSON.stringify(db));
+  if (window.MizankNative) window.MizankNative.persist(db).catch(console.error);
   syncNotificationState();
 }
 
@@ -1793,6 +1794,7 @@ function syncNotificationState() {
   const snapshot = {
     notificationsEnabled: !!appState.notificationsEnabled,
     water: Number(appState.water || 0),
+    waterDate: appState.waterDate,
     waterTarget: Number(appState.profile?.water || 8),
     waterIntervalHours: Number(appState.waterIntervalHours || 2),
     lastWaterAt: Number(appState.lastWaterAt || 0),
@@ -1801,7 +1803,8 @@ function syncNotificationState() {
       mealType: meal.mealType || inferMealType(meal.name, meal.timestamp || meal.id),
     })),
   };
-  writeNotificationSnapshot(snapshot).catch(() => {});
+  if (window.MizankNative) window.MizankNative.reschedule(snapshot).catch(console.error);
+  else writeNotificationSnapshot(snapshot).catch(() => {});
 }
 function getTodaysMeals() {
   const today = todayStr();
@@ -1817,7 +1820,12 @@ function ensureTodayWater() {
 }
 
 // ============ INIT ============
-window.addEventListener('load', () => {
+window.addEventListener('load', async () => {
+  if (window.MizankNative) await window.MizankNative.hydrate();
+  if (window.MizankNative) {
+    const description = document.getElementById('notification-description');
+    if (description) description.textContent = 'تُجدول التذكيرات على هذا الهاتف وتعمل عند إغلاق التطبيق. عند تسجيل وجبة أو ماء تُحدَّث المواعيد تلقائيًا.';
+  }
   currentUsername = LOCAL_PROFILE_ID;
   const db = loadUsersDB();
   if (db[LOCAL_PROFILE_ID] && db[LOCAL_PROFILE_ID].profile) {
@@ -2879,6 +2887,23 @@ function urlBase64ToUint8Array(base64String) {
 }
 
 async function requestNotificationPermission() {
+  if (window.MizankNative) {
+    try {
+      if (!await window.MizankNative.requestPermission()) {
+        showToast('لم يتم منح إذن الإشعارات من إعدادات الجهاز', 'warning');
+        return;
+      }
+      appState.notificationsEnabled = true;
+      appState.lastWaterAt = appState.lastWaterAt || Date.now();
+      saveCurrentUserData();
+      updateProfileUI();
+      showToast('تم تشغيل التذكيرات على الجهاز حتى عندما يكون التطبيق مغلقاً', 'success');
+    } catch (error) {
+      console.error('Native notification permission failed', error);
+      showToast('تعذر تشغيل التذكيرات من إعدادات الجهاز', 'warning');
+    }
+    return;
+  }
   if (!("Notification" in window)) {
     showToast("متصفحك لا يدعم إشعارات النظام المباشرة", "warning");
     return;
@@ -2927,6 +2952,11 @@ async function requestNotificationPermission() {
 }
 
 function triggerNotification(title, body) {
+  if (window.MizankNative) {
+    window.MizankNative.show(title, body).catch(console.error);
+    showToast(`🔔 ${title} - ${body}`, 'info');
+    return;
+  }
   const scaleIconUrl = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='120' fill='%23070a16'/><rect x='70' y='70' width='372' height='372' rx='70' fill='%23111827' stroke='%2310b981' stroke-width='22'/><rect x='150' y='115' width='212' height='80' rx='20' fill='%23042f2e' stroke='%2310b981' stroke-width='10'/><circle cx='180' cy='155' r='8' fill='%2310b981'/><path d='M210 155h90' stroke='%2310b981' stroke-width='14' stroke-linecap='round' stroke-dasharray='15 10'/><path d='M150 360 a130 130 0 0 1 212 0' fill='none' stroke='%2306b6d4' stroke-width='24' stroke-linecap='round'/><path d='M256 360 l45 -70' stroke='%23f43f5e' stroke-width='16' stroke-linecap='round'/><circle cx='256' cy='360' r='22' fill='%23f43f5e'/></svg>";
 
   if (swRegistration && swRegistration.active) {
@@ -3018,6 +3048,10 @@ function updateLoginStreak() {
 
 function startNotificationScheduler() {
   if (notificationSchedulerInterval) clearInterval(notificationSchedulerInterval);
+  if (window.MizankNative) {
+    syncNotificationState();
+    return;
+  }
 
   // فحص فوري بمجرد فتح/دخول التطبيق — يلحق أي تذكير كان مستحقاً أثناء إغلاقه
   checkAndSendDueNotifications();
@@ -3029,7 +3063,8 @@ function startNotificationScheduler() {
 // نفحص فوراً بدل ما ننتظر الدورة التالية للمؤقّت — المتصفح يوقف المؤقتات وقت الخلفية غالباً
 document.addEventListener('visibilitychange', () => {
   if (document.visibilityState === 'visible' && appState.notificationsEnabled) {
-    checkAndSendDueNotifications();
+    if (window.MizankNative) syncNotificationState();
+    else checkAndSendDueNotifications();
   }
 });
 
@@ -3751,7 +3786,11 @@ function updateProfileUI() {
   `;
 
   const notifBtn = document.getElementById('notification-toggle-btn');
-  if (notifBtn && "Notification" in window && Notification.permission === "granted") {
+  if (notifBtn && window.MizankNative) {
+    notifBtn.innerHTML = appState.notificationsEnabled
+      ? '<span>✅ التذكيرات مفعّلة على الجهاز</span>'
+      : '<span>🔔 فعّل تذكيرات الجهاز</span>';
+  } else if (notifBtn && "Notification" in window && Notification.permission === "granted") {
     notifBtn.innerHTML = appState.notificationsEnabled
       ? "<span>✅ تعمل حتى عند إغلاق التطبيق</span>"
       : "<span>🔔 أكمل تفعيل إشعارات الخلفية</span>";
@@ -3806,7 +3845,7 @@ function loadApiSettingsUI() {
 }
 
 // ============ النسخة الاحتياطية — تصدير/استيراد ملف JSON كامل، وتذكير عند دخول يوم جديد ============
-function exportBackup() {
+async function exportBackup() {
   const backupPayload = {
     version: 1,
     exportDate: new Date().toISOString(),
@@ -3814,16 +3853,27 @@ function exportBackup() {
     data: appState
   };
 
-  const blob = new Blob([JSON.stringify(backupPayload, null, 2)], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
   const profileLabel = (appState.profile?.name || 'ميزانك').replace(/[^\p{L}\p{N}_-]+/gu, '_');
-  a.download = `نسخة_احتياطية_${profileLabel}_${todayStr()}.json`;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
+  const filename = `نسخة_احتياطية_${profileLabel}_${todayStr()}.json`;
+  try {
+    if (window.MizankNative) {
+      await window.MizankNative.exportBackup(JSON.stringify(backupPayload, null, 2), filename);
+    } else {
+      const blob = new Blob([JSON.stringify(backupPayload, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(url), 30000);
+    }
+  } catch (error) {
+    console.error('Backup export failed', error);
+    showToast('تعذر مشاركة النسخة الاحتياطية؛ حاول مرة أخرى', 'warning');
+    return;
+  }
 
   appState.lastBackupDate = todayStr();
   saveCurrentUserData();
@@ -3913,11 +3963,29 @@ function dismissBackupReminder() {
   hideBackupReminderBanner();
 }
 
+async function openPrivacyPolicy(event) {
+  event?.preventDefault();
+  try {
+    const response = await fetch('./privacy.html');
+    if (!response.ok) throw new Error('Privacy policy unavailable');
+    const documentText = await response.text();
+    const policy = documentText.match(/<main[^>]*>([\s\S]*?)<\/main>/i)?.[1];
+    if (!policy) throw new Error('Privacy policy invalid');
+    showModal('سياسة خصوصية ميزانك', `<div style="max-height:65vh;overflow:auto;text-align:right;line-height:1.8;color:var(--text-primary)">${policy}</div>`);
+  } catch (error) {
+    console.error('Privacy policy unavailable', error);
+    showToast('تعذر فتح السياسة الآن', 'warning');
+  }
+}
+
 function showPrivacySummary() {
+  const notificationDescription = window.MizankNative
+    ? 'تُجدول التذكيرات محليًا على جهازك عند منح إذن الإشعارات.'
+    : 'وعند تفعيل إشعارات الخلفية يُرسل اشتراك الجهاز فقط إلى خدمة إشعارات ميزانك.';
   showModal('خصوصيتك في ميزانك', `
     <div style="line-height:1.9;font-size:13px;color:var(--text-primary);">
       <p>تُحفظ بيانات الملف والوجبات والوزن والنشاط ومحادثات المساعد محليًا على جهازك. يمكنك تصدير نسخة احتياطية من الإعدادات.</p>
-      <p>عند اختيار تحليل صورة أو وصف أو استخدام المساعد، تُرسل البيانات اللازمة للطلب إلى Google Gemini. وعند تفعيل الإشعارات بالخلفية يُرسل اشتراك الجهاز فقط إلى خدمة إشعارات ميزانك.</p>
+      <p>عند اختيار تحليل صورة أو وصف أو استخدام المساعد، تُرسل البيانات اللازمة للطلب إلى Google Gemini. ${notificationDescription}</p>
       <p>يمكنك مسح الملف المحلي من الإعدادات. وجبات «اليوم فقط» لا تُضاف إلى الأرشيف أو وجباتك المحفوظة، وتُزال بعد انتهاء يومها.</p>
       <p>السعرات ومؤشرات الجسم تقديرية، والتطبيق ليس جهازًا طبيًا ولا يشخص أو يعالج حالات صحية. استشر مختصًا صحيًا للنصيحة الطبية.</p>
       <button type="button" class="btn btn-secondary" onclick="closeModal()">إغلاق</button>
@@ -3928,6 +3996,7 @@ function showPrivacySummary() {
 async function deleteLocalProfile() {
   if (!confirm('سيُحذف ملفك وسجلاتك ومفتاح Gemini المحفوظ من هذا الجهاز. صدّر نسخة احتياطية أولًا إذا أردت الاحتفاظ بها. متابعة؟')) return;
   if (!confirm('تأكيد نهائي: حذف بيانات ميزانك المحلية من هذا الجهاز؟')) return;
+  if (window.MizankNative) await window.MizankNative.clear().catch(console.error);
   try {
     const registration = swRegistration || await navigator.serviceWorker?.getRegistration?.();
     const subscription = await registration?.pushManager?.getSubscription();
@@ -3948,6 +4017,7 @@ async function deleteLocalProfile() {
     }
   } catch (error) { console.warn('Could not clear local notification state', error); }
   safeStorage.setItem('mizankV2MigrationDismissed', '1');
+  if (window.MizankNative) await window.MizankNative.deleteData().catch(console.error);
   ['mizankV2Users', 'mizankV2GeminiKey', 'mizankV2GeminiModel', 'healthAppUsers', 'healthAppCurrentUser', 'healthAppGeminiKey', 'healthAppGeminiModel'].forEach(key => safeStorage.removeItem(key));
   window.location.reload();
 }

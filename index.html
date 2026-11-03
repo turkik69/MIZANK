@@ -870,7 +870,7 @@ body {
       
       <div class="form-group">
         <label class="form-label">نوع التمرين</label>
-        <select id="workout-type" class="form-select" onchange="updateWorkoutCalRate()">
+        <select id="workout-type" class="form-select" onchange="handleWorkoutTypeChange()">
           <option value="jump_rope">🪢 نط الحبل (Jump Rope)</option>
           <option value="abs_crunches">🧘‍♂️ تمارين المعدة العلوية (Crunches)</option>
           <option value="abs_leg_raises">🦵 رفع الأرجل للبطن السفلي (Leg Raises)</option>
@@ -878,6 +878,8 @@ body {
           <option value="abs_plank">🪵 تمرين البلانك للثبات (Plank)</option>
 
           <option value="cardio_run">🏃‍♂️ جري متوسط (Cardio)</option>
+          <option value="outdoor_fast_run">🏃‍♂️ جري سريع في الخارج (نحو 13 كم/س)</option>
+          <option value="soccer_play">⚽ ممارسة كرة القدم (لعب عام)</option>
           <option value="cardio_walk">🚶‍♂️ مشي سريع</option>
           <option value="strength">🏋️‍♂️ تمارين حديد ومقاومة</option>
           <option value="hiit">🔥 تمارين متناوبة الشدة (HIIT)</option>
@@ -928,6 +930,7 @@ body {
         </div>
       </div>
 
+      <p id="workout-calorie-note" hidden style="font-size:11px; color:var(--text-secondary); margin-bottom:14px;">تقدير السعرات يعتمد على آخر وزن مسجل والمدة الفعلية. للجري نفترض سرعة تقارب 13 كم/س، ولكرة القدم لعبًا عامًا.</p>
       <button class="btn btn-primary" onclick="addWorkoutLog()">💪 تسجيل التمرين باليوميات</button>
     </div>
 
@@ -3408,7 +3411,20 @@ function deleteMeal(id) {
 let workoutLogMode = 'time';
 let lastPhotoAnalysisResult = null;
 
+function isDurationOnlyWorkout(type) {
+  return type === 'outdoor_fast_run' || type === 'soccer_play';
+}
+
+function handleWorkoutTypeChange() {
+  const durationOnly = isDurationOnlyWorkout(document.getElementById('workout-type').value);
+  document.getElementById('workout-mode-reps').hidden = durationOnly;
+  document.getElementById('workout-calorie-note').hidden = !durationOnly;
+  if (durationOnly && workoutLogMode !== 'time') setWorkoutLogMode('time');
+  else updateWorkoutCalRate();
+}
+
 function setWorkoutLogMode(mode) {
+  if (mode === 'reps' && isDurationOnlyWorkout(document.getElementById('workout-type').value)) mode = 'time';
   workoutLogMode = mode;
   document.getElementById('workout-mode-time').classList.toggle('active', mode === 'time');
   document.getElementById('workout-mode-reps').classList.toggle('active', mode === 'reps');
@@ -3423,6 +3439,17 @@ function updateWorkoutCalRate() {
   const type = document.getElementById('workout-type').value;
 
   if (workoutLogMode === 'time') {
+    if (isDurationOnlyWorkout(type)) {
+      // 2024 Adult Compendium: 8 mph running = 12 MET; casual soccer = 7 MET.
+      // https://pacompendium.com/running/  https://pacompendium.com/sports/
+      const met = type === 'outdoor_fast_run' ? 12 : 7;
+      const duration = Number(document.getElementById('workout-duration').value);
+      const latestWeight = appState.weights?.[appState.weights.length - 1]?.weight;
+      const weight = Number(latestWeight || appState.profile?.currentWeight);
+      const burned = duration > 0 && weight > 0 ? Math.round(met * 3.5 * weight / 200 * duration) : 0;
+      document.getElementById('workout-calories').value = burned;
+      return;
+    }
     const duration = parseFloat(document.getElementById('workout-duration').value) || 15;
     const rates = {
       jump_rope: 750, abs_crunches: 400, abs_leg_raises: 420, abs_bicycle: 450, abs_plank: 350,
@@ -3455,6 +3482,18 @@ function addWorkoutLog() {
   let calories = 0;
 
   if (workoutLogMode === 'time') {
+    if (isDurationOnlyWorkout(typeSelect.value)) {
+      const enteredDuration = Number(document.getElementById('workout-duration').value);
+      if (!Number.isFinite(enteredDuration) || enteredDuration <= 0) {
+        showToast('أدخل مدة النشاط بالدقائق أولًا', 'warning');
+        return;
+      }
+      updateWorkoutCalRate();
+      if (Number(document.getElementById('workout-calories').value) <= 0) {
+        showToast('سجّل وزنك أولًا لحساب السعرات', 'warning');
+        return;
+      }
+    }
     const duration = parseInt(document.getElementById('workout-duration').value) || 15;
     calories = parseInt(document.getElementById('workout-calories').value) || 150;
     durationText = `${duration} دقيقة`;

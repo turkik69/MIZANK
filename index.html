@@ -293,7 +293,7 @@ body {
 
 </style>
 <link rel="stylesheet" href="./review.css?v=8">
-<link rel="stylesheet" href="./meal-tools.css?v=3">
+<link rel="stylesheet" href="./meal-tools.css?v=4">
 <link rel="stylesheet" href="./mizo.css?v=6">
 </head>
 <body data-view="setup">
@@ -701,7 +701,7 @@ body {
         <summary><span class="meal-tool-icon photo">▣</span><span><b>صورة الوجبة</b><small>تحليل محتوى الطبق</small></span><i>⌄</i></summary>
         <div class="meal-tool-body">
           <input type="file" id="meal-photo-input" accept="image/*" capture="environment" style="display:none;" onchange="handleMealPhoto(event)">
-          <button class="btn btn-secondary" onclick="document.getElementById('meal-photo-input').click()">التقط صورة الوجبة</button><div id="meal-photo-preview"></div>
+          <button class="btn btn-secondary" onclick="document.getElementById('meal-photo-input').click()">التقط صورة الوجبة</button><p class="meal-external-disclosure">عند اختيار صورة للتحليل، تُرسل نسخة مصغرة منها إلى Google Gemini لتقدير المكونات. استخدم الإدخال اليدوي إن كنت لا تريد إرسال صورة.</p><div id="meal-photo-preview"></div>
         </div>
       </details>
       <details class="meal-tool">
@@ -1018,7 +1018,7 @@ body {
 
     <div class="glass-card settings-notifications-card" style="border-color: var(--accent-purple);">
       <h3 style="color: var(--accent-purple); margin-bottom: 8px; font-size:15px; font-weight:800;">التذكيرات الذكية</h3>
-      <p style="font-size:12px; color:var(--text-secondary); margin-bottom:14px;">تعمل حتى عند إغلاق التطبيق، وتتوقف تلقائياً عن تذكيرك بالوجبة التي سجلتها أو بالماء بعد إضافة كوب. في الآيفون ثبّت التطبيق على الشاشة الرئيسية أولاً.</p>
+      <p style="font-size:12px; color:var(--text-secondary); margin-bottom:14px;">التذكيرات بالخلفية تستخدم اشتراك إشعارات يُرسل لخدمة ميزانك؛ محتوى وجباتك وقياساتك لا يُرسل معها. في الآيفون ثبّت التطبيق على الشاشة الرئيسية أولاً.</p>
       
       <div class="form-group">
         <label class="form-label">تكرار تذكير شرب الماء</label>
@@ -1039,6 +1039,7 @@ body {
 
     <div class="glass-card settings-ai-card">
       <h3 style="color: var(--accent-emerald); margin-bottom: 12px; font-size:15px; font-weight:800;">إعدادات الذكاء الاصطناعي</h3>
+      <p style="font-size:12px; color:var(--text-secondary); margin-bottom:12px;">عند استخدام التحليل أو المساعد، يُرسل وصف الوجبة أو الصورة أو محتوى المحادثة والسياق الصحي اللازم إلى Google Gemini. تبقى السجلات الأساسية على جهازك؛ ويمكنك استخدام الإدخال اليدوي دون الذكاء الاصطناعي.</p>
       <div class="form-group">
         <label class="form-label">مفتاح API (مطلوب لتفعيل المساعد وتحليل الوجبات)</label>
         <input type="password" id="gemini-key-input" class="form-input" placeholder="AIzaSy... أو AQ...">
@@ -1051,7 +1052,7 @@ body {
       </div>
       <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
         <button class="btn btn-primary" onclick="saveApiSettings()">💾 حفظ الإعدادات</button>
-        <button class="btn btn-secondary" onclick="clearCustomApiKey()">🔄 استخدام الافتراضي</button>
+        <button class="btn btn-secondary" onclick="clearCustomApiKey()">🗑️ مسح المفتاح المحفوظ</button>
       </div>
     </div>
 
@@ -1072,7 +1073,13 @@ body {
       <div style="display:flex; flex-direction:column; gap:10px; margin-top:15px;">
         <button class="btn btn-secondary" onclick="editProfile()">✏️ تعديل بيانات الحساب</button>
         <button class="btn btn-secondary" style="color:var(--accent-coral);" onclick="clearAllData()">🗑️ إعادة ضبط السجلات</button>
+        <button class="btn btn-secondary" onclick="deleteLocalProfile()">حذف ملفي وبياناتي من هذا الجهاز</button>
       </div>
+    </div>
+    <div class="glass-card settings-privacy-card">
+      <h3>الخصوصية والمعلومات الصحية</h3>
+      <p style="font-size:12px;line-height:1.8;color:var(--text-secondary);margin:8px 0;">القياسات والسعرات تقديرات للتتبع الشخصي، وليست تشخيصًا أو علاجًا أو جهازًا طبيًا. استشر مختصًا صحيًا للنصيحة الطبية.</p>
+      <button type="button" class="btn btn-secondary" onclick="showPrivacySummary()">كيف تُستخدم بياناتي؟</button>
     </div>
   </div>
 
@@ -1083,7 +1090,7 @@ body {
       <span class="header-avatar static-avatar">م</span>
     </div>
     <div class="more-visual-banner">
-      <div><span>كل شيء تحت سيطرتك</span><b>بياناتك، أدواتك، وخصوصيتك</b><small>محفوظة محليًا على جهازك</small></div>
+      <div><span>كل شيء تحت سيطرتك</span><b>بياناتك، أدواتك، وخصوصيتك</b><small>سجلاتك على جهازك، والتحليل الذكي عند اختيارك</small></div>
       <svg viewBox="0 0 150 105" aria-hidden="true"><rect x="42" y="8" width="65" height="90" rx="17" fill="#fff"/><rect x="49" y="18" width="51" height="66" rx="11" fill="#ece7ff"/><circle cx="75" cy="42" r="14" fill="#7c3aed"/><path d="M68 42h14M75 35v14" stroke="#b9f227" stroke-width="4" stroke-linecap="round"/><rect x="60" y="89" width="29" height="4" rx="2" fill="#c7baf2"/><circle cx="119" cy="25" r="12" fill="#ffcf4a"/><path d="m114 25 4 4 7-9" fill="none" stroke="#17132b" stroke-width="3" stroke-linecap="round"/><circle cx="28" cy="72" r="15" fill="#24d3ee"/><path d="M28 62s-7 9-7 15a7 7 0 0 0 14 0c0-6-7-15-7-15Z" fill="#fff"/></svg>
     </div>
     <div class="more-grid">
@@ -1154,7 +1161,7 @@ if ('serviceWorker' in navigator) {
 const NOTIFICATION_RELAY_URL = 'https://mizank-notify.turki-k69.chatgpt.site';
 
 // ============ GEMINI API CORE WITH EXPONENTIAL BACKOFF ============
-const apiKey = ""; // Runtime provided key by host execution environment
+const apiKey = ""; // لا يُضمَّن مفتاح خاص في التطبيق المنشور؛ يُضاف من الإعدادات أو عبر وسيط آمن.
 
 async function fetchGeminiWithRetry(payload) {
   const customKey = safeStorage.getItem('mizankV2GeminiKey') || safeStorage.getItem('healthAppGeminiKey');
@@ -1720,7 +1727,7 @@ function loadUsersDB() {
     // ترحيل آمن لمستخدمي نسخة المعاينة السابقة مرة واحدة، من دون حذف المصدر.
     const legacyUsers = JSON.parse(safeStorage.getItem('healthAppUsers') || '{}');
     const legacyId = safeStorage.getItem('healthAppCurrentUser');
-    if (legacyId && legacyUsers[legacyId]?.profile) {
+    if (legacyId && legacyUsers[legacyId]?.profile && safeStorage.getItem('mizankV2MigrationDismissed') !== '1') {
       v2Users[LOCAL_PROFILE_ID] = legacyUsers[legacyId];
       safeStorage.setItem('mizankV2Users', JSON.stringify(v2Users));
     }
@@ -3775,7 +3782,7 @@ function saveApiSettings() {
 function clearCustomApiKey() {
   safeStorage.removeItem('mizankV2GeminiKey');
   document.getElementById('gemini-key-input').value = '';
-  showToast('تمت العودة لمفتاح النظام الافتراضي بنجاح ✅', 'success');
+  showToast('تم مسح المفتاح المحفوظ؛ يلزم مفتاح لتفعيل ميزات Gemini', 'info');
 }
 
 function loadApiSettingsUI() {
@@ -3874,9 +3881,49 @@ function dismissBackupReminder() {
   hideBackupReminderBanner();
 }
 
+function showPrivacySummary() {
+  showModal('خصوصيتك في ميزانك', `
+    <div style="line-height:1.9;font-size:13px;color:var(--text-primary);">
+      <p>تُحفظ بيانات الملف والوجبات والوزن والنشاط ومحادثات المساعد محليًا على جهازك. يمكنك تصدير نسخة احتياطية من الإعدادات.</p>
+      <p>عند اختيار تحليل صورة أو وصف أو استخدام المساعد، تُرسل البيانات اللازمة للطلب إلى Google Gemini. وعند تفعيل الإشعارات بالخلفية يُرسل اشتراك الجهاز فقط إلى خدمة إشعارات ميزانك.</p>
+      <p>يمكنك مسح الملف المحلي من الإعدادات. وجبات «اليوم فقط» لا تُضاف إلى الأرشيف أو وجباتك المحفوظة، وتُزال بعد انتهاء يومها.</p>
+      <p>السعرات ومؤشرات الجسم تقديرية، والتطبيق ليس جهازًا طبيًا ولا يشخص أو يعالج حالات صحية. استشر مختصًا صحيًا للنصيحة الطبية.</p>
+      <button type="button" class="btn btn-secondary" onclick="closeModal()">إغلاق</button>
+    </div>
+  `);
+}
+
+async function deleteLocalProfile() {
+  if (!confirm('سيُحذف ملفك وسجلاتك ومفتاح Gemini المحفوظ من هذا الجهاز. صدّر نسخة احتياطية أولًا إذا أردت الاحتفاظ بها. متابعة؟')) return;
+  if (!confirm('تأكيد نهائي: حذف بيانات ميزانك المحلية من هذا الجهاز؟')) return;
+  try {
+    const registration = swRegistration || await navigator.serviceWorker?.getRegistration?.();
+    const subscription = await registration?.pushManager?.getSubscription();
+    await subscription?.unsubscribe();
+  } catch (error) { console.warn('Could not unsubscribe device push', error); }
+  try {
+    if ('indexedDB' in window) {
+      await new Promise(resolve => {
+        const request = indexedDB.open('mizank-notifications', 1);
+        request.onerror = () => resolve();
+        request.onsuccess = () => {
+          const db = request.result;
+          const tx = db.transaction('state', 'readwrite');
+          tx.objectStore('state').clear();
+          tx.oncomplete = tx.onerror = () => { db.close(); resolve(); };
+        };
+      });
+    }
+  } catch (error) { console.warn('Could not clear local notification state', error); }
+  safeStorage.setItem('mizankV2MigrationDismissed', '1');
+  ['mizankV2Users', 'mizankV2GeminiKey', 'mizankV2GeminiModel', 'healthAppUsers', 'healthAppCurrentUser', 'healthAppGeminiKey', 'healthAppGeminiModel'].forEach(key => safeStorage.removeItem(key));
+  window.location.reload();
+}
+
 function clearAllData() {
   if (confirm('هل أنت تأكد من مسح كافة السجلات؟')) {
     appState.meals = [];
+    appState.todayOnlyMeals = [];
     appState.workouts = [];
     appState.weights = [];
     saveCurrentUserData();

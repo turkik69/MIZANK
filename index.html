@@ -293,7 +293,7 @@ body {
 
 </style>
 <link rel="stylesheet" href="./review.css?v=8">
-<link rel="stylesheet" href="./meal-tools.css?v=2">
+<link rel="stylesheet" href="./meal-tools.css?v=3">
 <link rel="stylesheet" href="./mizo.css?v=6">
 </head>
 <body data-view="setup">
@@ -1670,6 +1670,7 @@ let currentUsername = LOCAL_PROFILE_ID;
 let appState = {
   profile: null,
   meals: [],
+  todayOnlyMeals: [],
   workouts: [],
   weights: [],
   water: 0,
@@ -1726,8 +1727,13 @@ function loadUsersDB() {
     return v2Users;
   } catch (e) { return {}; }
 }
+function keepOnlyCurrentDayMeals() {
+  appState.todayOnlyMeals = (appState.todayOnlyMeals || []).filter(meal => meal.date === todayStr());
+}
+
 function saveCurrentUserData() {
   if (!currentUsername) return;
+  keepOnlyCurrentDayMeals();
   const db = loadUsersDB();
   db[currentUsername] = appState;
   safeStorage.setItem('mizankV2Users', JSON.stringify(db));
@@ -1777,14 +1783,17 @@ function syncNotificationState() {
     waterTarget: Number(appState.profile?.water || 8),
     waterIntervalHours: Number(appState.waterIntervalHours || 2),
     lastWaterAt: Number(appState.lastWaterAt || 0),
-    meals: (appState.meals || []).slice(-80).map(meal => ({
+    meals: [...(appState.meals || []).slice(-80), ...(appState.todayOnlyMeals || []).filter(meal => meal.date === todayStr())].map(meal => ({
       day: meal.date,
       mealType: meal.mealType || inferMealType(meal.name, meal.timestamp || meal.id),
     })),
   };
   writeNotificationSnapshot(snapshot).catch(() => {});
 }
-function getTodaysMeals() { return appState.meals.filter(m => m.date === todayStr()); }
+function getTodaysMeals() {
+  const today = todayStr();
+  return [...appState.meals.filter(m => m.date === today), ...(appState.todayOnlyMeals || []).filter(m => m.date === today)];
+}
 function getTodaysWorkouts() { return (appState.workouts || []).filter(w => w.date === todayStr()); }
 
 function ensureTodayWater() {
@@ -1799,7 +1808,8 @@ window.addEventListener('load', () => {
   currentUsername = LOCAL_PROFILE_ID;
   const db = loadUsersDB();
   if (db[LOCAL_PROFILE_ID] && db[LOCAL_PROFILE_ID].profile) {
-    appState = Object.assign({ meals: [], workouts: [], weights: [], water: 0, waterDate: null, chat: [], streak: 1, waterIntervalHours: 2, lastWaterNotifTime: 0, lastMealNotifTime: 0, fasting: { active: false, startTime: null, targetHours: 16, logs: [], lastEndTime: null } }, db[LOCAL_PROFILE_ID]);
+    appState = Object.assign({ meals: [], todayOnlyMeals: [], workouts: [], weights: [], water: 0, waterDate: null, chat: [], streak: 1, waterIntervalHours: 2, lastWaterNotifTime: 0, lastMealNotifTime: 0, fasting: { active: false, startTime: null, targetHours: 16, logs: [], lastEndTime: null } }, db[LOCAL_PROFILE_ID]);
+    keepOnlyCurrentDayMeals();
     document.getElementById('bottom-nav').style.display = 'flex';
     showScreen('dashboard-screen');
     updateLoginStreak();
@@ -2115,7 +2125,7 @@ function getAllRecordedDates() {
 
 function getDaySummary(date) {
   const p = appState.profile;
-  const dayMeals = appState.meals.filter(m => m.date === date);
+  const dayMeals = date === todayStr() ? getTodaysMeals() : appState.meals.filter(m => m.date === date);
   const dayWorkouts = (appState.workouts || []).filter(w => w.date === date);
   const consumed = dayMeals.reduce((s, m) => s + m.cal, 0);
   const burned = dayWorkouts.reduce((s, w) => s + w.cal, 0);
@@ -3401,6 +3411,7 @@ function updateMealsList() {
 
 function deleteMeal(id) {
   appState.meals = appState.meals.filter(m => m.id !== id);
+  appState.todayOnlyMeals = (appState.todayOnlyMeals || []).filter(m => m.id !== id);
   saveCurrentUserData();
   updateDashboard();
   updateMealsList();
@@ -4055,7 +4066,7 @@ function acceptCuttingAdjustment() {
 }
 
 </script>
-<script src="./meal-tools.js?v=3"></script>
+<script src="./meal-tools.js?v=4"></script>
 <script src="./mizo.js?v=5"></script>
 <script src="./mizo-audio.js?v=1"></script>
 <script src="./puppy.js?v=5"></script>

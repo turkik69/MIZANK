@@ -57,9 +57,14 @@ function showMealAnalysis(containerId, result, source) {
     <p>${Math.round(mealNumber(result.calories ?? result.cal))} سعرة · ${mealRound(mealNumber(result.protein))} غ بروتين</p>
     <small>${escapeMealText(mealSourceLabel(source))}${source === 'barcode' ? ' · القيم لكل 100 غ؛ حدّد الكمية التي تناولتها.' : quantity > 0 ? ` · الوزن التقديري ${quantity} غ` : ' · راجع الحصة والمكونات.'}</small>
     ${source === 'barcode' ? `<label class="form-label">الكمية التي تناولتها (غ)<input class="form-input" type="number" inputmode="decimal" min="0.1" step="any" value="100" id="${containerId}-quantity"></label>` : ''}
-    <button type="button" class="btn btn-primary" data-review-analysis="${containerId}">إضافة الوجبة</button>
+    ${source === 'photo'
+      ? `<div class="meal-photo-save-actions">
+          <button type="button" class="btn btn-primary" data-photo-choice="saved">اعتماد وحفظ في وجباتي</button>
+          <button type="button" class="btn btn-secondary" data-photo-choice="today">إضافة لوجبات اليوم فقط</button>
+        </div><small>الخيار الثاني يحسبها ضمن يومك ولا يضيفها لوجباتي أو أرشيف الأيام السابقة.</small>`
+      : `<button type="button" class="btn btn-primary" data-review-analysis="${containerId}">إضافة الوجبة</button>`}
   </div>`;
-  host.querySelector('[data-review-analysis]').addEventListener('click', () => {
+  const confirmAnalysis = (todayOnly = false) => {
     const pending = pendingMealAnalyses.get(containerId);
     if (!pending) return;
     let item = pending.result;
@@ -70,8 +75,11 @@ function showMealAnalysis(containerId, result, source) {
       mealNutrients.forEach(([key]) => { part[key] = mealRound(part[key]*quantity/100); });
       item = { ...part, quantity, unit:'غ', components:[{...part,quantity,unit:'غ'}] };
     }
-    addMealDirect(item, pending.source, { previewId: containerId, remember: pending.source !== 'barcode' });
-  });
+    addMealDirect(item, pending.source, { previewId: containerId, remember: pending.source !== 'barcode' && !todayOnly, todayOnly });
+  };
+  host.querySelector('[data-review-analysis]')?.addEventListener('click', () => confirmAnalysis());
+  host.querySelector('[data-photo-choice="saved"]')?.addEventListener('click', () => confirmAnalysis());
+  host.querySelector('[data-photo-choice="today"]')?.addEventListener('click', () => confirmAnalysis(true));
 }
 
 function prepareMealDraft(item, source = 'manual', options = {}) {
@@ -216,7 +224,7 @@ function saveMealReview(event) {
   syncMealReviewDraft();
   const draft = mealReviewDraft;
   if (mealDraftInvalid(draft)) { document.getElementById('meal-review-error').textContent = 'راجع الأسماء والكميات؛ أدخل أرقامًا صالحة دون قيم سالبة.'; return; }
-  if (draft.reference && !appState.meals.includes(draft.reference)) { document.getElementById('meal-review-error').textContent = 'هذه الوجبة لم تعد موجودة. أغلق النافذة وافتح السجل مجددًا.'; return; }
+  if (draft.reference && !appState.meals.includes(draft.reference) && !(appState.todayOnlyMeals || []).includes(draft.reference)) { document.getElementById('meal-review-error').textContent = 'هذه الوجبة لم تعد موجودة. أغلق النافذة وافتح السجل مجددًا.'; return; }
   persistMealDraft(draft);
 }
 
@@ -235,7 +243,10 @@ function persistMealDraft(draft) {
   Object.assign(record, totals, { name: draft.name, source: draft.source,
     sourceEdited: draft.sourceEdited || (draft.source !== 'manual' && draft.initialValues !== mealReviewSignature(draft.name, draft.components)), components: draft.components.map(part => ({ ...part })),
     assumptions: [...draft.assumptions], updatedAt: now });
-  if (!draft.reference) appState.meals.push(record);
+  if (!draft.reference) {
+    if (draft.options.todayOnly) (appState.todayOnlyMeals ||= []).push(record);
+    else appState.meals.push(record);
+  }
   if (!draft.reference && draft.options.remember) {
     appState.customMeals ||= [];
     if (!appState.customMeals.some(meal => meal.name === record.name)) {
@@ -253,7 +264,7 @@ function persistMealDraft(draft) {
   mealReviewDraft = null; // Ignore rapid or repeated submit events after one save.
   closeModal();
   updateDashboard(); updateMealsList();
-  showToast(draft.reference ? 'تم تعديل الوجبة وتحديث مجموع اليوم' : 'تم حفظ الوجبة', 'success');
+  showToast(draft.reference ? 'تم تعديل الوجبة وتحديث مجموع اليوم' : draft.options.todayOnly ? 'أُضيفت لوجبات اليوم فقط' : 'تم حفظ الوجبة', 'success');
   if (typeof mizoReact === 'function') mizoReact(draft.reference ? 'edit' : 'meal');
 }
 

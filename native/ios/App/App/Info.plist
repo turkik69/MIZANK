@@ -8,6 +8,8 @@
   <string>يتيح لك ميزانك اختيار صورة وجبة من مكتبة الصور لتحليلها.</string>
   <key>NSMicrophoneUsageDescription</key>
   <string>يستخدم ميزانك الميكروفون عند اختيار إدخال الوجبة صوتيًا.</string>
+  <key>NSSpeechRecognitionUsageDescription</key>
+  <string>يحوّل ميزانك وصف الوجبة الذي تمليه إلى نص عند اختيار الإدخال الصوتي.</string>
   <key>CAPACITOR_DEBUG</key>
 	<string>$(CAPACITOR_DEBUG)</string>
 	<key>CFBundleDevelopmentRegion</key>
